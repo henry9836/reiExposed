@@ -27,10 +27,9 @@ public class cameraControler : MonoBehaviour
     private bool isAiming;
     public float aimFOV = 55f;
     public float aimDistance = 3f;
+
     private float fovLerp, zOffsetLerp;
-    private Vector3 startCam;
-    private Vector3 aimcam;
-    public float ADStimer = 0.0f;
+    private float ADStimer = 0.0f;
     private float zOffsetColl;
     private float oldfov;
     private bool FOVonce = true;
@@ -42,9 +41,6 @@ public class cameraControler : MonoBehaviour
         camPivot = transform.GetChild(0).gameObject;
         camRoot = transform.GetChild(0).GetChild(0).gameObject;
         mainCam = transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Camera>();
-
-        startCam = transform.localPosition;
-        aimcam = startCam + new Vector3(0.4f, 0.1f, 0.0f);
     }
 
     void Update()
