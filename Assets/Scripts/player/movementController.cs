@@ -17,6 +17,8 @@ public class movementController : MonoBehaviour
     public float dashDistance = 10.0f;
     public LayerMask groundLayer;
     public Transform feet;
+    public GameObject charcterModel;
+    public GameObject camParent;
 
     private PlayerController pc;
     private CharacterController ch;
@@ -39,12 +41,16 @@ public class movementController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        charcterModel.transform.rotation = camParent.transform.rotation;
+
         //While we are in the air
         if (!isOnGround)
         {
             //Move half speed
-            moveDir = new Vector3((Input.GetAxis("Horizontal") * moveSpeed) * 0.5f, moveDir.y, (Input.GetAxis("Vertical") * moveSpeed) * 0.5f);
-
+            moveDir = charcterModel.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed));
+            moveDir += charcterModel.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed));
+            moveDir *= 0.5f;
             //Apply Gravity
             moveDir.y -= gravity * Time.deltaTime;
 
@@ -59,7 +65,8 @@ public class movementController : MonoBehaviour
         //While we are on the ground
         else
         {
-            moveDir = new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical")) * moveSpeed;
+            moveDir = charcterModel.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed));
+            moveDir += charcterModel.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed));
 
             if (Input.GetButtonDown("Jump") && pc.CheckStamina() >= staminaCostJump)
             {
