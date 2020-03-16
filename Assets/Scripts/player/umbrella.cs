@@ -9,14 +9,18 @@ public class umbrella : MonoBehaviour
     public bool cooldown = false;
     public float cooldowntime = 2.0f;
     public float cooldowntimer = 0.0f;
+    public LayerMask enemy;
+    public LayerMask ball;
 
 
     private PlayerController playercontrol;
+    private GameObject cam;
 
 
     void Start()
     {
         playercontrol = this.transform.parent.parent.GetComponent<PlayerController>();
+        cam = GameObject.FindGameObjectWithTag("MainCamera");
     }
 
     void Update()
@@ -60,6 +64,18 @@ public class umbrella : MonoBehaviour
 
     void firemode()
     {
+        RaycastHit hit;
+        if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, Mathf.Infinity, ball))
+        {
+            Debug.Log(hit.collider.gameObject.layer);
+            this.gameObject.transform.LookAt(hit.point);
+            Debug.DrawLine(hit.point, cam.transform.position);
+
+        }
+
+
+
+
         if (Input.GetAxis("Fire1") > 0.5f)
         {
             bang();
@@ -68,8 +84,16 @@ public class umbrella : MonoBehaviour
 
     void bang()
     {
-        //just aim better 
         Debug.Log("bang");
+
+        RaycastHit hit;
+
+        if (Physics.Raycast(this.gameObject.transform.position, this.gameObject.transform.forward, out hit, Mathf.Infinity, enemy))
+        {
+            //damage
+        }
+
+        //just aim better 
         cooldown = true;
     }
 }
