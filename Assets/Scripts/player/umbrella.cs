@@ -33,11 +33,8 @@ public class umbrella : MonoBehaviour
                     if (canfire == true)
                     {
                         firemode();
-
                     }
-
                 }
-
             }
         }
         else
@@ -71,6 +68,7 @@ public class umbrella : MonoBehaviour
 
     void bang()
     {
+        //just aim better 
         Debug.Log("bang");
         cooldown = true;
     }
