@@ -30,8 +30,12 @@ public class cameraControler : MonoBehaviour
     private float fovLerp, zOffsetLerp;
     private Vector3 startCam;
     private Vector3 aimcam;
-    private float ADStimer = 0.0f;
+    public float ADStimer = 0.0f;
+    private float zOffsetColl;
+    private float oldfov;
+    private bool FOVonce = true;
 
+    
     private void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -41,59 +45,63 @@ public class cameraControler : MonoBehaviour
 
         startCam = transform.localPosition;
         aimcam = startCam + new Vector3(0.4f, 0.1f, 0.0f);
-
-        // Ensure rotations never get offset what they are supposed to be
-        transform.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
-        camPivot.transform.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
     }
 
     void Update()
     {
-        float fov;
+        float fov; 
+        pitchValueAdj = Mathf.DeltaAngle(camPivot.transform.localRotation.eulerAngles.x, 360.0f - maxPitchUp) / -(maxPitchUp + maxPitchDown);
+        zOffset = Mathf.Lerp(2.0f, maxDistance, distCurve.Evaluate(pitchValueAdj));
 
         if (Input.GetAxis("Fire2") > 0.5f)
         {
-            isAiming = true;
-            ADStimer = Mathf.Clamp((ADStimer += Time.unscaledDeltaTime * lerpSpeed), 0.0f, 1.0f);
-            
-            fov = Mathf.Lerp(mainCam.fieldOfView, aimFOV, ADStimer);
-            //transform.localPosition = Vector3.Lerp(startCam, aimcam, ADStimer);
+            if (FOVonce == true)
+            {
+                FOVonce = false;
+                oldfov = mainCam.fieldOfView;
+            }
 
-            //float zOffsetAim = isAiming ? aimDistance : zOffsetColl;
-            pitchValueAdj = Mathf.DeltaAngle(camPivot.transform.localRotation.eulerAngles.x, 360.0f - maxPitchUp) / -(maxPitchUp + maxPitchDown);
-            zOffset = Mathf.Lerp(2.0f, maxDistance, distCurve.Evaluate(pitchValueAdj));
-            float zOffsetColl = Mathf.Clamp(zOffset, 1.0f, aimDistance);
-            camRoot.transform.localPosition = new Vector3(camRoot.transform.localPosition.x, camRoot.transform.localPosition.y, -aimDistance);
+            if (ADStimer < 1.0f)
+            {
+                ADStimer += Time.unscaledDeltaTime * lerpSpeed;
+            }
+            else
+            {
+                ADStimer = 1.0f;
+            }
+
+            fov = Mathf.Lerp(oldfov, aimFOV, ADStimer);
             ObstacleCheck(true);
-
+            zOffsetColl = -(Mathf.Clamp(zOffset, 1.0f, aimDistance));
 
         }
         else
         {
-            ADStimer = Mathf.Clamp((ADStimer -= Time.unscaledDeltaTime * lerpSpeed), 0.0f, 1.0f);
-            //transform.localPosition = Vector3.Lerp(startCam, aimcam, ADStimer);
+            if (FOVonce == false)
+            {
+                FOVonce = true;
+                oldfov = mainCam.fieldOfView;
+            }
 
+            if (ADStimer > 0.0f)
+            {
+                ADStimer -= Time.unscaledDeltaTime * lerpSpeed;
+            }
+            else
+            {
+                ADStimer = 0.0f;
+            }
 
-            fov = Mathf.Lerp(minFOV, maxFOV, FOVCurve.Evaluate(1 - pitchValueAdj));
-            isAiming = false;
-
-            pitchValueAdj = Mathf.DeltaAngle(camPivot.transform.localRotation.eulerAngles.x, 360.0f - maxPitchUp) / -(maxPitchUp + maxPitchDown);
-            zOffset = Mathf.Lerp(2.0f, maxDistance, distCurve.Evaluate(pitchValueAdj));
-            float zOffsetColl = Mathf.Clamp(zOffset, 1.0f, hitDistance);
-            //zOffsetLerp = Mathf.Lerp(zOffsetLerp, zOffsetAim, Time.unscaledDeltaTime * lerpSpeed);
-            camRoot.transform.localPosition = new Vector3(camRoot.transform.localPosition.x, camRoot.transform.localPosition.y, -zOffsetColl);
+            fov = Mathf.Lerp(minFOV, oldfov, ADStimer);
             ObstacleCheck(false);
-
+            zOffsetColl = -(Mathf.Clamp(zOffset, 1.0f, hitDistance));
 
         }
 
+        camRoot.transform.localPosition = new Vector3(Mathf.Lerp(0.0f, 0.4f, ADStimer), 0.0f, zOffsetColl);
+        Time.timeScale = Mathf.Lerp(1.0f, 0.3f, ADStimer);
         mainCam.fieldOfView = fov;
-
-
         CameraRotation();
-
-
-
     }
 
     private void CameraRotation()
@@ -128,8 +136,6 @@ public class cameraControler : MonoBehaviour
         Quaternion q2 = camPivot.transform.localRotation;
         q2.eulerAngles = new Vector3(q2.eulerAngles.x, 0, 0);
         camPivot.transform.localRotation = q2;
-
-
     }
 
     private void ClampXaxisRotationToValue(float value)
@@ -143,33 +149,30 @@ public class cameraControler : MonoBehaviour
     {
         Vector3 origin = camPivot.transform.position + camPivot.transform.right * 0.0f + camPivot.transform.up * 0.0f;
         Vector3 direction = -camPivot.transform.forward;
-
         RaycastHit hit;
+
+
         if (Physics.Raycast(origin, direction, out hit, zOffset, obstacleLayers))
         {
-            Debug.DrawRay(origin, direction * hit.distance, Color.yellow);
+            Debug.DrawLine(origin, hit.point, Color.yellow);
             if (ADS == true)
             {
                 aimDistance = hit.distance;
-
             }
             else
             {
                 hitDistance = hit.distance;
-
             }
         }
         else
         {
             if (ADS == true)
             {
-                aimDistance = hit.distance;
-
+                aimDistance = zOffset - 1.0f;
             }
             else
             {
                 hitDistance = zOffset;
-
             }
         }
     }
