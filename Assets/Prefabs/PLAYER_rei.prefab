@@ -398,6 +398,7 @@ GameObject:
   - component: {fileID: 7586884288557811063}
   - component: {fileID: 5188362740243323214}
   - component: {fileID: 7598004138869932468}
+  - component: {fileID: 430895194991160818}
   m_Layer: 0
   m_Name: PLAYER_rei
   m_TagString: Untagged
@@ -453,14 +454,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 6
-  jumpForce: 8
+  sprintSpeedMultipler: 2
+  jumpForce: 20
   gravity: 20
   feetradius: 0.2
   maxFallSpeedWhileGliding: 1
+  staminaCostSprint: 1
+  staminaCostDash: 10
+  staminaCostJump: 30
+  dashDistance: 30
   groundLayer:
     serializedVersion: 2
     m_Bits: 512
   feet: {fileID: 7009827910599101896}
+--- !u!114 &430895194991160818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3792351136253033168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54f01eebcb0c128489746d1de7203b8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  staminaAmount: 100
+  staminaMaxAmount: 30
+  staminaRegenSpeed: 5
 --- !u!1001 &5656074975141361930
 PrefabInstance:
   m_ObjectHideFlags: 0

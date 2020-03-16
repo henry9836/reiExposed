@@ -6,20 +6,29 @@ public class movementController : MonoBehaviour
 {
 
     public float moveSpeed = 10.0f;
+    public float sprintSpeedMultipler = 2.0f;
     public float jumpForce = 10.0f;
     public float gravity = 9.41f;
     public float feetradius = 0.5f;
     public float maxFallSpeedWhileGliding = 10.0f;
+    public float staminaCostSprint = 2.0f;
+    public float staminaCostDash = 30.0f;
+    public float staminaCostJump = 30.0f;
+    public float dashDistance = 10.0f;
     public LayerMask groundLayer;
     public Transform feet;
 
+    private PlayerController pc;
     private CharacterController ch;
-    private bool isOnGround = true;
     private Vector3 moveDir = Vector3.zero;
+    private bool isOnGround = true;
+    private float dashThresholdCeiling = 0.5f;
+    private float dashTimer = 0.0f;
 
     private void Start()
     {
         ch = GetComponent<CharacterController>();
+        pc = GetComponent<PlayerController>();
     }
 
     private void FixedUpdate()
@@ -30,19 +39,8 @@ public class movementController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        //While we are on the ground
-        if (isOnGround)
-        {
-            moveDir = new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical")) * moveSpeed;
-
-            if (Input.GetButton("Jump"))
-            {
-                moveDir.y += jumpForce;
-            }
-        }
         //While we are in the air
-        else
+        if (!isOnGround)
         {
             //Move half speed
             moveDir = new Vector3((Input.GetAxis("Horizontal") * moveSpeed) * 0.5f, moveDir.y, (Input.GetAxis("Vertical") * moveSpeed) * 0.5f);
@@ -57,6 +55,46 @@ public class movementController : MonoBehaviour
                 moveDir.y = Mathf.Clamp((moveDir.y), -maxFallSpeedWhileGliding, 0.0f);
             }
 
+        }
+        //While we are on the ground
+        else
+        {
+            moveDir = new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical")) * moveSpeed;
+
+            if (Input.GetButtonDown("Jump") && pc.CheckStamina() >= staminaCostJump)
+            {
+                moveDir.y += jumpForce;
+                pc.ChangeStamina(-staminaCostJump);
+            }
+        }
+
+        //Dash
+        if (Input.GetButtonDown("Dash"))
+        {
+            //We are moving in a direction
+            if (moveDir != Vector3.zero)
+            {
+                //move more
+                if (pc.CheckStamina() >= staminaCostDash)
+                {
+                    moveDir += new Vector3(moveDir.x * dashDistance, moveDir.y, moveDir.z * dashDistance);
+                    pc.ChangeStamina(-staminaCostDash);
+                }
+            }
+        }
+
+        //Sprint
+        else if (Input.GetButton("Sprint") && isOnGround)
+        {
+            if (moveDir != Vector3.zero)
+            {
+                //move a little more
+                if (pc.CheckStamina() >= staminaCostSprint)
+                {
+                    pc.ChangeStamina(-staminaCostSprint);
+                    moveDir += new Vector3(moveDir.x * sprintSpeedMultipler, moveDir.y, moveDir.z * sprintSpeedMultipler);
+                }
+            }
         }
 
 
