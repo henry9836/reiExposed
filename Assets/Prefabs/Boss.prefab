@@ -12,8 +12,10 @@ GameObject:
   - component: {fileID: 5380428890098312866}
   - component: {fileID: 5380428890098312867}
   - component: {fileID: 5380428890098312868}
+  - component: {fileID: 8617174653453392642}
   - component: {fileID: 5380428890098312869}
   - component: {fileID: 1806637463}
+  - component: {fileID: 1106735070}
   m_Layer: 0
   m_Name: Boss
   m_TagString: Untagged
@@ -95,6 +97,23 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8617174653453392642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5380428890098312870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b41a783caa938a4cb774d72dce2f6ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agent: {fileID: 0}
+  player: {fileID: 0}
+  health: 0
+  maxHealth: 1000
+  attackTriggerRange: []
 --- !u!195 &5380428890098312869
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -129,3 +148,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b41a783caa938a4cb774d72dce2f6ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  agent: {fileID: 0}
+  player: {fileID: 0}
+  health: 0
+  maxHealth: 0
+  attackTriggerRange:
+  - 30
+  - 10
+  - 30
+  - 10
+  - 50
+--- !u!95 &1106735070
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5380428890098312870}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9fcc3f023e1a92840aa5caccfd5901e9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

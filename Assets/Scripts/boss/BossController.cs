@@ -5,21 +5,49 @@ using UnityEngine.AI;
 
 public class BossController : MonoBehaviour
 {
-
-    private GameObject player;
-    private NavMeshAgent agent;
-
-
-    // Start is called before the first frame update
-    void Start()
+    public enum bossAttacks
     {
-        agent = GetComponent<NavMeshAgent>();
-        player = GameObject.FindGameObjectWithTag("Player");
+        CHARGE,
+        MONKEYSLAM,
+        BODYSLAM,
+        SWIPE,
+        FIREBALL
+    };
+
+    [HideInInspector]
+    public NavMeshAgent agent;
+    [HideInInspector]
+    public GameObject player;
+    [HideInInspector]
+    public float neededAttackRange;
+
+
+    public float health;
+    public float maxHealth = 1000.0f;
+    public List<float> attackTriggerRanges = new List<float>();
+    public List<BoxCollider> arms = new List<BoxCollider>();
+
+
+    public void armArms()
+    {
+        for (int i = 0; i < arms.Count; i++)
+        {
+            arms[i].enabled = true;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void disarmArms()
     {
-        agent.SetDestination(player.transform.position);
+        for (int i = 0; i < arms.Count; i++)
+        {
+            arms[i].enabled = false;
+        }
+    }
+
+    private void Start()
+    {
+        health = maxHealth;
+        agent = GetComponent<NavMeshAgent>();
+        player = GameObject.FindGameObjectWithTag("Player");
     }
 }
