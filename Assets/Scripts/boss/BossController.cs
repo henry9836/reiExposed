@@ -30,6 +30,7 @@ public class BossController : MonoBehaviour
 
     public void armArms()
     {
+        GetComponent<AudioSource>().Play();
         for (int i = 0; i < arms.Count; i++)
         {
             arms[i].enabled = true;
