@@ -14,7 +14,7 @@ public class cameraControler : MonoBehaviour
     [SerializeField] private float lerpSpeed = 12f;
     public AnimationCurve distCurve;
     public AnimationCurve FOVCurve;
-    private float pitchValue, pitchValueAdj, zOffset, hitDistance;
+    public float pitchValueAdj, zOffset, hitDistance;
     public float maxDistance = 5f;
     public float maxPitchDown = 60f;
     public float maxPitchUp = 50f;
@@ -28,15 +28,19 @@ public class cameraControler : MonoBehaviour
     public float aimFOV = 55f;
     public float aimDistance = 3f;
     private float fovLerp, zOffsetLerp;
+    private Vector3 startCam;
+    private Vector3 aimcam;
+    private float ADStimer = 0.0f;
 
     private void Awake()
     {
-        //player = GetComponent<PlayerController>();
-
         Cursor.lockState = CursorLockMode.Locked;
         camPivot = transform.GetChild(0).gameObject;
         camRoot = transform.GetChild(0).GetChild(0).gameObject;
         mainCam = transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Camera>();
+
+        startCam = transform.localPosition;
+        aimcam = startCam + new Vector3(0.4f, 0.1f, 0.0f);
 
         // Ensure rotations never get offset what they are supposed to be
         transform.rotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
@@ -50,39 +54,52 @@ public class cameraControler : MonoBehaviour
         if (Input.GetAxis("Fire2") > 0.5f)
         {
             isAiming = true;
-            fov = Mathf.Lerp(mainCam.fieldOfView, aimFOV, Time.smoothDeltaTime * lerpSpeed);
+            ADStimer = Mathf.Clamp((ADStimer += Time.unscaledDeltaTime * lerpSpeed), 0.0f, 1.0f);
+            
+            fov = Mathf.Lerp(mainCam.fieldOfView, aimFOV, ADStimer);
+            //transform.localPosition = Vector3.Lerp(startCam, aimcam, ADStimer);
+
+            //float zOffsetAim = isAiming ? aimDistance : zOffsetColl;
+            pitchValueAdj = Mathf.DeltaAngle(camPivot.transform.localRotation.eulerAngles.x, 360.0f - maxPitchUp) / -(maxPitchUp + maxPitchDown);
+            zOffset = Mathf.Lerp(2.0f, maxDistance, distCurve.Evaluate(pitchValueAdj));
+            float zOffsetColl = Mathf.Clamp(zOffset, 1.0f, aimDistance);
+            camRoot.transform.localPosition = new Vector3(camRoot.transform.localPosition.x, camRoot.transform.localPosition.y, -aimDistance);
+            ObstacleCheck(true);
+
+
         }
         else
         {
+            ADStimer = Mathf.Clamp((ADStimer -= Time.unscaledDeltaTime * lerpSpeed), 0.0f, 1.0f);
+            //transform.localPosition = Vector3.Lerp(startCam, aimcam, ADStimer);
+
+
             fov = Mathf.Lerp(minFOV, maxFOV, FOVCurve.Evaluate(1 - pitchValueAdj));
             isAiming = false;
+
+            pitchValueAdj = Mathf.DeltaAngle(camPivot.transform.localRotation.eulerAngles.x, 360.0f - maxPitchUp) / -(maxPitchUp + maxPitchDown);
+            zOffset = Mathf.Lerp(2.0f, maxDistance, distCurve.Evaluate(pitchValueAdj));
+            float zOffsetColl = Mathf.Clamp(zOffset, 1.0f, hitDistance);
+            //zOffsetLerp = Mathf.Lerp(zOffsetLerp, zOffsetAim, Time.unscaledDeltaTime * lerpSpeed);
+            camRoot.transform.localPosition = new Vector3(camRoot.transform.localPosition.x, camRoot.transform.localPosition.y, -zOffsetColl);
+            ObstacleCheck(false);
+
+
         }
 
         mainCam.fieldOfView = fov;
 
 
         CameraRotation();
-        ObstacleCheck();
-
-        // Calculate vertical rotation value (0-1 float) where 0 is pitch up and 1 is pitch down
-        Vector3 eRot = camPivot.transform.localRotation.eulerAngles;
-        pitchValue = Mathf.DeltaAngle(eRot.x, 270f) / -180f;
-        pitchValueAdj = Mathf.DeltaAngle(eRot.x, 360f - maxPitchUp) / -(maxPitchUp + maxPitchDown);
-        pitchValue = Mathf.Clamp(pitchValue, 0.0f, 1.0f);
 
 
-        zOffset = Mathf.Lerp(2f, maxDistance, distCurve.Evaluate(pitchValueAdj));
-        float zOffsetColl = Mathf.Clamp(zOffset, 1f, hitDistance);
-        //float zOffsetAim = isAiming ? aimDistance : zOffsetColl;
-        //zOffsetLerp = Mathf.Lerp(zOffsetLerp, zOffsetAim, Time.smoothDeltaTime * lerpSpeed);
-        camRoot.transform.localPosition = new Vector3(camRoot.transform.localPosition.x, camRoot.transform.localPosition.y, -zOffsetColl);
 
     }
 
     private void CameraRotation()
     {
-        float mouseX = Mathf.Clamp(Input.GetAxisRaw(mouseXInputName) * mouseSensitivity * Time.smoothDeltaTime, -50f, 50f);
-        float mouseY = Mathf.Clamp(Input.GetAxisRaw(mouseYInputName) * mouseSensitivity * Time.smoothDeltaTime, -50f, 50f);
+        float mouseX = Mathf.Clamp(Input.GetAxisRaw(mouseXInputName) * mouseSensitivity * Time.unscaledDeltaTime, -50f, 50f);
+        float mouseY = Mathf.Clamp(Input.GetAxisRaw(mouseYInputName) * mouseSensitivity * Time.unscaledDeltaTime, -50f, 50f);
 
         // Clamp and smooth vertical rotation
         xAxisRot += mouseY;
@@ -118,11 +135,11 @@ public class cameraControler : MonoBehaviour
     private void ClampXaxisRotationToValue(float value)
     {
         Vector3 eulerRotation = camPivot.transform.eulerAngles;
-        eulerRotation.x = Mathf.Lerp(eulerRotation.x, value, Time.smoothDeltaTime * lerpSpeed);
+        eulerRotation.x = Mathf.Lerp(eulerRotation.x, value, Time.unscaledDeltaTime * lerpSpeed);
         camPivot.transform.eulerAngles = eulerRotation;
     }
 
-    private void ObstacleCheck()
+    private void ObstacleCheck(bool ADS)
     {
         Vector3 origin = camPivot.transform.position + camPivot.transform.right * 0.0f + camPivot.transform.up * 0.0f;
         Vector3 direction = -camPivot.transform.forward;
@@ -131,11 +148,29 @@ public class cameraControler : MonoBehaviour
         if (Physics.Raycast(origin, direction, out hit, zOffset, obstacleLayers))
         {
             Debug.DrawRay(origin, direction * hit.distance, Color.yellow);
-            hitDistance = hit.distance;
+            if (ADS == true)
+            {
+                aimDistance = hit.distance;
+
+            }
+            else
+            {
+                hitDistance = hit.distance;
+
+            }
         }
         else
         {
-            hitDistance = zOffset;
+            if (ADS == true)
+            {
+                aimDistance = hit.distance;
+
+            }
+            else
+            {
+                hitDistance = zOffset;
+
+            }
         }
     }
 }
