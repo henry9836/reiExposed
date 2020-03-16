@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class cameraControler : MonoBehaviour
 {
@@ -27,33 +28,38 @@ public class cameraControler : MonoBehaviour
     private bool isAiming;
     public float aimFOV = 55f;
     public float aimDistance = 3f;
+
     private float fovLerp, zOffsetLerp;
-    private Vector3 startCam;
-    private Vector3 aimcam;
-    public float ADStimer = 0.0f;
+    private float ADStimer = 0.0f;
     private float zOffsetColl;
     private float oldfov;
     private bool FOVonce = true;
 
-    
+    private bool cooldownlock;
+    private GameObject umbrella;
+    private float fov;
+
+    public GameObject crosshair;
+
+
+
     private void Awake()
     {
+        umbrella = GameObject.Find("umbrella ella ella");
         Cursor.lockState = CursorLockMode.Locked;
         camPivot = transform.GetChild(0).gameObject;
         camRoot = transform.GetChild(0).GetChild(0).gameObject;
         mainCam = transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Camera>();
-
-        startCam = transform.localPosition;
-        aimcam = startCam + new Vector3(0.4f, 0.1f, 0.0f);
     }
 
     void Update()
     {
-        float fov; 
+        cooldownlock = umbrella.GetComponent<umbrella>().cooldown;
+
         pitchValueAdj = Mathf.DeltaAngle(camPivot.transform.localRotation.eulerAngles.x, 360.0f - maxPitchUp) / -(maxPitchUp + maxPitchDown);
         zOffset = Mathf.Lerp(2.0f, maxDistance, distCurve.Evaluate(pitchValueAdj));
 
-        if (Input.GetAxis("Fire2") > 0.5f)
+        if ((Input.GetAxis("Fire2") > 0.5f) && (cooldownlock == false))
         {
             if (FOVonce == true)
             {
@@ -97,7 +103,7 @@ public class cameraControler : MonoBehaviour
             zOffsetColl = -(Mathf.Clamp(zOffset, 1.0f, hitDistance));
 
         }
-
+        crosshair.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, ADStimer);
         camRoot.transform.localPosition = new Vector3(Mathf.Lerp(0.0f, 0.4f, ADStimer), 0.0f, zOffsetColl);
         Time.timeScale = Mathf.Lerp(1.0f, 0.3f, ADStimer);
         mainCam.fieldOfView = fov;
