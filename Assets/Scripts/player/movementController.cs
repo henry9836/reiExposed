@@ -48,18 +48,19 @@ public class movementController : MonoBehaviour
         if (!isOnGround)
         {
             //Move half speed
-            moveDir = charcterModel.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed));
-            moveDir += charcterModel.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed));
-            moveDir *= 0.5f;
+            moveDir = new Vector3(0.0f, moveDir.y, 0.0f);
+            moveDir += (charcterModel.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed))) * 0.5f;
+            moveDir += (charcterModel.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed))) * 0.5f;
+
             //Apply Gravity
             moveDir.y -= gravity * Time.deltaTime;
 
             //Glide if falling and holding jump
             if (Input.GetButton("Jump") && (moveDir.y < 0))
             {
-                Debug.Log("Trigger Glide");
                 moveDir.y = Mathf.Clamp((moveDir.y), -maxFallSpeedWhileGliding, 0.0f);
             }
+
 
         }
         //While we are on the ground
@@ -68,7 +69,7 @@ public class movementController : MonoBehaviour
             moveDir = charcterModel.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed));
             moveDir += charcterModel.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed));
 
-            if (Input.GetButtonDown("Jump") && pc.CheckStamina() >= staminaCostJump)
+            if (Input.GetButton("Jump") && pc.CheckStamina() >= staminaCostJump)
             {
                 moveDir.y += jumpForce;
                 pc.ChangeStamina(-staminaCostJump);
