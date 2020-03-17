@@ -42,7 +42,7 @@ public class seekBoss : StateMachineBehaviour
             agent.ResetPath();
             agent.isStopped = false;
 
-            animator.SetTrigger("Swipe");
+            animator.SetTrigger("Slam");
 
             switch (attack)
             {

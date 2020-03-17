@@ -5,16 +5,24 @@ using UnityEngine;
 public class swipeBoss : StateMachineBehaviour
 {
 
-    //OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
-    override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
+    public Vector2 damageWindow = new Vector2(0.0f, 1.0f);
 
-    }
+    private bool armed = false;
 
     //OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
 
+        if (damageWindow.y > stateInfo.normalizedTime && stateInfo.normalizedTime > damageWindow.x && !armed)
+        {
+            animator.gameObject.GetComponent<BossController>().armArms();
+            armed = true;
+        }
+        else if (armed && damageWindow.y < stateInfo.normalizedTime)
+        {
+            animator.gameObject.GetComponent<BossController>().disarmArms();
+            armed = false;
+        }
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state

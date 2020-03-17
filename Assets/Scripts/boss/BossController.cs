@@ -50,5 +50,13 @@ public class BossController : MonoBehaviour
         health = maxHealth;
         agent = GetComponent<NavMeshAgent>();
         player = GameObject.FindGameObjectWithTag("Player");
+
+        for (int i = 0; i < arms.Count; i++)
+        {
+            arms[i].gameObject.AddComponent<hitSurfaceController>();
+        }
+
+        armArms();
+
     }
 }

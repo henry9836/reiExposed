@@ -36,7 +36,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Swipe
+  m_Name: Slam
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -158,7 +158,7 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: Swipe
+  - m_Name: Slam
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -186,7 +186,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: Swipe
+    m_ConditionEvent: Slam
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -6231181059570717290}
@@ -274,6 +274,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1f0d2e7ab9c0de469926a286581e928, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageWindow: {x: 0, y: 1}
 --- !u!114 &8153056608902439055
 MonoBehaviour:
   m_ObjectHideFlags: 1
