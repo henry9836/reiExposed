@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ghostEffect : MonoBehaviour
 {
@@ -10,6 +11,13 @@ public class ghostEffect : MonoBehaviour
     public List<GameObject> body = new List<GameObject>() { };
     public List<Mesh> meshes = new List<Mesh>() { };
     public List<GameObject> ghostbody = new List<GameObject>() { };
+    public List<GameObject> deactivatedghostbody = new List<GameObject>() { };
+
+
+    public GameObject UIghost;
+    public GameObject UIHP;
+
+
 
 
 
@@ -49,13 +57,32 @@ public class ghostEffect : MonoBehaviour
             body[i].GetComponent<SkinnedMeshRenderer>().sharedMesh = null;
 
         }
+    }
+
+    void Update()
+    {
+        UIghost.GetComponent<Image>().fillAmount = 1.0f - ((float)deactivatedghostbody.Count / (float)ghostbody.Count);
+        UIHP.GetComponent<Image>().fillAmount = (this.gameObject.transform.GetComponent<BossController>().health / this.gameObject.transform.GetComponent<BossController>().maxHealth);
 
 
 
+        if ((float)deactivatedghostbody.Count / (float)ghostbody.Count > 0.92f && (float)deactivatedghostbody.Count / (float)ghostbody.Count < 0.99999999f)
+        {
+            finish();
+            Debug.Log("complete");
+        }
+    }
 
-        //tmp.GetComponent<ParticleSystem>().shape.mesh = theMesh;
-
-
+    void finish()
+    {
+        for (int i = 0; i < ghostbody.Count; i++)
+        {
+            if (ghostbody[i].GetComponent<ParticleSystem>())
+            {
+                body[i].GetComponent<SkinnedMeshRenderer>().sharedMesh = meshes[i];
+                Destroy(ghostbody[i].GetComponent<ParticleSystem>());
+            }
+        }
     }
 
 }
