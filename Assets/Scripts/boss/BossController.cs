@@ -63,8 +63,6 @@ public class BossController : MonoBehaviour
             arms[i].gameObject.AddComponent<hitSurfaceController>();
         }
 
-        armArms();
-
         if (trackPlayer)
         {
             agent.angularSpeed = 0.0f;
