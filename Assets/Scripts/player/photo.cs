@@ -62,7 +62,12 @@ public class photo : MonoBehaviour
 
     void remove(int i)
     {
-        enemy.GetComponent<ghostEffect>().body[i].GetComponent<SkinnedMeshRenderer>().sharedMesh = enemy.GetComponent<ghostEffect>().meshes[i];
-        Destroy(enemy.GetComponent<ghostEffect>().ghostbody[i].GetComponent<ParticleSystem>());
+        if (enemy.GetComponent<ghostEffect>().ghostbody[i].GetComponent<ParticleSystem>())
+        {
+            enemy.GetComponent<ghostEffect>().deactivatedghostbody.Add(enemy.GetComponent<ghostEffect>().ghostbody[i]);
+            enemy.GetComponent<ghostEffect>().body[i].GetComponent<SkinnedMeshRenderer>().sharedMesh = enemy.GetComponent<ghostEffect>().meshes[i];
+            Destroy(enemy.GetComponent<ghostEffect>().ghostbody[i].GetComponent<ParticleSystem>());
+        }
+
     }
 }
