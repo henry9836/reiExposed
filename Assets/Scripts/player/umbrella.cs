@@ -67,10 +67,8 @@ public class umbrella : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, Mathf.Infinity, ball))
         {
-            Debug.Log(hit.collider.gameObject.layer);
             this.gameObject.transform.LookAt(hit.point);
             Debug.DrawLine(hit.point, cam.transform.position);
-
         }
 
 
