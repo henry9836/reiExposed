@@ -41,6 +41,8 @@ public class BossController : MonoBehaviour
     public float turnSpeed = 0.1f;
     public float health;
     public float maxHealth = 1000.0f;
+    [Range(0.0f, 1.0f)]
+    public float angleThresholdBeforeMoving = 0.95f;
     public List<float> attackTriggerRanges = new List<float>();
     public List<BoxCollider> leftArms = new List<BoxCollider>();
     public List<BoxCollider> rightArms = new List<BoxCollider>();
@@ -187,18 +189,25 @@ public class BossController : MonoBehaviour
 
     }
 
+    public bool isBossLookingAtPlayer(float thresholdAngle)
+    {
+        Vector3 dir = (player.transform.position - transform.position).normalized;
+
+        //If we are we need to turn to face player stop agent so we don't tokyo drift
+        float dotProd = Vector3.Dot(dir, transform.forward);
+
+        return dotProd > thresholdAngle;
+    }
+
     private void Update()
     {
         if (trackPlayer && !animationOverride)
         {
             Vector3 dir = (player.transform.position - transform.position).normalized;
             Quaternion endRot = Quaternion.LookRotation(dir, transform.up);
+            
 
-            //If we are we need to turn to face player stop agent so we don't tokyo drift
-            float dotProd = Vector3.Dot(dir, transform.forward);
-            float thresholdAngle = 0.95f;
-
-            if (dotProd > thresholdAngle)
+            if (isBossLookingAtPlayer(angleThresholdBeforeMoving))
             {
                 agent.isStopped = false;
             }
