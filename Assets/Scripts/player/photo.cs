@@ -9,6 +9,14 @@ public class photo : MonoBehaviour
 
     public List<int> toremove = new List<int>() {};
 
+    private void Start()
+    {
+        if (!enemy)
+        {
+            GameObject.FindGameObjectWithTag("Boss");
+        }
+    }
+
     void Update()
     {
         if (Input.GetButtonDown("TakePhoto"))
