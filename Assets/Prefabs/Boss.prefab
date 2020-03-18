@@ -553,9 +553,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3206896935409844835}
+  - component: {fileID: 8294473166298120690}
   m_Layer: 0
   m_Name: Base HumanRFoot
-  m_TagString: Untagged
+  m_TagString: BossAttackSurface
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -575,6 +576,19 @@ Transform:
   m_Father: {fileID: 3035360945538398508}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &8294473166298120690
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 528610632726441749}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.9708767, y: 0.34096512, z: 0.54397553}
+  m_Center: {x: -0.38438877, y: -0.018212328, z: -0.041061006}
 --- !u!1 &615739515402316682
 GameObject:
   m_ObjectHideFlags: 0
@@ -781,9 +795,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5970823879442070882}
+  - component: {fileID: 2497518645345367012}
   m_Layer: 0
   m_Name: Base HumanLCalf
-  m_TagString: Untagged
+  m_TagString: BossAttackSurface
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -803,6 +818,19 @@ Transform:
   m_Father: {fileID: 6764213628987253110}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &2497518645345367012
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 870851400895212057}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.309906, y: 0.61818004, z: 0.54421884}
+  m_Center: {x: -0.42170873, y: 0.0043491907, z: 0.007102786}
 --- !u!1 &880001458441808026
 GameObject:
   m_ObjectHideFlags: 0
@@ -1645,9 +1673,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6550128081290939102}
+  - component: {fileID: 5821733845782405265}
   m_Layer: 0
   m_Name: Base HumanRThigh
-  m_TagString: Untagged
+  m_TagString: BossAttackSurface
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1667,6 +1696,19 @@ Transform:
   m_Father: {fileID: 2731781220660051762}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &5821733845782405265
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1900876080225960125}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.6239109, y: 0.90958107, z: 0.88774216}
+  m_Center: {x: -0.7115039, y: -0.0013876614, z: 0.014446499}
 --- !u!1 &1906051659991615134
 GameObject:
   m_ObjectHideFlags: 0
@@ -2484,9 +2526,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3056340613350909153}
+  - component: {fileID: 178061779765216449}
   m_Layer: 0
   m_Name: Base HumanSpine3
-  m_TagString: Untagged
+  m_TagString: BossAttackSurface
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2506,6 +2549,19 @@ Transform:
   m_Father: {fileID: 337032932047821069}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &178061779765216449
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2482672847721016057}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.2350936, y: 1.1329005, z: 1.9773855}
+  m_Center: {x: -0.11754694, y: -0.045440007, z: -0.052218948}
 --- !u!1 &2491549555030471570
 GameObject:
   m_ObjectHideFlags: 0
@@ -4213,13 +4269,11 @@ MonoBehaviour:
   - 2
   - 2
   - 2
-  arms:
-  - {fileID: 5908080580743123639}
-  - {fileID: 2137442354831516383}
-  - {fileID: 1336296894018733176}
-  - {fileID: 3106925716794324215}
-  - {fileID: 8583455098983898487}
-  - {fileID: 2564162097755425246}
+  leftArms: []
+  rightArms: []
+  leftLegs: []
+  rightLegs: []
+  otherBody: []
 --- !u!195 &4783344075271442393
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -6123,9 +6177,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3035360945538398508}
+  - component: {fileID: 2978774644961647960}
   m_Layer: 0
   m_Name: Base HumanRCalf
-  m_TagString: Untagged
+  m_TagString: BossAttackSurface
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6145,6 +6200,19 @@ Transform:
   m_Father: {fileID: 6550128081290939102}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &2978774644961647960
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4897345628374481469}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.2346208, y: 0.6192805, z: 0.5484021}
+  m_Center: {x: -0.43890104, y: -0.01379324, z: -0.04783175}
 --- !u!1 &4917350974859303100
 GameObject:
   m_ObjectHideFlags: 0
@@ -7091,9 +7159,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6764213628987253110}
+  - component: {fileID: 1481636685960516210}
   m_Layer: 0
   m_Name: Base HumanLThigh
-  m_TagString: Untagged
+  m_TagString: BossAttackSurface
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7113,6 +7182,19 @@ Transform:
   m_Father: {fileID: 2731781220660051762}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1481636685960516210
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5898287914489019953}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.6461754, y: 0.88318664, z: 0.96528035}
+  m_Center: {x: -0.7068817, y: -0.021907968, z: 0.01735928}
 --- !u!1 &5899068059791609166
 GameObject:
   m_ObjectHideFlags: 0
@@ -8037,9 +8119,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4780809332742421242}
+  - component: {fileID: 3265012311675137724}
   m_Layer: 0
   m_Name: Base HumanLFoot
-  m_TagString: Untagged
+  m_TagString: BossAttackSurface
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8059,6 +8142,19 @@ Transform:
   m_Father: {fileID: 5970823879442070882}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &3265012311675137724
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6710381072068602034}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.98699296, y: 0.532071, z: 0.53567827}
+  m_Center: {x: -0.36914328, y: -0.01846299, z: 0.010988257}
 --- !u!1 &6749228854342960810
 GameObject:
   m_ObjectHideFlags: 0
@@ -8590,9 +8686,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4931085916883604521}
+  - component: {fileID: 5991253747047968519}
   m_Layer: 0
   m_Name: Base HumanSpine1
-  m_TagString: Untagged
+  m_TagString: BossAttackSurface
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8612,6 +8709,19 @@ Transform:
   m_Father: {fileID: 2731781220660051762}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &5991253747047968519
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7462314429364851117}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 0.6881166, z: 1.3964386}
+  m_Center: {x: 0.000000005474168, y: 0.058191974, z: -0.081504814}
 --- !u!1 &7555590747943169399
 GameObject:
   m_ObjectHideFlags: 0
@@ -8621,9 +8731,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 337032932047821069}
+  - component: {fileID: 995263759219383558}
   m_Layer: 0
   m_Name: Base HumanSpine2
-  m_TagString: Untagged
+  m_TagString: BossAttackSurface
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8643,6 +8754,19 @@ Transform:
   m_Father: {fileID: 4931085916883604521}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &995263759219383558
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7555590747943169399}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.3746935, y: 1.0820619, z: 1.5774609}
+  m_Center: {x: -0.0039168564, y: -0.04103115, z: -0.09785171}
 --- !u!1 &7591263789532437995
 GameObject:
   m_ObjectHideFlags: 0

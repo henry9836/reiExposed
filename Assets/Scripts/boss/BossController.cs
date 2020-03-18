@@ -14,6 +14,18 @@ public class BossController : MonoBehaviour
         FIREBALL
     };
 
+    public enum ARMTYPE
+    {
+        ARM_LEFT_ARMS,
+        ARM_RIGHT_ARMS,
+        ARM_ARMS,
+        ARM_BODY,
+        ARM_LEFT_LEG,
+        ARM_RIGHT_LEG,
+        ARM_LEGS,
+        ARM_ALL
+    };
+
     [HideInInspector]
     public NavMeshAgent agent;
     [HideInInspector]
@@ -27,23 +39,108 @@ public class BossController : MonoBehaviour
     public float health;
     public float maxHealth = 1000.0f;
     public List<float> attackTriggerRanges = new List<float>();
-    public List<BoxCollider> arms = new List<BoxCollider>();
+    public List<BoxCollider> leftArms = new List<BoxCollider>();
+    public List<BoxCollider> rightArms = new List<BoxCollider>();
+    public List<BoxCollider> leftLegs = new List<BoxCollider>();
+    public List<BoxCollider> rightLegs = new List<BoxCollider>();
+    public List<BoxCollider> otherBody = new List<BoxCollider>();
 
-
-    public void armArms()
+    public void arm(ARMTYPE type, bool arm)
     {
-        GetComponent<AudioSource>().Play();
-        for (int i = 0; i < arms.Count; i++)
+        switch (type)
         {
-            arms[i].enabled = true;
-        }
-    }
-
-    public void disarmArms()
-    {
-        for (int i = 0; i < arms.Count; i++)
-        {
-            arms[i].enabled = false;
+            case ARMTYPE.ARM_LEFT_ARMS:
+                {
+                    for (int i = 0; i < leftArms.Count; i++)
+                    {
+                        leftArms[i].enabled = arm;
+                    }
+                    break;
+                }
+            case ARMTYPE.ARM_RIGHT_ARMS:
+                {
+                    for (int i = 0; i < rightArms.Count; i++)
+                    {
+                        rightArms[i].enabled = arm;
+                    }
+                    break;
+                }
+            case ARMTYPE.ARM_ARMS:
+                {
+                    for (int i = 0; i < leftArms.Count; i++)
+                    {
+                        leftArms[i].enabled = arm;
+                    }
+                    for (int i = 0; i < rightArms.Count; i++)
+                    {
+                        rightArms[i].enabled = arm;
+                    }
+                    break;
+                }
+            case ARMTYPE.ARM_BODY:
+                {
+                    for (int i = 0; i < otherBody.Count; i++)
+                    {
+                        otherBody[i].enabled = arm;
+                    }
+                    break;
+                }
+            case ARMTYPE.ARM_LEFT_LEG:
+                {
+                    for (int i = 0; i < leftLegs.Count; i++)
+                    {
+                        leftLegs[i].enabled = arm;
+                    }
+                    break;
+                }
+            case ARMTYPE.ARM_RIGHT_LEG:
+                {
+                    for (int i = 0; i < rightLegs.Count; i++)
+                    {
+                        rightLegs[i].enabled = arm;
+                    }
+                    break;
+                }
+            case ARMTYPE.ARM_LEGS:
+                {
+                    for (int i = 0; i < leftLegs.Count; i++)
+                    {
+                        leftLegs[i].enabled = arm;
+                    }
+                    for (int i = 0; i < rightLegs.Count; i++)
+                    {
+                        rightLegs[i].enabled = arm;
+                    }
+                    break;
+                }
+            case ARMTYPE.ARM_ALL:
+                {
+                    for (int i = 0; i < leftArms.Count; i++)
+                    {
+                        leftArms[i].enabled = arm;
+                    }
+                    for (int i = 0; i < rightArms.Count; i++)
+                    {
+                        rightArms[i].enabled = arm;
+                    }
+                    for (int i = 0; i < otherBody.Count; i++)
+                    {
+                        otherBody[i].enabled = arm;
+                    }
+                    for (int i = 0; i < leftLegs.Count; i++)
+                    {
+                        leftLegs[i].enabled = arm;
+                    }
+                    for (int i = 0; i < rightLegs.Count; i++)
+                    {
+                        rightLegs[i].enabled = arm;
+                    }
+                    break;
+                }
+            default:
+                {
+                    break;
+                }
         }
     }
 
@@ -58,22 +155,12 @@ public class BossController : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         player = GameObject.FindGameObjectWithTag("Player");
 
-        for (int i = 0; i < arms.Count; i++)
-        {
-            arms[i].gameObject.AddComponent<hitSurfaceController>();
-        }
-
         if (trackPlayer)
         {
             agent.angularSpeed = 0.0f;
         }
 
         turnSpeed /= 1000.0f;
-
-        if (arms.Count <= 0)
-        {
-            Debug.LogWarning("Boss Arm Count is 0");
-        }
 
     }
 
