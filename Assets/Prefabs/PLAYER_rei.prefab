@@ -149,6 +149,8 @@ MonoBehaviour:
   ball:
     serializedVersion: 2
     m_Bits: 1024
+  damagedText: {fileID: 7401280080073061358, guid: febedf0338a1da8438f0280ae306b1d0,
+    type: 3}
 --- !u!1 &1316953541
 GameObject:
   m_ObjectHideFlags: 0
@@ -722,6 +724,7 @@ GameObject:
   - component: {fileID: 5188362740243323214}
   - component: {fileID: 7598004138869932468}
   - component: {fileID: 430895194991160818}
+  - component: {fileID: 1004456288904568089}
   m_Layer: 0
   m_Name: PLAYER_rei
   m_TagString: Player
@@ -757,13 +760,13 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 2
-  m_Radius: 0.5
+  m_Height: 1.9
+  m_Radius: 0.45
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 1, z: 0}
+  m_Center: {x: 0, y: 0.95, z: 0}
 --- !u!114 &7598004138869932468
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -809,6 +812,20 @@ MonoBehaviour:
   staminaAmount: 100
   staminaMaxAmount: 100
   staminaRegenSpeed: 5
+--- !u!136 &1004456288904568089
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3792351136253033168}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.95, z: 0}
 --- !u!1001 &5656074975141361930
 PrefabInstance:
   m_ObjectHideFlags: 0

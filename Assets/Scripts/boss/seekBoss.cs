@@ -6,11 +6,30 @@ using UnityEngine.AI;
 public class seekBoss : StateMachineBehaviour
 {
 
+    public float attackAimTimeout = 3.0f;
+
     float needAttackRange = 10.0f;
+    float attackAimTimeoutTimer = 0.0f;
     BossController bc;
     GameObject player;
     NavMeshAgent agent;
     BossController.bossAttacks attack;
+
+
+
+    void PickAttack()
+    {
+        //Pick a random attack
+        attack = (BossController.bossAttacks)Random.Range(0, (int)BossController.bossAttacks.FIREBALL + 1);
+
+        //Query attack range from boss controller
+        bc.neededAttackRange = bc.attackTriggerRanges[(int)attack];
+        needAttackRange = bc.neededAttackRange;
+        bc.animationOverrideFunc(false);
+
+        attackAimTimeoutTimer = 0.0f;
+    }
+
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -21,12 +40,9 @@ public class seekBoss : StateMachineBehaviour
             player = bc.player;
             agent = bc.agent;
         }
-        //Pick a random attack
-        attack = (BossController.bossAttacks)Random.Range(0, (int)BossController.bossAttacks.FIREBALL + 1);
 
-        //Query attack range from boss controller
-        bc.neededAttackRange = bc.attackTriggerRanges[(int)attack];
-        needAttackRange = bc.neededAttackRange;
+        PickAttack();
+
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -38,32 +54,48 @@ public class seekBoss : StateMachineBehaviour
         //If we are close enough to the player stop and attack
         if (Vector3.Distance(player.transform.position, animator.gameObject.transform.position) <= needAttackRange)
         {
+
+
             agent.isStopped = true;
             agent.ResetPath();
             agent.isStopped = false;
-
-            animator.SetTrigger("Slam");
+            
 
             switch (attack)
             {
                 case BossController.bossAttacks.BODYSLAM:
                     {
+                        //Are we looking at player?
+                        if (bc.isBossLookingAtPlayer(bc.angleThresholdBeforeMoving))
+                        {
+                            animator.SetTrigger("BodySlam");
+                        }
                         break;
                     }
                 case BossController.bossAttacks.CHARGE:
                     {
+                        //Are we looking at player?
+                        if (bc.isBossLookingAtPlayer(bc.angleThresholdBeforeMoving)) {
+                            animator.SetBool("Charging", true);
+                        }
                         break;
                     }
                 case BossController.bossAttacks.FIREBALL:
                     {
+                        if (bc.isBossLookingAtPlayer(bc.angleThresholdBeforeMoving))
+                        {
+                            animator.SetTrigger("Fireball");
+                        }
                         break;
                     }
                 case BossController.bossAttacks.MONKEYSLAM:
                     {
+                        animator.SetTrigger("Slam");
                         break;
                     }
                 case BossController.bossAttacks.SWIPE:
                     {
+                        animator.SetTrigger("3Hit");
                         break;
                     }
                 default:
@@ -72,11 +104,17 @@ public class seekBoss : StateMachineBehaviour
                         break;
                     }
             }
+            
 
-            Debug.Log("KILL KILL KILL");
         }
 
-        Debug.Log("Seek Tick");
+        attackAimTimeoutTimer += Time.deltaTime;
+
+        if (attackAimTimeoutTimer > attackAimTimeout)
+        {
+            PickAttack();
+        }
+
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state

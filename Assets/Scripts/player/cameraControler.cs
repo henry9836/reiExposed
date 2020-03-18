@@ -40,7 +40,7 @@ public class cameraControler : MonoBehaviour
     private float fov;
 
     public GameObject crosshair;
-
+    private GameObject pausemenu;
 
 
     private void Awake()
@@ -50,6 +50,7 @@ public class cameraControler : MonoBehaviour
         camPivot = transform.GetChild(0).gameObject;
         camRoot = transform.GetChild(0).GetChild(0).gameObject;
         mainCam = transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Camera>();
+        pausemenu = GameObject.Find("pauseMenu");
     }
 
     void Update()
@@ -105,7 +106,10 @@ public class cameraControler : MonoBehaviour
         }
         crosshair.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, ADStimer);
         camRoot.transform.localPosition = new Vector3(Mathf.Lerp(0.0f, 0.4f, ADStimer), 0.0f, zOffsetColl);
-        Time.timeScale = Mathf.Lerp(1.0f, 0.3f, ADStimer);
+        if (pausemenu.GetComponent<pauseMenu>().paused == false)
+        {
+            Time.timeScale = Mathf.Lerp(1.0f, 0.3f, ADStimer);
+        }
         mainCam.fieldOfView = fov;
         CameraRotation();
     }
