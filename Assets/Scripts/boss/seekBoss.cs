@@ -43,8 +43,8 @@ public class seekBoss : StateMachineBehaviour
             agent.ResetPath();
             agent.isStopped = false;
 
-            animator.SetTrigger("Slam");
-
+            animator.SetTrigger("3Hit");
+            /*
             switch (attack)
             {
                 case BossController.bossAttacks.BODYSLAM:
@@ -53,6 +53,8 @@ public class seekBoss : StateMachineBehaviour
                     }
                 case BossController.bossAttacks.CHARGE:
                     {
+                        //Aim at player
+                        animator.SetBool("Charge", true);
                         break;
                     }
                 case BossController.bossAttacks.FIREBALL:
@@ -61,10 +63,12 @@ public class seekBoss : StateMachineBehaviour
                     }
                 case BossController.bossAttacks.MONKEYSLAM:
                     {
+                        animator.SetTrigger("Slam");
                         break;
                     }
                 case BossController.bossAttacks.SWIPE:
                     {
+                        animator.SetTrigger("3Hit");
                         break;
                     }
                 default:
@@ -73,7 +77,7 @@ public class seekBoss : StateMachineBehaviour
                         break;
                     }
             }
-
+            */
         }
 
     }

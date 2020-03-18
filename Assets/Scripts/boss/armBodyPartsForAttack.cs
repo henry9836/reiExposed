@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class swipeBoss : StateMachineBehaviour
+public class armBodyPartsForAttack : StateMachineBehaviour
 {
 
     public Vector2 damageWindow = new Vector2(0.0f, 1.0f);
+    public BossController.ARMTYPE bodyPartsToArm;
+    public float attackDamage = 5.0f;
+    public bool onlyApplyDamageOnce = true;
 
     private bool armed = false;
 
@@ -16,13 +19,13 @@ public class swipeBoss : StateMachineBehaviour
         if (damageWindow.y >= stateInfo.normalizedTime && stateInfo.normalizedTime > damageWindow.x && !armed)
         {
             animator.gameObject.GetComponent<BossController>().animationOverrideFunc(true);
-            animator.gameObject.GetComponent<BossController>().armArms();
+            animator.gameObject.GetComponent<BossController>().arm(bodyPartsToArm, true, attackDamage, onlyApplyDamageOnce);
             armed = true;
         }
         else if (armed && damageWindow.y <= stateInfo.normalizedTime)
         {
             animator.gameObject.GetComponent<BossController>().animationOverrideFunc(false);
-            animator.gameObject.GetComponent<BossController>().disarmArms();
+            animator.gameObject.GetComponent<BossController>().arm(bodyPartsToArm, false, attackDamage, onlyApplyDamageOnce);
             armed = false;
         }
     }
