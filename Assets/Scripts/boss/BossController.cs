@@ -157,6 +157,17 @@ public class BossController : MonoBehaviour
         arm(_type, _arm, 0.0f, true);
     }
 
+    public float QueryDamage()
+    {
+        float result = lastUpdatedAttackDamage;
+
+        if (onlyApplyDamageOnce)
+        {
+            lastUpdatedAttackDamage = 0.0f;
+        }
+
+        return result;
+    }
 
     public void animationOverrideFunc(bool overrideSwitch)
     {
