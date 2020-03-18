@@ -65,6 +65,7 @@ public class seekBoss : StateMachineBehaviour
             {
                 case BossController.bossAttacks.BODYSLAM:
                     {
+                        //Are we looking at player?
                         if (bc.isBossLookingAtPlayer(bc.angleThresholdBeforeMoving))
                         {
                             animator.SetTrigger("BodySlam");
@@ -74,7 +75,6 @@ public class seekBoss : StateMachineBehaviour
                 case BossController.bossAttacks.CHARGE:
                     {
                         //Are we looking at player?
-                        Debug.Log("Charge Chance");
                         if (bc.isBossLookingAtPlayer(bc.angleThresholdBeforeMoving)) {
                             animator.SetBool("Charging", true);
                         }
