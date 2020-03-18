@@ -57,8 +57,8 @@ public class ghostEffect : MonoBehaviour
 
 
             body[i].GetComponent<SkinnedMeshRenderer>().sharedMesh = null;
-
         }
+
     }
 
     void Update()
@@ -82,6 +82,7 @@ public class ghostEffect : MonoBehaviour
         {
             if (ghostbody[i].GetComponent<ParticleSystem>())
             {
+                deactivatedghostbody.Add(ghostbody[i]);
                 body[i].GetComponent<SkinnedMeshRenderer>().sharedMesh = meshes[i];
                 Destroy(ghostbody[i].GetComponent<ParticleSystem>());
             }
