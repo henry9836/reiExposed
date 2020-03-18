@@ -32,6 +32,8 @@ public class BossController : MonoBehaviour
     public GameObject player;
     [HideInInspector]
     public float neededAttackRange;
+    [HideInInspector]
+    public float lastUpdatedAttackDamage = 0.0f;
 
     public bool animationOverride = false;
     public bool trackPlayer = true;
@@ -45,8 +47,12 @@ public class BossController : MonoBehaviour
     public List<BoxCollider> rightLegs = new List<BoxCollider>();
     public List<BoxCollider> otherBody = new List<BoxCollider>();
 
-    public void arm(ARMTYPE type, bool arm)
+    private bool onlyApplyDamageOnce = true;
+
+    public void arm(ARMTYPE type, bool arm, float attackDamage, bool _onlyApplyDamageOnce)
     {
+        lastUpdatedAttackDamage = attackDamage;
+        onlyApplyDamageOnce = _onlyApplyDamageOnce;
         switch (type)
         {
             case ARMTYPE.ARM_LEFT_ARMS:
@@ -143,6 +149,12 @@ public class BossController : MonoBehaviour
                 }
         }
     }
+
+    public void arm(ARMTYPE _type, bool _arm)
+    {
+        arm(_type, _arm, 0.0f, true);
+    }
+
 
     public void animationOverrideFunc(bool overrideSwitch)
     {

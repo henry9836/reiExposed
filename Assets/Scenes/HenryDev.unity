@@ -121,6 +121,12 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 23800000, guid: 6543bebe749b40447a3962c05d154082, type: 2}
+--- !u!1 &66498741 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3548896986463892890, guid: 25e9365c490fee14685a189771f4224e,
+    type: 3}
+  m_PrefabInstance: {fileID: 1375140407}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &182925182
 GameObject:
   m_ObjectHideFlags: 0
@@ -260,8 +266,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.01, y: 0.01, z: 0.009999999}
-  m_Center: {x: 0.004999999, y: 0.005000014, z: -0.004999999}
+  m_Size: {x: 0.010000001, y: 0.5632433, z: 0.009999999}
+  m_Center: {x: 0.0049999994, y: -0.2716217, z: -0.004999999}
 --- !u!1 &1224723454
 GameObject:
   m_ObjectHideFlags: 0
@@ -535,6 +541,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Boss
+      objectReference: {fileID: 0}
+    - target: {fileID: 4783344075271442374, guid: 25e9365c490fee14685a189771f4224e,
+        type: 3}
+      propertyPath: turnSpeed
+      value: 2.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 25e9365c490fee14685a189771f4224e, type: 3}
@@ -852,7 +863,7 @@ PrefabInstance:
         type: 3}
       propertyPath: enemy
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 66498741}
     - target: {fileID: 3792351136253033168, guid: 665d9e6b8575af745bb88a0116e1de10,
         type: 3}
       propertyPath: m_Name
