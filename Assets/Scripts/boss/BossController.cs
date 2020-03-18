@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class BossController : MonoBehaviour
 {
@@ -48,6 +49,7 @@ public class BossController : MonoBehaviour
     public List<BoxCollider> otherBody = new List<BoxCollider>();
 
     private bool onlyApplyDamageOnce = true;
+    private bool deathonce = true;
 
     public void arm(ARMTYPE type, bool arm, float attackDamage, bool _onlyApplyDamageOnce)
     {
@@ -199,6 +201,16 @@ public class BossController : MonoBehaviour
             transform.rotation = Quaternion.RotateTowards(transform.rotation, endRot, turnSpeed * Time.deltaTime);
 
         }
+
+        if (deathonce == true)
+        {
+            if (health <= 0.0f)
+            {
+                deathonce = false;
+                death();
+            }
+        }
+
     }
 
     public float IBeanShot(float damage)
@@ -220,12 +232,20 @@ public class BossController : MonoBehaviour
             delt = startHealth - health;
             Debug.Log("not full damage");
         }
-        else 
+        else
         {
             delt = 0.0f;
             Debug.Log("no damage");
         }
 
         return (delt);
+    }
+
+    void death()
+    {
+        this.gameObject.GetComponent<ghostEffect>().UIHP.GetComponent<Image>().fillAmount = 0.0f;
+        Destroy(this.gameObject);
+
+
     }
 }
