@@ -17,6 +17,8 @@ public class ghostEffect : MonoBehaviour
     public GameObject UIghost;
     public GameObject UIHP;
 
+    public float ghostpersent;
+
 
 
 
@@ -55,13 +57,14 @@ public class ghostEffect : MonoBehaviour
 
 
             body[i].GetComponent<SkinnedMeshRenderer>().sharedMesh = null;
-
         }
+
     }
 
     void Update()
     {
-        UIghost.GetComponent<Image>().fillAmount = 1.0f - ((float)deactivatedghostbody.Count / (float)ghostbody.Count);
+        ghostpersent = 1.0f - ((float)deactivatedghostbody.Count / (float)ghostbody.Count);
+        UIghost.GetComponent<Image>().fillAmount = ghostpersent;
         UIHP.GetComponent<Image>().fillAmount = (this.gameObject.transform.GetComponent<BossController>().health / this.gameObject.transform.GetComponent<BossController>().maxHealth);
 
 
@@ -79,6 +82,7 @@ public class ghostEffect : MonoBehaviour
         {
             if (ghostbody[i].GetComponent<ParticleSystem>())
             {
+                deactivatedghostbody.Add(ghostbody[i]);
                 body[i].GetComponent<SkinnedMeshRenderer>().sharedMesh = meshes[i];
                 Destroy(ghostbody[i].GetComponent<ParticleSystem>());
             }
