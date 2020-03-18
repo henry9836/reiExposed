@@ -70,6 +70,11 @@ public class BossController : MonoBehaviour
 
         turnSpeed /= 1000.0f;
 
+        if (arms.Count <= 0)
+        {
+            Debug.LogWarning("Boss Arm Count is 0");
+        }
+
     }
 
     private void Update()
