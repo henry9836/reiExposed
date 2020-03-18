@@ -43,8 +43,8 @@ public class seekBoss : StateMachineBehaviour
             agent.ResetPath();
             agent.isStopped = false;
 
-            animator.SetTrigger("Slam");
-
+            animator.SetTrigger("3Hit");
+            /*
             switch (attack)
             {
                 case BossController.bossAttacks.BODYSLAM:
@@ -77,7 +77,7 @@ public class seekBoss : StateMachineBehaviour
                         break;
                     }
             }
-
+            */
         }
 
     }

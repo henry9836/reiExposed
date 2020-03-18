@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour
         //Damage From Boss
         if (other.gameObject.CompareTag("BossAttackSurface"))
         {
-            health -= boss.GetComponent<BossController>().lastUpdatedAttackDamage;
+            health -= boss.GetComponent<BossController>().QueryDamage();
         }
     }
 
