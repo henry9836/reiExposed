@@ -16,6 +16,15 @@ public class seekBoss : StateMachineBehaviour
     BossController.bossAttacks attack;
 
 
+    void Reset(Animator animator)
+    {
+        animator.SetBool("Charging", false);
+        animator.ResetTrigger("Slam");
+        animator.ResetTrigger("3Hit");
+        animator.ResetTrigger("Fireball");
+        animator.ResetTrigger("BodySlam");
+        animator.ResetTrigger("Exit");
+    }
 
     void PickAttack()
     {
@@ -41,6 +50,8 @@ public class seekBoss : StateMachineBehaviour
             agent = bc.agent;
         }
 
+
+        Reset(animator);
         PickAttack();
 
     }
@@ -59,8 +70,12 @@ public class seekBoss : StateMachineBehaviour
             agent.isStopped = true;
             agent.ResetPath();
             agent.isStopped = false;
-            
 
+            if (bc.isBossLookingAtPlayer(bc.angleThresholdBeforeMoving))
+            {
+                animator.SetTrigger("Fireball");
+            }
+            /*
             switch (attack)
             {
                 case BossController.bossAttacks.BODYSLAM:
@@ -104,7 +119,7 @@ public class seekBoss : StateMachineBehaviour
                         break;
                     }
             }
-            
+            */
 
         }
 

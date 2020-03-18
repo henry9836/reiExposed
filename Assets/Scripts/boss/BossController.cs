@@ -56,6 +56,7 @@ public class BossController : MonoBehaviour
     public List<BoxCollider> leftLegs = new List<BoxCollider>();
     public List<BoxCollider> rightLegs = new List<BoxCollider>();
     public List<BoxCollider> otherBody = new List<BoxCollider>();
+    public List<Transform> fireBallCannonLocations = new List<Transform>();
 
     private bool onlyApplyDamageOnce = true;
     private bool deathonce = true;
