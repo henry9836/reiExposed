@@ -27,6 +27,12 @@ public class BossController : MonoBehaviour
         ARM_ALL
     };
 
+    enum UPDATE_MODE
+    {
+        DEFAULT,
+        CHARGE_ATTACK
+    };
+
     [HideInInspector]
     public NavMeshAgent agent;
     [HideInInspector]
@@ -39,8 +45,11 @@ public class BossController : MonoBehaviour
     public bool animationOverride = false;
     public bool trackPlayer = true;
     public float turnSpeed = 0.1f;
+    public float chargeSpeed = 30.0f;
     public float health;
     public float maxHealth = 1000.0f;
+    [Range(0.0f, 1.0f)]
+    public float angleThresholdBeforeMoving = 0.95f;
     public List<float> attackTriggerRanges = new List<float>();
     public List<BoxCollider> leftArms = new List<BoxCollider>();
     public List<BoxCollider> rightArms = new List<BoxCollider>();
@@ -50,6 +59,7 @@ public class BossController : MonoBehaviour
 
     private bool onlyApplyDamageOnce = true;
     private bool deathonce = true;
+    private UPDATE_MODE updateMode = UPDATE_MODE.DEFAULT;
 
     public void arm(ARMTYPE type, bool arm, float attackDamage, bool _onlyApplyDamageOnce)
     {
@@ -172,6 +182,22 @@ public class BossController : MonoBehaviour
     public void animationOverrideFunc(bool overrideSwitch)
     {
         animationOverride = overrideSwitch;
+
+        if (animationOverride)
+        {
+            agent.ResetPath();
+            agent.isStopped = true;
+        }
+        else
+        {
+            agent.isStopped = false;
+        }
+
+    }
+
+    public void charge()
+    {
+        updateMode = UPDATE_MODE.CHARGE_ATTACK;
     }
 
     private void Start()
@@ -187,39 +213,59 @@ public class BossController : MonoBehaviour
 
     }
 
+    public bool isBossLookingAtPlayer(float thresholdAngle)
+    {
+        Vector3 dir = (player.transform.position - transform.position).normalized;
+
+        //If we are we need to turn to face player stop agent so we don't tokyo drift
+        float dotProd = Vector3.Dot(dir, transform.forward);
+
+        return dotProd > thresholdAngle;
+    }
+
     private void Update()
     {
-        if (trackPlayer && !animationOverride)
+
+        if (updateMode == UPDATE_MODE.DEFAULT)
         {
-            Vector3 dir = (player.transform.position - transform.position).normalized;
-            Quaternion endRot = Quaternion.LookRotation(dir, transform.up);
 
-            //If we are we need to turn to face player stop agent so we don't tokyo drift
-            float dotProd = Vector3.Dot(dir, transform.forward);
-            float thresholdAngle = 0.95f;
-
-            if (dotProd > thresholdAngle)
+            if (trackPlayer && !animationOverride)
             {
-                agent.isStopped = false;
+                Vector3 dir = (player.transform.position - transform.position).normalized;
+                Quaternion endRot = Quaternion.LookRotation(dir, transform.up);
+
+
+                if (isBossLookingAtPlayer(angleThresholdBeforeMoving))
+                {
+                    agent.isStopped = false;
+                }
+                else if (!agent.isStopped)
+                {
+                    agent.isStopped = true;
+                }
+
+                //transform.rotation = Quaternion.Lerp(transform.rotation, endRot, 0.005f);
+
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, endRot, turnSpeed * Time.deltaTime);
+
             }
-            else if (!agent.isStopped)
+
+            if (deathonce == true)
             {
-                agent.isStopped = true;
+                if (health <= 0.0f)
+                {
+                    deathonce = false;
+                    death();
+                }
             }
-
-            //transform.rotation = Quaternion.Lerp(transform.rotation, endRot, 0.005f);
-
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, endRot, turnSpeed * Time.deltaTime);
-
         }
-
-        if (deathonce == true)
+        else if (updateMode == UPDATE_MODE.CHARGE_ATTACK)
         {
-            if (health <= 0.0f)
-            {
-                deathonce = false;
-                death();
-            }
+            transform.Translate(transform.forward * Time.deltaTime * chargeSpeed, Space.World);
+        }
+        else
+        {
+            Debug.LogWarning($"Cannot run boss update as [{updateMode}] has no update behaviour");
         }
 
     }
@@ -259,4 +305,15 @@ public class BossController : MonoBehaviour
 
 
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (updateMode == UPDATE_MODE.CHARGE_ATTACK)
+        {
+            GetComponent<Animator>().SetBool("Charging", false);
+            animationOverrideFunc(false);
+            updateMode = UPDATE_MODE.DEFAULT;
+        }
+    }
+
 }
