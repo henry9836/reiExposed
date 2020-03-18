@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class umbrella : MonoBehaviour
 {
@@ -11,16 +12,17 @@ public class umbrella : MonoBehaviour
     public float cooldowntimer = 0.0f;
     public LayerMask enemy;
     public LayerMask ball;
-
+    public GameObject damagedText;
 
     private PlayerController playercontrol;
     private GameObject cam;
-
+    private GameObject boss;
 
     void Start()
     {
         playercontrol = this.transform.parent.parent.GetComponent<PlayerController>();
         cam = GameObject.FindGameObjectWithTag("MainCamera");
+        boss = GameObject.Find("Boss");
     }
 
     void Update()
@@ -88,7 +90,12 @@ public class umbrella : MonoBehaviour
 
         if (Physics.Raycast(this.gameObject.transform.position, this.gameObject.transform.forward, out hit, Mathf.Infinity, enemy))
         {
-            //damage
+            float damage = boss.GetComponent<BossController>().IBeanShot(100.0f);
+            GameObject text = Instantiate(damagedText, hit.point, Quaternion.identity);
+            text.transform.GetChild(0).GetComponent<Text>().text = null;
+            text.transform.GetChild(0).GetComponent<Text>().text = Mathf.RoundToInt(damage).ToString();
+            text.transform.LookAt(this.gameObject.transform.position);
+            text.transform.Rotate(new Vector3(0, 180, 0));
         }
 
         //just aim better 
