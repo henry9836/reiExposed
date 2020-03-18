@@ -172,8 +172,6 @@ public class BossController : MonoBehaviour
             agent.angularSpeed = 0.0f;
         }
 
-        turnSpeed /= 1000.0f;
-
     }
 
     private void Update()
@@ -196,7 +194,10 @@ public class BossController : MonoBehaviour
                 agent.isStopped = true;
             }
 
-            transform.rotation = Quaternion.Lerp(transform.rotation, endRot, turnSpeed * Time.time);
+            //transform.rotation = Quaternion.Lerp(transform.rotation, endRot, 0.005f);
+
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, endRot, turnSpeed * Time.deltaTime);
+
         }
     }
 }
