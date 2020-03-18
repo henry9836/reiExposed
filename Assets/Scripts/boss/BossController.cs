@@ -309,11 +309,16 @@ public class BossController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+
         if (updateMode == UPDATE_MODE.CHARGE_ATTACK)
         {
-            GetComponent<Animator>().SetBool("Charging", false);
-            animationOverrideFunc(false);
-            updateMode = UPDATE_MODE.DEFAULT;
+            //If not ground
+            if (!other.CompareTag("Ground"))
+            {
+                GetComponent<Animator>().SetBool("Charging", false);
+                animationOverrideFunc(false);
+                updateMode = UPDATE_MODE.DEFAULT;
+            }
         }
     }
 

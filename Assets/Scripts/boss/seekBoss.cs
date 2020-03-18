@@ -71,11 +71,11 @@ public class seekBoss : StateMachineBehaviour
             agent.ResetPath();
             agent.isStopped = false;
 
-            if (bc.isBossLookingAtPlayer(bc.angleThresholdBeforeMoving))
-            {
-                animator.SetTrigger("Fireball");
-            }
-            /*
+            //if (bc.isBossLookingAtPlayer(bc.angleThresholdBeforeMoving))
+            //{
+            //    animator.SetTrigger("Fireball");
+            //}
+
             switch (attack)
             {
                 case BossController.bossAttacks.BODYSLAM:
@@ -90,7 +90,8 @@ public class seekBoss : StateMachineBehaviour
                 case BossController.bossAttacks.CHARGE:
                     {
                         //Are we looking at player?
-                        if (bc.isBossLookingAtPlayer(bc.angleThresholdBeforeMoving)) {
+                        if (bc.isBossLookingAtPlayer(bc.angleThresholdBeforeMoving))
+                        {
                             animator.SetBool("Charging", true);
                         }
                         break;
@@ -119,7 +120,7 @@ public class seekBoss : StateMachineBehaviour
                         break;
                     }
             }
-            */
+
 
         }
 
