@@ -55,11 +55,11 @@ public class seekBoss : StateMachineBehaviour
         if (Vector3.Distance(player.transform.position, animator.gameObject.transform.position) <= needAttackRange)
         {
 
-            attackAimTimeoutTimer += Time.deltaTime;
 
             agent.isStopped = true;
             agent.ResetPath();
             agent.isStopped = false;
+            
 
             switch (attack)
             {
@@ -74,8 +74,9 @@ public class seekBoss : StateMachineBehaviour
                 case BossController.bossAttacks.CHARGE:
                     {
                         //Are we looking at player?
+                        Debug.Log("Charge Chance");
                         if (bc.isBossLookingAtPlayer(bc.angleThresholdBeforeMoving)) {
-                            animator.SetBool("Charge", true);
+                            animator.SetBool("Charging", true);
                         }
                         break;
                     }
@@ -103,12 +104,15 @@ public class seekBoss : StateMachineBehaviour
                         break;
                     }
             }
-
-            if (attackAimTimeoutTimer > attackAimTimeout)
-            {
-                PickAttack();
-            }
             
+
+        }
+
+        attackAimTimeoutTimer += Time.deltaTime;
+
+        if (attackAimTimeoutTimer > attackAimTimeout)
+        {
+            PickAttack();
         }
 
     }
