@@ -59,4 +59,32 @@ public class BossController : MonoBehaviour
         armArms();
 
     }
+
+    public float IBeanShot(float damage)
+    {
+        float startHealth = health;
+        float delt = 99999.9f;
+
+        if (((health - damage) / maxHealth) > (this.gameObject.GetComponent<ghostEffect>().ghostpersent))
+        {
+            health -= damage;
+
+            delt = damage;
+            Debug.Log("full damage");
+        }
+        else if ((health / maxHealth) > (this.gameObject.GetComponent<ghostEffect>().ghostpersent))
+        {
+            health = maxHealth * (this.gameObject.GetComponent<ghostEffect>().ghostpersent);
+
+            delt = startHealth - health;
+            Debug.Log("not full damage");
+        }
+        else 
+        {
+            delt = 0.0f;
+            Debug.Log("no damage");
+        }
+
+        return (delt);
+    }
 }
