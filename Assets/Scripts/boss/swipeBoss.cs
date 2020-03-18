@@ -13,13 +13,15 @@ public class swipeBoss : StateMachineBehaviour
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
 
-        if (damageWindow.y > stateInfo.normalizedTime && stateInfo.normalizedTime > damageWindow.x && !armed)
+        if (damageWindow.y >= stateInfo.normalizedTime && stateInfo.normalizedTime > damageWindow.x && !armed)
         {
+            animator.gameObject.GetComponent<BossController>().animationOverrideFunc(true);
             animator.gameObject.GetComponent<BossController>().armArms();
             armed = true;
         }
-        else if (armed && damageWindow.y < stateInfo.normalizedTime)
+        else if (armed && damageWindow.y <= stateInfo.normalizedTime)
         {
+            animator.gameObject.GetComponent<BossController>().animationOverrideFunc(false);
             animator.gameObject.GetComponent<BossController>().disarmArms();
             armed = false;
         }
