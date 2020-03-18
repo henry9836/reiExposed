@@ -27,6 +27,7 @@ public class seekBoss : StateMachineBehaviour
         //Query attack range from boss controller
         bc.neededAttackRange = bc.attackTriggerRanges[(int)attack];
         needAttackRange = bc.neededAttackRange;
+        bc.animationOverrideFunc(false);
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -73,10 +74,8 @@ public class seekBoss : StateMachineBehaviour
                     }
             }
 
-            Debug.Log("KILL KILL KILL");
         }
 
-        Debug.Log("Seek Tick");
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state

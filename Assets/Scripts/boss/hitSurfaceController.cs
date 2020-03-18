@@ -14,7 +14,6 @@ public class hitSurfaceController : MonoBehaviour
         if (other.tag == "Player")
         {
             other.GetComponent<PlayerController>().health -= damageAmount;
-            GetComponent<AudioSource>().Play();
         }
     }
 }
