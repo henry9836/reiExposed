@@ -3967,7 +3967,8 @@ GameObject:
   - component: {fileID: 1572489475}
   - component: {fileID: 4783344075271442374}
   - component: {fileID: 4783344075271442393}
-  m_Layer: 0
+  - component: {fileID: 3966423916172152291}
+  m_Layer: 13
   m_Name: Boss
   m_TagString: Boss
   m_Icon: {fileID: 0}
@@ -4263,8 +4264,10 @@ MonoBehaviour:
   animationOverride: 0
   trackPlayer: 1
   turnSpeed: 50
+  chargeSpeed: 30
   health: 0
   maxHealth: 1000
+  angleThresholdBeforeMoving: 0.95
   attackTriggerRanges:
   - 2
   - 2
@@ -4298,6 +4301,20 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!136 &3966423916172152291
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3548896986463892890}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 1.0844536
+  m_Height: 4.3606663
+  m_Direction: 1
+  m_Center: {x: 0, y: 2.07549, z: 0.03232193}
 --- !u!1 &3659855556544496872
 GameObject:
   m_ObjectHideFlags: 0
