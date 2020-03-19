@@ -44,6 +44,8 @@ public class BossController : MonoBehaviour
 
     public bool animationOverride = false;
     public bool trackPlayer = true;
+    [Range(0.05f, 0.5f)]
+    public float checkPlayerPositionInterval = 0.5f;
     public float turnSpeed = 0.1f;
     public float chargeSpeed = 30.0f;
     public float health;
@@ -61,6 +63,26 @@ public class BossController : MonoBehaviour
     private bool onlyApplyDamageOnce = true;
     private bool deathonce = true;
     private UPDATE_MODE updateMode = UPDATE_MODE.DEFAULT;
+    private Vector3 lastKnownPlayerPosition = Vector3.zero;
+    private float playerCheckTimer = 0.0f;
+
+    public Vector3 predictPlayerPosition()
+    {
+        Vector3 result = Vector3.zero;
+        Vector3 currentPosition = player.transform.position;
+
+        //Get Direction
+        Vector3 directionOfMovement = (currentPosition - lastKnownPlayerPosition).normalized;
+
+        //Get velocity
+        float distance = Vector3.Distance(currentPosition, lastKnownPlayerPosition);
+        float velocity = distance / checkPlayerPositionInterval;
+
+        //Get Predicted Position
+        result = currentPosition + (directionOfMovement * velocity);
+
+        return result;
+    }
 
     public void arm(ARMTYPE type, bool arm, float attackDamage, bool _onlyApplyDamageOnce)
     {
@@ -207,6 +229,8 @@ public class BossController : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         player = GameObject.FindGameObjectWithTag("Player");
 
+        lastKnownPlayerPosition = player.transform.position;
+
         if (trackPlayer)
         {
             agent.angularSpeed = 0.0f;
@@ -226,6 +250,14 @@ public class BossController : MonoBehaviour
 
     private void Update()
     {
+
+        playerCheckTimer += Time.deltaTime;
+
+        if (playerCheckTimer > checkPlayerPositionInterval)
+        {
+            lastKnownPlayerPosition = player.transform.position;
+            playerCheckTimer = 0.0f;
+        }
 
         if (updateMode == UPDATE_MODE.DEFAULT)
         {

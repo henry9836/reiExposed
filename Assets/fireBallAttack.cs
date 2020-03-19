@@ -20,7 +20,13 @@ public class fireBallAttack : StateMachineBehaviour
     {
         //Create Fireball
         GameObject fireball = Instantiate(fireballPrefab, bc.fireBallCannonLocations[Random.Range(0, bc.fireBallCannonLocations.Count)].position, Quaternion.identity);
-        fireball.transform.LookAt(player.transform.position);
+
+        //Look in front of player
+        Vector3 target = bc.predictPlayerPosition();
+
+        //offset by 1 in y to hit center
+        target.y += 1;
+        fireball.transform.LookAt(target);
 
         //Move fireball at player
         fireball.GetComponent<fireBallController>().fullSpeedAheadCaptain();
@@ -40,14 +46,12 @@ public class fireBallAttack : StateMachineBehaviour
     {
         if (loopCount > fireballAmount)
         {
-            Debug.Log("Exit");
             animator.SetTrigger("Exit");
         }
         else
         {
             if (stateInfo.normalizedTime % 1.0f >= fireballThrowFrame && !fireballFired)
             {
-                Debug.Log("Fire");
                 //Fire fireball
                 FireFireBall();
                 loopCount++;
@@ -62,7 +66,6 @@ public class fireBallAttack : StateMachineBehaviour
             //On animation loop reset
             else if (stateInfo.normalizedTime%1.0f < 0.1f)
             {
-                Debug.Log("Loop Reset");
                 fireballFired = false;
             }
         }
