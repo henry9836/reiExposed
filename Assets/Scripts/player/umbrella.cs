@@ -17,14 +17,12 @@ public class umbrella : MonoBehaviour
     private PlayerController playercontrol;
     private GameObject cam;
     private GameObject boss;
-    private GameObject umbeaalBone;
 
     void Start()
     {
         playercontrol = this.transform.parent.parent.GetComponent<PlayerController>();
         cam = GameObject.FindGameObjectWithTag("MainCamera");
         boss = GameObject.Find("Boss");
-        umbeaalBone = GameObject.Find("rei_umbrella");
     }
 
     void Update()
@@ -71,8 +69,7 @@ public class umbrella : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, Mathf.Infinity, ball))
         {
-            umbeaalBone.gameObject.transform.LookAt(hit.point);
-            umbeaalBone.transform.Rotate(0.0f, 90.0f, 0.0f);
+            this.gameObject.transform.LookAt(hit.point);
             Debug.DrawLine(hit.point, cam.transform.position);
         }
 
