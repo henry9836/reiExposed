@@ -66,8 +66,9 @@ public class BossController : MonoBehaviour
     private Vector3 lastKnownPlayerPosition = Vector3.zero;
     private float playerCheckTimer = 0.0f;
 
-    public Vector3 predictPlayerPosition()
+    public Vector3 predictPlayerPosition(float projectileSpeed, GameObject projectile)
     {
+        //Positions
         Vector3 result = Vector3.zero;
         Vector3 currentPosition = player.transform.position;
 
@@ -75,11 +76,22 @@ public class BossController : MonoBehaviour
         Vector3 directionOfMovement = (currentPosition - lastKnownPlayerPosition).normalized;
 
         //Get velocity
+        float time = checkPlayerPositionInterval + playerCheckTimer;
         float distance = Vector3.Distance(currentPosition, lastKnownPlayerPosition);
-        float velocity = distance / checkPlayerPositionInterval;
+        float velocity = distance / time;
+        Vector3 targetVelocity = directionOfMovement * velocity;
+
+
+        //velocity *= velocity;
+
+        //Get Time to hit target
+        float timeToHit = distance / projectileSpeed;
 
         //Get Predicted Position
-        result = currentPosition + (directionOfMovement * velocity);
+        result = currentPosition + ((directionOfMovement * velocity)*timeToHit)*65.0f;
+
+
+        Debug.DrawRay(projectile.transform.position, result, Color.red, 2.0f);
 
         return result;
     }

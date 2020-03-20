@@ -6,6 +6,7 @@ public class fireBallAttack : StateMachineBehaviour
 {
 
     public int fireballAmount = 3;
+    public Vector2 fireballAmountRange = new Vector2(2, 5);
     [Range (0.2f, 1.0f)]
     public float fireballThrowFrame = 0.5f;
     public GameObject fireballPrefab;
@@ -18,15 +19,28 @@ public class fireBallAttack : StateMachineBehaviour
 
     void FireFireBall()
     {
-        //Create Fireball
-        GameObject fireball = Instantiate(fireballPrefab, bc.fireBallCannonLocations[Random.Range(0, bc.fireBallCannonLocations.Count)].position, Quaternion.identity);
+
+        //Pick random amount to throw
+        int amountToFire = (int)Random.Range(fireballAmountRange.x, fireballAmountRange.y + 1);
+
+        for (int i = 0; i < amountToFire; i++)
+        {
+
+        }
+
+        //Create Fireballs
+        GameObject fireballMain = Instantiate(fireballPrefab, bc.fireBallCannonLocations[Random.Range(0, bc.fireBallCannonLocations.Count)].position, Quaternion.identity);
+        GameObject fireballMain = Instantiate(fireballPrefab, bc.fireBallCannonLocations[Random.Range(0, bc.fireBallCannonLocations.Count)].position, Quaternion.identity);
+        GameObject fireballMain = Instantiate(fireballPrefab, bc.fireBallCannonLocations[Random.Range(0, bc.fireBallCannonLocations.Count)].position, Quaternion.identity);
 
         //Look in front of player
-        Vector3 target = bc.predictPlayerPosition();
+        Vector3 target = bc.predictPlayerPosition(fireball.GetComponent<fireBallController>().travelSpeed, fireball);
 
         //offset by 1 in y to hit center
         target.y += 1;
         fireball.transform.LookAt(target);
+
+        Debug.DrawLine(fireball.transform.position, target, Color.magenta, 2.0f);
 
         //Move fireball at player
         fireball.GetComponent<fireBallController>().fullSpeedAheadCaptain();
