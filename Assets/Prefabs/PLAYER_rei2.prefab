@@ -731,7 +731,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1732612300625528840}
-  m_LocalRotation: {x: 0.014115522, y: -0.00089321705, z: 0.054093715, w: 0.9984357}
+  m_LocalRotation: {x: 0.014115523, y: -0.00089321705, z: 0.05409372, w: 0.9984357}
   m_LocalPosition: {x: -0.076101944, y: 0, z: -4.470348e-10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -870,6 +870,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2048
   toremove: 
+  animator: {fileID: 212265599186769691}
 --- !u!1 &1732612300637761957
 GameObject:
   m_ObjectHideFlags: 0
@@ -1958,7 +1959,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1732612301673065871}
-  m_LocalRotation: {x: 0.00000008146034, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.45991766, y: 1.0266653, z: 1.1087726}
   m_LocalScale: {x: 0.015142, y: 0.015142, z: 0.014226}
   m_Children: []
@@ -2150,7 +2151,7 @@ SkinnedMeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1732612301716387921}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -2659,7 +2660,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1732612302030761655}
-  - component: {fileID: 1732612302030761654}
   m_Layer: 0
   m_Name: a_rei
   m_TagString: Untagged
@@ -2689,25 +2689,6 @@ Transform:
   m_Father: {fileID: 5121230018133350252}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &1732612302030761654
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1732612302030761652}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: ef0f3679cd6e1a24bb546dced45fbcf7, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 1
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1732612302031139482
 GameObject:
   m_ObjectHideFlags: 0
@@ -2782,6 +2763,7 @@ GameObject:
   - component: {fileID: 5127853965938430895}
   - component: {fileID: 3144247446528475113}
   - component: {fileID: 2569531379931713282}
+  - component: {fileID: 212265599186769691}
   m_Layer: 0
   m_Name: PLAYER_rei2
   m_TagString: Player
@@ -2883,6 +2865,25 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0.95, z: 0}
+--- !u!95 &212265599186769691
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1943698811393534155}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: ef0f3679cd6e1a24bb546dced45fbcf7, type: 3}
+  m_Controller: {fileID: 9100000, guid: f40c560f09074fd4f9fa4de761624e15, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &3339494445054939102
 GameObject:
   m_ObjectHideFlags: 0
