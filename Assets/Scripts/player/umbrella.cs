@@ -80,8 +80,7 @@ public class umbrella : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, Mathf.Infinity, ball))
         {
-            umbeaalBone.gameObject.transform.LookAt(hit.point);
-            umbeaalBone.transform.Rotate(0.0f, 90.0f, 0.0f);
+            this.gameObject.transform.LookAt(hit.point);
             Debug.DrawLine(hit.point, cam.transform.position);
         }
 
