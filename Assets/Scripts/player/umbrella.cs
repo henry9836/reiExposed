@@ -17,16 +17,27 @@ public class umbrella : MonoBehaviour
     private PlayerController playercontrol;
     private GameObject cam;
     private GameObject boss;
+    private GameObject umbeaalBone;
+    private Animator animator;
+
 
     void Start()
     {
         playercontrol = this.transform.parent.parent.GetComponent<PlayerController>();
         cam = GameObject.FindGameObjectWithTag("MainCamera");
         boss = GameObject.Find("Boss");
+        umbeaalBone = GameObject.Find("rei_umbrella");
+        animator = playercontrol.gameObject.GetComponent<Animator>();
     }
 
     void Update()
     {
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            animator.SetTrigger("Attack");
+        }
+
         if (cooldown == false)
         {
             if (Input.GetAxis("Fire2") > 0.5f)

@@ -22,6 +22,7 @@ public class movementController : MonoBehaviour
 
     private PlayerController pc;
     private CharacterController ch;
+    private Animator animator;
     private Vector3 moveDir = Vector3.zero;
     private bool isOnGround = true;
     private float dashThresholdCeiling = 0.5f;
@@ -31,6 +32,7 @@ public class movementController : MonoBehaviour
     {
         ch = GetComponent<CharacterController>();
         pc = GetComponent<PlayerController>();
+        animator = GetComponent<Animator>();
     }
 
     private void FixedUpdate()
@@ -101,8 +103,25 @@ public class movementController : MonoBehaviour
                 {
                     pc.ChangeStamina(-staminaCostSprint);
                     moveDir += new Vector3(moveDir.x * sprintSpeedMultipler, moveDir.y, moveDir.z * sprintSpeedMultipler);
+                    animator.SetBool("Running", true);
                 }
             }
+        }
+
+        //Animation Off
+        //Walking
+        if (moveDir == Vector3.zero)
+        {
+            animator.SetBool("walkin", false);
+        }
+        else
+        {
+            animator.SetBool("walkin", true);
+        }
+        //Sprint
+        if (Input.GetButtonUp("Sprint") || !isOnGround)
+        {
+            animator.SetBool("Running", false);
         }
 
 

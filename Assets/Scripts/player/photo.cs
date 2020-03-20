@@ -9,20 +9,23 @@ public class photo : MonoBehaviour
 
     public List<int> toremove = new List<int>() {};
 
+    public Animator animator;
+
     private void Start()
     {
         if (!enemy)
         {
             GameObject.FindGameObjectWithTag("Boss");
         }
+
     }
 
     void Update()
     {
         if (Input.GetButtonDown("TakePhoto"))
         {
-           
 
+            animator.SetTrigger("Photo");
 
             for (int i = 0; i < enemy.GetComponent<ghostEffect>().ghostbody.Count; i++)
             {
