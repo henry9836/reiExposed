@@ -71,55 +71,55 @@ public class seekBoss : StateMachineBehaviour
             agent.ResetPath();
             agent.isStopped = false;
 
-            if (bc.isBossLookingAtPlayer(bc.angleThresholdBeforeMoving))
-            {
-                animator.SetTrigger("Fireball");
-            }
-
-            //switch (attack)
+            //if (bc.isBossLookingAtPlayer(bc.angleThresholdBeforeMoving))
             //{
-            //    case BossController.bossAttacks.BODYSLAM:
-            //        {
-            //            //Are we looking at player?
-            //            if (bc.isBossLookingAtPlayer(bc.angleThresholdBeforeMoving))
-            //            {
-            //                animator.SetTrigger("BodySlam");
-            //            }
-            //            break;
-            //        }
-            //    case BossController.bossAttacks.CHARGE:
-            //        {
-            //            //Are we looking at player?
-            //            if (bc.isBossLookingAtPlayer(bc.angleThresholdBeforeMoving))
-            //            {
-            //                animator.SetBool("Charging", true);
-            //            }
-            //            break;
-            //        }
-            //    case BossController.bossAttacks.FIREBALL:
-            //        {
-            //            if (bc.isBossLookingAtPlayer(bc.angleThresholdBeforeMoving))
-            //            {
-            //                animator.SetTrigger("Fireball");
-            //            }
-            //            break;
-            //        }
-            //    case BossController.bossAttacks.MONKEYSLAM:
-            //        {
-            //            animator.SetTrigger("Slam");
-            //            break;
-            //        }
-            //    case BossController.bossAttacks.SWIPE:
-            //        {
-            //            animator.SetTrigger("3Hit");
-            //            break;
-            //        }
-            //    default:
-            //        {
-            //            Debug.LogWarning($"No trigger found for attack [{attack}]");
-            //            break;
-            //        }
+            //    animator.SetTrigger("Fireball");
             //}
+
+            switch (attack)
+            {
+                case BossController.bossAttacks.BODYSLAM:
+                    {
+                        //Are we looking at player?
+                        if (bc.isBossLookingAtPlayer(bc.angleThresholdBeforeMoving))
+                        {
+                            animator.SetTrigger("BodySlam");
+                        }
+                        break;
+                    }
+                case BossController.bossAttacks.CHARGE:
+                    {
+                        //Are we looking at player?
+                        if (bc.isBossLookingAtPlayer(bc.angleThresholdBeforeMoving))
+                        {
+                            animator.SetBool("Charging", true);
+                        }
+                        break;
+                    }
+                case BossController.bossAttacks.FIREBALL:
+                    {
+                        if (bc.isBossLookingAtPlayer(bc.angleThresholdBeforeMoving))
+                        {
+                            animator.SetTrigger("Fireball");
+                        }
+                        break;
+                    }
+                case BossController.bossAttacks.MONKEYSLAM:
+                    {
+                        animator.SetTrigger("Slam");
+                        break;
+                    }
+                case BossController.bossAttacks.SWIPE:
+                    {
+                        animator.SetTrigger("3Hit");
+                        break;
+                    }
+                default:
+                    {
+                        Debug.LogWarning($"No trigger found for attack [{attack}]");
+                        break;
+                    }
+            }
 
 
         }
