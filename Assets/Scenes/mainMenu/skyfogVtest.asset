@@ -70,6 +70,72 @@ MonoBehaviour:
   gradientDiffusion:
     m_OverrideState: 0
     m_Value: 1
+--- !u!114 &-6803307166933402723
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aaa3b8214f75b354e9ba2caadd022259, type: 3}
+  m_Name: DepthOfField
+  m_EditorClassIdentifier: 
+  active: 1
+  m_AdvancedMode: 0
+  quality:
+    m_OverrideState: 1
+    m_Value: 1
+  focusMode:
+    m_OverrideState: 1
+    m_Value: 2
+  focusDistance:
+    m_OverrideState: 0
+    m_Value: 10
+    min: 0.1
+  nearFocusStart:
+    m_OverrideState: 1
+    m_Value: 0
+    min: 0
+  nearFocusEnd:
+    m_OverrideState: 1
+    m_Value: 1
+    min: 0
+  farFocusStart:
+    m_OverrideState: 1
+    m_Value: 50
+    min: 0
+  farFocusEnd:
+    m_OverrideState: 1
+    m_Value: 5000
+    min: 0
+  m_NearSampleCount:
+    m_OverrideState: 0
+    m_Value: 5
+    min: 3
+    max: 8
+  m_NearMaxBlur:
+    m_OverrideState: 0
+    m_Value: 4
+    min: 0
+    max: 8
+  m_FarSampleCount:
+    m_OverrideState: 0
+    m_Value: 7
+    min: 3
+    max: 16
+  m_FarMaxBlur:
+    m_OverrideState: 0
+    m_Value: 8
+    min: 0
+    max: 16
+  m_HighQualityFiltering:
+    m_OverrideState: 0
+    m_Value: 1
+  m_Resolution:
+    m_OverrideState: 0
+    m_Value: 2
 --- !u!114 &-6005418391539234511
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -255,7 +321,7 @@ MonoBehaviour:
   m_Name: skyfogVtest
   m_EditorClassIdentifier: 
   components:
-  - {fileID: 2111070577363387147}
+  - {fileID: -6803307166933402723}
   - {fileID: 1745496206452615103}
   - {fileID: -8578574384615297346}
   - {fileID: 8660448606529589900}
@@ -347,72 +413,6 @@ MonoBehaviour:
   filter:
     m_OverrideState: 0
     m_Value: 0
---- !u!114 &2111070577363387147
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aaa3b8214f75b354e9ba2caadd022259, type: 3}
-  m_Name: DepthOfField
-  m_EditorClassIdentifier: 
-  active: 1
-  m_AdvancedMode: 0
-  quality:
-    m_OverrideState: 1
-    m_Value: 1
-  focusMode:
-    m_OverrideState: 1
-    m_Value: 2
-  focusDistance:
-    m_OverrideState: 1
-    m_Value: 2
-    min: 0.1
-  nearFocusStart:
-    m_OverrideState: 1
-    m_Value: 0
-    min: 0
-  nearFocusEnd:
-    m_OverrideState: 1
-    m_Value: 1
-    min: 0
-  farFocusStart:
-    m_OverrideState: 1
-    m_Value: 6
-    min: 0
-  farFocusEnd:
-    m_OverrideState: 1
-    m_Value: 90
-    min: 0
-  m_NearSampleCount:
-    m_OverrideState: 0
-    m_Value: 5
-    min: 3
-    max: 8
-  m_NearMaxBlur:
-    m_OverrideState: 0
-    m_Value: 4
-    min: 0
-    max: 8
-  m_FarSampleCount:
-    m_OverrideState: 0
-    m_Value: 7
-    min: 3
-    max: 16
-  m_FarMaxBlur:
-    m_OverrideState: 0
-    m_Value: 8
-    min: 0
-    max: 16
-  m_HighQualityFiltering:
-    m_OverrideState: 0
-    m_Value: 1
-  m_Resolution:
-    m_OverrideState: 0
-    m_Value: 2
 --- !u!114 &6977805852975289513
 MonoBehaviour:
   m_ObjectHideFlags: 3
