@@ -314,6 +314,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: Seek
     m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: Idle
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 3885258771147993662}
   m_Solo: 0
@@ -516,6 +519,12 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
+  - m_Name: Idle
+    m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -660,27 +669,27 @@ AnimatorStateMachine:
     m_Position: {x: 540, y: 120, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6231181059570717290}
-    m_Position: {x: 920, y: -70, z: 0}
+    m_Position: {x: 880, y: -30, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -156005831816363505}
-    m_Position: {x: 930, y: 120, z: 0}
+    m_Position: {x: 890, y: 160, z: 0}
   m_ChildStateMachines:
   - serializedVersion: 1
     m_StateMachine: {fileID: -3758445191270385896}
-    m_Position: {x: 930, y: 30, z: 0}
+    m_Position: {x: 890, y: 70, z: 0}
   - serializedVersion: 1
     m_StateMachine: {fileID: 959209148568598677}
-    m_Position: {x: 930, y: 200, z: 0}
+    m_Position: {x: 890, y: 260, z: 0}
   m_AnyStateTransitions: []
   m_EntryTransitions:
   - {fileID: 6969613313232087888}
   m_StateMachineTransitions:
-  - first: {fileID: 959209148568598677}
-    second:
-    - {fileID: 5608373078572383364}
   - first: {fileID: -3758445191270385896}
     second:
     - {fileID: -7834889061382523141}
+  - first: {fileID: 959209148568598677}
+    second:
+    - {fileID: 5608373078572383364}
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: 50, y: 20, z: 0}
   m_EntryPosition: {x: 50, y: 120, z: 0}
@@ -791,7 +800,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fireballAmount: 3
+  fireballAmountRange: {x: 2, y: 5}
+  fireBallSpread: 15
   fireballThrowFrame: 0.3
+  sizeRange: {x: 0.3, y: 1}
   fireballPrefab: {fileID: 7344834667951481223, guid: 53369e4785adbe0409749713ac1f4325,
     type: 3}
 --- !u!1102 &6585835852308865281

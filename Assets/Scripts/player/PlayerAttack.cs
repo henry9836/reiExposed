@@ -4,23 +4,37 @@ using UnityEngine;
 
 public class PlayerAttack : StateMachineBehaviour
 {
-
-    public float timer = 1.0f;
+    private GameObject umbrella;
+    private bool once = true;
+   
 
     //OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-
+        umbrella = GameObject.Find("umbrella ella ella");
+        animator.SetBool("Attacking", true);
+        once = true;
     }
 
     //OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        timer -= Time.deltaTime;
-        if (timer <= 0.0f)
+        if (once == true)
+        {
+            if ((stateInfo.normalizedTime % 1.0f) >= 0.50f)
+            {
+                umbrella.GetComponent<umbrella>().whack();
+                once = false;
+            }
+        }
+
+
+        if ((stateInfo.normalizedTime % 1.0f) >= 0.95f)
         {
             animator.SetTrigger("Exit");
         }
+
+
     }
 
 
