@@ -45,6 +45,7 @@ public class ghostEffect : MonoBehaviour
 
             tmp.transform.parent = body[i].GetComponent<SkinnedMeshRenderer>().rootBone;
             var sh = tmp.GetComponent<ParticleSystem>().shape;
+            tmp.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
             sh.mesh = meshes[i];
 
             ghostbody.Add(tmp);
