@@ -7,8 +7,10 @@ public class fireBallAttack : StateMachineBehaviour
 
     public int fireballAmount = 3;
     public Vector2 fireballAmountRange = new Vector2(2, 5);
-    [Range (0.2f, 1.0f)]
+    [Range(0.2f, 1.0f)]
+    public float fireBallSpread = 15.0f;
     public float fireballThrowFrame = 0.5f;
+    public Vector2 sizeRange = new Vector2(0.3f, 1.0f);
     public GameObject fireballPrefab;
 
 
@@ -25,25 +27,27 @@ public class fireBallAttack : StateMachineBehaviour
 
         for (int i = 0; i < amountToFire; i++)
         {
+            //Create a fireball
+            GameObject fireball = Instantiate(fireballPrefab, bc.fireBallCannonLocations[Random.Range(0, bc.fireBallCannonLocations.Count)].position, Quaternion.identity);
 
+            //Go in the direction of the player offset randomly by the spread
+            float mySpread = Random.Range(-fireBallSpread, fireBallSpread);
+
+            //Randomise Scale
+            float size = Random.Range(sizeRange.x, sizeRange.y);
+            fireball.transform.localScale = new Vector3(size, size, size);
+
+            Vector3 targetPosition = player.transform.position;
+
+            targetPosition = targetPosition + (Random.insideUnitSphere * mySpread);
+
+            fireball.transform.LookAt(targetPosition);
+
+            Debug.DrawLine(fireball.transform.position, targetPosition, Color.magenta, 2.0f);
+
+            fireball.GetComponent<fireBallController>().fullSpeedAheadCaptain();
         }
 
-        //Create Fireballs
-        GameObject fireballMain = Instantiate(fireballPrefab, bc.fireBallCannonLocations[Random.Range(0, bc.fireBallCannonLocations.Count)].position, Quaternion.identity);
-        GameObject fireballMain = Instantiate(fireballPrefab, bc.fireBallCannonLocations[Random.Range(0, bc.fireBallCannonLocations.Count)].position, Quaternion.identity);
-        GameObject fireballMain = Instantiate(fireballPrefab, bc.fireBallCannonLocations[Random.Range(0, bc.fireBallCannonLocations.Count)].position, Quaternion.identity);
-
-        //Look in front of player
-        Vector3 target = bc.predictPlayerPosition(fireball.GetComponent<fireBallController>().travelSpeed, fireball);
-
-        //offset by 1 in y to hit center
-        target.y += 1;
-        fireball.transform.LookAt(target);
-
-        Debug.DrawLine(fireball.transform.position, target, Color.magenta, 2.0f);
-
-        //Move fireball at player
-        fireball.GetComponent<fireBallController>().fullSpeedAheadCaptain();
     }
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
