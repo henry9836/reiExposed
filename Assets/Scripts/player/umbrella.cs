@@ -32,7 +32,6 @@ public class umbrella : MonoBehaviour
 
     void Update()
     {
-        //if (animator.)
         if (Input.GetMouseButtonDown(0))
         {
             animator.SetTrigger("Attack");
@@ -101,15 +100,33 @@ public class umbrella : MonoBehaviour
 
         if (Physics.Raycast(this.gameObject.transform.position, this.gameObject.transform.forward, out hit, Mathf.Infinity, enemy))
         {
-            float damage = boss.GetComponent<BossController>().IBeanShot(100.0f);
-            GameObject text = Instantiate(damagedText, hit.point, Quaternion.identity);
-            text.transform.GetChild(0).GetComponent<Text>().text = null;
-            text.transform.GetChild(0).GetComponent<Text>().text = Mathf.RoundToInt(damage).ToString();
-            text.transform.LookAt(this.gameObject.transform.position);
-            text.transform.Rotate(new Vector3(0, 180, 0));
+            dodamage(hit.point, 100.0f);
+
         }
 
         //just aim better 
         cooldown = true;
+    }
+
+    public void whack()
+    {
+        Collider[] hitColliders = Physics.OverlapSphere(transform.parent.parent.position, 2.0f, enemy);
+
+        Debug.Log("wak");
+        if (hitColliders.Length != 0)
+        {
+            dodamage(hitColliders[0].ClosestPoint(transform.parent.parent.position), 25.0f);
+        }
+    }
+
+    void dodamage(Vector3 pos, float attackingfor)
+    {
+        float damage = boss.GetComponent<BossController>().IBeanShot(attackingfor);
+
+        GameObject text = Instantiate(damagedText, pos, Quaternion.identity);
+        text.transform.GetChild(0).GetComponent<Text>().text = null;
+        text.transform.GetChild(0).GetComponent<Text>().text = Mathf.RoundToInt(damage).ToString();
+        text.transform.LookAt(cam.transform.position);
+        text.transform.Rotate(new Vector3(0, 180, 0));
     }
 }
