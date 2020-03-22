@@ -32,7 +32,7 @@ public class umbrella : MonoBehaviour
 
     void Update()
     {
-
+        //if (animator.)
         if (Input.GetMouseButtonDown(0))
         {
             animator.SetTrigger("Attack");
