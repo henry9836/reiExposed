@@ -4,11 +4,16 @@ using UnityEngine;
 
 public class PlayerAttack : StateMachineBehaviour
 {
+    private GameObject umbrella;
+   
 
     //OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        umbrella = GameObject.Find("umbrella ella ella");
+        umbrella.GetComponent<umbrella>().whack();
         animator.SetBool("Attacking", true);
+
     }
 
     //OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -19,10 +24,7 @@ public class PlayerAttack : StateMachineBehaviour
             animator.SetTrigger("Exit");
         }
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            animator.SetTrigger("Attack");
-        }
+
     }
 
 
