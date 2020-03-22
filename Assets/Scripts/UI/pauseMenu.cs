@@ -6,12 +6,13 @@ using UnityEngine.UI;
 public class pauseMenu : MonoBehaviour
 {
     public bool paused = false;
-    public GameObject camMove;
+    private GameObject camMove;
 
     public List<GameObject> pauseitems = new List<GameObject>() { };
 
     void Start()
     {
+        camMove = GameObject.Find("camParent");
         for (int i = 0; i < this.gameObject.transform.childCount; i++)
         {
             pauseitems.Add(this.gameObject.transform.GetChild(i).gameObject);

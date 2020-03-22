@@ -44,6 +44,8 @@ public class BossController : MonoBehaviour
 
     public bool animationOverride = false;
     public bool trackPlayer = true;
+    [Range(0.05f, 0.5f)]
+    public float checkPlayerPositionInterval = 0.5f;
     public float turnSpeed = 0.1f;
     public float chargeSpeed = 30.0f;
     public float health;
@@ -61,6 +63,38 @@ public class BossController : MonoBehaviour
     private bool onlyApplyDamageOnce = true;
     private bool deathonce = true;
     private UPDATE_MODE updateMode = UPDATE_MODE.DEFAULT;
+    private Vector3 lastKnownPlayerPosition = Vector3.zero;
+    private float playerCheckTimer = 0.0f;
+
+    public Vector3 predictPlayerPosition(float projectileSpeed, GameObject projectile)
+    {
+        //Positions
+        Vector3 result = Vector3.zero;
+        Vector3 currentPosition = player.transform.position;
+
+        //Get Direction
+        Vector3 directionOfMovement = (currentPosition - lastKnownPlayerPosition).normalized;
+
+        //Get velocity
+        float time = checkPlayerPositionInterval + playerCheckTimer;
+        float distance = Vector3.Distance(currentPosition, lastKnownPlayerPosition);
+        float velocity = distance / time;
+        Vector3 targetVelocity = directionOfMovement * velocity;
+
+
+        //velocity *= velocity;
+
+        //Get Time to hit target
+        float timeToHit = distance / projectileSpeed;
+
+        //Get Predicted Position
+        result = currentPosition + ((directionOfMovement * velocity)*timeToHit)*65.0f;
+
+
+        Debug.DrawRay(projectile.transform.position, result, Color.red, 2.0f);
+
+        return result;
+    }
 
     public void arm(ARMTYPE type, bool arm, float attackDamage, bool _onlyApplyDamageOnce)
     {
@@ -207,6 +241,8 @@ public class BossController : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         player = GameObject.FindGameObjectWithTag("Player");
 
+        lastKnownPlayerPosition = player.transform.position;
+
         if (trackPlayer)
         {
             agent.angularSpeed = 0.0f;
@@ -226,6 +262,14 @@ public class BossController : MonoBehaviour
 
     private void Update()
     {
+
+        playerCheckTimer += Time.deltaTime;
+
+        if (playerCheckTimer > checkPlayerPositionInterval)
+        {
+            lastKnownPlayerPosition = player.transform.position;
+            playerCheckTimer = 0.0f;
+        }
 
         if (updateMode == UPDATE_MODE.DEFAULT)
         {
@@ -309,11 +353,16 @@ public class BossController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+
         if (updateMode == UPDATE_MODE.CHARGE_ATTACK)
         {
-            GetComponent<Animator>().SetBool("Charging", false);
-            animationOverrideFunc(false);
-            updateMode = UPDATE_MODE.DEFAULT;
+            //If not ground
+            if (!other.CompareTag("Ground"))
+            {
+                GetComponent<Animator>().SetBool("Charging", false);
+                animationOverrideFunc(false);
+                updateMode = UPDATE_MODE.DEFAULT;
+            }
         }
     }
 
