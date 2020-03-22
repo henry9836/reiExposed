@@ -2,16 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class pauseMenu : MonoBehaviour
 {
     public bool paused = false;
-    public GameObject camMove;
+    private GameObject camMove;
 
     public List<GameObject> pauseitems = new List<GameObject>() { };
 
     void Start()
     {
+        camMove = GameObject.Find("camParent");
         for (int i = 0; i < this.gameObject.transform.childCount; i++)
         {
             pauseitems.Add(this.gameObject.transform.GetChild(i).gameObject);
@@ -59,4 +61,22 @@ public class pauseMenu : MonoBehaviour
 
     }
 
+    public void loadLVL1()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Time.timeScale = 1.0f;
+        paused = !paused;
+        SceneManager.LoadScene(1);
+
+
+
+    }
+
+    public void menu()
+    {
+        Time.timeScale = 1.0f;
+        paused = !paused;
+        SceneManager.LoadScene(0);
+
+    }
 }

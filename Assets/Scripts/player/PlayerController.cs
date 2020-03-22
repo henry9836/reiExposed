@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class PlayerController : MonoBehaviour
     public float staminaMaxAmount = 100.0f;
     public float staminaRegenSpeed = 1.0f;
 
+    private GameObject staminaUI;
+    private GameObject HPui;
     private GameObject boss;
 
     private void Start()
@@ -18,6 +21,8 @@ public class PlayerController : MonoBehaviour
         staminaAmount = staminaMaxAmount;
         health = maxHealth;
         boss = GameObject.FindGameObjectWithTag("Boss");
+        staminaUI = GameObject.Find("staminaUI");
+        HPui = GameObject.Find("playersHP");
     }
     public void ChangeStamina(float amount)
     {
@@ -31,6 +36,8 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        uiupdate();
+
         if (staminaAmount < staminaMaxAmount)
         {
             staminaAmount += staminaRegenSpeed * Time.deltaTime;
@@ -50,6 +57,13 @@ public class PlayerController : MonoBehaviour
         {
             health -= boss.GetComponent<BossController>().QueryDamage();
         }
+    }
+
+    void uiupdate()
+    {
+        staminaUI.GetComponent<Image>().fillAmount = staminaAmount / staminaMaxAmount;
+        HPui.GetComponent<Image>().fillAmount = health / maxHealth;
+
     }
 
 }

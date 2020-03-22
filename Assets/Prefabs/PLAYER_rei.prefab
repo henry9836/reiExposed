@@ -725,6 +725,7 @@ GameObject:
   - component: {fileID: 7598004138869932468}
   - component: {fileID: 430895194991160818}
   - component: {fileID: 1004456288904568089}
+  - component: {fileID: 1772442104711519932}
   m_Layer: 0
   m_Name: PLAYER_rei
   m_TagString: Player
@@ -826,6 +827,22 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0.95, z: 0}
+--- !u!54 &1772442104711519932
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3792351136253033168}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1001 &5656074975141361930
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -895,15 +912,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 536e51bee09f53f419a1eb59ed2f2aa8, type: 3}
---- !u!4 &794004589008343568 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 536e51bee09f53f419a1eb59ed2f2aa8,
-    type: 3}
-  m_PrefabInstance: {fileID: 5656074975141361930}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4422401996817539075 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 536e51bee09f53f419a1eb59ed2f2aa8,
+    type: 3}
+  m_PrefabInstance: {fileID: 5656074975141361930}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &794004589008343568 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 536e51bee09f53f419a1eb59ed2f2aa8,
     type: 3}
   m_PrefabInstance: {fileID: 5656074975141361930}
   m_PrefabAsset: {fileID: 0}
