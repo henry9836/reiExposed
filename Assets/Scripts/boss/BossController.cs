@@ -42,6 +42,7 @@ public class BossController : MonoBehaviour
     [HideInInspector]
     public float lastUpdatedAttackDamage = 0.0f;
 
+    public bool sleepOverride = false;
     public bool animationOverride = false;
     public bool trackPlayer = true;
     [Range(0.05f, 0.5f)]
@@ -59,6 +60,7 @@ public class BossController : MonoBehaviour
     public List<BoxCollider> rightLegs = new List<BoxCollider>();
     public List<BoxCollider> otherBody = new List<BoxCollider>();
     public List<Transform> fireBallCannonLocations = new List<Transform>();
+   
 
     private bool onlyApplyDamageOnce = true;
     private bool deathonce = true;
@@ -66,6 +68,16 @@ public class BossController : MonoBehaviour
     private Vector3 lastKnownPlayerPosition = Vector3.zero;
     private float playerCheckTimer = 0.0f;
 
+    public void sleepOverrideFunc(bool mode)
+    {
+        sleepOverride = mode;
+
+        if (!mode)
+        {
+            GetComponent<Animator>().SetBool("Idle", false);
+        }
+
+    }
     public Vector3 predictPlayerPosition(float projectileSpeed, GameObject projectile)
     {
         //Positions
@@ -247,7 +259,7 @@ public class BossController : MonoBehaviour
         {
             agent.angularSpeed = 0.0f;
         }
-
+        GetComponent<Animator>().SetBool("Idle", true);
     }
 
     public bool isBossLookingAtPlayer(float thresholdAngle)
@@ -262,57 +274,64 @@ public class BossController : MonoBehaviour
 
     private void Update()
     {
-
-        playerCheckTimer += Time.deltaTime;
-
-        if (playerCheckTimer > checkPlayerPositionInterval)
+        if (!sleepOverride)
         {
-            lastKnownPlayerPosition = player.transform.position;
-            playerCheckTimer = 0.0f;
-        }
+            playerCheckTimer += Time.deltaTime;
 
-        if (updateMode == UPDATE_MODE.DEFAULT)
-        {
-
-            if (trackPlayer && !animationOverride)
+            if (playerCheckTimer > checkPlayerPositionInterval)
             {
-                Vector3 dir = (player.transform.position - transform.position).normalized;
-                Quaternion endRot = Quaternion.LookRotation(dir, transform.up);
-
-
-                if (isBossLookingAtPlayer(angleThresholdBeforeMoving))
-                {
-                    agent.isStopped = false;
-                }
-                else if (!agent.isStopped)
-                {
-                    agent.isStopped = true;
-                }
-
-                //transform.rotation = Quaternion.Lerp(transform.rotation, endRot, 0.005f);
-
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, endRot, turnSpeed * Time.deltaTime);
-
+                lastKnownPlayerPosition = player.transform.position;
+                playerCheckTimer = 0.0f;
             }
 
-            if (deathonce == true)
+            if (updateMode == UPDATE_MODE.DEFAULT)
             {
-                if (health <= 0.0f)
+
+                if (trackPlayer && !animationOverride)
                 {
-                    deathonce = false;
-                    death();
+                    Vector3 dir = (player.transform.position - transform.position).normalized;
+                    Quaternion endRot = Quaternion.LookRotation(dir, transform.up);
+
+
+                    if (isBossLookingAtPlayer(angleThresholdBeforeMoving))
+                    {
+                        agent.isStopped = false;
+                    }
+                    else if (!agent.isStopped)
+                    {
+                        agent.isStopped = true;
+                    }
+
+                    //transform.rotation = Quaternion.Lerp(transform.rotation, endRot, 0.005f);
+
+                    transform.rotation = Quaternion.RotateTowards(transform.rotation, endRot, turnSpeed * Time.deltaTime);
+
+                }
+
+                if (deathonce == true)
+                {
+                    if (health <= 0.0f)
+                    {
+                        deathonce = false;
+                        death();
+                    }
                 }
             }
-        }
-        else if (updateMode == UPDATE_MODE.CHARGE_ATTACK)
-        {
-            transform.Translate(transform.forward * Time.deltaTime * chargeSpeed, Space.World);
+            else if (updateMode == UPDATE_MODE.CHARGE_ATTACK)
+            {
+                transform.Translate(transform.forward * Time.deltaTime * chargeSpeed, Space.World);
+            }
+            else
+            {
+                Debug.LogWarning($"Cannot run boss update as [{updateMode}] has no update behaviour");
+            }
         }
         else
         {
-            Debug.LogWarning($"Cannot run boss update as [{updateMode}] has no update behaviour");
+            agent.isStopped = true;
+            agent.ResetPath();
+            agent.isStopped = false;
         }
-
     }
 
     public float IBeanShot(float damage)
