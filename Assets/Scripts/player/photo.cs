@@ -11,6 +11,8 @@ public class photo : MonoBehaviour
 
     public Animator animator;
 
+    public bool cantake = true;
+
     private void Start()
     {
         if (!enemy)
@@ -22,54 +24,42 @@ public class photo : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetButtonDown("TakePhoto"))
+        if (Input.GetButtonDown("TakePhoto") && cantake == true)
         {
-
             animator.SetTrigger("Photo");
 
-            for (int i = 0; i < enemy.GetComponent<ghostEffect>().ghostbody.Count; i++)
-            {
-
-
-
-                //if (Physics.Linecast(this.gameObject.transform.position, enemy.GetComponent<ghostEffect>().body[i].GetComponent<SkinnedMeshRenderer>().bounds.center))
-                //{
-                //    Debug.DrawLine(this.gameObject.transform.position, enemy.GetComponent<ghostEffect>().body[i].GetComponent<SkinnedMeshRenderer>().bounds.center, Color.red, 5.0f);
-
-                //}
-                //else
-                //{
-                //    Debug.Log("draw");
-                //    Debug.DrawLine(this.gameObject.transform.position, enemy.GetComponent<ghostEffect>().body[i].GetComponent<SkinnedMeshRenderer>().bounds.center, Color.white, 5.0f);
-                //    //remove(i);
-                //}
-
-                Vector3 raycastDir = enemy.GetComponent<ghostEffect>().body[i].GetComponent<SkinnedMeshRenderer>().bounds.center - this.gameObject.transform.position;
-
-
-                RaycastHit hit;
-                if (Physics.Raycast(this.gameObject.transform.position, raycastDir, out hit, Mathf.Infinity, body))
-                {
-                    //Debug.DrawRay(this.gameObject.transform.position, raycastDir, Color.red, 5.0f);
-
-                    if (hit.collider.name == enemy.GetComponent<ghostEffect>().ghostbody[i].name)
-                    {
-                        //Debug.DrawLine(transform.position, hit.point, Color.yellow, 5.0f);
-                        toremove.Add(i);
-                    }
-
-                }
-            }
-
-            while (toremove.Count > 0)
-            {
-                remove(toremove[toremove.Count - 1]);
-                toremove.RemoveAt(toremove.Count - 1);
-            }
 
         }
     }
 
+
+
+    public void take()
+    {
+
+        for (int i = 0; i < enemy.GetComponent<ghostEffect>().ghostbody.Count; i++)
+        {
+            Vector3 raycastDir = enemy.GetComponent<ghostEffect>().body[i].GetComponent<SkinnedMeshRenderer>().bounds.center - this.gameObject.transform.position;
+
+
+            RaycastHit hit;
+            if (Physics.Raycast(this.gameObject.transform.position, raycastDir, out hit, Mathf.Infinity, body))
+            {
+                if (hit.collider.name == enemy.GetComponent<ghostEffect>().ghostbody[i].name)
+                {
+                    toremove.Add(i);
+                }
+            }
+        }
+
+        while (toremove.Count > 0)
+        {
+            remove(toremove[toremove.Count - 1]);
+            toremove.RemoveAt(toremove.Count - 1);
+        }
+
+
+    }
 
     void remove(int i)
     {
