@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class pauseMenu : MonoBehaviour
 {
@@ -60,4 +61,22 @@ public class pauseMenu : MonoBehaviour
 
     }
 
+    public void loadLVL1()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Time.timeScale = 1.0f;
+        paused = !paused;
+        SceneManager.LoadScene(1);
+
+
+
+    }
+
+    public void menu()
+    {
+        Time.timeScale = 1.0f;
+        paused = !paused;
+        SceneManager.LoadScene(0);
+
+    }
 }
