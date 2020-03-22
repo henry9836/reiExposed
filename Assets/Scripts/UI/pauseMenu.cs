@@ -23,7 +23,6 @@ public class pauseMenu : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(Time.timeScale);
 
         if (Input.GetKeyDown(KeyCode.P) == true)
         {
