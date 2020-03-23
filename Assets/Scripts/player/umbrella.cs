@@ -13,6 +13,7 @@ public class umbrella : MonoBehaviour
     public LayerMask enemy;
     public LayerMask ball;
     public GameObject damagedText;
+    public bool ISBLockjing = true;
 
     private PlayerController playercontrol;
     private GameObject cam;
@@ -32,6 +33,8 @@ public class umbrella : MonoBehaviour
 
     void Update()
     {
+        ISBLockjing = false;
+
         if (Input.GetMouseButtonDown(0))
         {
             animator.SetTrigger("Attack");
@@ -67,6 +70,7 @@ public class umbrella : MonoBehaviour
 
     void blocking()
     {
+        ISBLockjing = true;
         //if (would take damage)
         //{ 
         //dont 
