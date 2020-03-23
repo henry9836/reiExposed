@@ -63,6 +63,7 @@ public class BossController : MonoBehaviour
    
 
     private bool onlyApplyDamageOnce = true;
+    private bool alreadyAppliedDamage = false;
     private bool deathonce = true;
     private UPDATE_MODE updateMode = UPDATE_MODE.DEFAULT;
     private Vector3 lastKnownPlayerPosition = Vector3.zero;
@@ -112,6 +113,7 @@ public class BossController : MonoBehaviour
     {
         lastUpdatedAttackDamage = attackDamage;
         onlyApplyDamageOnce = _onlyApplyDamageOnce;
+        alreadyAppliedDamage = false;
         switch (type)
         {
             case ARMTYPE.ARM_LEFT_ARMS:
@@ -218,11 +220,12 @@ public class BossController : MonoBehaviour
     {
         float result = lastUpdatedAttackDamage;
 
-        if (onlyApplyDamageOnce)
+        if (onlyApplyDamageOnce && alreadyAppliedDamage)
         {
             lastUpdatedAttackDamage = 0.0f;
         }
 
+        alreadyAppliedDamage = true;
         return result;
     }
 
@@ -376,8 +379,9 @@ public class BossController : MonoBehaviour
         if (updateMode == UPDATE_MODE.CHARGE_ATTACK)
         {
             //If not ground
-            if (!other.CompareTag("Ground"))
+            if (other.gameObject.layer != LayerMask.NameToLayer("Ground"))
             {
+                Debug.Log("Did not hit gound");
                 GetComponent<Animator>().SetBool("Charging", false);
                 animationOverrideFunc(false);
                 updateMode = UPDATE_MODE.DEFAULT;

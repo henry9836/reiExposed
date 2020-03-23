@@ -7,9 +7,11 @@ public class fireBallController : MonoBehaviour
 
     public float travelSpeed = 5.0f;
     public float damage = 10.0f;
+    public float killOverrideTime = 5.0f;
+
 
     private bool canDie = false;
-
+    private float killTimer = 0.0f;
     public void fullSpeedAheadCaptain()
     {
         StartCoroutine(liveThenDie());
@@ -19,6 +21,14 @@ public class fireBallController : MonoBehaviour
     void Update()
     {
         transform.Translate(transform.forward * Time.deltaTime * travelSpeed, Space.World);
+
+
+        killTimer += Time.deltaTime;
+
+        if (killTimer > killOverrideTime)
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
