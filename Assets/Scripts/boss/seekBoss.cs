@@ -73,7 +73,7 @@ public class seekBoss : StateMachineBehaviour
 
             if (bc.isBossLookingAtPlayer(bc.angleThresholdBeforeMoving))
             {
-                animator.SetTrigger("Slam");
+                animator.SetTrigger("BodySlam");
             }
 
             //switch (attack)
