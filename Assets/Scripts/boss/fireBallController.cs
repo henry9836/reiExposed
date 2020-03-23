@@ -5,7 +5,7 @@ using UnityEngine;
 public class fireBallController : MonoBehaviour
 {
 
-    public float travelSpeed = 10.0f;
+    public float travelSpeed = 5.0f;
     public float damage = 10.0f;
 
     private bool canDie = false;
