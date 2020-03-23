@@ -379,8 +379,9 @@ public class BossController : MonoBehaviour
         if (updateMode == UPDATE_MODE.CHARGE_ATTACK)
         {
             //If not ground
-            if (!other.CompareTag("Ground"))
+            if (other.gameObject.layer != LayerMask.NameToLayer("Ground"))
             {
+                Debug.Log("Did not hit gound");
                 GetComponent<Animator>().SetBool("Charging", false);
                 animationOverrideFunc(false);
                 updateMode = UPDATE_MODE.DEFAULT;
