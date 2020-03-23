@@ -82,7 +82,7 @@ public class movementController : MonoBehaviour
         if (Input.GetButtonDown("Dash"))
         {
             //We are moving in a direction
-            if (moveDir != Vector3.zero)
+            if ((moveDir.x != 0) && (moveDir.z != 0))
             {
                 //move more
                 if (pc.CheckStamina() >= staminaCostDash)
@@ -96,7 +96,7 @@ public class movementController : MonoBehaviour
         //Sprint
         else if (Input.GetButton("Sprint") && isOnGround)
         {
-            if (moveDir != Vector3.zero)
+            if ((moveDir.x != 0) && (moveDir.z != 0))
             {
                 //move a little more
                 if (pc.CheckStamina() >= staminaCostSprint)
@@ -110,7 +110,9 @@ public class movementController : MonoBehaviour
 
         //Animation Off
         //Walking
-        if (moveDir == Vector3.zero)
+        //Debug.Log(moveDir);
+
+        if ((moveDir.x == 0) && (moveDir.z == 0))
         {
             animator.SetBool("walkin", false);
         }
