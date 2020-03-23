@@ -57,6 +57,7 @@ public class PlayerController : MonoBehaviour
         //Damage From Boss
         if (other.gameObject.CompareTag("BossAttackSurface") && !umberalla.GetComponent<umbrella>().ISBLockjing)
         {
+            Debug.Log("I WAS HURT!");
             health -= boss.GetComponent<BossController>().QueryDamage();
         }
         else if (other.gameObject.CompareTag("BossAttackSurface") && umberalla.GetComponent<umbrella>().ISBLockjing)
