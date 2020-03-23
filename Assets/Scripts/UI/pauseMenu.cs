@@ -39,6 +39,8 @@ public class pauseMenu : MonoBehaviour
             {
                 pauseitems[i].SetActive(true);
             }
+            Cursor.visible = true;
+
             Cursor.lockState = CursorLockMode.None;
             camMove.GetComponent<cameraControler>().enabled = false;
             Debug.Log("paused");
@@ -50,6 +52,8 @@ public class pauseMenu : MonoBehaviour
             {
                 pauseitems[i].SetActive(false);
             }
+            Cursor.visible = false;
+
             Cursor.lockState = CursorLockMode.Locked;
             camMove.GetComponent<cameraControler>().enabled = true;
 
@@ -62,6 +66,8 @@ public class pauseMenu : MonoBehaviour
 
     public void loadLVL1()
     {
+        Cursor.visible = false;
+
         Cursor.lockState = CursorLockMode.Locked;
         Time.timeScale = 1.0f;
         paused = !paused;
@@ -73,6 +79,8 @@ public class pauseMenu : MonoBehaviour
 
     public void menu()
     {
+        Cursor.visible = true;
+
         Time.timeScale = 1.0f;
         paused = !paused;
         SceneManager.LoadScene(0);

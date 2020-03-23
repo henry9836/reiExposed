@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     private GameObject staminaUI;
     private GameObject HPui;
     private GameObject boss;
+    private GameObject umberalla;
 
     private void Start()
     {
@@ -23,6 +24,7 @@ public class PlayerController : MonoBehaviour
         boss = GameObject.FindGameObjectWithTag("Boss");
         staminaUI = GameObject.Find("staminaUI");
         HPui = GameObject.Find("playersHP");
+        umberalla = GameObject.Find("umbrella ella ella");
     }
     public void ChangeStamina(float amount)
     {
@@ -53,9 +55,14 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         //Damage From Boss
-        if (other.gameObject.CompareTag("BossAttackSurface"))
+        if (other.gameObject.CompareTag("BossAttackSurface") && !umberalla.GetComponent<umbrella>().ISBLockjing)
         {
             health -= boss.GetComponent<BossController>().QueryDamage();
+        }
+        else if (other.gameObject.CompareTag("BossAttackSurface") && umberalla.GetComponent<umbrella>().ISBLockjing)
+        {
+            umberalla.GetComponent<umbrella>().cooldown = true;
+            boss.GetComponent<BossController>().arm(BossController.ARMTYPE.ARM_ALL, false);
         }
     }
 

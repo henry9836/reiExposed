@@ -10,6 +10,8 @@ public class mainMenu : MonoBehaviour
     public void play()
     {
         SceneManager.LoadScene(1);
+        Cursor.visible = false;
+
     }
 
     public void options()
