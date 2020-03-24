@@ -9,7 +9,6 @@ public class TriggerArea : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log($"Something called {other.gameObject.name} came inside me");
 
         if (other.CompareTag("Player"))
         {
