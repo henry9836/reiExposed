@@ -21,6 +21,8 @@ public class umbrella : MonoBehaviour
     private GameObject umbeaalBone;
     private Animator animator;
 
+    private bool latetest = false;
+  
 
     void Start()
     {
@@ -34,6 +36,7 @@ public class umbrella : MonoBehaviour
     void Update()
     {
         ISBLockjing = false;
+        latetest = false;
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -55,9 +58,15 @@ public class umbrella : MonoBehaviour
                     }
                 }
             }
+            else
+            {
+                animator.SetBool("blocking", false);
+            }
         }
         else
         {
+            animator.SetBool("blocking", false);
+
             cooldowntimer += Time.deltaTime;
             if (cooldowntimer > cooldowntime)
             {
@@ -71,23 +80,16 @@ public class umbrella : MonoBehaviour
     void blocking()
     {
         ISBLockjing = true;
-        //if (would take damage)
-        //{ 
-        //dont 
-        //cooldown = true;
-        //}
+        animator.SetBool("blocking", true);
+        animator.SetBool("alreadyBlocking", true);
+
     }
 
     void firemode()
     {
-        RaycastHit hit;
-        if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, Mathf.Infinity, ball))
-        {
-            this.gameObject.transform.LookAt(hit.point);
-            Debug.DrawLine(hit.point, cam.transform.position);
-        }
 
 
+        latetest = true;
 
 
         if (Input.GetAxis("Fire1") > 0.5f)
@@ -98,11 +100,9 @@ public class umbrella : MonoBehaviour
 
     void bang()
     {
-        Debug.Log("bang");
-
         RaycastHit hit;
 
-        if (Physics.Raycast(this.gameObject.transform.position, this.gameObject.transform.forward, out hit, Mathf.Infinity, enemy))
+        if (Physics.Raycast(umbeaalBone.transform.position, -umbeaalBone.transform.right, out hit, Mathf.Infinity, enemy))
         {
             dodamage(hit.point, 100.0f);
 
@@ -116,7 +116,6 @@ public class umbrella : MonoBehaviour
     {
         Collider[] hitColliders = Physics.OverlapSphere(transform.parent.parent.position, 2.0f, enemy);
 
-        Debug.Log("wak");
         if (hitColliders.Length != 0)
         {
             dodamage(hitColliders[0].ClosestPoint(transform.parent.parent.position), 25.0f);
@@ -132,5 +131,22 @@ public class umbrella : MonoBehaviour
         text.transform.GetChild(0).GetComponent<Text>().text = Mathf.RoundToInt(damage).ToString();
         text.transform.LookAt(cam.transform.position);
         text.transform.Rotate(new Vector3(0, 180, 0));
+    }
+
+    void LateUpdate()
+    {
+        Debug.Log("et");
+        if (latetest == true)
+        {
+            Debug.Log("late");
+            RaycastHit hit;
+            if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, Mathf.Infinity, ball))
+            {
+                
+                umbeaalBone.transform.LookAt(hit.point);
+                umbeaalBone.transform.Rotate(new Vector3(0.0f, 90.0f, 0.0f));
+                Debug.DrawLine(hit.point, cam.transform.position);
+            }
+        }
     }
 }

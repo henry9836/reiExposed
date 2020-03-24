@@ -165,13 +165,14 @@ public class cameraControler : MonoBehaviour
         if (Physics.Raycast(origin, direction, out hit, zOffset, obstacleLayers))
         {
             Debug.DrawLine(origin, hit.point, Color.yellow);
+
             if (ADS == true)
             {
                 aimDistance = hit.distance;
             }
             else
             {
-                hitDistance = hit.distance;
+                hitDistance =  hit.distance;
             }
         }
         else

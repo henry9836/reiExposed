@@ -28,11 +28,38 @@ public class seekBoss : StateMachineBehaviour
 
     void PickAttack()
     {
-        //Pick a random attack
-        attack = (BossController.bossAttacks)Random.Range(0, (int)BossController.bossAttacks.FIREBALL + 1);
+        //Filter attacks from distances
+        List<BossController.bossAttacks> validAttacks = new List<BossController.bossAttacks>();
 
-        //Query attack range from boss controller
-        bc.neededAttackRange = bc.attackTriggerRanges[(int)attack];
+        float currentDistance = Vector3.Distance(bc.gameObject.transform.position, player.transform.position);
+
+        for (int i = 0; i < (int)BossController.bossAttacks.FIREBALL; i++)
+        {
+            //if we are close enough push onto list but not too close
+            if ((bc.attackTriggerRanges[i].x < currentDistance) && (bc.attackTriggerRanges[i].y >= currentDistance))
+            {
+                validAttacks.Add((BossController.bossAttacks)i);
+            }
+        }
+
+        //If we have a valid attack
+        if (validAttacks.Count > 0)
+        {
+
+            //From the valid attacks pick a random attack
+            attack = validAttacks[Random.Range(0, validAttacks.Count)];
+
+        }
+
+        //Fallback we don't have an attack
+        else
+        {
+            //Pick a random attack
+            attack = (BossController.bossAttacks)Random.Range(0, (int)BossController.bossAttacks.FIREBALL + 1);
+        }
+
+        //Query needed attack range from boss controller
+        bc.neededAttackRange = bc.attackTriggerRanges[(int)attack].y;
         needAttackRange = bc.neededAttackRange;
         bc.animationOverrideFunc(false);
 
@@ -73,7 +100,7 @@ public class seekBoss : StateMachineBehaviour
 
             //if (bc.isBossLookingAtPlayer(bc.angleThresholdBeforeMoving))
             //{
-            //    animator.SetTrigger("Fireball");
+            //    animator.SetBool("Charging", true);
             //}
 
             switch (attack)
