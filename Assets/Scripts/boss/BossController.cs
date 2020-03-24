@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
-
+using UnityEngine.Events;
 public class BossController : MonoBehaviour
 {
     public enum bossAttacks
@@ -60,6 +60,8 @@ public class BossController : MonoBehaviour
     public List<BoxCollider> rightLegs = new List<BoxCollider>();
     public List<BoxCollider> otherBody = new List<BoxCollider>();
     public List<Transform> fireBallCannonLocations = new List<Transform>();
+
+    public UnityEvent onDeath;
    
 
     private bool onlyApplyDamageOnce = true;
@@ -370,10 +372,8 @@ public class BossController : MonoBehaviour
 
     void death()
     {
+        onDeath.Invoke();
         this.gameObject.GetComponent<ghostEffect>().UIHP.GetComponent<Image>().fillAmount = 0.0f;
-        Destroy(this.gameObject);
-
-
     }
 
     private void OnTriggerEnter(Collider other)
