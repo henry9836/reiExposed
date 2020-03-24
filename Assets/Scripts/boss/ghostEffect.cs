@@ -90,7 +90,6 @@ public class ghostEffect : MonoBehaviour
         if ((float)deactivatedghostbody.Count / (float)ghostbody.Count > 0.92f && (float)deactivatedghostbody.Count / (float)ghostbody.Count < 0.99999999f)
         {
             finish();
-            Debug.Log("complete");
         }
     }
 

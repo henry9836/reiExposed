@@ -349,20 +349,17 @@ public class BossController : MonoBehaviour
             health -= damage;
 
             delt = damage;
-            Debug.Log("full damage");
         }
         else if ((health / maxHealth) > (this.gameObject.GetComponent<ghostEffect>().ghostpersent))
         {
             health = maxHealth * (this.gameObject.GetComponent<ghostEffect>().ghostpersent);
 
             delt = startHealth - health;
-            Debug.Log("not full damage");
             this.gameObject.GetComponent<ghostEffect>().shakeIcon();
         }
         else
         {
             delt = 0.0f;
-            Debug.Log("no damage");
             this.gameObject.GetComponent<ghostEffect>().shakeIcon();
 
         }
@@ -384,7 +381,6 @@ public class BossController : MonoBehaviour
             //If not ground
             if (other.gameObject.layer != LayerMask.NameToLayer("Ground"))
             {
-                Debug.Log("Did not hit gound");
                 GetComponent<Animator>().SetBool("Charging", false);
                 animationOverrideFunc(false);
                 updateMode = UPDATE_MODE.DEFAULT;

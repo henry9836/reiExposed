@@ -43,7 +43,6 @@ public class pauseMenu : MonoBehaviour
 
             Cursor.lockState = CursorLockMode.None;
             camMove.GetComponent<cameraControler>().enabled = false;
-            Debug.Log("paused");
             Time.timeScale = 0.0f;
         }
         else
@@ -57,7 +56,6 @@ public class pauseMenu : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
             camMove.GetComponent<cameraControler>().enabled = true;
 
-            Debug.Log("unpaused");
             Time.timeScale = 1.0f;
         }
 
