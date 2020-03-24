@@ -39,7 +39,7 @@ public class ghostEffect : MonoBehaviour
         UIunlocked = GameObject.Find("ghost_unlocked");
         UIunlocked.SetActive(false);
         startpos = UILocked.GetComponent<RectTransform>().anchoredPosition;
-        leftpos = startpos + new Vector2(-3.0f, 0.0f);
+        leftpos = startpos + new Vector2(-4.0f, 0.0f);
         rightpos = startpos + new Vector2(3.0f, 0.0f);
 
         for (int i = 0; i < this.gameObject.transform.childCount; i++)
@@ -117,7 +117,7 @@ public class ghostEffect : MonoBehaviour
 
     public IEnumerator shake()
     {
-
+        UILocked.GetComponent<Image>().color = Color.red;
 
         for (float i = 0; i < 1.0f; i += Time.unscaledDeltaTime * shakespeed)
         {
@@ -139,6 +139,9 @@ public class ghostEffect : MonoBehaviour
             UILocked.GetComponent<RectTransform>().anchoredPosition = Vector2.Lerp(rightpos, startpos, i);
             yield return null;
         }
+
+        UILocked.GetComponent<Image>().color = Color.white;
+
         yield return null;
     }
 }
