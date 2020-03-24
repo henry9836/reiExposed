@@ -14,10 +14,19 @@ public class ghostEffect : MonoBehaviour
     public List<GameObject> deactivatedghostbody = new List<GameObject>() { };
 
 
+    public GameObject UILocked;
+    public GameObject UIunlocked;
+
     public GameObject UIghost;
     public GameObject UIHP;
 
     public float ghostpersent;
+
+    private Vector2 startpos;
+    private Vector2 leftpos;
+    private Vector2 rightpos;
+    private float shakespeed = 20.0f;
+
 
 
 
@@ -25,6 +34,14 @@ public class ghostEffect : MonoBehaviour
 
     void Start()
     {
+
+        UILocked = GameObject.Find("ghost_locked");
+        UIunlocked = GameObject.Find("ghost_unlocked");
+        UIunlocked.SetActive(false);
+        startpos = UILocked.GetComponent<RectTransform>().anchoredPosition;
+        leftpos = startpos + new Vector2(-4.0f, 0.0f);
+        rightpos = startpos + new Vector2(3.0f, 0.0f);
+
         for (int i = 0; i < this.gameObject.transform.childCount; i++)
         {
             if (this.gameObject.transform.GetChild(i).tag == "body")
@@ -73,12 +90,14 @@ public class ghostEffect : MonoBehaviour
         if ((float)deactivatedghostbody.Count / (float)ghostbody.Count > 0.92f && (float)deactivatedghostbody.Count / (float)ghostbody.Count < 0.99999999f)
         {
             finish();
-            Debug.Log("complete");
         }
     }
 
     void finish()
     {
+        UILocked.SetActive(false);
+        UIunlocked.SetActive(true);
+
         for (int i = 0; i < ghostbody.Count; i++)
         {
             if (ghostbody[i].GetComponent<ParticleSystem>())
@@ -89,5 +108,39 @@ public class ghostEffect : MonoBehaviour
             }
         }
     }
+    public void shakeIcon()
+    {
+        StartCoroutine(shake());
+    
+    }
 
+    public IEnumerator shake()
+    {
+        UILocked.GetComponent<Image>().color = Color.red;
+
+        for (float i = 0; i < 1.0f; i += Time.unscaledDeltaTime * shakespeed)
+        {
+            UILocked.GetComponent<RectTransform>().anchoredPosition = Vector2.Lerp(startpos, rightpos, i);
+            yield return null;
+        }
+        for (float i = 0; i < 1.0f; i += Time.unscaledDeltaTime * shakespeed)
+        {
+            UILocked.GetComponent<RectTransform>().anchoredPosition = Vector2.Lerp(rightpos, leftpos, i);
+            yield return null;
+        }
+        for (float i = 0; i < 1.0f; i += Time.unscaledDeltaTime * shakespeed)
+        {
+            UILocked.GetComponent<RectTransform>().anchoredPosition = Vector2.Lerp(leftpos, rightpos, i);
+            yield return null;
+        }
+        for (float i = 0; i < 1.0f; i += Time.unscaledDeltaTime * shakespeed)
+        {
+            UILocked.GetComponent<RectTransform>().anchoredPosition = Vector2.Lerp(rightpos, startpos, i);
+            yield return null;
+        }
+
+        UILocked.GetComponent<Image>().color = Color.white;
+
+        yield return null;
+    }
 }

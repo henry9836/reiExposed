@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
-
+using UnityEngine.Events;
 public class BossController : MonoBehaviour
 {
     public enum bossAttacks
@@ -53,16 +53,19 @@ public class BossController : MonoBehaviour
     public float maxHealth = 1000.0f;
     [Range(0.0f, 1.0f)]
     public float angleThresholdBeforeMoving = 0.95f;
-    public List<float> attackTriggerRanges = new List<float>();
+    public List<Vector2> attackTriggerRanges = new List<Vector2>();
     public List<BoxCollider> leftArms = new List<BoxCollider>();
     public List<BoxCollider> rightArms = new List<BoxCollider>();
     public List<BoxCollider> leftLegs = new List<BoxCollider>();
     public List<BoxCollider> rightLegs = new List<BoxCollider>();
     public List<BoxCollider> otherBody = new List<BoxCollider>();
     public List<Transform> fireBallCannonLocations = new List<Transform>();
+
+    public UnityEvent onDeath;
    
 
     private bool onlyApplyDamageOnce = true;
+    private bool alreadyAppliedDamage = false;
     private bool deathonce = true;
     private UPDATE_MODE updateMode = UPDATE_MODE.DEFAULT;
     private Vector3 lastKnownPlayerPosition = Vector3.zero;
@@ -112,6 +115,7 @@ public class BossController : MonoBehaviour
     {
         lastUpdatedAttackDamage = attackDamage;
         onlyApplyDamageOnce = _onlyApplyDamageOnce;
+        alreadyAppliedDamage = false;
         switch (type)
         {
             case ARMTYPE.ARM_LEFT_ARMS:
@@ -218,11 +222,12 @@ public class BossController : MonoBehaviour
     {
         float result = lastUpdatedAttackDamage;
 
-        if (onlyApplyDamageOnce)
+        if (onlyApplyDamageOnce && alreadyAppliedDamage)
         {
             lastUpdatedAttackDamage = 0.0f;
         }
 
+        alreadyAppliedDamage = true;
         return result;
     }
 
@@ -344,19 +349,19 @@ public class BossController : MonoBehaviour
             health -= damage;
 
             delt = damage;
-            Debug.Log("full damage");
         }
         else if ((health / maxHealth) > (this.gameObject.GetComponent<ghostEffect>().ghostpersent))
         {
             health = maxHealth * (this.gameObject.GetComponent<ghostEffect>().ghostpersent);
 
             delt = startHealth - health;
-            Debug.Log("not full damage");
+            this.gameObject.GetComponent<ghostEffect>().shakeIcon();
         }
         else
         {
             delt = 0.0f;
-            Debug.Log("no damage");
+            this.gameObject.GetComponent<ghostEffect>().shakeIcon();
+
         }
 
         return (delt);
@@ -364,10 +369,8 @@ public class BossController : MonoBehaviour
 
     void death()
     {
+        onDeath.Invoke();
         this.gameObject.GetComponent<ghostEffect>().UIHP.GetComponent<Image>().fillAmount = 0.0f;
-        Destroy(this.gameObject);
-
-
     }
 
     private void OnTriggerEnter(Collider other)
@@ -376,7 +379,7 @@ public class BossController : MonoBehaviour
         if (updateMode == UPDATE_MODE.CHARGE_ATTACK)
         {
             //If not ground
-            if (!other.CompareTag("Ground"))
+            if (other.gameObject.layer != LayerMask.NameToLayer("Ground"))
             {
                 GetComponent<Animator>().SetBool("Charging", false);
                 animationOverrideFunc(false);
