@@ -102,8 +102,6 @@ public class umbrella : MonoBehaviour
 
     void bang()
     {
-        Debug.Log("bang");
-        animator.SetTrigger("shoot");
         RaycastHit hit;
 
         if (Physics.Raycast(this.gameObject.transform.position, this.gameObject.transform.forward, out hit, Mathf.Infinity, enemy))
@@ -120,7 +118,6 @@ public class umbrella : MonoBehaviour
     {
         Collider[] hitColliders = Physics.OverlapSphere(transform.parent.parent.position, 2.0f, enemy);
 
-        Debug.Log("wak");
         if (hitColliders.Length != 0)
         {
             dodamage(hitColliders[0].ClosestPoint(transform.parent.parent.position), 25.0f);
