@@ -166,7 +166,6 @@ public class cameraControler : MonoBehaviour
         {
             Debug.DrawLine(origin, hit.point, Color.yellow);
 
-            Debug.Log(hit.collider.name);
             if (ADS == true)
             {
                 aimDistance = hit.distance;
