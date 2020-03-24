@@ -55,9 +55,15 @@ public class umbrella : MonoBehaviour
                     }
                 }
             }
+            else
+            {
+                animator.SetBool("blocking", false);
+            }
         }
         else
         {
+            animator.SetBool("blocking", false);
+
             cooldowntimer += Time.deltaTime;
             if (cooldowntimer > cooldowntime)
             {
@@ -71,11 +77,9 @@ public class umbrella : MonoBehaviour
     void blocking()
     {
         ISBLockjing = true;
-        //if (would take damage)
-        //{ 
-        //dont 
-        //cooldown = true;
-        //}
+        animator.SetBool("blocking", true);
+        animator.SetBool("alreadyBlocking", true);
+
     }
 
     void firemode()
@@ -99,7 +103,7 @@ public class umbrella : MonoBehaviour
     void bang()
     {
         Debug.Log("bang");
-
+        animator.SetTrigger("shoot");
         RaycastHit hit;
 
         if (Physics.Raycast(this.gameObject.transform.position, this.gameObject.transform.forward, out hit, Mathf.Infinity, enemy))

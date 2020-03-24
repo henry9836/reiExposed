@@ -355,11 +355,14 @@ public class BossController : MonoBehaviour
 
             delt = startHealth - health;
             Debug.Log("not full damage");
+            this.gameObject.GetComponent<ghostEffect>().shakeIcon();
         }
         else
         {
             delt = 0.0f;
             Debug.Log("no damage");
+            this.gameObject.GetComponent<ghostEffect>().shakeIcon();
+
         }
 
         return (delt);
