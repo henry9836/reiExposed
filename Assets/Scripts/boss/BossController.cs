@@ -53,7 +53,7 @@ public class BossController : MonoBehaviour
     public float maxHealth = 1000.0f;
     [Range(0.0f, 1.0f)]
     public float angleThresholdBeforeMoving = 0.95f;
-    public List<float> attackTriggerRanges = new List<float>();
+    public List<Vector2> attackTriggerRanges = new List<Vector2>();
     public List<BoxCollider> leftArms = new List<BoxCollider>();
     public List<BoxCollider> rightArms = new List<BoxCollider>();
     public List<BoxCollider> leftLegs = new List<BoxCollider>();
