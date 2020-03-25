@@ -118,6 +118,9 @@ public class PlayerController : MonoBehaviour
         deathUI[2].SetActive(true);
         deathUI[3].SetActive(true);
 
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
         yield return null;
     }
 
