@@ -416,6 +416,12 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.5007774, y: 2.257327, z: 0.14606923}
   m_Center: {x: 0.00000047683713, y: 1.1286635, z: 0.03138866}
+--- !u!1 &554546400 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 142924574931785442, guid: 0859bf84475105f4f9c45aea8c87e720,
+    type: 3}
+  m_PrefabInstance: {fileID: 1899926798}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &662880076 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1771287582103148000, guid: 33cf2a499323a6444ad7b46674186a81,
@@ -1558,6 +1564,38 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1450347570 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 785806635567819428, guid: 0859bf84475105f4f9c45aea8c87e720,
+    type: 3}
+  m_PrefabInstance: {fileID: 1899926798}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1450347572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1450347570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f65a5a14f4dba7647a5e01663930a323, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canfire: 1
+  blockingStamina: 0
+  cooldown: 0
+  cooldowntime: 2
+  cooldowntimer: 0
+  enemy:
+    serializedVersion: 2
+    m_Bits: 8192
+  ball:
+    serializedVersion: 2
+    m_Bits: 1024
+  damagedText: {fileID: 7401280080073061358, guid: febedf0338a1da8438f0280ae306b1d0,
+    type: 3}
+  ISBLockjing: 1
 --- !u!1 &1546395964
 GameObject:
   m_ObjectHideFlags: 0
@@ -1779,6 +1817,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 785806635567819428, guid: 0859bf84475105f4f9c45aea8c87e720,
+        type: 3}
+      propertyPath: m_Name
+      value: umbrella ella ella
+      objectReference: {fileID: 0}
     - target: {fileID: 1732612300632698222, guid: 0859bf84475105f4f9c45aea8c87e720,
         type: 3}
       propertyPath: enemy
@@ -1788,6 +1831,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PLAYER_rei2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2913855001504254603, guid: 0859bf84475105f4f9c45aea8c87e720,
+        type: 3}
+      propertyPath: enemy
+      value: 
+      objectReference: {fileID: 1092508081}
+    - target: {fileID: 2913855001504254603, guid: 0859bf84475105f4f9c45aea8c87e720,
+        type: 3}
+      propertyPath: body.m_Bits
+      value: 2048
       objectReference: {fileID: 0}
     - target: {fileID: 3339494445054939100, guid: 0859bf84475105f4f9c45aea8c87e720,
         type: 3}
@@ -1849,7 +1902,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 5127853965938430895, guid: 0859bf84475105f4f9c45aea8c87e720,
+        type: 3}
+      propertyPath: charcterModel
+      value: 
+      objectReference: {fileID: 554546400}
+    m_RemovedComponents:
+    - {fileID: 6425122905020549515, guid: 0859bf84475105f4f9c45aea8c87e720, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 0859bf84475105f4f9c45aea8c87e720, type: 3}
 --- !u!1 &1978969731
 GameObject:
