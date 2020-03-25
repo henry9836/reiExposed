@@ -17,6 +17,10 @@ public class PlayerController : MonoBehaviour
     private GameObject boss;
     private GameObject umberalla;
 
+    private List<GameObject> deathUI = new List<GameObject>() { };
+
+    public bool dead = false;
+
     private void Start()
     {
         staminaAmount = staminaMaxAmount;
@@ -25,6 +29,12 @@ public class PlayerController : MonoBehaviour
         staminaUI = GameObject.Find("staminaUI");
         HPui = GameObject.Find("playersHP");
         umberalla = GameObject.Find("umbrella ella ella");
+        GameObject temp = GameObject.Find("deathUI");
+
+        for (int i = 0; i < temp.transform.childCount; i++)
+        {
+            deathUI.Add(temp.transform.GetChild(i).gameObject);
+        }
     }
     public void ChangeStamina(float amount)
     {
@@ -54,15 +64,25 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //Damage From Boss
-        if (other.gameObject.CompareTag("BossAttackSurface") && !umberalla.GetComponent<umbrella>().ISBLockjing)
+        if (dead == false)
         {
-            health -= boss.GetComponent<BossController>().QueryDamage();
-        }
-        else if (other.gameObject.CompareTag("BossAttackSurface") && umberalla.GetComponent<umbrella>().ISBLockjing)
-        {
-            umberalla.GetComponent<umbrella>().cooldown = true;
-            boss.GetComponent<BossController>().arm(BossController.ARMTYPE.ARM_ALL, false);
+            //Damage From Boss
+            if (other.gameObject.CompareTag("BossAttackSurface") && !umberalla.GetComponent<umbrella>().ISBLockjing)
+            {
+                health -= boss.GetComponent<BossController>().QueryDamage();
+            }
+            else if (other.gameObject.CompareTag("BossAttackSurface") && umberalla.GetComponent<umbrella>().ISBLockjing)
+            {
+                umberalla.GetComponent<umbrella>().cooldown = true;
+                boss.GetComponent<BossController>().arm(BossController.ARMTYPE.ARM_ALL, false);
+            }
+
+            if (health <= 0.0f)
+            {
+                this.gameObject.GetComponent<Animator>().SetTrigger("deathT");
+                dead = true;
+                StartCoroutine(death());
+            }
         }
     }
 
@@ -71,6 +91,34 @@ public class PlayerController : MonoBehaviour
         staminaUI.GetComponent<Image>().fillAmount = staminaAmount / staminaMaxAmount;
         HPui.GetComponent<Image>().fillAmount = health / maxHealth;
 
+    }
+
+
+    public IEnumerator death()
+    {
+        deathUI[0].SetActive(true);
+
+        for (float i = 0.0f; i < 1.0f; i += Time.unscaledDeltaTime * 0.4f)
+        {
+            deathUI[0].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, Mathf.Lerp(0.0f, 1.0f, i));
+
+            yield return null;
+        }
+        deathUI[0].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 1.0f);
+
+        yield return new WaitForSeconds(0.5f);
+
+        deathUI[1].SetActive(true);
+
+        yield return new WaitForSeconds(0.3f);
+        deathUI[1].SetActive(false);
+        yield return new WaitForSeconds(1.0f);
+
+
+        deathUI[2].SetActive(true);
+        deathUI[3].SetActive(true);
+
+        yield return null;
     }
 
 }
