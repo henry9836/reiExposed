@@ -6,6 +6,10 @@ using UnityEngine.SceneManagement;
 
 public class mainMenu : MonoBehaviour
 {
+    private void Start()
+    {
+        Cursor.lockState = CursorLockMode.None;
+    }
 
     public void play()
     {
@@ -16,7 +20,7 @@ public class mainMenu : MonoBehaviour
 
     public void options()
     { 
-        //SceneManager.LoadScene()
+
     }
 
     public void credits()

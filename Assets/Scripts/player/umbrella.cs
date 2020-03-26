@@ -135,10 +135,8 @@ public class umbrella : MonoBehaviour
 
     void LateUpdate()
     {
-        Debug.Log("et");
         if (latetest == true)
         {
-            Debug.Log("late");
             RaycastHit hit;
             if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, Mathf.Infinity, ball))
             {
