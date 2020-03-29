@@ -43,6 +43,10 @@ public class movementController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GetComponent<PlayerController>().dead == true)
+        {
+            return;
+        }
 
         charcterModel.transform.rotation = camParent.transform.rotation;
 

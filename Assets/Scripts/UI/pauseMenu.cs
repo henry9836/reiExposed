@@ -24,7 +24,7 @@ public class pauseMenu : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.P) == true)
+        if (Input.GetButtonDown("Pause") == true)
         {
             pause();
         }
