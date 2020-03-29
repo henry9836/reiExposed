@@ -282,16 +282,23 @@ public class BossController : MonoBehaviour
         if (!sleepOverride)
         {
 
-            if (health > 0)
+            playerCheckTimer += Time.deltaTime;
+
+            if (playerCheckTimer > checkPlayerPositionInterval)
             {
+                lastKnownPlayerPosition = player.transform.position;
+                playerCheckTimer = 0.0f;
+            }
 
-                playerCheckTimer += Time.deltaTime;
-
-                if (playerCheckTimer > checkPlayerPositionInterval)
+            if (deathonce)
+            {
+                if (health <= 0.0f)
                 {
-                    lastKnownPlayerPosition = player.transform.position;
-                    playerCheckTimer = 0.0f;
+                    deathonce = false;
+                    death();
+                    return;
                 }
+
 
                 if (updateMode == UPDATE_MODE.DEFAULT)
                 {
@@ -317,14 +324,7 @@ public class BossController : MonoBehaviour
 
                     }
 
-                    if (deathonce == true)
-                    {
-                        if (health <= 0.0f)
-                        {
-                            deathonce = false;
-                            death();
-                        }
-                    }
+
                 }
                 else if (updateMode == UPDATE_MODE.CHARGE_ATTACK)
                 {
@@ -334,13 +334,6 @@ public class BossController : MonoBehaviour
                 {
                     Debug.LogWarning($"Cannot run boss update as [{updateMode}] has no update behaviour");
                 }
-            }
-            else
-            {
-                GetComponent<Animator>().SetTrigger("Dead");
-                agent.isStopped = true;
-                agent.ResetPath();
-                agent.isStopped = false;
             }
         }
         else
@@ -382,6 +375,10 @@ public class BossController : MonoBehaviour
     void death()
     {
         onDeath.Invoke();
+        GetComponent<Animator>().SetTrigger("Dead");
+        agent.isStopped = true;
+        agent.ResetPath();
+        agent.isStopped = false;
         this.gameObject.GetComponent<ghostEffect>().UIHP.GetComponent<Image>().fillAmount = 0.0f;
     }
 

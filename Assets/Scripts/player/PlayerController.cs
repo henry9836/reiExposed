@@ -70,13 +70,11 @@ public class PlayerController : MonoBehaviour
             if (other.gameObject.CompareTag("BossAttackSurface") && !umberalla.GetComponent<umbrella>().ISBLockjing)
             {
 
-                Debug.Log($"Boss Hit me with {other.gameObject.name}");
 
                 health -= boss.GetComponent<BossController>().QueryDamage();
             }
             else if (other.gameObject.CompareTag("BossAttackSurface") && umberalla.GetComponent<umbrella>().ISBLockjing)
             {
-                Debug.Log($"Boss Hit me with {other.gameObject.name} but I blocked it");
 
                 umberalla.GetComponent<umbrella>().cooldown = true;
                 boss.GetComponent<BossController>().arm(BossController.ARMTYPE.ARM_ALL, false);
