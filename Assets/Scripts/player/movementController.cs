@@ -28,6 +28,11 @@ public class movementController : MonoBehaviour
     private float dashThresholdCeiling = 0.5f;
     private float dashTimer = 0.0f;
 
+    private bool jumponce = false;
+
+    private bool previousState = true;
+    private bool currentState = true;
+
     private void Start()
     {
         ch = GetComponent<CharacterController>();
@@ -38,6 +43,21 @@ public class movementController : MonoBehaviour
     private void FixedUpdate()
     {
         isOnGround = Physics.CheckSphere(feet.position, feetradius, groundLayer);
+        currentState = isOnGround;
+        if (currentState != previousState)
+        {
+            if (currentState == true)
+            {
+                animator.SetTrigger("jumpLand");
+            }
+
+            if (currentState == false)
+            {
+                animator.SetTrigger("jumpUp");
+            }
+            //doiff
+        }
+        previousState = isOnGround;
     }
 
     // Update is called once per frame
@@ -61,10 +81,19 @@ public class movementController : MonoBehaviour
             //Apply Gravity
             moveDir.y -= gravity * Time.deltaTime;
 
+
             //Glide if falling and holding jump
             if (Input.GetButton("Jump") && (moveDir.y < 0))
             {
                 moveDir.y = Mathf.Clamp((moveDir.y), -maxFallSpeedWhileGliding, 0.0f);
+                animator.SetTrigger("gliding 0");
+                animator.ResetTrigger("gliding 1");
+            }
+            else
+            {
+                animator.SetTrigger("gliding 1");
+                animator.ResetTrigger("gliding 0");
+
             }
 
 
@@ -91,7 +120,7 @@ public class movementController : MonoBehaviour
                 //move more
                 if (pc.CheckStamina() >= staminaCostDash)
                 {
-                    moveDir += new Vector3(moveDir.x * dashDistance, moveDir.y, moveDir.z * dashDistance);
+                    moveDir += new Vector3(moveDir.x * dashDistance, 0.0f, moveDir.z * dashDistance);
                     pc.ChangeStamina(-staminaCostDash);
                 }
             }
@@ -106,7 +135,7 @@ public class movementController : MonoBehaviour
                 if (pc.CheckStamina() >= staminaCostSprint)
                 {
                     pc.ChangeStamina(-staminaCostSprint);
-                    moveDir += new Vector3(moveDir.x * sprintSpeedMultipler, moveDir.y, moveDir.z * sprintSpeedMultipler);
+                    moveDir += new Vector3(moveDir.x * sprintSpeedMultipler, 0.0f, moveDir.z * sprintSpeedMultipler);
                     animator.SetBool("Running", true);
                 }
             }
