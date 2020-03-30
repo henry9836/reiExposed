@@ -46,7 +46,7 @@ public class fireBallController : MonoBehaviour
 
     IEnumerator liveThenDie()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.1f);
         canDie = true;
         yield return null;
     }

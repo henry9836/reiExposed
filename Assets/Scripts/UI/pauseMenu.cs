@@ -23,11 +23,17 @@ public class pauseMenu : MonoBehaviour
 
     void Update()
     {
-
-        if (Input.GetButtonDown("Pause") == true)
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.P))
         {
             pause();
         }
+#else
+        if (Input.GetButtonDown("Pause"))
+        {
+            pause();
+        }
+#endif
     }
 
     public void pause()
