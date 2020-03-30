@@ -120,7 +120,7 @@ public class movementController : MonoBehaviour
                 //move more
                 if (pc.CheckStamina() >= staminaCostDash)
                 {
-                    moveDir += new Vector3(moveDir.x * dashDistance, moveDir.y, moveDir.z * dashDistance);
+                    moveDir += new Vector3(moveDir.x * dashDistance, 0.0f, moveDir.z * dashDistance);
                     pc.ChangeStamina(-staminaCostDash);
                 }
             }
@@ -135,7 +135,7 @@ public class movementController : MonoBehaviour
                 if (pc.CheckStamina() >= staminaCostSprint)
                 {
                     pc.ChangeStamina(-staminaCostSprint);
-                    moveDir += new Vector3(moveDir.x * sprintSpeedMultipler, moveDir.y, moveDir.z * sprintSpeedMultipler);
+                    moveDir += new Vector3(moveDir.x * sprintSpeedMultipler, 0.0f, moveDir.z * sprintSpeedMultipler);
                     animator.SetBool("Running", true);
                 }
             }

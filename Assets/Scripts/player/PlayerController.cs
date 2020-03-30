@@ -15,7 +15,8 @@ public class PlayerController : MonoBehaviour
     private GameObject staminaUI;
     private GameObject HPui;
     private GameObject boss;
-    private GameObject umberalla;
+    [HideInInspector]
+    public GameObject umberalla;
 
     private List<GameObject> deathUI = new List<GameObject>() { };
 
