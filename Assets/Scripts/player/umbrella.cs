@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.VFX;
 
 public class umbrella : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class umbrella : MonoBehaviour
     private GameObject boss;
     private GameObject umbeaalBone;
     private Animator animator;
+    private GameObject VFX;
 
     private bool latetest = false;
   
@@ -31,6 +33,9 @@ public class umbrella : MonoBehaviour
         boss = GameObject.Find("Boss");
         umbeaalBone = GameObject.Find("rei_umbrella");
         animator = playercontrol.gameObject.GetComponent<Animator>();
+        VFX = GameObject.Find("umbreallaVFX");
+        VFX.GetComponent<VisualEffect>().SetFloat("timer", 0.0f);
+
     }
 
     void Update()
@@ -41,6 +46,9 @@ public class umbrella : MonoBehaviour
         {
             animator.SetTrigger("Attack");
         }
+
+        VFX.GetComponent<VisualEffect>().SetFloat("timer", 0.0f);
+
 
         if (cooldown == false)
         {
@@ -85,10 +93,8 @@ public class umbrella : MonoBehaviour
 
     void firemode()
     {
-
-
         latetest = true;
-
+        VFX.GetComponent<VisualEffect>().SetFloat("timer", 1.0f);
 
         if (Input.GetAxis("Fire1") > 0.5f)
         {
