@@ -43,7 +43,7 @@ public class seekBoss : StateMachineBehaviour
         }
 
         //If we have a valid attack
-        if (validAttacks.Count > 0)
+        if (validAttacks.Count > 0) 
         {
 
             //From the valid attacks pick a random attack

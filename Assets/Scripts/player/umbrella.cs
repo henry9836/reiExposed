@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class umbrella : MonoBehaviour
 {
-    public bool canfire = true;
+    public bool canfire = false;
     public float blockingStamina;
     public bool cooldown = false;
     public float cooldowntime = 2.0f;
@@ -13,7 +13,7 @@ public class umbrella : MonoBehaviour
     public LayerMask enemy;
     public LayerMask ball;
     public GameObject damagedText;
-    public bool ISBLockjing = true;
+    public bool ISBLockjing = false;
 
     private PlayerController playercontrol;
     private GameObject cam;
@@ -35,7 +35,6 @@ public class umbrella : MonoBehaviour
 
     void Update()
     {
-        ISBLockjing = false;
         latetest = false;
 
         if (Input.GetMouseButtonDown(0))
@@ -79,7 +78,6 @@ public class umbrella : MonoBehaviour
 
     void blocking()
     {
-        ISBLockjing = true;
         animator.SetBool("blocking", true);
         animator.SetBool("alreadyBlocking", true);
 

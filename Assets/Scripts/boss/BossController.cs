@@ -281,6 +281,7 @@ public class BossController : MonoBehaviour
     {
         if (!sleepOverride)
         {
+
             playerCheckTimer += Time.deltaTime;
 
             if (playerCheckTimer > checkPlayerPositionInterval)
@@ -289,46 +290,50 @@ public class BossController : MonoBehaviour
                 playerCheckTimer = 0.0f;
             }
 
-            if (updateMode == UPDATE_MODE.DEFAULT)
+            if (deathonce)
             {
-
-                if (trackPlayer && !animationOverride)
+                if (health <= 0.0f)
                 {
-                    Vector3 dir = (player.transform.position - transform.position).normalized;
-                    Quaternion endRot = Quaternion.LookRotation(dir, transform.up);
-
-
-                    if (isBossLookingAtPlayer(angleThresholdBeforeMoving))
-                    {
-                        agent.isStopped = false;
-                    }
-                    else if (!agent.isStopped)
-                    {
-                        agent.isStopped = true;
-                    }
-
-                    //transform.rotation = Quaternion.Lerp(transform.rotation, endRot, 0.005f);
-
-                    transform.rotation = Quaternion.RotateTowards(transform.rotation, endRot, turnSpeed * Time.deltaTime);
-
+                    deathonce = false;
+                    death();
+                    return;
                 }
 
-                if (deathonce == true)
+
+                if (updateMode == UPDATE_MODE.DEFAULT)
                 {
-                    if (health <= 0.0f)
+
+                    if (trackPlayer && !animationOverride)
                     {
-                        deathonce = false;
-                        death();
+                        Vector3 dir = (player.transform.position - transform.position).normalized;
+                        Quaternion endRot = Quaternion.LookRotation(dir, transform.up);
+
+
+                        if (isBossLookingAtPlayer(angleThresholdBeforeMoving))
+                        {
+                            agent.isStopped = false;
+                        }
+                        else if (!agent.isStopped)
+                        {
+                            agent.isStopped = true;
+                        }
+
+                        //transform.rotation = Quaternion.Lerp(transform.rotation, endRot, 0.005f);
+
+                        transform.rotation = Quaternion.RotateTowards(transform.rotation, endRot, turnSpeed * Time.deltaTime);
+
                     }
+
+
                 }
-            }
-            else if (updateMode == UPDATE_MODE.CHARGE_ATTACK)
-            {
-                transform.Translate(transform.forward * Time.deltaTime * chargeSpeed, Space.World);
-            }
-            else
-            {
-                Debug.LogWarning($"Cannot run boss update as [{updateMode}] has no update behaviour");
+                else if (updateMode == UPDATE_MODE.CHARGE_ATTACK)
+                {
+                    transform.Translate(transform.forward * Time.deltaTime * chargeSpeed, Space.World);
+                }
+                else
+                {
+                    Debug.LogWarning($"Cannot run boss update as [{updateMode}] has no update behaviour");
+                }
             }
         }
         else
@@ -370,6 +375,10 @@ public class BossController : MonoBehaviour
     void death()
     {
         onDeath.Invoke();
+        GetComponent<Animator>().SetTrigger("Dead");
+        agent.isStopped = true;
+        agent.ResetPath();
+        agent.isStopped = false;
         this.gameObject.GetComponent<ghostEffect>().UIHP.GetComponent<Image>().fillAmount = 0.0f;
     }
 

@@ -13,13 +13,15 @@ public class photo : MonoBehaviour
 
     public bool cantake = true;
 
+    private GameObject flash;
+
     private void Start()
     {
         if (!enemy)
         {
             GameObject.FindGameObjectWithTag("Boss");
         }
-
+        flash = this.gameObject.transform.GetChild(0).gameObject;
     }
 
     void Update()
@@ -27,8 +29,6 @@ public class photo : MonoBehaviour
         if (Input.GetButtonDown("TakePhoto") && cantake == true)
         {
             animator.SetTrigger("Photo");
-
-
         }
     }
 
@@ -36,6 +36,7 @@ public class photo : MonoBehaviour
 
     public void take()
     {
+        StartCoroutine(camflash());
 
         for (int i = 0; i < enemy.GetComponent<ghostEffect>().ghostbody.Count; i++)
         {
@@ -70,5 +71,15 @@ public class photo : MonoBehaviour
             Destroy(enemy.GetComponent<ghostEffect>().ghostbody[i].GetComponent<ParticleSystem>());
         }
 
+    }
+
+    IEnumerator camflash()
+    {
+        flash.SetActive(true);
+        yield return new WaitForSeconds(0.001f);
+        flash.SetActive(false);
+
+
+        yield return null;
     }
 }
