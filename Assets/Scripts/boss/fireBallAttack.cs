@@ -7,7 +7,7 @@ public class fireBallAttack : StateMachineBehaviour
 
     public int fireballAmount = 3;
     public Vector2 fireballAmountRange = new Vector2(2, 5);
-    [Range(0.2f, 1.0f)]
+    //[Range(0.2f, 1.0f)]
     public float fireBallSpread = 15.0f;
     public float fireballThrowFrame = 0.5f;
     public Vector2 sizeRange = new Vector2(0.3f, 1.0f);
