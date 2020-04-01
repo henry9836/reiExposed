@@ -50,12 +50,6 @@ public class movementController : MonoBehaviour
             {
                 animator.SetTrigger("jumpLand");
             }
-
-            if (currentState == false)
-            {
-                animator.SetTrigger("jumpUp");
-            }
-            //doiff
         }
         previousState = isOnGround;
     }
@@ -106,6 +100,8 @@ public class movementController : MonoBehaviour
 
             if (Input.GetButton("Jump") && pc.CheckStamina() >= staminaCostJump)
             {
+                animator.SetTrigger("jumpUp");
+
                 moveDir.y += jumpForce;
                 pc.ChangeStamina(-staminaCostJump);
             }

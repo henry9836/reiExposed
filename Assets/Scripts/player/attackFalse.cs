@@ -8,6 +8,16 @@ public class attackFalse : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         animator.SetBool("Attacking", false);
+
+        animator.ResetTrigger("Exit");
+        animator.ResetTrigger("Attack");
+        animator.ResetTrigger("Photo");
+        animator.ResetTrigger("shoot");
+        animator.ResetTrigger("gliding 0");
+        animator.ResetTrigger("gliding 1");
+        animator.SetBool("alreadyBlocking", false);
+        animator.SetBool("blocking", false);
+
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
