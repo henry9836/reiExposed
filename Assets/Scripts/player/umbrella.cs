@@ -21,7 +21,7 @@ public class umbrella : MonoBehaviour
     private GameObject boss;
     private GameObject umbeaalBone;
     private Animator animator;
-    private GameObject VFX;
+    public GameObject VFX;
 
     private bool latetest = false;
   
@@ -33,9 +33,6 @@ public class umbrella : MonoBehaviour
         boss = GameObject.Find("Boss");
         umbeaalBone = GameObject.Find("rei_umbrella");
         animator = playercontrol.gameObject.GetComponent<Animator>();
-        VFX = GameObject.Find("umbreallaVFX");
-        VFX.GetComponent<VisualEffect>().SetFloat("timer", 0.0f);
-
     }
 
     void Update()
@@ -99,6 +96,7 @@ public class umbrella : MonoBehaviour
         if (Input.GetAxis("Fire1") > 0.5f)
         {
             bang();
+            animator.SetTrigger("shoot");
         }
     }
 
