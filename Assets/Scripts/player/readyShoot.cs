@@ -21,6 +21,11 @@ public class readyShoot : StateMachineBehaviour
             umbrella.GetComponent<umbrella>().canfire = true;
             umbrella.GetComponent<umbrella>().ISBLockjing = true;
         }
+        else
+        {
+            umbrella.GetComponent<umbrella>().canfire = false;
+            umbrella.GetComponent<umbrella>().ISBLockjing = false;
+        }
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
