@@ -98,7 +98,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
 --- !u!1 &1093250023
 GameObject:
   m_ObjectHideFlags: 0
@@ -915,7 +915,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canfire: 0
-  blockingStamina: 0.1
+  blockingStamina: 10
   cooldown: 0
   cooldowntime: 2
   cooldowntimer: 0
@@ -1323,10 +1323,11 @@ MonoBehaviour:
   gravity: 20
   feetradius: 0.25
   maxFallSpeedWhileGliding: 1
-  staminaCostSprint: 1
+  staminaCostSprint: 30
   staminaCostDash: 10
   staminaCostJump: 1
   dashDistance: 30
+  respawnThreshold: -30
   groundLayer:
     serializedVersion: 2
     m_Bits: 15155
@@ -1355,6 +1356,9 @@ MonoBehaviour:
   staminaMaxAmount: 100
   staminaRegenSpeed: 5
   dead: 0
+  maxcolor: {r: 1, g: 1, b: 1, a: 0.54901963}
+  minColor: {r: 1, g: 1, b: 1, a: 0.3137255}
+  damaged: {fileID: 0}
   hurtSounds:
   - {fileID: 8300000, guid: adec7287250c0684c962c1bd60e7cb94, type: 3}
   - {fileID: 8300000, guid: 8994820884821964986e2350d00d1e9a, type: 3}

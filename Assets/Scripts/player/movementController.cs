@@ -147,9 +147,9 @@ public class movementController : MonoBehaviour
             if ((moveDir.x != 0) && (moveDir.z != 0))
             {
                 //move a little more
-                if (pc.CheckStamina() >= staminaCostSprint)
+                if (pc.CheckStamina() >= staminaCostSprint * Time.deltaTime)
                 {
-                    pc.ChangeStamina(-staminaCostSprint);
+                    pc.ChangeStamina(-staminaCostSprint * Time.deltaTime);
                     moveDir += new Vector3(moveDir.x * sprintSpeedMultipler, 0.0f, moveDir.z * sprintSpeedMultipler);
                     animator.SetBool("Running", true);
 
