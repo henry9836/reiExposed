@@ -14,7 +14,7 @@ public class seekBoss : StateMachineBehaviour
     GameObject player;
     NavMeshAgent agent;
     BossController.bossAttacks attack;
-
+    public AudioClip groundSlam;
 
     void Reset(Animator animator)
     {
@@ -24,6 +24,14 @@ public class seekBoss : StateMachineBehaviour
         animator.ResetTrigger("Fireball");
         animator.ResetTrigger("BodySlam");
         animator.ResetTrigger("Exit");
+
+        if (animator.GetBool("PlayGroundSlamWhenBack"))
+        {
+            bc.GetComponent<AudioSource>().PlayOneShot(groundSlam);
+        }
+
+        animator.SetBool("PlayGroundSlamWhenBack", false);
+
     }
 
     void PickAttack()
