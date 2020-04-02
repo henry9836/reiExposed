@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class movementController : MonoBehaviour
 {
@@ -38,6 +39,8 @@ public class movementController : MonoBehaviour
     private bool previousState = true;
     private bool currentState = true;
 
+
+    public Image sprintLines;
     private void Start()
     {
         initalPosition = transform.position;
@@ -45,6 +48,8 @@ public class movementController : MonoBehaviour
         pc = GetComponent<PlayerController>();
         animator = GetComponent<Animator>();
         audio = GetComponent<AudioSource>();
+
+
     }
 
     private void FixedUpdate()
@@ -147,8 +152,19 @@ public class movementController : MonoBehaviour
                     pc.ChangeStamina(-staminaCostSprint);
                     moveDir += new Vector3(moveDir.x * sprintSpeedMultipler, 0.0f, moveDir.z * sprintSpeedMultipler);
                     animator.SetBool("Running", true);
+
+                    float alpha = sprintLines.material.GetFloat("Vector1_BD31B2DE");
+                    alpha = Mathf.Clamp((alpha + (Time.unscaledDeltaTime * 2.5f)), 0.0f, 1.0f);
+                    sprintLines.material.SetFloat("Vector1_BD31B2DE", alpha);
                 }
             }
+        }
+
+        if (!Input.GetButton("Sprint") || !isOnGround || !(pc.CheckStamina() >= staminaCostSprint))
+        {
+            float alpha = sprintLines.material.GetFloat("Vector1_BD31B2DE");
+            alpha = Mathf.Clamp((alpha - (Time.unscaledDeltaTime * 2.5f)), 0.0f, 1.0f);
+            sprintLines.material.SetFloat("Vector1_BD31B2DE", alpha);
         }
 
         //Animation Off
