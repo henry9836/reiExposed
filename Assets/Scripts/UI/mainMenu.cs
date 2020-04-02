@@ -33,6 +33,7 @@ public class mainMenu : MonoBehaviour
     void Start()
     {
         Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         canvaspos = new Vector3(this.gameObject.GetComponent<RectTransform>().anchoredPosition.x, this.gameObject.GetComponent<RectTransform>().anchoredPosition.y, 0.0f);
         cListtop = new Vector3(0.0f, this.gameObject.GetComponent<RectTransform>().rect.height, 0.0f);
         cListbot = new Vector3(0.0f, -this.gameObject.GetComponent<RectTransform>().rect.height, 0.0f);
