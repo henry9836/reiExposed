@@ -13,6 +13,12 @@ public class PlayerController : MonoBehaviour
     public float staminaRegenSpeed = 1.0f;
     public bool dead = false;
 
+    public Color maxcolor;
+    public Color minColor;
+
+    public Image damaged;
+
+
     //Sounds
     public List<AudioClip> hurtSounds = new List<AudioClip>();
     public AudioClip deathSound;
@@ -24,6 +30,9 @@ public class PlayerController : MonoBehaviour
     public GameObject umberalla;
     private List<GameObject> deathUI = new List<GameObject>();
     private AudioSource audio;
+    private bool UIon = false;
+
+
 
     private void Start()
     {
@@ -90,12 +99,25 @@ public class PlayerController : MonoBehaviour
                 Debug.Log("I was hit and but ignoring");
             }
 
+
+            if (health <= 40.0f)
+            {
+                if (UIon == false)
+                {
+                    UIon = true;
+                    StartCoroutine(UIflash(true));
+                }
+            }
+
             if (health <= 0.0f)
             {
                 this.gameObject.GetComponent<Animator>().SetTrigger("deathT");
                 dead = true;
                 audio.PlayOneShot(deathSound);
+                StartCoroutine(flashoff());
+
                 StartCoroutine(death());
+                
             }
 
 
@@ -138,6 +160,57 @@ public class PlayerController : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
+        yield return null;
+    }
+
+
+    public IEnumerator UIflash(bool first)
+    {
+        if (first == true)
+        {
+            for (float i = 0.0f; i < 1.0f; i += Time.unscaledDeltaTime)
+            {
+                damaged.color = Color.Lerp(new Color(0.0f, 0.0f, 0.0f, 0.0f), maxcolor, i);
+                yield return null;
+            }
+            for (float i = 0.0f; i < 1.0f; i += Time.unscaledDeltaTime)
+            {
+                damaged.color = Color.Lerp(maxcolor, minColor, i);
+                yield return null;
+            }
+        }
+        else
+        {
+            for (float i = 0.0f; i < 1.0f; i += Time.unscaledDeltaTime)
+            {
+                damaged.color = Color.Lerp(minColor, maxcolor, i);
+                yield return null;
+            }
+            for (float i = 0.0f; i < 1.0f; i += Time.unscaledDeltaTime)
+            {
+                damaged.color = Color.Lerp(maxcolor, minColor, i);
+                yield return null;
+            }
+
+        }
+
+        if (!dead)
+        {
+            StartCoroutine(UIflash(false));
+
+        }
+        yield return null;
+    }
+
+    public IEnumerator flashoff()
+    {
+        Color start = damaged.color;
+        for (float i = 0.0f; i < 1.0f; i += Time.unscaledDeltaTime)
+        {
+            damaged.color = Color.Lerp(start, new Color(0.0f, 0.0f, 0.0f, 0.0f), i);
+            yield return null;
+        }
+        damaged.color = new Color(0.0f, 0.0f, 0.0f, 0.0f);
         yield return null;
     }
 

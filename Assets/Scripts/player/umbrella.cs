@@ -65,6 +65,10 @@ public class umbrella : MonoBehaviour
                         firemode();
                     }
                 }
+                else
+                {
+                    cooldown = true;
+                }
             }
             else
             {
