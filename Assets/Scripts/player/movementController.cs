@@ -15,11 +15,16 @@ public class movementController : MonoBehaviour
     public float staminaCostDash = 30.0f;
     public float staminaCostJump = 30.0f;
     public float dashDistance = 10.0f;
+    public float respawnThreshold = -30.0f;
     public LayerMask groundLayer;
     public Transform feet;
     public GameObject charcterModel;
     public GameObject camParent;
 
+    //Sounds
+    public List<AudioClip> dashSounds = new List<AudioClip>();
+
+    private AudioSource audio;
     private PlayerController pc;
     private CharacterController ch;
     private Animator animator;
@@ -27,7 +32,7 @@ public class movementController : MonoBehaviour
     private bool isOnGround = true;
     private float dashThresholdCeiling = 0.5f;
     private float dashTimer = 0.0f;
-
+    private Vector3 initalPosition;
     private bool jumponce = false;
 
     private bool previousState = true;
@@ -35,9 +40,11 @@ public class movementController : MonoBehaviour
 
     private void Start()
     {
+        initalPosition = transform.position;
         ch = GetComponent<CharacterController>();
         pc = GetComponent<PlayerController>();
         animator = GetComponent<Animator>();
+        audio = GetComponent<AudioSource>();
     }
 
     private void FixedUpdate()
@@ -52,6 +59,12 @@ public class movementController : MonoBehaviour
             }
         }
         previousState = isOnGround;
+
+        //Fell out of map
+        if (transform.position.y < respawnThreshold)
+        {
+            transform.position = initalPosition;
+        }
     }
 
     // Update is called once per frame
@@ -116,6 +129,7 @@ public class movementController : MonoBehaviour
                 //move more
                 if (pc.CheckStamina() >= staminaCostDash)
                 {
+                    audio.PlayOneShot(dashSounds[Random.Range(0, dashSounds.Count)]);
                     moveDir += new Vector3(moveDir.x * dashDistance, 0.0f, moveDir.z * dashDistance);
                     pc.ChangeStamina(-staminaCostDash);
                 }
