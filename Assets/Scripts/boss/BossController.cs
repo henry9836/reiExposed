@@ -61,6 +61,9 @@ public class BossController : MonoBehaviour
     public List<BoxCollider> otherBody = new List<BoxCollider>();
     public List<Transform> fireBallCannonLocations = new List<Transform>();
 
+    //Sounds
+    public List<AudioClip> hurtSounds = new List<AudioClip>();
+
     public UnityEvent onDeath;
    
 
@@ -70,6 +73,7 @@ public class BossController : MonoBehaviour
     private UPDATE_MODE updateMode = UPDATE_MODE.DEFAULT;
     private Vector3 lastKnownPlayerPosition = Vector3.zero;
     private float playerCheckTimer = 0.0f;
+    private AudioSource audio;
 
     public void sleepOverrideFunc(bool mode)
     {
@@ -265,6 +269,7 @@ public class BossController : MonoBehaviour
             agent.angularSpeed = 0.0f;
         }
         GetComponent<Animator>().SetBool("Idle", true);
+        audio = GetComponent<AudioSource>();
     }
 
     public bool isBossLookingAtPlayer(float thresholdAngle)
@@ -368,6 +373,8 @@ public class BossController : MonoBehaviour
             this.gameObject.GetComponent<ghostEffect>().shakeIcon();
 
         }
+
+        audio.PlayOneShot(hurtSounds[Random.Range(0, hurtSounds.Count)]);
 
         return (delt);
     }
