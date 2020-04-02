@@ -62,7 +62,6 @@ public class MusicPlayer : MonoBehaviour
 
     public void LoadClip()
     {
-        Debug.Log("Load Clip");
 
         switch (playMode)
         {
@@ -91,10 +90,6 @@ public class MusicPlayer : MonoBehaviour
         {
             //Pick a random clip based on playlist mode
             LoadClip();
-        }
-        else
-        {
-            Debug.Log("Playering");
         }
     }
 

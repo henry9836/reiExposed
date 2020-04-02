@@ -70,15 +70,19 @@ public class PlayerController : MonoBehaviour
             //Damage From Boss
             if (other.gameObject.CompareTag("BossAttackSurface") && !umberalla.GetComponent<umbrella>().ISBLockjing)
             {
-
+                Debug.Log("I was hit and taking damage");
 
                 health -= boss.GetComponent<BossController>().QueryDamage();
             }
             else if (other.gameObject.CompareTag("BossAttackSurface") && umberalla.GetComponent<umbrella>().ISBLockjing)
             {
-
+                Debug.Log("I was hit and but blocked");
                 umberalla.GetComponent<umbrella>().cooldown = true;
                 boss.GetComponent<BossController>().arm(BossController.ARMTYPE.ARM_ALL, false);
+            }
+            else
+            {
+                Debug.Log("I was hit and but ignoring");
             }
 
             if (health <= 0.0f)
@@ -87,6 +91,9 @@ public class PlayerController : MonoBehaviour
                 dead = true;
                 StartCoroutine(death());
             }
+
+
+
         }
     }
 
