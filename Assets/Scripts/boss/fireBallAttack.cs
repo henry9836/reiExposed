@@ -12,10 +12,12 @@ public class fireBallAttack : StateMachineBehaviour
     public float fireballThrowFrame = 0.5f;
     public Vector2 sizeRange = new Vector2(0.3f, 1.0f);
     public GameObject fireballPrefab;
+    public List<AudioClip> sfx;
 
 
     BossController bc;
     GameObject player;
+    AudioSource audio;
     int loopCount = 0;
     bool fireballFired = false;
 
@@ -48,6 +50,9 @@ public class fireBallAttack : StateMachineBehaviour
             fireball.GetComponent<fireBallController>().fullSpeedAheadCaptain();
         }
 
+        //Play sound effect
+        audio.PlayOneShot(sfx[Random.Range(0, sfx.Count)]);
+
     }
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
@@ -57,6 +62,7 @@ public class fireBallAttack : StateMachineBehaviour
         player = bc.player;
         loopCount = 0;
         bc.animationOverrideFunc(true);
+        audio = bc.gameObject.GetComponent<AudioSource>();
     }
 
     //OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

@@ -20,6 +20,10 @@ public class movementController : MonoBehaviour
     public GameObject charcterModel;
     public GameObject camParent;
 
+    //Sounds
+    public List<AudioClip> dashSounds = new List<AudioClip>();
+
+    private AudioSource audio;
     private PlayerController pc;
     private CharacterController ch;
     private Animator animator;
@@ -38,6 +42,7 @@ public class movementController : MonoBehaviour
         ch = GetComponent<CharacterController>();
         pc = GetComponent<PlayerController>();
         animator = GetComponent<Animator>();
+        audio = GetComponent<AudioSource>();
     }
 
     private void FixedUpdate()
@@ -116,6 +121,7 @@ public class movementController : MonoBehaviour
                 //move more
                 if (pc.CheckStamina() >= staminaCostDash)
                 {
+                    audio.PlayOneShot(dashSounds[Random.Range(0, dashSounds.Count)]);
                     moveDir += new Vector3(moveDir.x * dashDistance, 0.0f, moveDir.z * dashDistance);
                     pc.ChangeStamina(-staminaCostDash);
                 }
