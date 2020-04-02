@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 32.73761, g: 40.556973, b: 53.679367, a: 1}
+  m_IndirectSpecularColor: {r: 32.792137, g: 40.631256, b: 53.777443, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3298,6 +3298,108 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7257a1599a5a42f41b36fc00fcb93678, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &724475951 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 785806635567819428, guid: 0859bf84475105f4f9c45aea8c87e720,
+    type: 3}
+  m_PrefabInstance: {fileID: 1899926798}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &724475955
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 724475951}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &885097123
 GameObject:
   m_ObjectHideFlags: 0
@@ -6724,18 +6826,26 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 0}
-    - target: {fileID: 1093250026, guid: 0859bf84475105f4f9c45aea8c87e720, type: 3}
-      propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[0].m_Value.x
-      value: -4.6823807
+    - target: {fileID: 1450347572, guid: 0859bf84475105f4f9c45aea8c87e720, type: 3}
+      propertyPath: swishSounds.Array.size
+      value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 1093250026, guid: 0859bf84475105f4f9c45aea8c87e720, type: 3}
-      propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[0].m_Value.y
-      value: -0.15331519
-      objectReference: {fileID: 0}
-    - target: {fileID: 1093250026, guid: 0859bf84475105f4f9c45aea8c87e720, type: 3}
-      propertyPath: m_PropertySheet.m_Vector3f.m_Array.Array.data[0].m_Value.z
-      value: 34.712654
-      objectReference: {fileID: 0}
+    - target: {fileID: 1450347572, guid: 0859bf84475105f4f9c45aea8c87e720, type: 3}
+      propertyPath: swishSounds.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: bd77716df7c59ad4ca98c76e8e28bea4, type: 3}
+    - target: {fileID: 1450347572, guid: 0859bf84475105f4f9c45aea8c87e720, type: 3}
+      propertyPath: swishSounds.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: e42a27e50ce02934f8cb69a0e73fb621, type: 3}
+    - target: {fileID: 1450347572, guid: 0859bf84475105f4f9c45aea8c87e720, type: 3}
+      propertyPath: umbrellaActivateSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: 186ebe466d15d9b4cbe99ca2b9c845fd, type: 3}
+    - target: {fileID: 1450347572, guid: 0859bf84475105f4f9c45aea8c87e720, type: 3}
+      propertyPath: umbrellaShoot
+      value: 
+      objectReference: {fileID: 8300000, guid: f9b135c68a1a0e745a69616efd4142e9, type: 3}
     - target: {fileID: 1943698811393534155, guid: 0859bf84475105f4f9c45aea8c87e720,
         type: 3}
       propertyPath: m_Name

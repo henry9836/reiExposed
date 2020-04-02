@@ -12,8 +12,10 @@ public class photo : MonoBehaviour
     public Animator animator;
 
     public bool cantake = true;
+    public AudioClip takephotoSFX;
 
     private GameObject flash;
+    
 
     private void Start()
     {
@@ -36,6 +38,8 @@ public class photo : MonoBehaviour
 
     public void take()
     {
+
+        animator.gameObject.GetComponent<AudioSource>().PlayOneShot(takephotoSFX);
         StartCoroutine(camflash());
 
         for (int i = 0; i < enemy.GetComponent<ghostEffect>().ghostbody.Count; i++)

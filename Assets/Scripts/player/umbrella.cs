@@ -15,6 +15,9 @@ public class umbrella : MonoBehaviour
     public LayerMask ball;
     public GameObject damagedText;
     public bool ISBLockjing = false;
+    public List<AudioClip> swishSounds = new List<AudioClip>();
+    public AudioClip umbrellaActivateSFX;
+    public AudioClip umbrellaShoot;
 
     private PlayerController playercontrol;
     private GameObject cam;
@@ -22,6 +25,9 @@ public class umbrella : MonoBehaviour
     private GameObject umbeaalBone;
     private Animator animator;
     public GameObject VFX;
+    private AudioSource audio;
+
+    private bool readyForBlockOnce = false;
 
     private bool latetest = false;
   
@@ -33,6 +39,7 @@ public class umbrella : MonoBehaviour
         boss = GameObject.Find("Boss");
         umbeaalBone = GameObject.Find("rei_umbrella");
         animator = playercontrol.gameObject.GetComponent<Animator>();
+        audio = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -42,6 +49,7 @@ public class umbrella : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             animator.SetTrigger("Attack");
+            audio.PlayOneShot(swishSounds[Random.Range(0, swishSounds.Count)]);
         }
 
         VFX.GetComponent<VisualEffect>().SetFloat("timer", 0.0f);
@@ -54,7 +62,11 @@ public class umbrella : MonoBehaviour
                 if (playercontrol.staminaAmount > blockingStamina)
                 {
                     playercontrol.ChangeStamina(-blockingStamina);
-
+                    if (!readyForBlockOnce)
+                    {
+                        audio.PlayOneShot(umbrellaActivateSFX);
+                        readyForBlockOnce = true;
+                    }
                     blocking();
                     if (canfire == true)
                     {
@@ -65,12 +77,13 @@ public class umbrella : MonoBehaviour
             else
             {
                 animator.SetBool("blocking", false);
+                readyForBlockOnce = false;
             }
         }
         else
         {
             animator.SetBool("blocking", false);
-
+            readyForBlockOnce = false;
             cooldowntimer += Time.deltaTime;
             if (cooldowntimer > cooldowntime)
             {
@@ -95,6 +108,7 @@ public class umbrella : MonoBehaviour
 
         if (Input.GetAxis("Fire1") > 0.5f)
         {
+            audio.PlayOneShot(umbrellaShoot);
             bang();
             animator.SetTrigger("shoot");
         }
