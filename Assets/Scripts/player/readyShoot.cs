@@ -10,6 +10,8 @@ public class readyShoot : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         umbrella = GameObject.Find("umbrella ella ella");
+        umbrella.GetComponent<umbrella>().canfire = false;
+        umbrella.GetComponent<umbrella>().ISBLockjing = false;
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
