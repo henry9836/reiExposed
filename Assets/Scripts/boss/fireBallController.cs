@@ -37,10 +37,16 @@ public class fireBallController : MonoBehaviour
         {
             if (other.tag == "Player")
             {
+                Debug.Log("Fireball hit");
                 if (!other.gameObject.GetComponent<PlayerController>().umberalla.GetComponent<umbrella>().ISBLockjing) {
                     other.gameObject.GetComponent<PlayerController>().health -= damage;
                     other.gameObject.GetComponent<PlayerController>().umberalla.GetComponent<umbrella>().cooldown = true;
                 }
+            }
+
+            else
+            {
+                Debug.Log("Fireball miss");
             }
 
             Destroy(gameObject);
