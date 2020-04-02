@@ -32,6 +32,7 @@ public class jumpSlamAttack : StateMachineBehaviour
         boss = animator.gameObject;
         bc = boss.GetComponent<BossController>();
         player = bc.player;
+        animator.SetBool("PlayGroundSlamWhenBack", true);
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
