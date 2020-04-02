@@ -11,16 +11,19 @@ public class PlayerController : MonoBehaviour
     public float staminaAmount = 100.0f;
     public float staminaMaxAmount = 100.0f;
     public float staminaRegenSpeed = 1.0f;
+    public bool dead = false;
+
+    //Sounds
+    public List<AudioClip> hurtSounds = new List<AudioClip>();
+    public AudioClip deathSound;
 
     private GameObject staminaUI;
     private GameObject HPui;
     private GameObject boss;
     [HideInInspector]
     public GameObject umberalla;
-
-    private List<GameObject> deathUI = new List<GameObject>() { };
-
-    public bool dead = false;
+    private List<GameObject> deathUI = new List<GameObject>();
+    private AudioSource audio;
 
     private void Start()
     {
@@ -36,6 +39,8 @@ public class PlayerController : MonoBehaviour
         {
             deathUI.Add(temp.transform.GetChild(i).gameObject);
         }
+
+        audio = GetComponent<AudioSource>();
     }
     public void ChangeStamina(float amount)
     {
@@ -71,8 +76,8 @@ public class PlayerController : MonoBehaviour
             if (other.gameObject.CompareTag("BossAttackSurface") && !umberalla.GetComponent<umbrella>().ISBLockjing)
             {
                 Debug.Log("I was hit and taking damage");
-
                 health -= boss.GetComponent<BossController>().QueryDamage();
+                audio.PlayOneShot(hurtSounds[Random.Range(0, hurtSounds.Count)]);
             }
             else if (other.gameObject.CompareTag("BossAttackSurface") && umberalla.GetComponent<umbrella>().ISBLockjing)
             {
@@ -89,6 +94,7 @@ public class PlayerController : MonoBehaviour
             {
                 this.gameObject.GetComponent<Animator>().SetTrigger("deathT");
                 dead = true;
+                audio.PlayOneShot(deathSound);
                 StartCoroutine(death());
             }
 
