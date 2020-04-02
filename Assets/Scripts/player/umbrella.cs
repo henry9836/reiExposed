@@ -56,9 +56,9 @@ public class umbrella : MonoBehaviour
         {
             if (Input.GetAxis("Fire2") > 0.5f)
             {
-                if (playercontrol.staminaAmount > blockingStamina)
+                if (playercontrol.staminaAmount > blockingStamina * Time.deltaTime)
                 {
-                    playercontrol.ChangeStamina(-blockingStamina);
+                    playercontrol.ChangeStamina(-blockingStamina * Time.deltaTime);
                     blocking();
                     if (canfire == true)
                     {
