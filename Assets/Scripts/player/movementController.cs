@@ -16,6 +16,7 @@ public class movementController : MonoBehaviour
     public float staminaCostDash = 30.0f;
     public float staminaCostJump = 30.0f;
     public float dashDistance = 10.0f;
+    public float respawnThreshold = -30.0f;
     public LayerMask groundLayer;
     public Transform feet;
     public GameObject charcterModel;
@@ -32,7 +33,7 @@ public class movementController : MonoBehaviour
     private bool isOnGround = true;
     private float dashThresholdCeiling = 0.5f;
     private float dashTimer = 0.0f;
-
+    private Vector3 initalPosition;
     private bool jumponce = false;
 
     private bool previousState = true;
@@ -42,6 +43,7 @@ public class movementController : MonoBehaviour
     public Image sprintLines;
     private void Start()
     {
+        initalPosition = transform.position;
         ch = GetComponent<CharacterController>();
         pc = GetComponent<PlayerController>();
         animator = GetComponent<Animator>();
@@ -62,6 +64,12 @@ public class movementController : MonoBehaviour
             }
         }
         previousState = isOnGround;
+
+        //Fell out of map
+        if (transform.position.y < respawnThreshold)
+        {
+            transform.position = initalPosition;
+        }
     }
 
     // Update is called once per frame
