@@ -114,8 +114,6 @@ public class PlayerController : MonoBehaviour
                 this.gameObject.GetComponent<Animator>().SetTrigger("deathT");
                 dead = true;
                 audio.PlayOneShot(deathSound);
-                StartCoroutine(flashoff());
-
                 StartCoroutine(death());
                 
             }
@@ -137,7 +135,7 @@ public class PlayerController : MonoBehaviour
     {
         deathUI[0].SetActive(true);
 
-        for (float i = 0.0f; i < 1.0f; i += Time.unscaledDeltaTime * 0.4f)
+        for (float i = 0.0f; i < 1.0f; i += Time.deltaTime * 0.4f)
         {
             deathUI[0].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, Mathf.Lerp(0.0f, 1.0f, i));
 
@@ -197,13 +195,19 @@ public class PlayerController : MonoBehaviour
         if (!dead)
         {
             StartCoroutine(UIflash(false));
-
         }
+        else
+        {
+            StartCoroutine(flashoff());
+        }
+
+
         yield return null;
     }
 
     public IEnumerator flashoff()
     {
+
         Color start = damaged.color;
         for (float i = 0.0f; i < 1.0f; i += Time.unscaledDeltaTime)
         {
