@@ -159,7 +159,7 @@ VisualEffect:
       m_Array: []
     m_Vector3f:
       m_Array:
-      - m_Value: {x: -4.6823807, y: -0.15331519, z: 34.712654}
+      - m_Value: {x: -0.3426571, y: -1.7306571, z: 7.9318156}
         m_Name: New Vector
         m_Overridden: 1
     m_Vector4f:
@@ -915,25 +915,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canfire: 0
-  blockingStamina: 10
+  blockingStamina: 0
   cooldown: 0
   cooldowntime: 2
   cooldowntimer: 0
   enemy:
     serializedVersion: 2
-    m_Bits: 8192
+    m_Bits: 0
   ball:
     serializedVersion: 2
-    m_Bits: 1024
-  damagedText: {fileID: 7401280080073061358, guid: febedf0338a1da8438f0280ae306b1d0,
-    type: 3}
+    m_Bits: 0
+  damagedText: {fileID: 0}
   ISBLockjing: 0
-  swishSounds:
-  - {fileID: 8300000, guid: bd77716df7c59ad4ca98c76e8e28bea4, type: 3}
-  - {fileID: 8300000, guid: e42a27e50ce02934f8cb69a0e73fb621, type: 3}
-  umbrellaActivateSFX: {fileID: 8300000, guid: 186ebe466d15d9b4cbe99ca2b9c845fd, type: 3}
-  umbrellaShoot: {fileID: 8300000, guid: f9b135c68a1a0e745a69616efd4142e9, type: 3}
-  VFX: {fileID: 1093250023}
+  swishSounds: []
+  umbrellaActivateSFX: {fileID: 0}
+  umbrellaShoot: {fileID: 0}
+  VFX: {fileID: 0}
 --- !u!82 &724475955
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1317,26 +1314,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10c0e9a5c91d6684d949cf8e4a71fa41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 6
-  sprintSpeedMultipler: 1.5
-  jumpForce: 20
-  gravity: 20
-  feetradius: 0.25
-  maxFallSpeedWhileGliding: 1
-  staminaCostSprint: 30
-  staminaCostDash: 10
-  staminaCostJump: 1
-  dashDistance: 30
+  moveSpeed: 10
+  sprintSpeedMultipler: 2
+  jumpForce: 10
+  gravity: 9.41
+  feetradius: 0.5
+  maxFallSpeedWhileGliding: 10
+  staminaCostSprint: 2
+  staminaCostDash: 30
+  staminaCostJump: 30
+  dashDistance: 10
   respawnThreshold: -30
   groundLayer:
     serializedVersion: 2
-    m_Bits: 15155
+    m_Bits: 0
   feet: {fileID: 5701466800852312019}
   charcterModel: {fileID: 142924574931785442}
   camParent: {fileID: 3339494445054939102}
-  dashSounds:
-  - {fileID: 8300000, guid: a14f5f736ee737f4e8005e78985875b9, type: 3}
-  - {fileID: 8300000, guid: 469b6d26d2f7c8f4b9ea2ca5602b51af, type: 3}
+  dashSounds: []
   sprintLines: {fileID: 1484035665}
 --- !u!114 &3144247446528475113
 MonoBehaviour:
@@ -1354,15 +1349,13 @@ MonoBehaviour:
   health: 100
   staminaAmount: 100
   staminaMaxAmount: 100
-  staminaRegenSpeed: 5
+  staminaRegenSpeed: 1
   dead: 0
-  maxcolor: {r: 1, g: 1, b: 1, a: 0.54901963}
-  minColor: {r: 1, g: 1, b: 1, a: 0.3137255}
+  maxcolor: {r: 0, g: 0, b: 0, a: 0}
+  minColor: {r: 0, g: 0, b: 0, a: 0}
   damaged: {fileID: 0}
-  hurtSounds:
-  - {fileID: 8300000, guid: adec7287250c0684c962c1bd60e7cb94, type: 3}
-  - {fileID: 8300000, guid: 8994820884821964986e2350d00d1e9a, type: 3}
-  deathSound: {fileID: 8300000, guid: 68138a9155d3be64fb6de9e2e2f642e0, type: 3}
+  hurtSounds: []
+  deathSound: {fileID: 0}
   umberalla: {fileID: 0}
 --- !u!136 &2569531379931713282
 CapsuleCollider:
@@ -2007,52 +2000,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mouseSensitivity: 180
-  lerpSpeed: 7.5
+  lerpSpeed: 12
   distCurve:
     serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
+    m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   FOVCurve:
     serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 2
-      outSlope: 2
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
+    m_Curve: []
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -2061,13 +2018,13 @@ MonoBehaviour:
   hitDistance: 0
   maxDistance: 5
   maxPitchDown: 60
-  maxPitchUp: 80
+  maxPitchUp: 50
   minFOV: 60
   maxFOV: 75
   obstacleLayers:
     serializedVersion: 2
-    m_Bits: 16183
-  aimFOV: 45
+    m_Bits: 0
+  aimFOV: 55
   aimDistance: 3
   crosshair: {fileID: 0}
 --- !u!1 &3339494445147069540
@@ -3216,6 +3173,8 @@ MonoBehaviour:
   m_FilterSizeTraced: 16
   m_SunLightConeAngle: 0.5
   m_LightShadowRadius: 0.5
+  m_SemiTransparentShadow: 0
+  m_ColorShadow: 1
   m_EvsmExponent: 15
   m_EvsmLightLeakBias: 0
   m_EvsmVarianceBias: 0.00001
@@ -3264,6 +3223,8 @@ MonoBehaviour:
   useVolumetric: 1
   featuresFoldout: 1
   showAdditionalSettings: 0
+  m_AreaLightEmissiveMeshShadowCastingMode: 0
+  m_AreaLightEmissiveMeshMotionVectorGenerationMode: 0
 --- !u!1 &6919766045966564721
 GameObject:
   m_ObjectHideFlags: 0
@@ -3676,11 +3637,11 @@ MonoBehaviour:
   enemy: {fileID: 0}
   body:
     serializedVersion: 2
-    m_Bits: 2048
+    m_Bits: 0
   toremove: 
-  animator: {fileID: 212265599186769691}
+  animator: {fileID: 0}
   cantake: 1
-  takephotoSFX: {fileID: 8300000, guid: acf7b084170b7144d8366efa8b50548d, type: 3}
+  takephotoSFX: {fileID: 0}
 --- !u!1 &8888390469079796850
 GameObject:
   m_ObjectHideFlags: 0
