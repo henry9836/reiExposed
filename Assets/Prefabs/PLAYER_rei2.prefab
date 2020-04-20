@@ -915,22 +915,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canfire: 0
-  blockingStamina: 0
+  blockingStamina: 10
   cooldown: 0
   cooldowntime: 2
   cooldowntimer: 0
   enemy:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8192
   ball:
     serializedVersion: 2
-    m_Bits: 0
-  damagedText: {fileID: 0}
+    m_Bits: 1024
+  damagedText: {fileID: 7401280080073061358, guid: febedf0338a1da8438f0280ae306b1d0,
+    type: 3}
   ISBLockjing: 0
   swishSounds: []
-  umbrellaActivateSFX: {fileID: 0}
-  umbrellaShoot: {fileID: 0}
-  VFX: {fileID: 0}
+  umbrellaActivateSFX: {fileID: 8300000, guid: 186ebe466d15d9b4cbe99ca2b9c845fd, type: 3}
+  umbrellaShoot: {fileID: 8300000, guid: f9b135c68a1a0e745a69616efd4142e9, type: 3}
+  VFX: {fileID: 1093250023}
 --- !u!82 &724475955
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2209,7 +2210,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   volumeAnchorOverride: {fileID: 0}
-  antialiasing: 0
+  antialiasing: 3
   SMAAQuality: 2
   dithering: 0
   stopNaNs: 0
