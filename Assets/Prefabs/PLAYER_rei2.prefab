@@ -159,7 +159,7 @@ VisualEffect:
       m_Array: []
     m_Vector3f:
       m_Array:
-      - m_Value: {x: -0.3426571, y: -1.7306571, z: 7.9318156}
+      - m_Value: {x: -1.2926571, y: -4.131109, z: 48.87182}
         m_Name: New Vector
         m_Overridden: 1
     m_Vector4f:
@@ -1318,7 +1318,7 @@ MonoBehaviour:
   moveSpeed: 10
   sprintSpeedMultipler: 2
   jumpForce: 10
-  gravity: 9.41
+  gravity: 9.80655
   feetradius: 0.5
   maxFallSpeedWhileGliding: 10
   staminaCostSprint: 2
@@ -1328,7 +1328,7 @@ MonoBehaviour:
   respawnThreshold: -30
   groundLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 15159
   feet: {fileID: 5701466800852312019}
   charcterModel: {fileID: 142924574931785442}
   camParent: {fileID: 3339494445054939102}
@@ -1352,11 +1352,12 @@ MonoBehaviour:
   staminaMaxAmount: 100
   staminaRegenSpeed: 1
   dead: 0
-  maxcolor: {r: 0, g: 0, b: 0, a: 0}
+  maxcolor: {r: 1, g: 1, b: 1, a: 1}
   minColor: {r: 0, g: 0, b: 0, a: 0}
   damaged: {fileID: 0}
-  hurtSounds: []
-  deathSound: {fileID: 0}
+  hurtSounds:
+  - {fileID: 8300000, guid: 68138a9155d3be64fb6de9e2e2f642e0, type: 3}
+  deathSound: {fileID: 8300000, guid: 68138a9155d3be64fb6de9e2e2f642e0, type: 3}
   umberalla: {fileID: 0}
 --- !u!136 &2569531379931713282
 CapsuleCollider:
@@ -3638,11 +3639,11 @@ MonoBehaviour:
   enemy: {fileID: 0}
   body:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2048
   toremove: 
-  animator: {fileID: 0}
+  animator: {fileID: 212265599186769691}
   cantake: 1
-  takephotoSFX: {fileID: 0}
+  takephotoSFX: {fileID: 8300000, guid: acf7b084170b7144d8366efa8b50548d, type: 3}
 --- !u!1 &8888390469079796850
 GameObject:
   m_ObjectHideFlags: 0
