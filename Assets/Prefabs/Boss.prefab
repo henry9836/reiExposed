@@ -4269,19 +4269,44 @@ MonoBehaviour:
   animationOverride: 0
   trackPlayer: 1
   checkPlayerPositionInterval: 0.5
-  turnSpeed: 0.1
+  turnSpeed: 50
   chargeSpeed: 30
   health: 0
-  maxHealth: 1000
+  maxHealth: 1
   angleThresholdBeforeMoving: 0.95
-  attackTriggerRanges: []
-  leftArms: []
-  rightArms: []
-  leftLegs: []
-  rightLegs: []
-  otherBody: []
-  fireBallCannonLocations: []
-  hurtSounds: []
+  attackTriggerRanges:
+  - {x: 30, y: 100}
+  - {x: 0, y: 5}
+  - {x: 30, y: 50}
+  - {x: 0, y: 5}
+  - {x: 30, y: 50}
+  leftArms:
+  - {fileID: 5908080580743123639}
+  - {fileID: 2137442354831516383}
+  - {fileID: 1336296894018733176}
+  rightArms:
+  - {fileID: 3106925716794324215}
+  - {fileID: 8583455098983898487}
+  - {fileID: 2564162097755425246}
+  leftLegs:
+  - {fileID: 1481636685960516210}
+  - {fileID: 2497518645345367012}
+  - {fileID: 3265012311675137724}
+  rightLegs:
+  - {fileID: 5821733845782405265}
+  - {fileID: 2978774644961647960}
+  - {fileID: 8294473166298120690}
+  otherBody:
+  - {fileID: 5991253747047968519}
+  - {fileID: 995263759219383558}
+  - {fileID: 178061779765216449}
+  fireBallCannonLocations:
+  - {fileID: 5832597795821906171}
+  - {fileID: 2274212414253036457}
+  hurtSounds:
+  - {fileID: 8300000, guid: 190c8c5b77cdba849ad82aa771d51bcf, type: 3}
+  - {fileID: 8300000, guid: e19c4345e5e710e498a32a2c07371ec3, type: 3}
+  - {fileID: 8300000, guid: cca4be2796671a74da663a0d4fc7d37b, type: 3}
   onDeath:
     m_PersistentCalls:
       m_Calls: []
@@ -8177,7 +8202,7 @@ Transform:
   m_GameObject: {fileID: 6710381072068602034}
   m_LocalRotation: {x: -0.005871034, y: -0.019599894, z: -0.8531905, w: 0.52119815}
   m_LocalPosition: {x: -1.1473967, y: 0.0000824511, z: -0.00005400182}
-  m_LocalScale: {x: 0.9999999, y: 1, z: 0.9999998}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6958897010065005081}
   m_Father: {fileID: 5970823879442070882}
