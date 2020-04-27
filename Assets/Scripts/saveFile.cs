@@ -8,6 +8,22 @@ public class saveFile : MonoBehaviour
     private string saveFilePath = "test.cfg";
     private StreamWriter righter;
 
+    public struct filedump
+    {
+        public bool exists;
+        public string name;
+        public string data;
+        public int dataline;
+
+        public filedump(bool mexists, string mname, string mdata, int mdataline)
+        {
+            this.exists = mexists;
+            this.name = mname;
+            this.data = mdata;
+            this.dataline = mdataline;
+        }
+    }
+
     void Start()
     {
         Debug.Log(saveFilePath);
@@ -16,35 +32,36 @@ public class saveFile : MonoBehaviour
         righter = new StreamWriter(saveFilePath, true);
         righter.Close();
 
-        createitem("test", "zoop");
-        readitem("test");
+        saveitem("test", "zoop");
+        Readitem("test");
 
     }
 
 
-    public bool createitem(string name, string item)
+    public bool saveitem(string name, string item)
     {
-        string input = "[" + name + "]" + "\n" + item;
+        string input1 = "[" + name + "]" + "\n" + item;
+        string input2 = item;
 
-        if (readitem(name) == "")
+        filedump info = Readitem(name);
+
+        if (info.exists == false)
         {
             righter = new StreamWriter(saveFilePath, true);
-            righter.WriteLine(input);
+            righter.WriteLine(input1);
             righter.Close();
             Debug.Log("created");
-
         }
         else
         {
+            //righter.write
             Debug.Log("already exist");
         }
-
-
 
         return true;
     }
 
-    public string readitem(string name)
+    public filedump Readitem(string name)
     {
         string[] tmp = File.ReadAllLines(saveFilePath);
         int save = 9999;
@@ -61,13 +78,18 @@ public class saveFile : MonoBehaviour
         {
             righter.Close();
 
-            return tmp[save + 1];
+            filedump exist = new filedump(true, name, tmp[save + 1], save + 1);
+
+
+            return exist;
         }
 
 
         righter.Close();
 
-        return "";
+        filedump nonexistant = new filedump();
+        nonexistant.exists = false;
+        return (nonexistant);
     }
 
     public bool FileExists(string path)
