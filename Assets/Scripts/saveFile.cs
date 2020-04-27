@@ -4,8 +4,6 @@ using UnityEngine;
 using System.IO;
 using UnityEngine.Rendering.HighDefinition;
 
-
-
 public class saveFile : MonoBehaviour
 {
     private string saveFilePath = "test.cfg";
@@ -145,7 +143,7 @@ public class saveFile : MonoBehaviour
         return (test);
     }
 
-    public interpret GetItem(string name)
+    private interpret GetItem(string name)
     {
         filedump tmp = Readitem(name);
 
@@ -164,7 +162,7 @@ public class saveFile : MonoBehaviour
         return (ans);
     }
 
-    public filedump Readitem(string name)
+    private filedump Readitem(string name)
     {
         string[] tmp = File.ReadAllLines(saveFilePath);
         int save = 999999;
@@ -179,15 +177,9 @@ public class saveFile : MonoBehaviour
 
         if (save != 999999)
         {
-            righter.Close();
-
             filedump exist = new filedump(true, name, tmp[save + 1], save + 1, tmp);
-
             return (exist);
         }
-
-
-        righter.Close();
 
         filedump nonexistant = new filedump();
         nonexistant.exists = false;
