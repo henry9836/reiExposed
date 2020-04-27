@@ -38,10 +38,11 @@ public class movementController : MonoBehaviour
     private float dashTimer = 0.0f;
     private Vector3 initalPosition;
     private bool jumponce = false;
+    private Quaternion targetRot;
+
 
     private bool previousState = true;
     private bool currentState = true;
-
 
     public Image sprintLines;
     private void Start()
@@ -51,8 +52,6 @@ public class movementController : MonoBehaviour
         pc = GetComponent<PlayerController>();
         animator = GetComponent<Animator>();
         audio = GetComponent<AudioSource>();
-
-
     }
 
     private void FixedUpdate()
@@ -94,7 +93,7 @@ public class movementController : MonoBehaviour
 
 
         //Rotate towards movement in relation to cam direction
-        if (moveDir != Vector3.zero)
+        if (moveDirCam != Vector3.zero)
         {
 
             //Get cam rotation
@@ -104,12 +103,14 @@ public class movementController : MonoBehaviour
             charcterModel.transform.rotation = camParent.transform.rotation; ;
 
             //Offset rotation to movement direction
-            //Offset
+            //Offset target
             Vector3 offset = new Vector3(camParent.transform.position.x + (moveDirCam.x * 10.0f), charcterModel.transform.position.y, camParent.transform.position.z + (moveDirCam.z * 10.0f));
 
+            //Offset rotation
+            targetRot = Quaternion.LookRotation((offset - charcterModel.transform.position).normalized);
+            Vector3 targetDir = (offset - charcterModel.transform.position).normalized;
             //Rotation
             charcterModel.transform.LookAt(offset, Vector3.up);
-
 
         }
 
