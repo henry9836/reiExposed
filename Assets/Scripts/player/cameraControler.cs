@@ -51,6 +51,7 @@ public class cameraControler : MonoBehaviour
         camRoot = transform.GetChild(0).GetChild(0).gameObject;
         mainCam = transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Camera>();
         pausemenu = GameObject.Find("pauseMenu");
+        crosshair = GameObject.Find("crosshair");
     }
 
     void Update()
