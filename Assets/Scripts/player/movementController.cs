@@ -66,14 +66,11 @@ public class movementController : MonoBehaviour
 
         isOnGround = Physics.CheckBox(feet.position, feetBox, Quaternion.identity, groundLayer);
 
-        Debug.Log(isOnGround);
-
         if (isOnGround != previousState)
         {
             if (isOnGround)
             {
                 animator.SetTrigger("jumpLand");
-                Debug.Log("Called");
             }
         }
         previousState = isOnGround;
@@ -166,6 +163,9 @@ public class movementController : MonoBehaviour
 
             if (Input.GetButton("Jump") && pc.CheckStamina() >= staminaCostJump)
             {
+
+                Debug.Log("Called");
+
                 animator.SetTrigger("jumpUp");
 
                 moveDir.y += jumpForce;
