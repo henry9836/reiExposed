@@ -126,19 +126,22 @@ public class movementController : MonoBehaviour
             moveDir.y -= gravity * Time.deltaTime;
 
 
+            // =======
+            // REMOVED
+            // =======
             //Glide if falling and holding jump
-            if (Input.GetButton("Jump") && (moveDir.y < 0))
-            {
-                moveDir.y = Mathf.Clamp((moveDir.y), -maxFallSpeedWhileGliding, 0.0f);
-                animator.SetTrigger("gliding 0");
-                animator.ResetTrigger("gliding 1");
-            }
-            else
-            {
-                animator.SetTrigger("gliding 1");
-                animator.ResetTrigger("gliding 0");
+            //if (Input.GetButton("Jump") && (moveDir.y < 0))
+            //{
+            //    moveDir.y = Mathf.Clamp((moveDir.y), -maxFallSpeedWhileGliding, 0.0f);
+            //    animator.SetTrigger("gliding 0");
+            //    animator.ResetTrigger("gliding 1");
+            //}
+            //else
+            //{
+            //    animator.SetTrigger("gliding 1");
+            //    animator.ResetTrigger("gliding 0");
 
-            }
+            //}
 
 
         }
