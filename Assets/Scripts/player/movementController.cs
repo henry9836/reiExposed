@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,17 +11,19 @@ public class movementController : MonoBehaviour
     public float sprintSpeedMultipler = 2.0f;
     public float jumpForce = 10.0f;
     public float gravity = 9.41f;
-    public float feetradius = 0.5f;
     public float maxFallSpeedWhileGliding = 10.0f;
     public float staminaCostSprint = 2.0f;
     public float staminaCostDash = 30.0f;
     public float staminaCostJump = 30.0f;
     public float dashDistance = 10.0f;
     public float respawnThreshold = -30.0f;
+    public float turnSpeed = 0.1f;
     public LayerMask groundLayer;
-    public Transform feet;
     public GameObject charcterModel;
     public GameObject camParent;
+    public Image sprintLines;
+    public Transform feet;
+    public Vector3 feetBox;
 
     //Sounds
     public List<AudioClip> dashSounds = new List<AudioClip>();
@@ -30,17 +33,24 @@ public class movementController : MonoBehaviour
     private CharacterController ch;
     private Animator animator;
     private Vector3 moveDir = Vector3.zero;
-    private bool isOnGround = true;
+    private Vector3 moveDirCam = Vector3.zero;
+    private bool isOnGround = false;
     private float dashThresholdCeiling = 0.5f;
     private float dashTimer = 0.0f;
     private Vector3 initalPosition;
     private bool jumponce = false;
-
+    private Quaternion targetRot;
     private bool previousState = true;
     private bool currentState = true;
 
 
-    public Image sprintLines;
+    void OnDrawGizmosSelected()
+    {
+        // Draw a yellow sphere at the transform's position
+        Gizmos.color = Color.green;
+        Gizmos.DrawCube(feet.position, feetBox);
+    }
+
     private void Start()
     {
         initalPosition = transform.position;
@@ -48,19 +58,22 @@ public class movementController : MonoBehaviour
         pc = GetComponent<PlayerController>();
         animator = GetComponent<Animator>();
         audio = GetComponent<AudioSource>();
-
-
     }
 
     private void FixedUpdate()
     {
-        isOnGround = Physics.CheckSphere(feet.position, feetradius, groundLayer);
-        currentState = isOnGround;
-        if (currentState != previousState)
+        //isOnGround = GetComponent<CharacterController>().isGrounded;
+
+        isOnGround = Physics.CheckBox(feet.position, feetBox, Quaternion.identity, groundLayer);
+
+        Debug.Log(isOnGround);
+
+        if (isOnGround != previousState)
         {
-            if (currentState == true)
+            if (isOnGround)
             {
                 animator.SetTrigger("jumpLand");
+                Debug.Log("Called");
             }
         }
         previousState = isOnGround;
@@ -75,46 +88,81 @@ public class movementController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
+
         if (GetComponent<PlayerController>().dead == true)
         {
             return;
         }
 
-        charcterModel.transform.rotation = camParent.transform.rotation;
+        //Match camera rotation to cam parent rotation
+        //charcterModel.transform.rotation = camParent.transform.rotation
+
+        //Get Cam Dir Input
+        moveDirCam = Vector3.zero;
+        moveDirCam += camParent.transform.forward * Input.GetAxis("Vertical");
+        moveDirCam += camParent.transform.right * Input.GetAxis("Horizontal");
+        moveDirCam = moveDirCam.normalized;
+
+
+        //Rotate towards movement in relation to cam direction
+        if (moveDirCam != Vector3.zero)
+        {
+
+            //Get cam rotation
+            Vector3 camRot = camParent.transform.rotation.eulerAngles;
+
+            //Rotate character model to match cam
+            charcterModel.transform.rotation = camParent.transform.rotation; ;
+
+            //Offset rotation to movement direction
+            //Offset target
+            Vector3 offset = new Vector3(camParent.transform.position.x + (moveDirCam.x * 10.0f), charcterModel.transform.position.y, camParent.transform.position.z + (moveDirCam.z * 10.0f));
+
+            //Offset rotation
+            targetRot = Quaternion.LookRotation((offset - charcterModel.transform.position).normalized);
+            Vector3 targetDir = (offset - charcterModel.transform.position).normalized;
+            //Rotation
+            charcterModel.transform.LookAt(offset, Vector3.up);
+
+        }
 
         //While we are in the air
         if (!isOnGround)
         {
             //Move half speed
             moveDir = new Vector3(0.0f, moveDir.y, 0.0f);
-            moveDir += (charcterModel.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed))) * 0.5f;
-            moveDir += (charcterModel.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed))) * 0.5f;
+            moveDir += (camParent.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed))) * 0.5f;
+            moveDir += (camParent.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed))) * 0.5f;
 
             //Apply Gravity
             moveDir.y -= gravity * Time.deltaTime;
 
 
+            // =======
+            // REMOVED
+            // =======
             //Glide if falling and holding jump
-            if (Input.GetButton("Jump") && (moveDir.y < 0))
-            {
-                moveDir.y = Mathf.Clamp((moveDir.y), -maxFallSpeedWhileGliding, 0.0f);
-                animator.SetTrigger("gliding 0");
-                animator.ResetTrigger("gliding 1");
-            }
-            else
-            {
-                animator.SetTrigger("gliding 1");
-                animator.ResetTrigger("gliding 0");
+            //if (Input.GetButton("Jump") && (moveDir.y < 0))
+            //{
+            //    moveDir.y = Mathf.Clamp((moveDir.y), -maxFallSpeedWhileGliding, 0.0f);
+            //    animator.SetTrigger("gliding 0");
+            //    animator.ResetTrigger("gliding 1");
+            //}
+            //else
+            //{
+            //    animator.SetTrigger("gliding 1");
+            //    animator.ResetTrigger("gliding 0");
 
-            }
+            //}
 
 
         }
         //While we are on the ground
         else
         {
-            moveDir = charcterModel.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed));
-            moveDir += charcterModel.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed));
+            moveDir = camParent.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed));
+            moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed));
 
             if (Input.GetButton("Jump") && pc.CheckStamina() >= staminaCostJump)
             {
@@ -188,5 +236,7 @@ public class movementController : MonoBehaviour
 
         //Move
         ch.Move(moveDir * Time.deltaTime);
+
+
     }
 }
