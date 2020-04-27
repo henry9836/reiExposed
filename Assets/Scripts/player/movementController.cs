@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,6 +18,7 @@ public class movementController : MonoBehaviour
     public float staminaCostJump = 30.0f;
     public float dashDistance = 10.0f;
     public float respawnThreshold = -30.0f;
+    public float turnSpeed = 0.1f;
     public LayerMask groundLayer;
     public Transform feet;
     public GameObject charcterModel;
@@ -30,6 +32,7 @@ public class movementController : MonoBehaviour
     private CharacterController ch;
     private Animator animator;
     private Vector3 moveDir = Vector3.zero;
+    private Vector3 moveDirCam = Vector3.zero;
     private bool isOnGround = true;
     private float dashThresholdCeiling = 0.5f;
     private float dashTimer = 0.0f;
@@ -80,15 +83,43 @@ public class movementController : MonoBehaviour
             return;
         }
 
-        charcterModel.transform.rotation = camParent.transform.rotation;
+        //Match camera rotation to cam parent rotation
+        //charcterModel.transform.rotation = camParent.transform.rotation
+
+        //Get Cam Dir Input
+        moveDirCam = Vector3.zero;
+        moveDirCam += camParent.transform.forward * Input.GetAxis("Vertical");
+        moveDirCam += camParent.transform.right * Input.GetAxis("Horizontal");
+        moveDirCam = moveDirCam.normalized;
+
+
+        //Rotate towards movement in relation to cam direction
+        if (moveDir != Vector3.zero)
+        {
+
+            //Get cam rotation
+            Vector3 camRot = camParent.transform.rotation.eulerAngles;
+
+            //Rotate character model to match cam
+            charcterModel.transform.rotation = camParent.transform.rotation; ;
+
+            //Offset rotation to movement direction
+            //Offset
+            Vector3 offset = new Vector3(camParent.transform.position.x + (moveDirCam.x * 10.0f), charcterModel.transform.position.y, camParent.transform.position.z + (moveDirCam.z * 10.0f));
+
+            //Rotation
+            charcterModel.transform.LookAt(offset, Vector3.up);
+
+
+        }
 
         //While we are in the air
         if (!isOnGround)
         {
             //Move half speed
             moveDir = new Vector3(0.0f, moveDir.y, 0.0f);
-            moveDir += (charcterModel.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed))) * 0.5f;
-            moveDir += (charcterModel.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed))) * 0.5f;
+            moveDir += (camParent.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed))) * 0.5f;
+            moveDir += (camParent.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed))) * 0.5f;
 
             //Apply Gravity
             moveDir.y -= gravity * Time.deltaTime;
@@ -113,8 +144,8 @@ public class movementController : MonoBehaviour
         //While we are on the ground
         else
         {
-            moveDir = charcterModel.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed));
-            moveDir += charcterModel.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed));
+            moveDir = camParent.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed));
+            moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed));
 
             if (Input.GetButton("Jump") && pc.CheckStamina() >= staminaCostJump)
             {
@@ -188,5 +219,7 @@ public class movementController : MonoBehaviour
 
         //Move
         ch.Move(moveDir * Time.deltaTime);
+
+
     }
 }
