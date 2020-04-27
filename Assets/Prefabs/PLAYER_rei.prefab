@@ -1266,13 +1266,13 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 1.9
+  m_Height: 1.57
   m_Radius: 0.35
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.0001
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.95, z: 0}
+  m_Center: {x: 0, y: 0.99, z: 0}
 --- !u!114 &5127853965938430895
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1287,7 +1287,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 10
   sprintSpeedMultipler: 2
-  jumpForce: 10
+  jumpForce: 5
   gravity: 9.80655
   maxFallSpeedWhileGliding: 10
   staminaCostSprint: 2
@@ -1302,9 +1302,11 @@ MonoBehaviour:
   charcterModel: {fileID: 142924574931785442}
   camParent: {fileID: 3339494445054939102}
   sprintLines: {fileID: 1484035665}
-  feet: {fileID: 0}
-  feetBox: {x: 0.5, y: 0.25, z: 0.5}
-  dashSounds: []
+  feet: {fileID: 1220654361476795706}
+  feetBox: {x: 0.5, y: 0.2, z: 0.3}
+  dashSounds:
+  - {fileID: 8300000, guid: a14f5f736ee737f4e8005e78985875b9, type: 3}
+  - {fileID: 8300000, guid: 469b6d26d2f7c8f4b9ea2ca5602b51af, type: 3}
 --- !u!114 &3144247446528475113
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2626,7 +2628,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4828711868601236965}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.15, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5121230018133350252}
