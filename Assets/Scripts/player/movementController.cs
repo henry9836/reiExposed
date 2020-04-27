@@ -11,7 +11,6 @@ public class movementController : MonoBehaviour
     public float sprintSpeedMultipler = 2.0f;
     public float jumpForce = 10.0f;
     public float gravity = 9.41f;
-    public float feetradius = 0.5f;
     public float maxFallSpeedWhileGliding = 10.0f;
     public float staminaCostSprint = 2.0f;
     public float staminaCostDash = 30.0f;
@@ -20,9 +19,11 @@ public class movementController : MonoBehaviour
     public float respawnThreshold = -30.0f;
     public float turnSpeed = 0.1f;
     public LayerMask groundLayer;
-    public Transform feet;
     public GameObject charcterModel;
     public GameObject camParent;
+    public Image sprintLines;
+    public Transform feet;
+    public Vector3 feetBox;
 
     //Sounds
     public List<AudioClip> dashSounds = new List<AudioClip>();
@@ -33,18 +34,23 @@ public class movementController : MonoBehaviour
     private Animator animator;
     private Vector3 moveDir = Vector3.zero;
     private Vector3 moveDirCam = Vector3.zero;
-    private bool isOnGround = true;
+    private bool isOnGround = false;
     private float dashThresholdCeiling = 0.5f;
     private float dashTimer = 0.0f;
     private Vector3 initalPosition;
     private bool jumponce = false;
     private Quaternion targetRot;
-
-
     private bool previousState = true;
     private bool currentState = true;
 
-    public Image sprintLines;
+
+    void OnDrawGizmosSelected()
+    {
+        // Draw a yellow sphere at the transform's position
+        Gizmos.color = Color.green;
+        Gizmos.DrawCube(feet.position, feetBox);
+    }
+
     private void Start()
     {
         initalPosition = transform.position;
@@ -56,13 +62,18 @@ public class movementController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        isOnGround = Physics.CheckSphere(feet.position, feetradius, groundLayer);
-        currentState = isOnGround;
-        if (currentState != previousState)
+        //isOnGround = GetComponent<CharacterController>().isGrounded;
+
+        isOnGround = Physics.CheckBox(feet.position, feetBox, Quaternion.identity, groundLayer);
+
+        Debug.Log(isOnGround);
+
+        if (isOnGround != previousState)
         {
-            if (currentState == true)
+            if (isOnGround)
             {
                 animator.SetTrigger("jumpLand");
+                Debug.Log("Called");
             }
         }
         previousState = isOnGround;
@@ -77,6 +88,8 @@ public class movementController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
+
         if (GetComponent<PlayerController>().dead == true)
         {
             return;
