@@ -62,9 +62,7 @@ public class movementController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //isOnGround = GetComponent<CharacterController>().isGrounded;
-
-        isOnGround = Physics.CheckBox(feet.position, feetBox, Quaternion.identity, groundLayer);
+       isOnGround = Physics.CheckBox(feet.position, feetBox, Quaternion.identity, groundLayer);
 
         if (isOnGround != previousState)
         {
