@@ -42,25 +42,6 @@ public class saveFile : MonoBehaviour
         FLOAT,
     };
 
-    void Start()
-    {
-        righter = new StreamWriter(saveFilePath, true);
-        righter.Close();
-
-        int no1 = 420;
-        string no2 = "meme";
-        float no3 = 69.9999f;
-
-        saveitem("int", no1);
-        saveitem("string", no2);
-        saveitem("float", no3);
-
-        //int test1 = safeItem("int", types.INT).toint; //returns int
-        //string test2 = safeItem("string", types.STRING).tostring; //returns string
-        //int test3 = safeItem("float", types.INT).toint; //error cannot covert float to int
-    }
-
-
     public void saveitem(string name, int item)
     {
         saveitem(name, item.ToString());
@@ -91,8 +72,6 @@ public class saveFile : MonoBehaviour
             if (info.data != item)
             {
                 righter = new StreamWriter(saveFilePath, false);
-
-                Debug.Log(info.allData);
 
                 string toinsert = "";
 
