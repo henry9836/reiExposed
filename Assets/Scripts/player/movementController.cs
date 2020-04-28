@@ -97,8 +97,6 @@ public class movementController : MonoBehaviour
 
         isOnGround = (rightFootGrounded || leftFootGrounded || centerFootGrounded);
 
-        //isOnGround = Physics.CheckBox(feet.position, feetBox, Quaternion.identity, groundLayer);
-
         if (isOnGround != previousState)
         {
             if (isOnGround)
