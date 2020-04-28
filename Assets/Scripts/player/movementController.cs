@@ -17,13 +17,14 @@ public class movementController : MonoBehaviour
     public float staminaCostJump = 30.0f;
     public float dashDistance = 10.0f;
     public float respawnThreshold = -30.0f;
-    public float turnSpeed = 0.1f;
+    public float feetCheckDistance = 0.5f;
     public LayerMask groundLayer;
     public GameObject charcterModel;
     public GameObject camParent;
     public Image sprintLines;
     public Transform feet;
-    public Vector3 feetBox;
+    public Transform rightFoot;
+    public Transform leftFoot;
 
     //Sounds
     public List<AudioClip> dashSounds = new List<AudioClip>();
@@ -42,14 +43,10 @@ public class movementController : MonoBehaviour
     private Quaternion targetRot;
     private bool previousState = true;
     private bool currentState = true;
-
-
-    void OnDrawGizmosSelected()
-    {
-        // Draw a yellow sphere at the transform's position
-        Gizmos.color = Color.green;
-        Gizmos.DrawCube(feet.position, feetBox);
-    }
+    private bool rightFootGrounded = false;
+    private bool leftFootGrounded = false;
+    private bool centerFootGrounded = false;
+    private RaycastHit hit;
 
     private void Start()
     {
@@ -62,7 +59,45 @@ public class movementController : MonoBehaviour
 
     private void FixedUpdate()
     {
-       isOnGround = Physics.CheckBox(feet.position, feetBox, Quaternion.identity, groundLayer);
+        //Check for ground below each foot
+
+        rightFootGrounded = (Physics.Raycast(leftFoot.position, Vector3.down, out hit, feetCheckDistance, groundLayer));
+        if (rightFootGrounded)
+        {
+            Debug.DrawLine(leftFoot.position, hit.point, Color.cyan);
+        }
+        else
+        {
+            Debug.DrawLine(leftFoot.position, leftFoot.position + (Vector3.down * feetCheckDistance), Color.red);
+        }
+
+        leftFootGrounded = (Physics.Raycast(rightFoot.position, Vector3.down, out hit, feetCheckDistance, groundLayer));
+
+        if (leftFootGrounded)
+        {
+            Debug.DrawLine(rightFoot.position, hit.point, Color.cyan);
+        }
+        else
+        {
+            Debug.DrawLine(rightFoot.position, rightFoot.position + (Vector3.down * feetCheckDistance), Color.red);
+        }
+
+        centerFootGrounded = (Physics.Raycast(feet.position, Vector3.down, out hit, feetCheckDistance, groundLayer));
+
+        if (leftFootGrounded)
+        {
+            Debug.DrawLine(feet.position, hit.point, Color.cyan);
+        }
+        else
+        {
+            Debug.DrawLine(feet.position, feet.position + (Vector3.down * feetCheckDistance), Color.red);
+        }
+
+        //Set whether we are on the ground or not
+
+        isOnGround = (rightFootGrounded || leftFootGrounded || centerFootGrounded);
+
+        //isOnGround = Physics.CheckBox(feet.position, feetBox, Quaternion.identity, groundLayer);
 
         if (isOnGround != previousState)
         {
