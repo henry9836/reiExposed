@@ -60,7 +60,6 @@ public class movementController : MonoBehaviour
     private void FixedUpdate()
     {
         //Check for ground below each foot
-
         rightFootGrounded = (Physics.Raycast(leftFoot.position, Vector3.down, out hit, feetCheckDistance, groundLayer));
         if (rightFootGrounded)
         {
@@ -82,6 +81,7 @@ public class movementController : MonoBehaviour
             Debug.DrawLine(rightFoot.position, rightFoot.position + (Vector3.down * feetCheckDistance), Color.red);
         }
 
+        //Center foot is important as landing is controlled by character controller
         centerFootGrounded = (Physics.Raycast(feet.position, Vector3.down, out hit, feetCheckDistance, groundLayer));
 
         if (leftFootGrounded)
