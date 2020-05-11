@@ -18,6 +18,8 @@ public class movementController : MonoBehaviour
     public float dashDistance = 10.0f;
     public float respawnThreshold = -30.0f;
     public float feetCheckDistance = 0.5f;
+    public float rollTime = 1.0f;
+    public float rollDistance = 5.0f;
     public LayerMask groundLayer;
     public GameObject charcterModel;
     public GameObject camParent;
@@ -47,6 +49,10 @@ public class movementController : MonoBehaviour
     private bool leftFootGrounded = false;
     private bool centerFootGrounded = false;
     private RaycastHit hit;
+    private Vector3 beforeRollPosition;
+    private Vector3 targetRollPosition;
+    private bool rolling = false;
+    private float rollTimer = 0.0f;
 
     private void Start()
     {
@@ -59,6 +65,11 @@ public class movementController : MonoBehaviour
 
     private void FixedUpdate()
     {
+
+        //=========================
+        //Gravity/Landing Section
+        //=========================
+
         //Check for ground below each foot
         rightFootGrounded = (Physics.Raycast(leftFoot.position, Vector3.down, out hit, feetCheckDistance, groundLayer));
         if (rightFootGrounded)
@@ -106,7 +117,7 @@ public class movementController : MonoBehaviour
         }
         previousState = isOnGround;
 
-        //Fell out of map
+        //Fell out of map, reset pos
         if (transform.position.y < respawnThreshold)
         {
             transform.position = initalPosition;
@@ -116,8 +127,11 @@ public class movementController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        //Timers
+        rollTimer += Time.unscaledDeltaTime;
 
+
+        //We are dead
         if (GetComponent<PlayerController>().dead == true)
         {
             return;
@@ -134,7 +148,7 @@ public class movementController : MonoBehaviour
 
 
         //Rotate towards movement in relation to cam direction
-        if (moveDirCam != Vector3.zero)
+        if (moveDirCam != Vector3.zero && !rolling)
         {
 
             //Get cam rotation
@@ -169,6 +183,8 @@ public class movementController : MonoBehaviour
 
             // =======
             // REMOVED
+            // -------
+            // Gliding
             // =======
             //Glide if falling and holding jump
             //if (Input.GetButton("Jump") && (moveDir.y < 0))
@@ -192,7 +208,7 @@ public class movementController : MonoBehaviour
             moveDir = camParent.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed));
             moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed));
 
-            if (Input.GetButton("Jump") && pc.CheckStamina() >= staminaCostJump)
+            if (Input.GetButton("Jump") && pc.CheckStamina() >= staminaCostJump && !rolling)
             {
 
                 Debug.Log("Called");
@@ -204,24 +220,56 @@ public class movementController : MonoBehaviour
             }
         }
 
-        //Dash
-        if (Input.GetButtonDown("Dash"))
+        //Rolling Mechanic
+        if (Input.GetButtonDown("Roll") && !rolling)
         {
-            //We are moving in a direction
-            if ((moveDir.x != 0) && (moveDir.z != 0))
+            //Roll in the forward direction of model
+            targetRollPosition = transform.position + (charcterModel.transform.forward * rollDistance);
+            beforeRollPosition = transform.position;
+
+            //Reset timer
+            rollTimer = 0.0f;
+
+            //Lock other movement until roll is complete
+            rolling = true;
+        }
+
+        //Lerp between start roll and end roll pos if we are rolling
+        if (rolling)
+        {
+            //Move towards target
+            //ch.Move(Vector3);
+            transform.position = Vector3.Lerp(beforeRollPosition, targetRollPosition, (rollTimer/rollTime));
+
+            //Toggle off the roll once we have reached the end of the roll
+            if (rollTimer >= rollTime)
             {
-                //move more
-                if (pc.CheckStamina() >= staminaCostDash)
-                {
-                    audio.PlayOneShot(dashSounds[Random.Range(0, dashSounds.Count)]);
-                    moveDir += new Vector3(moveDir.x * dashDistance, 0.0f, moveDir.z * dashDistance);
-                    pc.ChangeStamina(-staminaCostDash);
-                }
+                rolling = false;
             }
         }
 
+        // ===========
+        // REMOVED
+        // ----------
+        // DASHING
+        // ===========
+        //if (Input.GetButtonDown("Dash"))
+        //{
+        //    //We are moving in a direction
+        //    if ((moveDir.x != 0) && (moveDir.z != 0))
+        //    {
+        //        //move more
+        //        if (pc.CheckStamina() >= staminaCostDash)
+        //        {
+        //            audio.PlayOneShot(dashSounds[Random.Range(0, dashSounds.Count)]);
+        //            moveDir += new Vector3(moveDir.x * dashDistance, 0.0f, moveDir.z * dashDistance);
+        //            pc.ChangeStamina(-staminaCostDash);
+        //        }
+        //    }
+        //}
+
         //Sprint
-        else if (Input.GetButton("Sprint") && isOnGround)
+        else if (Input.GetButton("Sprint") && isOnGround && !rolling)
         {
             if ((moveDir.x != 0) && (moveDir.z != 0))
             {
@@ -250,6 +298,7 @@ public class movementController : MonoBehaviour
         //Walking
         //Debug.Log(moveDir);
 
+
         if ((moveDir.x == 0) && (moveDir.z == 0))
         {
             animator.SetBool("walkin", false);
@@ -266,8 +315,10 @@ public class movementController : MonoBehaviour
 
 
         //Move
-        ch.Move(moveDir * Time.deltaTime);
-
+        if (!rolling)
+        {
+            ch.Move(moveDir * Time.deltaTime);
+        }
 
     }
 }
