@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class konbiniManager : MonoBehaviour
+public class upgradesManager : MonoBehaviour
 {
     public Text followersCurr;
     public Text oniCurr;

@@ -26,9 +26,16 @@ public class pageManager : MonoBehaviour
     {
         upgradespage.SetActive(false);
         convertpage.SetActive(true);
+        convertpage.GetComponent<convertDeals>().updateui();
         selectedUI.GetComponent<RectTransform>().localPosition = positions[1] + canvaspos;
     }
 
+    public void back()
+    {
+        //leave the menu 
+
+        GameObject.Find("save").GetComponent<AddSaves>().saveCurincies();
+    }
 
     public IEnumerator move()
     {
