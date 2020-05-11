@@ -21,6 +21,7 @@ public class movementController : MonoBehaviour
     public float rollTime = 1.0f;
     public float rollDistance = 5.0f;
     public LayerMask groundLayer;
+    public LayerMask rollObstcleLayer;
     public GameObject charcterModel;
     public GameObject camParent;
     public Image sprintLines;
@@ -53,6 +54,7 @@ public class movementController : MonoBehaviour
     private Vector3 targetRollPosition;
     private bool rolling = false;
     private float rollTimer = 0.0f;
+    private float tmpRollDistance = 0.0f;
 
     private void Start()
     {
@@ -223,8 +225,16 @@ public class movementController : MonoBehaviour
         //Rolling Mechanic
         if (Input.GetButtonDown("Roll") && !rolling)
         {
+            //Check if area is clear
+            tmpRollDistance = rollDistance;
+            RaycastHit hit;
+            if (Physics.Raycast(feet.transform.position, charcterModel.transform.forward, out hit, tmpRollDistance, rollObstcleLayer))
+            {
+                //If we hit something then only roll to just before the object we hit
+                tmpRollDistance = hit.distance - 1.0f;
+            }
             //Roll in the forward direction of model
-            targetRollPosition = transform.position + (charcterModel.transform.forward * rollDistance);
+            targetRollPosition = transform.position + (charcterModel.transform.forward * tmpRollDistance);
             beforeRollPosition = transform.position;
 
             //Reset timer
@@ -238,7 +248,6 @@ public class movementController : MonoBehaviour
         if (rolling)
         {
             //Move towards target
-            //ch.Move(Vector3);
             transform.position = Vector3.Lerp(beforeRollPosition, targetRollPosition, (rollTimer/rollTime));
 
             //Toggle off the roll once we have reached the end of the roll
