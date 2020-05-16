@@ -38,6 +38,7 @@ public class umbrella : MonoBehaviour
         umbeaalBone = GameObject.Find("rei_umbrella");
         animator = playercontrol.gameObject.GetComponent<Animator>();
         audio = GetComponent<AudioSource>();
+        
     }
 
     void Update()
