@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 32.792137, g: 40.631256, b: 53.777443, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2366,6 +2366,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Concrete_road (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 1177211891505001924, guid: 2343732686b8e5e409b76c047140bcbc,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 04a3c63a27c680249bef8b5ec15013f6, type: 2}
     - target: {fileID: 4481578806871700235, guid: 2343732686b8e5e409b76c047140bcbc,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3558,31 +3563,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1430221016}
     m_Modifications:
-    - target: {fileID: 3520950472185987451, guid: 4d4d93584985b7046ba1876400f87e21,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 9.012306
-      objectReference: {fileID: 0}
-    - target: {fileID: 3520950472185987451, guid: 4d4d93584985b7046ba1876400f87e21,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 9.012306
-      objectReference: {fileID: 0}
-    - target: {fileID: 3520950472185987451, guid: 4d4d93584985b7046ba1876400f87e21,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 9.012306
-      objectReference: {fileID: 0}
-    - target: {fileID: 3520950472185987451, guid: 4d4d93584985b7046ba1876400f87e21,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.83
-      objectReference: {fileID: 0}
-    - target: {fileID: 3520950472185987451, guid: 4d4d93584985b7046ba1876400f87e21,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.311
-      objectReference: {fileID: 0}
     - target: {fileID: 5688152209059178531, guid: 4d4d93584985b7046ba1876400f87e21,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -7073,6 +7053,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Concrete_road (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 1177211891505001924, guid: 2343732686b8e5e409b76c047140bcbc,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 04a3c63a27c680249bef8b5ec15013f6, type: 2}
     - target: {fileID: 4481578806871700235, guid: 2343732686b8e5e409b76c047140bcbc,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -31914,6 +31899,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Concrete_road (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 1177211891505001924, guid: 2343732686b8e5e409b76c047140bcbc,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 04a3c63a27c680249bef8b5ec15013f6, type: 2}
     - target: {fileID: 4481578806871700235, guid: 2343732686b8e5e409b76c047140bcbc,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -40096,6 +40086,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Concrete_road (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 1177211891505001924, guid: 2343732686b8e5e409b76c047140bcbc,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 741eb99aa498cf14480d2f3deb1b4a8f, type: 2}
     - target: {fileID: 4481578806871700235, guid: 2343732686b8e5e409b76c047140bcbc,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -42371,6 +42366,51 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 104d07db08d8cd648bc429c37383745f, type: 3}
+--- !u!1 &2120051256
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2120051258}
+  - component: {fileID: 2120051257}
+  m_Layer: 0
+  m_Name: WindZone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!182 &2120051257
+WindZone:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2120051256}
+  m_Enabled: 1
+  m_Mode: 0
+  m_Radius: 20
+  m_WindMain: 0.15
+  m_WindTurbulence: 1
+  m_WindPulseMagnitude: 0.5
+  m_WindPulseFrequency: 0.01
+--- !u!4 &2120051258
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2120051256}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 51
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2121104831
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -75593,7 +75633,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: da871863ae4d8314881f53debfbfe2ed, type: 2}
+  - {fileID: 2100000, guid: 741eb99aa498cf14480d2f3deb1b4a8f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
