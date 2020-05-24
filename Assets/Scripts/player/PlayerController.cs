@@ -6,16 +6,21 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
 
+    [Header("Health")]
     public float maxHealth = 100.0f;
     public float health = 100.0f;
+
+    [Header("Stamina")]
     public float staminaAmount = 100.0f;
     public float staminaMaxAmount = 100.0f;
     public float staminaRegenSpeed = 1.0f;
+
+    [Header("Death")]
     public bool dead = false;
 
+    [Header("Damage Color")]
     public Color maxcolor;
     public Color minColor;
-
     public Image damaged;
 
 
