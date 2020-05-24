@@ -26,7 +26,7 @@ ModelImporter:
     second: step_backwards
   - first:
       74: 6200578666267062213
-    second: run
+    second: basicAttack
   - first:
       74: 953518029616351911
     second: basic_attack
@@ -41,7 +41,19 @@ ModelImporter:
     second: rangedAttack
   - first:
       74: -6064320725909692092
-    second: block
+    second: block_pre
+  - first:
+      74: -487941876358002460
+    second: basicCombo
+  - first:
+      74: -1642150617331904598
+    second: blocking
+  - first:
+      74: -8781875593981425398
+    second: run
+  - first:
+      74: -381272583201455829
+    second: runningAttack
   externalObjects: {}
   materials:
     materialImportMode: 1
@@ -274,11 +286,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: run
+      name: basicAttack
       takeName: Take 001
       internalID: 0
-      firstFrame: 240
-      lastFrame: 264
+      firstFrame: 230
+      lastFrame: 259
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -303,40 +315,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: basic_attack
+      name: basicCombo
       takeName: Take 001
       internalID: 0
-      firstFrame: 270
-      lastFrame: 299
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: basic_attack_combo
-      takeName: Take 001
-      internalID: 0
-      firstFrame: 300
-      lastFrame: 359
+      firstFrame: 260
+      lastFrame: 320
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -364,8 +347,8 @@ ModelImporter:
       name: rangedAttack_pre
       takeName: Take 001
       internalID: 0
-      firstFrame: 390
-      lastFrame: 402
+      firstFrame: 320
+      lastFrame: 333
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -393,8 +376,8 @@ ModelImporter:
       name: rangedAttack
       takeName: Take 001
       internalID: 0
-      firstFrame: 403
-      lastFrame: 409
+      firstFrame: 334
+      lastFrame: 339
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -419,11 +402,98 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: block
+      name: block_pre
       takeName: Take 001
       internalID: 0
-      firstFrame: 430
-      lastFrame: 455
+      firstFrame: 345
+      lastFrame: 359
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: blocking
+      takeName: Take 001
+      internalID: 0
+      firstFrame: 360
+      lastFrame: 384
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: run
+      takeName: Take 001
+      internalID: 0
+      firstFrame: 410
+      lastFrame: 434
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: runningAttack
+      takeName: Take 001
+      internalID: 0
+      firstFrame: 435
+      lastFrame: 470
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
