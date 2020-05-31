@@ -84,7 +84,6 @@ public class EnemyController : MonoBehaviour
     {
         Vector3 dir = (playerTargetNode.position - transform.position).normalized;
 
-        //If we are we need to turn to face player stop agent so we don't tokyo drift
         float dotProd = Vector3.Dot(dir, transform.forward);
 
         return dotProd > thresholdAngle;
@@ -92,12 +91,24 @@ public class EnemyController : MonoBehaviour
 
     public bool canSeePlayer()
     {
+        bool hitPlayer = false;
+
         RaycastHit hit;
+        Vector3 dirOfPlayerNode = (playerTargetNode.position - eyes.position).normalized;
+        if (Physics.Raycast(eyes.position, dirOfPlayerNode, out hit, maxSpotDistance, sightObstacles)) 
+        { 
+            Debug.Log($"I hit {hit.collider.gameObject.name}");
+            if (hit.collider.tag == "")
+            {
+                hitPlayer = true;
+            }
+        }
+        else
+        {
+            Debug.Log("No hit");
+        }
 
-        if (Physics.Raycast(eyes.position, playerTargetNode.position, out hit, maxSpotDistance, sightObstacles)) { Debug.Log($"I hit {hit.collider.gameObject.name}"); }
-        else { Debug.Log("No hit"); }
-
-        return isLookingAtPlayer() && (Physics.Raycast(eyes.position, playerTargetNode.position, out hit, maxSpotDistance, sightObstacles)); 
+        return isLookingAtPlayer() && hitPlayer; 
     }
 
     // Start is called before the first frame update

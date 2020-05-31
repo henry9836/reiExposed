@@ -430,15 +430,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d802b4ed43ad81419132d68a7905df9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  player: {fileID: 0}
   aggresiveMode: 0
   health: 100
   thresholdSightAngle: 0.5
   maxSpotDistance: 100
   sightObstacles:
     serializedVersion: 2
-    m_Bits: 27159
+    m_Bits: 49665
   movementSpeed: 10
   onDeath:
     m_PersistentCalls:
@@ -453,11 +451,17 @@ MonoBehaviour:
   rightLegs: []
   otherBody: []
   debugMode: 1
+  currentMode: PENDING
   startHealth: 0
   agent: {fileID: 0}
   isDead: 0
   lastKnownPlayerPosition: {x: 0, y: 0, z: 0}
   playerTargetNode: {fileID: 0}
+  animator: {fileID: 0}
+  player: {fileID: 0}
+  targetPos: {x: 0, y: 0, z: 0}
+  Wanderrange: 0
+  startingLoc: {x: 0, y: 0, z: 0}
 --- !u!195 &2120492573
 NavMeshAgent:
   m_ObjectHideFlags: 0
