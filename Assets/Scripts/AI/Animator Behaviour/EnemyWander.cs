@@ -85,6 +85,9 @@ public class EnemyWander : StateMachineBehaviour
 
 
             //Attack player
+            ec.agent.SetDestination(player.transform.position);
+
+
         }
 
         //If we cannot see the player wander in the scene

@@ -105,15 +105,10 @@ public class EnemyController : MonoBehaviour
         Vector3 dirOfPlayerNode = (playerTargetNode.position - eyes.position).normalized;
         if (Physics.Raycast(eyes.position, dirOfPlayerNode, out hit, maxSpotDistance, sightObstacles)) 
         { 
-            Debug.Log($"I hit {hit.collider.gameObject.name}");
-            if (hit.collider.tag == "")
+            if (hit.collider.tag == "PlayerTargetNode")
             {
                 hitPlayer = true;
             }
-        }
-        else
-        {
-            Debug.Log("No hit");
         }
 
         return isLookingAtPlayer() && hitPlayer; 
