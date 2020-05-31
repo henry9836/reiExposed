@@ -60,6 +60,14 @@ public class EnemyController : MonoBehaviour
     public Vector3 startingLoc;
 #endif
 
+
+    public void ChangeHealth(float amount)
+    {
+        health += amount;
+        //Clamp
+        health = Mathf.Clamp(health, -1.0f, startHealth);
+    }
+
     public void updateCurrentMode(string newMode)
     {
         currentMode = newMode;
