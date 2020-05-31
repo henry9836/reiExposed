@@ -13,6 +13,7 @@ public class EnemyWander : StateMachineBehaviour
     public float stuckVeloThreshold = 1.0f;
     public float informRange = 20.0f;
     public float wanderRange = 30.0f;
+    public float regenSpeed = 0.0f;
     public Vector2 stayTimeRange = new Vector2(0.0f, 7.0f);
     public List<string> attacks = new List<string>();
     public List<Vector2> attackRanges = new List<Vector2>();
@@ -57,6 +58,7 @@ public class EnemyWander : StateMachineBehaviour
 #endif
     }
 
+
     void GetNewWanderTarget()
     {
         if (recalcTimer >= maxTimeBeforeAllowedRecalc)
@@ -91,6 +93,9 @@ public class EnemyWander : StateMachineBehaviour
 #if UNITY_EDITOR
             ec.currentMode = "WANDERING";
 #endif
+            //Heal
+            ec.ChangeHealth(regenSpeed * Time.deltaTime);
+
             //If we have reached our wander direction
             if (Vector3.Distance(ec.transform.position, wanderTarget) <= arriveDistanceThreshold)
             {
