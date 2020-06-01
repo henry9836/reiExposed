@@ -45,7 +45,6 @@ public class EnemyIdle : StateMachineBehaviour
         animator.SetBool("LosingPlayer", false);
 
         //Attacks Reset
-        animator.ResetTrigger("Attack");
         animator.ResetTrigger("Block");
         animator.ResetTrigger("LosingPlayer");
 
