@@ -42,6 +42,12 @@ public class EnemyWander : StateMachineBehaviour
 #if UNITY_EDITOR
         ec.updateCurrentMode("WANDERING");
 #endif
+        //If we can see the player it time to attack
+        if (ec.canSeePlayer())
+        {
+            ec.stopMovement();
+            animator.SetBool("AttackMode", true);
+        }
 
         //If we are close enough to our wander target stop our AI agent and return to Idle
         if ((ec.wanderTarget - enemy.transform.position).sqrMagnitude <= arriveThreshold)

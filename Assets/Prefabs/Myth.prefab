@@ -434,10 +434,19 @@ MonoBehaviour:
   health: 100
   thresholdSightAngle: 0.5
   maxSpotDistance: 100
+  losePlayerTimeThreshold: 15
+  stuckTimerThreshold: 2
+  stuckVeloThreshold: 1
+  informRange: 20
+  wanderRange: 30
+  seekWanderRange: 10
+  regenSpeed: 0
   sightObstacles:
     serializedVersion: 2
     m_Bits: 49665
   movementSpeed: 10
+  stayAfterArrivalTimeRange: {x: 0, y: 7}
+  arriveDistanceThreshold: 2
   onDeath:
     m_PersistentCalls:
       m_Calls: []
@@ -450,6 +459,13 @@ MonoBehaviour:
   leftLegs: []
   rightLegs: []
   otherBody: []
+  canBlock: 1
+  attacks:
+  - BasicAttack
+  attackRanges:
+  - {x: 2, y: 10}
+  attackDmg:
+  - 1
   debugMode: 1
   currentMode: PENDING
   startHealth: 0
@@ -459,9 +475,11 @@ MonoBehaviour:
   playerTargetNode: {fileID: 0}
   animator: {fileID: 0}
   player: {fileID: 0}
-  targetPos: {x: 0, y: 0, z: 0}
-  Wanderrange: 0
+  selectedAttack: 0
+  wanderTarget: {x: 0, y: 0, z: 0}
+  target: {x: 0, y: 0, z: 0}
   startingLoc: {x: 0, y: 0, z: 0}
+  losePlayerTimer: 0
 --- !u!195 &2120492573
 NavMeshAgent:
   m_ObjectHideFlags: 0

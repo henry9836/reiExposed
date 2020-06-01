@@ -62,6 +62,13 @@ public class EnemyIdle : StateMachineBehaviour
         ec.updateCurrentMode("IDLE");
 #endif
 
+        //If we can see the player it time to attack
+        if (ec.canSeePlayer())
+        {
+            ec.stopMovement();
+            animator.SetBool("AttackMode", true);
+        }
+
         waitTimer += Time.deltaTime;
 
         if (waitTimer >= waitTime)
