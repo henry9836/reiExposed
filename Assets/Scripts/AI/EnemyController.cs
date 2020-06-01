@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
@@ -7,6 +8,21 @@ using UnityEngine.PlayerLoop;
 
 public class EnemyController : MonoBehaviour
 {
+
+    public class attack
+    {
+        public string name;
+        public float damage;
+        public Vector2 range;
+
+        public attack(string _name, Vector2 _range, float _dmg)
+        {
+            name = _name;
+            range = _range;
+            damage = _dmg;
+        }
+    }
+
     //Defined Values
     [Header("General Settings")]
     public bool aggresiveMode = false;
@@ -19,6 +35,7 @@ public class EnemyController : MonoBehaviour
     public float stuckVeloThreshold = 1.0f;
     public float informRange = 20.0f;
     public float wanderRange = 30.0f;
+    public float seekWanderRange = 10.0f;
     public float regenSpeed = 0.0f;
     public LayerMask sightObstacles;
 
@@ -27,6 +44,7 @@ public class EnemyController : MonoBehaviour
     public float movementSpeed = 10.0f;
     public Vector2 stayAfterArrivalTimeRange = new Vector2(0.0f, 7.0f);
     public float arriveDistanceThreshold = 1.0f;
+
     [Header("Events")]
     public UnityEvent onDeath;
     public UnityEvent onStart;
@@ -43,6 +61,7 @@ public class EnemyController : MonoBehaviour
     public bool canBlock = true;
     public List<string> attacks = new List<string>();
     public List<Vector2> attackRanges = new List<Vector2>();
+    public List<float> attackDmg = new List<float>();
 
     [Header("Debug")]
     public bool debugMode;
@@ -64,8 +83,6 @@ public class EnemyController : MonoBehaviour
     [HideInInspector]
     public GameObject player;
     [HideInInspector]
-    public Vector3 lastKnownPlayerPos;
-    [HideInInspector]
     public int selectedAttack;
     [HideInInspector]
     public Vector3 wanderTarget;
@@ -73,10 +90,45 @@ public class EnemyController : MonoBehaviour
     public Vector3 target;
     [HideInInspector]
     public Vector3 startingLoc;
+    [HideInInspector]
+    public float losePlayerTimer;
 
     //Privates
     private float stuckTimer = 0.0f;
+    private float restrictRecalcTime = 1.5f;
+    private float restrictRecalcTimer = 0.0f;
+    private attack currentAttack = null;
 
+    public bool lostPlayer()
+    {
+        return (losePlayerTimer >= losePlayerTimeThreshold);
+    }
+
+    //Attack Picking
+    public attack getAttack()
+    {
+        return currentAttack;
+    }
+
+    //Pick an attack
+    public attack pickAttack()
+    {
+        int i = Random.Range(0, attacks.Count);
+        currentAttack = new attack(attacks[i], attackRanges[i], attackDmg[i]);
+        return currentAttack;
+    }
+
+    public bool hasAttack()
+    {
+        return (currentAttack != null);
+    }
+
+    public void clearAttack()
+    {
+        currentAttack = null;
+    }
+
+    //AI Movement
     public void stopMovement()
     {
         agent.isStopped = true;
@@ -97,6 +149,24 @@ public class EnemyController : MonoBehaviour
     }
 
     //Go to a new position
+    public void GoToTargetPosRestricted(Vector3 _target)
+    {
+        Debug.Log("Go to the random seek pos");
+        if (restrictRecalcTimer >= restrictRecalcTime)
+        {
+            Debug.Log("OK Boss");
+            GoToTargetPos(_target);
+            restrictRecalcTimer = 0.0f;
+        }
+    }
+    public void GoToNewWanderPos(Vector3 _target)
+    {
+        if (restrictRecalcTimer >= restrictRecalcTime) {
+            wanderTarget = _target;
+            GoToTargetPos(_target);
+            restrictRecalcTimer = 0.0f;
+        }
+    }
     public void GoToTargetPos(GameObject _target)
     {
         GoToTargetPos(_target.transform.position);
@@ -165,6 +235,18 @@ public class EnemyController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        //Keep Track Of Player
+        if (canSeePlayer())
+        {
+            lastKnownPlayerPosition = player.transform.position;
+            losePlayerTimer = 0.0f;
+        }
+        //Losing Player
+        else
+        {
+            losePlayerTimer += Time.deltaTime; 
+        }
+
 
         //Stuck Logic
         if (agent.velocity.magnitude < stuckVeloThreshold && !animator.GetBool("Idle"))
@@ -193,6 +275,9 @@ public class EnemyController : MonoBehaviour
                 DeathEvent();
             }
         }
+
+        //Stop a race condition
+        restrictRecalcTimer += Time.deltaTime;
 
 #if UNITY_EDITOR
         //DEBUGGING
@@ -224,9 +309,9 @@ public class EnemyController : MonoBehaviour
             Gizmos.color = Color.red;
             Gizmos.DrawSphere(target, 0.3f);
             Gizmos.color = Color.yellow;
-            Gizmos.DrawSphere(lastKnownPlayerPos, 0.3f);
+            Gizmos.DrawSphere(lastKnownPlayerPosition, 0.3f);
             //Draw Wander Area
-            Gizmos.color = Color.blue;
+            Gizmos.color = new Color(0.0f, 0.0f, 1.0f, 0.3f);
             Gizmos.DrawCube(startingLoc, new Vector3(wanderRange * 2.0f, 0.3f, wanderRange * 2.0f));
         }
     }

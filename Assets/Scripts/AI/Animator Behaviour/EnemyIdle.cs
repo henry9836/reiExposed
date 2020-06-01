@@ -13,6 +13,7 @@ public class EnemyIdle : StateMachineBehaviour
     float waitTime = 0.0f;
     float waitTimer = 0.0f;
     float wanderRange = 0.0f;
+    Vector3 tmp;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -50,6 +51,7 @@ public class EnemyIdle : StateMachineBehaviour
 
         //Random Wait Time
         waitTime = Random.Range(ec.stayAfterArrivalTimeRange.x, ec.stayAfterArrivalTimeRange.y);
+        waitTimer = 0.0f;
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -59,6 +61,13 @@ public class EnemyIdle : StateMachineBehaviour
 #if UNITY_EDITOR
         ec.updateCurrentMode("IDLE");
 #endif
+
+        //If we can see the player it time to attack
+        if (ec.canSeePlayer())
+        {
+            ec.stopMovement();
+            animator.SetBool("AttackMode", true);
+        }
 
         waitTimer += Time.deltaTime;
 
@@ -72,8 +81,8 @@ public class EnemyIdle : StateMachineBehaviour
 
     void GetNewWanderTarget()
     {
-        ec.wanderTarget = startingLoc + new Vector3(Random.Range(-wanderRange, wanderRange), 0.0f, Random.Range(-wanderRange, wanderRange));
-        ec.GoToTargetPos(ec.wanderTarget);
+        tmp = startingLoc + new Vector3(Random.Range(-wanderRange, wanderRange), 0.0f, Random.Range(-wanderRange, wanderRange));
+        ec.GoToNewWanderPos(tmp);
     }
 
 }
