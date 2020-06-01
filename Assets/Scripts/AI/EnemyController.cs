@@ -14,11 +14,19 @@ public class EnemyController : MonoBehaviour
     [Range(0.0f, 1.0f)]
     public float thresholdSightAngle = 0.5f;
     public float maxSpotDistance = 100.0f;
+    public float losePlayerTimeThreshold = 5.0f;
+    public float stuckTimerThreshold = 5.0f;
+    public float stuckVeloThreshold = 1.0f;
+    public float informRange = 20.0f;
+    public float wanderRange = 30.0f;
+    public float regenSpeed = 0.0f;
     public LayerMask sightObstacles;
+
 
     [Header("Movement Settings")]
     public float movementSpeed = 10.0f;
-
+    public Vector2 stayAfterArrivalTimeRange = new Vector2(0.0f, 7.0f);
+    public float arriveDistanceThreshold = 1.0f;
     [Header("Events")]
     public UnityEvent onDeath;
     public UnityEvent onStart;
@@ -30,6 +38,11 @@ public class EnemyController : MonoBehaviour
     public List<BoxCollider> leftLegs = new List<BoxCollider>();
     public List<BoxCollider> rightLegs = new List<BoxCollider>();
     public List<BoxCollider> otherBody = new List<BoxCollider>();
+
+    [Header("Moveset")]
+    public bool canBlock = true;
+    public List<string> attacks = new List<string>();
+    public List<Vector2> attackRanges = new List<Vector2>();
 
     [Header("Debug")]
     public bool debugMode;
@@ -50,16 +63,26 @@ public class EnemyController : MonoBehaviour
     public Animator animator;
     [HideInInspector]
     public GameObject player;
-#if UNITY_EDITOR
-    //Debugging Hidden
     [HideInInspector]
-    public Vector3 targetPos;
+    public Vector3 lastKnownPlayerPos;
     [HideInInspector]
-    public float Wanderrange;
+    public int selectedAttack;
+    [HideInInspector]
+    public Vector3 wanderTarget;
+    [HideInInspector]
+    public Vector3 target;
     [HideInInspector]
     public Vector3 startingLoc;
-#endif
 
+    //Privates
+    private float stuckTimer = 0.0f;
+
+    public void stopMovement()
+    {
+        agent.isStopped = true;
+        agent.ResetPath();
+        agent.isStopped = false;
+    }
 
     public void ChangeHealth(float amount)
     {
@@ -74,15 +97,16 @@ public class EnemyController : MonoBehaviour
     }
 
     //Go to a new position
-    public void GoToTargetPos(GameObject target)
+    public void GoToTargetPos(GameObject _target)
     {
-        GoToTargetPos(target.transform.position);
+        GoToTargetPos(_target.transform.position);
     }
 
-    public void GoToTargetPos(Vector3 target)
+    public void GoToTargetPos(Vector3 _target)
     {
         agent.isStopped = true;
-        agent.SetDestination(target);
+        agent.SetDestination(_target);
+        target = _target;
         agent.isStopped = false;
     }
 
@@ -122,6 +146,8 @@ public class EnemyController : MonoBehaviour
         aggresiveMode = false;
         startHealth = health;
         playerTargetNode = GameObject.FindGameObjectWithTag("PlayerTargetNode").transform;
+        startingLoc = transform.position;
+        animator = GetComponent<Animator>();
         onStart.Invoke();
     }
 
@@ -139,6 +165,27 @@ public class EnemyController : MonoBehaviour
 
     private void FixedUpdate()
     {
+
+        //Stuck Logic
+        if (agent.velocity.magnitude < stuckVeloThreshold && !animator.GetBool("Idle"))
+        {
+            stuckTimer += Time.deltaTime;
+        }
+        else
+        {
+            stuckTimer = 0.0f;
+        }
+        //If we are stuck
+        if (stuckTimer > stuckTimerThreshold)
+        {
+#if UNITY_EDITOR
+            Debug.LogWarning($"{gameObject.name} got stuck, attempting to fix...");
+#endif
+            stopMovement();
+            animator.SetBool("Idle", true);
+        }
+
+        //Death
         if (health <= 0)
         {
             if (!isDead)
@@ -173,10 +220,14 @@ public class EnemyController : MonoBehaviour
         if (debugMode)
         {
             Gizmos.color = Color.cyan;
-            Gizmos.DrawSphere(targetPos, 0.3f);
+            Gizmos.DrawSphere(wanderTarget, 0.3f);
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(target, 0.3f);
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawSphere(lastKnownPlayerPos, 0.3f);
             //Draw Wander Area
             Gizmos.color = Color.blue;
-            Gizmos.DrawCube(startingLoc, new Vector3(Wanderrange * 2.0f, 0.3f, Wanderrange * 2.0f));
+            Gizmos.DrawCube(startingLoc, new Vector3(wanderRange * 2.0f, 0.3f, wanderRange * 2.0f));
         }
     }
 
