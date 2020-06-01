@@ -27,7 +27,8 @@ public class EnemyWander : StateMachineBehaviour
         }
         if (arriveThreshold == 0.0f)
         {
-            arriveThreshold = ec.arriveDistanceThreshold;
+            //Squared for faster exec
+            arriveThreshold = ec.arriveDistanceThreshold * ec.arriveDistanceThreshold;
         }
         
         dest = ec.wanderTarget;
@@ -42,11 +43,8 @@ public class EnemyWander : StateMachineBehaviour
         ec.updateCurrentMode("WANDERING");
 #endif
 
-        Debug.Log($"{Vector3.Distance(enemy.transform.position, dest)} / {arriveThreshold}");
-        Debug.Log($"{enemy.transform.position} :: {dest}");
-
         //If we are close enough to our wander target stop our AI agent and return to Idle
-        if (Vector3.Distance(enemy.transform.position, dest) <= arriveThreshold)
+        if ((ec.wanderTarget - enemy.transform.position).sqrMagnitude <= arriveThreshold)
         {
             ec.stopMovement();
             animator.SetBool("Idle", true);

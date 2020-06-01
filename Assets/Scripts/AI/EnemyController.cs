@@ -76,6 +76,8 @@ public class EnemyController : MonoBehaviour
 
     //Privates
     private float stuckTimer = 0.0f;
+    private float restrictWanderRecalcTime = 1.5f;
+    private float restrictWanderRecalcTimer = 0.0f;
 
     public void stopMovement()
     {
@@ -97,6 +99,14 @@ public class EnemyController : MonoBehaviour
     }
 
     //Go to a new position
+    public void GoToNewWanderPos(Vector3 _target)
+    {
+        if (restrictWanderRecalcTimer >= restrictWanderRecalcTime) {
+            wanderTarget = _target;
+            GoToTargetPos(_target);
+            restrictWanderRecalcTimer = 0.0f;
+        }
+    }
     public void GoToTargetPos(GameObject _target)
     {
         GoToTargetPos(_target.transform.position);
@@ -193,6 +203,9 @@ public class EnemyController : MonoBehaviour
                 DeathEvent();
             }
         }
+
+        //Stop a race condition
+        restrictWanderRecalcTimer += Time.deltaTime;
 
 #if UNITY_EDITOR
         //DEBUGGING
