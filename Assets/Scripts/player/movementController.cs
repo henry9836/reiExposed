@@ -1,7 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Xml.Linq;
-using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -32,6 +30,8 @@ public class movementController : MonoBehaviour
     public Transform leftFoot;
     public GameObject charcterModel;
     public GameObject camParent;
+    public Transform leftFootTarget;
+    public Transform rightFootTarget;
 
     [Header("Layer Masks")]
     public LayerMask groundLayer;
@@ -84,31 +84,35 @@ public class movementController : MonoBehaviour
         //=========================
 
         //Check for ground below each foot
-        rightFootGrounded = (Physics.Raycast(leftFoot.position, Vector3.down, out hit, feetCheckDistance, groundLayer));
-        if (rightFootGrounded)
+        leftFootGrounded = (Physics.Raycast(leftFoot.position, Vector3.down, out hit, feetCheckDistance, groundLayer));
+        if (leftFootGrounded)
         {
             Debug.DrawLine(leftFoot.position, hit.point, Color.cyan);
+            leftFoot.position = hit.point;
         }
         else
         {
             Debug.DrawLine(leftFoot.position, leftFoot.position + (Vector3.down * feetCheckDistance), Color.red);
+            leftFoot.position = leftFoot.position;
         }
 
-        leftFootGrounded = (Physics.Raycast(rightFoot.position, Vector3.down, out hit, feetCheckDistance, groundLayer));
+        rightFootGrounded = (Physics.Raycast(rightFoot.position, Vector3.down, out hit, feetCheckDistance, groundLayer));
 
-        if (leftFootGrounded)
+        if (rightFootGrounded)
         {
             Debug.DrawLine(rightFoot.position, hit.point, Color.cyan);
+            rightFoot.position = hit.point;
         }
         else
         {
             Debug.DrawLine(rightFoot.position, rightFoot.position + (Vector3.down * feetCheckDistance), Color.red);
+            rightFoot.position = rightFoot.position;
         }
 
         //Center foot is important as landing is controlled by character controller
         centerFootGrounded = (Physics.Raycast(feet.position, Vector3.down, out hit, feetCheckDistance, groundLayer));
 
-        if (leftFootGrounded)
+        if (centerFootGrounded)
         {
             Debug.DrawLine(feet.position, hit.point, Color.cyan);
         }

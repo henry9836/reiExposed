@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor.Experimental.TerrainAPI;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -35,6 +34,19 @@ public class EzyIK : MonoBehaviour
     [Range(0.0f, 5.0f)]
     public float visualiserScale = 0.3f;
 
+
+    private bool active = true;
+
+    public void PauseIK()
+    {
+        active = false;
+    }
+
+    public void ResumeIK()
+    {
+        active = true;
+    }
+
     void Awake()
     {
         if (target)
@@ -51,7 +63,9 @@ public class EzyIK : MonoBehaviour
 
     void LateUpdate()
     {
-        IKPlugin.IKStep(ref boneStructure);
+        if (active) {
+            IKPlugin.IKStep(ref boneStructure);
+        }
     }
 
 #if UNITY_EDITOR
@@ -162,9 +176,9 @@ public class EzyIKEditor : Editor {
             {
                 EditorGUILayout.HelpBox("No Target Set", MessageType.Error);
             }
-            if (depth.intValue < 3 && depth.intValue != -1)
+            if (depth.intValue < 1 && depth.intValue != -1)
             {
-                EditorGUILayout.HelpBox("Depth Search Must Be Greater Than 2 or Set To -1", MessageType.Error);
+                EditorGUILayout.HelpBox("Depth Search Must Be Greater Than 0 or Set To -1", MessageType.Error);
             }
 
             EditorGUILayout.PropertyField(solveAmount);
@@ -215,7 +229,7 @@ public class EzyIKEditor : Editor {
             EditorGUILayout.HelpBox("Values cannot be changed during runtime", MessageType.Info);
 
             //Stop Player if unsafe values
-            if (targetTransform.objectReferenceValue == null || (depth.intValue < 3 && depth.intValue != -1) || solveAmount.intValue < 1 || arriveDis.floatValue < 0.0f) {
+            if (targetTransform.objectReferenceValue == null || (depth.intValue < 1 && depth.intValue != -1) || solveAmount.intValue < 1 || arriveDis.floatValue < 0.0f) {
                 Debug.LogError($"Invalid Settings On EzyIK Object: {serializedObject.targetObject.name}");
             }
         }
