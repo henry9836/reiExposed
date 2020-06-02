@@ -1,38 +1,49 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class movementController : MonoBehaviour
 {
 
+    [Header("Movement")]
     public float moveSpeed = 10.0f;
     public float sprintSpeedMultipler = 2.0f;
     public float jumpForce = 10.0f;
-    public float gravity = 9.41f;
-    public float maxFallSpeedWhileGliding = 10.0f;
-    public float staminaCostSprint = 2.0f;
-    public float staminaCostDash = 30.0f;
-    public float staminaCostJump = 30.0f;
-    public float dashDistance = 10.0f;
-    public float respawnThreshold = -30.0f;
-    public float feetCheckDistance = 0.5f;
-    public float rollTime = 1.0f;
+    public AnimationCurve rollMovementOverTime;
+    public float rollTime = 0.5f;
     public float rollDistance = 5.0f;
-    public LayerMask groundLayer;
-    public LayerMask rollObstcleLayer;
-    public GameObject charcterModel;
-    public GameObject camParent;
-    public Image sprintLines;
+    public float feetCheckDistance = 0.5f;
+
+    [Header("World")]
+    public float gravity = 9.41f;
+    public float respawnThreshold = -30.0f;
+
+    [Header("Stamina")]
+    public float staminaCostSprint = 2.0f;
+    public float staminaCostRoll = 30.0f;
+    public float staminaCostJump = 30.0f;
+
+    [Header("Body Parts")]
     public Transform feet;
     public Transform rightFoot;
     public Transform leftFoot;
+    public GameObject charcterModel;
+    public GameObject camParent;
+    public Transform leftFootTarget;
+    public Transform rightFootTarget;
+
+    [Header("Layer Masks")]
+    public LayerMask groundLayer;
+    public LayerMask rollObstcleLayer;
+
+    [Header("Other")]
+    public Image sprintLines;
 
     //Sounds
     public List<AudioClip> dashSounds = new List<AudioClip>();
-
     private AudioSource audio;
+
     private PlayerController pc;
     private CharacterController ch;
     private Animator animator;
@@ -73,31 +84,35 @@ public class movementController : MonoBehaviour
         //=========================
 
         //Check for ground below each foot
-        rightFootGrounded = (Physics.Raycast(leftFoot.position, Vector3.down, out hit, feetCheckDistance, groundLayer));
-        if (rightFootGrounded)
+        leftFootGrounded = (Physics.Raycast(leftFoot.position, Vector3.down, out hit, feetCheckDistance, groundLayer));
+        if (leftFootGrounded)
         {
             Debug.DrawLine(leftFoot.position, hit.point, Color.cyan);
+            leftFoot.position = hit.point;
         }
         else
         {
             Debug.DrawLine(leftFoot.position, leftFoot.position + (Vector3.down * feetCheckDistance), Color.red);
+            leftFoot.position = leftFoot.position;
         }
 
-        leftFootGrounded = (Physics.Raycast(rightFoot.position, Vector3.down, out hit, feetCheckDistance, groundLayer));
+        rightFootGrounded = (Physics.Raycast(rightFoot.position, Vector3.down, out hit, feetCheckDistance, groundLayer));
 
-        if (leftFootGrounded)
+        if (rightFootGrounded)
         {
             Debug.DrawLine(rightFoot.position, hit.point, Color.cyan);
+            rightFoot.position = hit.point;
         }
         else
         {
             Debug.DrawLine(rightFoot.position, rightFoot.position + (Vector3.down * feetCheckDistance), Color.red);
+            rightFoot.position = rightFoot.position;
         }
 
         //Center foot is important as landing is controlled by character controller
         centerFootGrounded = (Physics.Raycast(feet.position, Vector3.down, out hit, feetCheckDistance, groundLayer));
 
-        if (leftFootGrounded)
+        if (centerFootGrounded)
         {
             Debug.DrawLine(feet.position, hit.point, Color.cyan);
         }
@@ -183,26 +198,6 @@ public class movementController : MonoBehaviour
             moveDir.y -= gravity * Time.deltaTime;
 
 
-            // =======
-            // REMOVED
-            // -------
-            // Gliding
-            // =======
-            //Glide if falling and holding jump
-            //if (Input.GetButton("Jump") && (moveDir.y < 0))
-            //{
-            //    moveDir.y = Mathf.Clamp((moveDir.y), -maxFallSpeedWhileGliding, 0.0f);
-            //    animator.SetTrigger("gliding 0");
-            //    animator.ResetTrigger("gliding 1");
-            //}
-            //else
-            //{
-            //    animator.SetTrigger("gliding 1");
-            //    animator.ResetTrigger("gliding 0");
-
-            //}
-
-
         }
         //While we are on the ground
         else
@@ -240,6 +235,9 @@ public class movementController : MonoBehaviour
             //Reset timer
             rollTimer = 0.0f;
 
+            //Stamina
+            pc.ChangeStamina(-staminaCostRoll);
+
             //Lock other movement until roll is complete
             rolling = true;
         }
@@ -248,7 +246,7 @@ public class movementController : MonoBehaviour
         if (rolling)
         {
             //Move towards target
-            transform.position = Vector3.Lerp(beforeRollPosition, targetRollPosition, (rollTimer/rollTime));
+            transform.position = Vector3.Lerp(beforeRollPosition, targetRollPosition, rollMovementOverTime.Evaluate(rollTimer / rollTime));
 
             //Toggle off the roll once we have reached the end of the roll
             if (rollTimer >= rollTime)
@@ -256,26 +254,6 @@ public class movementController : MonoBehaviour
                 rolling = false;
             }
         }
-
-        // ===========
-        // REMOVED
-        // ----------
-        // DASHING
-        // ===========
-        //if (Input.GetButtonDown("Dash"))
-        //{
-        //    //We are moving in a direction
-        //    if ((moveDir.x != 0) && (moveDir.z != 0))
-        //    {
-        //        //move more
-        //        if (pc.CheckStamina() >= staminaCostDash)
-        //        {
-        //            audio.PlayOneShot(dashSounds[Random.Range(0, dashSounds.Count)]);
-        //            moveDir += new Vector3(moveDir.x * dashDistance, 0.0f, moveDir.z * dashDistance);
-        //            pc.ChangeStamina(-staminaCostDash);
-        //        }
-        //    }
-        //}
 
         //Sprint
         else if (Input.GetButton("Sprint") && isOnGround && !rolling)
