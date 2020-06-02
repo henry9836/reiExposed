@@ -107,10 +107,15 @@ public class cameraControler : MonoBehaviour
         }
         crosshair.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, ADStimer);
         camRoot.transform.localPosition = new Vector3(Mathf.Lerp(0.0f, 0.4f, ADStimer), 0.0f, zOffsetColl);
-        if (pausemenu.GetComponent<pauseMenu>().paused == false)
-        {
-            Time.timeScale = Mathf.Lerp(1.0f, 0.3f, ADStimer);
-        }
+        //=============================
+        // REMOVED
+        //-----------------------------
+        // SLOW MOTION EFFECT
+        //=============================
+        //if (pausemenu.GetComponent<pauseMenu>().paused == false)
+        //{
+        //    Time.timeScale = Mathf.Lerp(1.0f, 0.3f, ADStimer);
+        //}
         mainCam.fieldOfView = fov;
         CameraRotation();
     }
