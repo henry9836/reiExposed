@@ -9,10 +9,24 @@ using UnityEngine.PlayerLoop;
 public class EnemyController : MonoBehaviour
 {
 
+    public enum ATTACKSURFACES
+    {
+        ALL,
+        ARMS,
+        LEGS,
+        OTHER,
+        LEFTARM,
+        RIGHTARM,
+        LEFTLEG,
+        RIGHTLEG,
+        WEAPON1,
+        WEAPON2
+    }
     public class attack
     {
         public string name;
         public float damage;
+        public bool damageOnlyOnce;
         public Vector2 range;
 
         public attack(string _name, Vector2 _range, float _dmg)
@@ -56,6 +70,8 @@ public class EnemyController : MonoBehaviour
     public List<BoxCollider> leftLegs = new List<BoxCollider>();
     public List<BoxCollider> rightLegs = new List<BoxCollider>();
     public List<BoxCollider> otherBody = new List<BoxCollider>();
+    public List<BoxCollider> weapon_1 = new List<BoxCollider>();
+    public List<BoxCollider> weapon_2 = new List<BoxCollider>();
 
     [Header("Moveset")]
     public bool canBlock = true;
@@ -98,6 +114,127 @@ public class EnemyController : MonoBehaviour
     private float restrictRecalcTime = 1.5f;
     private float restrictRecalcTimer = 0.0f;
     private attack currentAttack = null;
+    private Vector3 lastKnownPlayerDir;
+
+    public void UpdateAttackSurface(ATTACKSURFACES surface, bool arm, bool _damageOnlyOnce)
+    {
+        if (currentAttack != null)
+        {
+            currentAttack.damageOnlyOnce = _damageOnlyOnce;
+        }
+        switch (surface)
+        {
+            case ATTACKSURFACES.ALL:
+                {
+                    for (int i = 0; i < leftArms.Count; i++)
+                    {
+                        leftArms[i].enabled = arm;
+                    }
+                    for (int i = 0; i < rightArms.Count; i++)
+                    {
+                        rightArms[i].enabled = arm;
+                    }
+                    for (int i = 0; i < leftLegs.Count; i++)
+                    {
+                        leftLegs[i].enabled = arm;
+                    }
+                    for (int i = 0; i < rightLegs.Count; i++)
+                    {
+                        rightLegs[i].enabled = arm;
+                    }
+                    for (int i = 0; i < otherBody.Count; i++)
+                    {
+                        otherBody[i].enabled = arm;
+                    }
+                    break;
+                }
+            case ATTACKSURFACES.ARMS:
+                {
+                    for (int i = 0; i < leftArms.Count; i++)
+                    {
+                        leftArms[i].enabled = arm;
+                    }
+                    for (int i = 0; i < rightArms.Count; i++)
+                    {
+                        rightArms[i].enabled = arm;
+                    }
+                    break;
+                }
+            case ATTACKSURFACES.LEGS:
+                {
+                    for (int i = 0; i < leftLegs.Count; i++)
+                    {
+                        leftLegs[i].enabled = arm;
+                    }
+                    for (int i = 0; i < rightLegs.Count; i++)
+                    {
+                        rightLegs[i].enabled = arm;
+                    }
+                    break;
+                }
+            case ATTACKSURFACES.OTHER:
+                {
+                    for (int i = 0; i < otherBody.Count; i++)
+                    {
+                        otherBody[i].enabled = arm;
+                    }
+                    break;
+                }
+            case ATTACKSURFACES.LEFTARM:
+                {
+                    for (int i = 0; i < leftArms.Count; i++)
+                    {
+                        leftArms[i].enabled = arm;
+                    }
+                    break;
+                }
+            case ATTACKSURFACES.RIGHTARM:
+                {
+                    for (int i = 0; i < rightArms.Count; i++)
+                    {
+                        rightArms[i].enabled = arm;
+                    }
+                    break;
+                }
+            case ATTACKSURFACES.LEFTLEG:
+                {
+                    for (int i = 0; i < leftLegs.Count; i++)
+                    {
+                        leftLegs[i].enabled = arm;
+                    }
+                    break;
+                }
+            case ATTACKSURFACES.RIGHTLEG:
+                {
+                    for (int i = 0; i < rightLegs.Count; i++)
+                    {
+                        rightLegs[i].enabled = arm;
+                    }
+                    break;
+                }
+            case ATTACKSURFACES.WEAPON1:
+                {
+                    for (int i = 0; i < weapon_1.Count; i++)
+                    {
+                        weapon_1[i].enabled = arm;
+                    }
+                    break;
+                }
+            case ATTACKSURFACES.WEAPON2:
+                {
+                    for (int i = 0; i < weapon_2.Count; i++)
+                    {
+                        weapon_2[i].enabled = arm;
+                    }
+                    break;
+                }
+            default:
+                {
+                    Debug.LogError($"No valid attacksurface group logic found! {gameObject.name}");
+                    break;
+                }
+        }
+    }
 
     public bool lostPlayer()
     {
@@ -218,6 +355,7 @@ public class EnemyController : MonoBehaviour
         playerTargetNode = GameObject.FindGameObjectWithTag("PlayerTargetNode").transform;
         startingLoc = transform.position;
         animator = GetComponent<Animator>();
+        UpdateAttackSurface(ATTACKSURFACES.ALL, false, true);
         onStart.Invoke();
     }
 
@@ -228,22 +366,19 @@ public class EnemyController : MonoBehaviour
         onDeath.Invoke();
     }
 
-    private void Update()
-    {
-        
-    }
-
     private void FixedUpdate()
     {
         //Keep Track Of Player
         if (canSeePlayer())
         {
             lastKnownPlayerPosition = player.transform.position;
+            lastKnownPlayerDir = player.transform.forward;
             losePlayerTimer = 0.0f;
         }
         //Losing Player
         else
         {
+            lastKnownPlayerPosition = lastKnownPlayerPosition + (lastKnownPlayerDir * 5.0f);
             losePlayerTimer += Time.deltaTime; 
         }
 
