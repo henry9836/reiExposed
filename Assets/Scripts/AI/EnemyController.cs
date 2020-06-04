@@ -116,12 +116,22 @@ public class EnemyController : MonoBehaviour
     private attack currentAttack = null;
     private Vector3 lastKnownPlayerDir;
 
+    //PLAYER DAMAGE QUERY
+    public float QueryDamage()
+    {
+        if (currentAttack.damageOnlyOnce)
+        {
+            UpdateAttackSurface(ATTACKSURFACES.ALL, false, false);
+        }
+
+        return currentAttack.damage;
+    }
+
+
+    //ATTACK
+
     public void UpdateAttackSurface(ATTACKSURFACES surface, bool arm, bool _damageOnlyOnce)
     {
-        if (currentAttack != null)
-        {
-            currentAttack.damageOnlyOnce = _damageOnlyOnce;
-        }
         switch (surface)
         {
             case ATTACKSURFACES.ALL:
@@ -234,12 +244,12 @@ public class EnemyController : MonoBehaviour
                     break;
                 }
         }
+        if (currentAttack != null)
+        {
+            currentAttack.damageOnlyOnce = _damageOnlyOnce;
+        }
     }
 
-    public bool lostPlayer()
-    {
-        return (losePlayerTimer >= losePlayerTimeThreshold);
-    }
 
     //Attack Picking
     public attack getAttack()
@@ -345,6 +355,13 @@ public class EnemyController : MonoBehaviour
         return isLookingAtPlayer() && hitPlayer; 
     }
 
+    //Detection
+    public bool lostPlayer()
+    {
+        return (losePlayerTimer >= losePlayerTimeThreshold);
+    }
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -372,13 +389,13 @@ public class EnemyController : MonoBehaviour
         if (canSeePlayer())
         {
             lastKnownPlayerPosition = player.transform.position;
-            lastKnownPlayerDir = player.transform.forward;
+            lastKnownPlayerDir = player.GetComponent<movementController>().charcterModel.transform.forward;
             losePlayerTimer = 0.0f;
         }
         //Losing Player
         else
         {
-            lastKnownPlayerPosition = lastKnownPlayerPosition + (lastKnownPlayerDir * 5.0f);
+            lastKnownPlayerPosition = lastKnownPlayerPosition + (lastKnownPlayerDir.normalized * 5.0f);
             losePlayerTimer += Time.deltaTime; 
         }
 
