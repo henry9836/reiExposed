@@ -1,7 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Xml.Linq;
-using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -34,8 +32,6 @@ public class movementController : MonoBehaviour
     public GameObject camParent;
     public Transform leftFootTarget;
     public Transform rightFootTarget;
-    public EzyIK rightIK;
-    public EzyIK leftIK;
 
     [Header("Layer Masks")]
     public LayerMask groundLayer;
@@ -93,13 +89,11 @@ public class movementController : MonoBehaviour
         {
             Debug.DrawLine(leftFoot.position, hit.point, Color.cyan);
             leftFoot.position = hit.point;
-            leftIK.ResumeIK();
         }
         else
         {
             Debug.DrawLine(leftFoot.position, leftFoot.position + (Vector3.down * feetCheckDistance), Color.red);
             leftFoot.position = leftFoot.position;
-            leftIK.PauseIK();
         }
 
         rightFootGrounded = (Physics.Raycast(rightFoot.position, Vector3.down, out hit, feetCheckDistance, groundLayer));
@@ -108,13 +102,11 @@ public class movementController : MonoBehaviour
         {
             Debug.DrawLine(rightFoot.position, hit.point, Color.cyan);
             rightFoot.position = hit.point;
-            rightIK.ResumeIK();
         }
         else
         {
             Debug.DrawLine(rightFoot.position, rightFoot.position + (Vector3.down * feetCheckDistance), Color.red);
             rightFoot.position = rightFoot.position;
-            rightIK.PauseIK();
         }
 
         //Center foot is important as landing is controlled by character controller

@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor.Experimental.TerrainAPI;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
