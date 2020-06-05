@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using pathfind;
+using UnityEngine.UI;
 
 public class plugindemo : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class plugindemo : MonoBehaviour
     private GameObject rei;
 
     public bool candeliver = false;
+    public GameObject shitUI; 
 
     void Start()
     {
@@ -29,6 +31,7 @@ public class plugindemo : MonoBehaviour
     {
         currdestination = 0;
         candeliver = false;
+        shitUI.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.2f);
         iar.destination = destinaitons[currdestination];
         iar.movfin1call = true;
     }
@@ -38,9 +41,6 @@ public class plugindemo : MonoBehaviour
     //custom ienum that gets called from other script when the source reaches the destination
     public IEnumerator whenfinished()
     {
-        Debug.Log("done");
-
-
          //allows the script to reinitlise the direction the drone was traveling in 
          Path.currenttdirinit = true;
 
@@ -61,6 +61,8 @@ public class plugindemo : MonoBehaviour
         else
         {
             candeliver = true;
+            shitUI.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+
         }
 
         //update and move again
