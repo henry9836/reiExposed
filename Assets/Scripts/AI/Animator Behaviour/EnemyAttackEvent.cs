@@ -15,11 +15,13 @@ public class EnemyAttackEvent : StateMachineBehaviour
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        animator.SetBool("Attacking", true);
+
         if (ec == null)
         {
             ec = animator.gameObject.GetComponent<EnemyController>();
         }
-
+        ec.stopMovement();
         armed = false;
     }
 
@@ -47,5 +49,7 @@ public class EnemyAttackEvent : StateMachineBehaviour
         {
             ec.UpdateAttackSurface(attackSurfaces, false, damageOnlyOnce);
         }
+
+        animator.SetBool("Attacking", false);
     }
 }
