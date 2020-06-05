@@ -23,18 +23,26 @@ public class EnemyController : MonoBehaviour
         WEAPON1,
         WEAPON2
     }
+    public enum MOVESETRESTRICTION
+    {
+        ALL,
+        PASSIVE,
+        AGGRO
+    }
     public class attack
     {
         public string name;
         public float damage;
         public bool damageOnlyOnce;
+        public MOVESETRESTRICTION moveType;
         public Vector2 range;
 
-        public attack(string _name, Vector2 _range, float _dmg)
+        public attack(string _name, Vector2 _range, float _dmg, MOVESETRESTRICTION type)
         {
             name = _name;
             range = _range;
             damage = _dmg;
+            moveType = type;
         }
     }
 
@@ -56,10 +64,10 @@ public class EnemyController : MonoBehaviour
     public float regenSpeed = 0.0f;
     public LayerMask sightObstacles;
     
-
-
     [Header("Movement Settings")]
     public float movementSpeed = 10.0f;
+    public float walkSpeed = 4.0f;
+    public float runningSpeed = 15.0f;
     public Vector2 stayAfterArrivalTimeRange = new Vector2(0.0f, 7.0f);
     public float arriveDistanceThreshold = 1.0f;
 
@@ -79,9 +87,11 @@ public class EnemyController : MonoBehaviour
 
     [Header("Moveset")]
     public bool canBlock = true;
+    public float jumpDistance = 20.0f;
     public List<string> attacks = new List<string>();
     public List<Vector2> attackRanges = new List<Vector2>();
     public List<float> attackDmg = new List<float>();
+    public List<MOVESETRESTRICTION> attackType = new List<MOVESETRESTRICTION>();
 
     [Header("Debug")]
     public bool debugMode;
@@ -121,16 +131,29 @@ public class EnemyController : MonoBehaviour
     private attack currentAttack = null;
     private Vector3 lastKnownPlayerDir;
     private PlayerController pc;
+    private int blockCount;
+    private int blockCountThresholdBeforeAggro = 5;
+    private float blockSubtractTime = 10.0f;
+    private float blockSubtractTimer = 0.0f;
 
     //PLAYER DAMAGE QUERY
     public float QueryDamage()
     {
-        if (currentAttack.damageOnlyOnce)
-        {
-            UpdateAttackSurface(ATTACKSURFACES.ALL, false, false);
-        }
+        if (currentAttack != null) {
+            float dmg = currentAttack.damage;
+            if (currentAttack.damageOnlyOnce)
+            {
+                UpdateAttackSurface(ATTACKSURFACES.ALL, false, false);
+                clearAttack();
+            }
 
-        return currentAttack.damage;
+            return dmg;
+        }
+        else
+        {
+            Debug.LogWarning("QUERY REQUEST RECEIVED BUT THERE IS NO CURRENT ATTACK ASSIGNED");
+            return 0.0f;
+        }
     }
 
 
@@ -161,6 +184,14 @@ public class EnemyController : MonoBehaviour
                     for (int i = 0; i < otherBody.Count; i++)
                     {
                         otherBody[i].enabled = arm;
+                    }
+                    for (int i = 0; i < weapon_1.Count; i++)
+                    {
+                        weapon_1[i].enabled = arm;
+                    }
+                    for (int i = 0; i < weapon_2.Count; i++)
+                    {
+                        weapon_2[i].enabled = arm;
                     }
                     break;
                 }
@@ -260,14 +291,67 @@ public class EnemyController : MonoBehaviour
     //Attack Picking
     public attack getAttack()
     {
+        if (currentAttack == null)
+        {
+            return pickAttack();
+        }
         return currentAttack;
     }
 
     //Pick an attack
     public attack pickAttack()
     {
-        int i = Random.Range(0, attacks.Count);
-        currentAttack = new attack(attacks[i], attackRanges[i], attackDmg[i]);
+        float distanceFromPlayer = Vector3.Distance(transform.position, lastKnownPlayerPosition);
+        float shortestDistance = Mathf.Infinity;
+        float testingDis = 0.0f;
+        attack tmp;
+        //For all attacks
+        for (int i = 0; i < attacks.Count; i++)
+        {
+            //Select next attack
+            tmp = new attack(attacks[i], attackRanges[i], attackDmg[i], attackType[i]);
+            //Is this attack valid with our mode
+            switch (tmp.moveType)
+            {
+                case MOVESETRESTRICTION.ALL:
+                    break;
+                case MOVESETRESTRICTION.PASSIVE:
+                    { 
+                        //skip this attack
+                        if (aggresiveMode)
+                        {
+                            continue;
+                        }
+                        break; 
+                    }
+                case MOVESETRESTRICTION.AGGRO:
+                    {
+                        //skip this attack
+                        if (!aggresiveMode)
+                        {
+                            continue;
+                        }
+                        break;
+                    }
+                default:
+                    {
+                        Debug.LogWarning($"Unknown MoveType: {tmp.moveType}");
+                        break;
+                    }
+            }
+
+
+            //How close do we need to get to start attacking?
+            testingDis = Mathf.Abs(distanceFromPlayer - tmp.range.x);
+            //If this the shortest distance we have found?
+            if (testingDis < shortestDistance)
+            {
+                shortestDistance = testingDis;
+                currentAttack = tmp;
+            }
+        }
+
+        Debug.Log("Picked: " + currentAttack.name);
         return currentAttack;
     }
 
@@ -278,6 +362,7 @@ public class EnemyController : MonoBehaviour
 
     public void clearAttack()
     {
+        Debug.Log("cleared attack");
         currentAttack = null;
     }
 
@@ -409,6 +494,13 @@ public class EnemyController : MonoBehaviour
         UpdateAttackSurface(ATTACKSURFACES.ALL, false, true);
         pc = player.GetComponent<PlayerController>();
         sixthSenseDistance = maxSpotDistance * sixthSenseDistanceFraction;
+
+        //Sanity Checks
+        if (!(attacks.Count == attackType.Count && attackType.Count == attackRanges.Count))
+        {
+            Debug.LogError($"Attack Lists do not match on {gameObject.name}");
+        }
+
         onStart.Invoke();
     }
 
@@ -463,6 +555,27 @@ public class EnemyController : MonoBehaviour
         //Stop a race condition
         restrictRecalcTimer += Time.deltaTime;
 
+        //Change movement speed based on mode
+        if (aggresiveMode)
+        {
+            agent.speed = runningSpeed;
+        }
+        else
+        {
+            agent.speed = walkSpeed;
+        }
+
+        //Restrict blocking
+        blockSubtractTimer += Time.deltaTime;
+        if (blockSubtractTimer >= blockSubtractTime)
+        {
+            blockCount--;
+            if (blockCount < 0)
+            {
+                blockCount = 0;
+            }
+        }
+
 #if UNITY_EDITOR
         //DEBUGGING
         if (debugMode)
@@ -513,10 +626,41 @@ public class EnemyController : MonoBehaviour
     {
         if (other.CompareTag("PlayerAttackSurface"))
         {
-            //Get Hurt
-            stopMovement();
-            health -= pc.umbreallaDmg;
-            animator.SetTrigger("Stun");
+            if (!animator.GetBool("Blocking") && !animator.GetBool("Attacking"))
+            {
+                bool blocked = false;
+                int coin = Random.Range(0, 100);
+                //High chance to block if in passive mode
+                if (!aggresiveMode)
+                {
+                    blocked = coin < 50; //50% chance
+                }
+                //Low chance to block if in agro mode
+                else
+                {
+                    blocked = coin < 10; //10% chance
+                }
+
+                if (!blocked)
+                {
+                    //Get Hurt
+                    stopMovement();
+                    health -= pc.umbreallaDmg;
+                    animator.SetTrigger("Stun");
+                }
+                else
+                {
+                    blockSubtractTimer = 0.0f;
+                    blockCount++;
+                    animator.SetTrigger("Block");
+                }
+
+                if (blockCount >= blockCountThresholdBeforeAggro)
+                {
+                    aggresiveMode = true;
+                }
+
+            }
         }
     }
 
