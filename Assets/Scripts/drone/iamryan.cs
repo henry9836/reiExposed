@@ -52,7 +52,11 @@ public class iamryan : MonoBehaviour
 
         savedll();
 #endif
-        Path.themask = ~(1 << save.safeItem("themask", saveFile.types.INT).toint);
+
+
+
+        //Path.themask = ~(1 << save.safeItem("themask", saveFile.types.INT).toint);
+        Path.themask = save.safeItem("themask", saveFile.types.INT).toint;
 
     }
 
