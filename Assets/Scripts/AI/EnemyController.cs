@@ -122,6 +122,10 @@ public class EnemyController : MonoBehaviour
     public Vector3 startingLoc;
     [HideInInspector]
     public float losePlayerTimer;
+    [HideInInspector]
+    public int workerID;
+    [HideInInspector]
+    public MythWorkerUnion union;
 
     //Privates
     private float stuckTimer = 0.0f;
@@ -129,7 +133,7 @@ public class EnemyController : MonoBehaviour
     private float restrictRecalcTime = 1.5f;
     private float restrictRecalcTimer = 0.0f;
     private attack currentAttack = null;
-    private Vector3 lastKnownPlayerDir;
+    private Vector3 lastKnownPlayerDir = Vector3.zero;
     private PlayerController pc;
     private int blockCount;
     private int blockCountThresholdBeforeAggro = 5;
@@ -512,6 +516,7 @@ public class EnemyController : MonoBehaviour
             lastKnownPlayerPosition = player.transform.position;
             lastKnownPlayerDir = player.GetComponent<movementController>().charcterModel.transform.forward;
             losePlayerTimer = 0.0f;
+            union.ISeeThePlayer(workerID);
         }
         //Losing Player
         else
