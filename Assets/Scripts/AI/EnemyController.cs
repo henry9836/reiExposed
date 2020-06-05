@@ -73,6 +73,7 @@ public class EnemyController : MonoBehaviour
 
     [Header("Events")]
     public UnityEvent onDeath;
+    public UnityEvent onHurt;
     public UnityEvent onStart;
 
     [Header("Body Parts")]
@@ -122,6 +123,10 @@ public class EnemyController : MonoBehaviour
     public Vector3 startingLoc;
     [HideInInspector]
     public float losePlayerTimer;
+    [HideInInspector]
+    public int workerID;
+    [HideInInspector]
+    public MythWorkerUnion union;
 
     //Privates
     private float stuckTimer = 0.0f;
@@ -129,7 +134,7 @@ public class EnemyController : MonoBehaviour
     private float restrictRecalcTime = 1.5f;
     private float restrictRecalcTimer = 0.0f;
     private attack currentAttack = null;
-    private Vector3 lastKnownPlayerDir;
+    private Vector3 lastKnownPlayerDir = Vector3.zero;
     private PlayerController pc;
     private int blockCount;
     private int blockCountThresholdBeforeAggro = 5;
@@ -512,6 +517,7 @@ public class EnemyController : MonoBehaviour
             lastKnownPlayerPosition = player.transform.position;
             lastKnownPlayerDir = player.GetComponent<movementController>().charcterModel.transform.forward;
             losePlayerTimer = 0.0f;
+            union.ISeeThePlayer(workerID);
         }
         //Losing Player
         else
@@ -626,38 +632,56 @@ public class EnemyController : MonoBehaviour
     {
         if (other.CompareTag("PlayerAttackSurface"))
         {
-            if (!animator.GetBool("Blocking") && !animator.GetBool("Attacking"))
+            if (!animator.GetBool("Blocking"))
             {
-                bool blocked = false;
-                int coin = Random.Range(0, 100);
-                //High chance to block if in passive mode
-                if (!aggresiveMode)
-                {
-                    blocked = coin < 50; //50% chance
-                }
-                //Low chance to block if in agro mode
-                else
-                {
-                    blocked = coin < 10; //10% chance
-                }
 
-                if (!blocked)
+                bool blocked = false;
+                if (!animator.GetBool("Attacking"))
+                {
+                    int coin = Random.Range(0, 100);
+                    //High chance to block if in passive mode
+                    if (!aggresiveMode)
+                    {
+                        blocked = coin < 50; //50% chance
+                    }
+                    //Low chance to block if in agro mode
+                    else
+                    {
+                        blocked = coin < 10; //10% chance
+                    }
+
+
+                    if (!blocked)
+                    {
+                        //Get Hurt
+                        stopMovement();
+                        health -= pc.umbreallaDmg;
+                        onHurt.Invoke();
+                        animator.SetTrigger("Stun");
+                    }
+                    else
+                    {
+                        blockSubtractTimer = 0.0f;
+                        blockCount++;
+                        animator.SetTrigger("Block");
+                    }
+
+                    if (blockCount >= blockCountThresholdBeforeAggro)
+                    {
+                        aggresiveMode = true;
+                    }
+
+                }
+                else
                 {
                     //Get Hurt
-                    stopMovement();
                     health -= pc.umbreallaDmg;
-                    animator.SetTrigger("Stun");
-                }
-                else
-                {
-                    blockSubtractTimer = 0.0f;
-                    blockCount++;
-                    animator.SetTrigger("Block");
+                    onHurt.Invoke();
                 }
 
-                if (blockCount >= blockCountThresholdBeforeAggro)
+                if (!animator.GetBool("AttackMode"))
                 {
-                    aggresiveMode = true;
+                    animator.SetBool("AttackMode", true);
                 }
 
             }
