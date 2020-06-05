@@ -1,14 +1,19 @@
 ﻿using Boo.Lang.Environments;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class MythWorkerUnion : MonoBehaviour
 {
     public List<GameObject> mythObjects = new List<GameObject>();
     public List<EnemyController> mythControllers = new List<EnemyController>();
+    [Range(0.0f, 1.0f)]
+    public float maxAgroPercent = 0.5f;
 
     private int workerID = 0;
+    private float checkTime = 5.0f;
+    private float checkTimer = 0.0f;
 
     void Start()
     {
@@ -21,6 +26,45 @@ public class MythWorkerUnion : MonoBehaviour
             mythControllers[mythControllers.Count - 1].workerID = workerID;
             mythControllers[mythControllers.Count - 1].union = this;
             workerID++;
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        checkTimer += Time.deltaTime;
+        if (checkTimer > checkTime)
+        {
+            //Check ratios of agro and non
+            int agroCount = 0;
+
+            for (int i = 0; i < mythControllers.Count-1; i++)
+            {
+                if (mythControllers[i].aggresiveMode)
+                {
+                    agroCount++;
+                }
+            }
+
+            //If more than maxagro remove one agro
+            if ((maxAgroPercent/mythControllers.Count) > maxAgroPercent)
+            {
+                for (int i = 0; i < mythControllers.Count - 1; i++)
+                {
+                    //Problem fixed
+                    if ((maxAgroPercent / mythControllers.Count) <= maxAgroPercent)
+                    {
+                        break;
+                    }
+                    //If Agro don't
+                    if (mythControllers[i].aggresiveMode)
+                    {
+                        mythControllers[i].aggresiveMode = false;
+                    }
+
+                }
+            }
+
+            checkTimer = 0.0f;
         }
     }
 
