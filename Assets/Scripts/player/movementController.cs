@@ -220,26 +220,30 @@ public class movementController : MonoBehaviour
         //Rolling Mechanic
         if (Input.GetButtonDown("Roll") && !rolling)
         {
-            //Check if area is clear
-            tmpRollDistance = rollDistance;
-            RaycastHit hit;
-            if (Physics.Raycast(feet.transform.position, charcterModel.transform.forward, out hit, tmpRollDistance, rollObstcleLayer))
+            //Check stamina
+            if (staminaCostSprint <= pc.staminaAmount)
             {
-                //If we hit something then only roll to just before the object we hit
-                tmpRollDistance = hit.distance - 1.0f;
+                //Check if area is clear
+                tmpRollDistance = rollDistance;
+                RaycastHit hit;
+                if (Physics.Raycast(feet.transform.position, charcterModel.transform.forward, out hit, tmpRollDistance, rollObstcleLayer))
+                {
+                    //If we hit something then only roll to just before the object we hit
+                    tmpRollDistance = hit.distance - 1.0f;
+                }
+                //Roll in the forward direction of model
+                targetRollPosition = transform.position + (charcterModel.transform.forward * tmpRollDistance);
+                beforeRollPosition = transform.position;
+
+                //Reset timer
+                rollTimer = 0.0f;
+
+                //Stamina
+                pc.ChangeStamina(-staminaCostRoll);
+
+                //Lock other movement until roll is complete
+                rolling = true;
             }
-            //Roll in the forward direction of model
-            targetRollPosition = transform.position + (charcterModel.transform.forward * tmpRollDistance);
-            beforeRollPosition = transform.position;
-
-            //Reset timer
-            rollTimer = 0.0f;
-
-            //Stamina
-            pc.ChangeStamina(-staminaCostRoll);
-
-            //Lock other movement until roll is complete
-            rolling = true;
         }
 
         //Lerp between start roll and end roll pos if we are rolling

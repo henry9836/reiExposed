@@ -466,7 +466,7 @@ MonoBehaviour:
   losePlayerTimeThreshold: 15
   stuckTimerThreshold: 2
   stuckVeloThreshold: 1
-  informRange: 20
+  informRange: 10000
   wanderRange: 30
   seekWanderRange: 10
   regenSpeed: 0
@@ -552,6 +552,8 @@ MonoBehaviour:
   target: {x: 0, y: 0, z: 0}
   startingLoc: {x: 0, y: 0, z: 0}
   losePlayerTimer: 0
+  workerID: 0
+  union: {fileID: 0}
 --- !u!195 &2120492573
 NavMeshAgent:
   m_ObjectHideFlags: 0
