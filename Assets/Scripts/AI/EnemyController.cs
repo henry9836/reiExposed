@@ -5,14 +5,29 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
 using UnityEngine.PlayerLoop;
+using UnityEngine.UIElements;
 
 public class EnemyController : MonoBehaviour
 {
 
+    public enum ATTACKSURFACES
+    {
+        ALL,
+        ARMS,
+        LEGS,
+        OTHER,
+        LEFTARM,
+        RIGHTARM,
+        LEFTLEG,
+        RIGHTLEG,
+        WEAPON1,
+        WEAPON2
+    }
     public class attack
     {
         public string name;
         public float damage;
+        public bool damageOnlyOnce;
         public Vector2 range;
 
         public attack(string _name, Vector2 _range, float _dmg)
@@ -30,6 +45,8 @@ public class EnemyController : MonoBehaviour
     [Range(0.0f, 1.0f)]
     public float thresholdSightAngle = 0.5f;
     public float maxSpotDistance = 100.0f;
+    [Range(0.0f, 1.0f)]
+    public float sixthSenseDistanceFraction = 0.3f;
     public float losePlayerTimeThreshold = 5.0f;
     public float stuckTimerThreshold = 5.0f;
     public float stuckVeloThreshold = 1.0f;
@@ -38,6 +55,7 @@ public class EnemyController : MonoBehaviour
     public float seekWanderRange = 10.0f;
     public float regenSpeed = 0.0f;
     public LayerMask sightObstacles;
+    
 
 
     [Header("Movement Settings")]
@@ -56,6 +74,8 @@ public class EnemyController : MonoBehaviour
     public List<BoxCollider> leftLegs = new List<BoxCollider>();
     public List<BoxCollider> rightLegs = new List<BoxCollider>();
     public List<BoxCollider> otherBody = new List<BoxCollider>();
+    public List<BoxCollider> weapon_1 = new List<BoxCollider>();
+    public List<BoxCollider> weapon_2 = new List<BoxCollider>();
 
     [Header("Moveset")]
     public bool canBlock = true;
@@ -95,14 +115,147 @@ public class EnemyController : MonoBehaviour
 
     //Privates
     private float stuckTimer = 0.0f;
+    private float sixthSenseDistance;
     private float restrictRecalcTime = 1.5f;
     private float restrictRecalcTimer = 0.0f;
     private attack currentAttack = null;
+    private Vector3 lastKnownPlayerDir;
+    private PlayerController pc;
 
-    public bool lostPlayer()
+    //PLAYER DAMAGE QUERY
+    public float QueryDamage()
     {
-        return (losePlayerTimer >= losePlayerTimeThreshold);
+        if (currentAttack.damageOnlyOnce)
+        {
+            UpdateAttackSurface(ATTACKSURFACES.ALL, false, false);
+        }
+
+        return currentAttack.damage;
     }
+
+
+    //ATTACK
+
+    public void UpdateAttackSurface(ATTACKSURFACES surface, bool arm, bool _damageOnlyOnce)
+    {
+        switch (surface)
+        {
+            case ATTACKSURFACES.ALL:
+                {
+                    for (int i = 0; i < leftArms.Count; i++)
+                    {
+                        leftArms[i].enabled = arm;
+                    }
+                    for (int i = 0; i < rightArms.Count; i++)
+                    {
+                        rightArms[i].enabled = arm;
+                    }
+                    for (int i = 0; i < leftLegs.Count; i++)
+                    {
+                        leftLegs[i].enabled = arm;
+                    }
+                    for (int i = 0; i < rightLegs.Count; i++)
+                    {
+                        rightLegs[i].enabled = arm;
+                    }
+                    for (int i = 0; i < otherBody.Count; i++)
+                    {
+                        otherBody[i].enabled = arm;
+                    }
+                    break;
+                }
+            case ATTACKSURFACES.ARMS:
+                {
+                    for (int i = 0; i < leftArms.Count; i++)
+                    {
+                        leftArms[i].enabled = arm;
+                    }
+                    for (int i = 0; i < rightArms.Count; i++)
+                    {
+                        rightArms[i].enabled = arm;
+                    }
+                    break;
+                }
+            case ATTACKSURFACES.LEGS:
+                {
+                    for (int i = 0; i < leftLegs.Count; i++)
+                    {
+                        leftLegs[i].enabled = arm;
+                    }
+                    for (int i = 0; i < rightLegs.Count; i++)
+                    {
+                        rightLegs[i].enabled = arm;
+                    }
+                    break;
+                }
+            case ATTACKSURFACES.OTHER:
+                {
+                    for (int i = 0; i < otherBody.Count; i++)
+                    {
+                        otherBody[i].enabled = arm;
+                    }
+                    break;
+                }
+            case ATTACKSURFACES.LEFTARM:
+                {
+                    for (int i = 0; i < leftArms.Count; i++)
+                    {
+                        leftArms[i].enabled = arm;
+                    }
+                    break;
+                }
+            case ATTACKSURFACES.RIGHTARM:
+                {
+                    for (int i = 0; i < rightArms.Count; i++)
+                    {
+                        rightArms[i].enabled = arm;
+                    }
+                    break;
+                }
+            case ATTACKSURFACES.LEFTLEG:
+                {
+                    for (int i = 0; i < leftLegs.Count; i++)
+                    {
+                        leftLegs[i].enabled = arm;
+                    }
+                    break;
+                }
+            case ATTACKSURFACES.RIGHTLEG:
+                {
+                    for (int i = 0; i < rightLegs.Count; i++)
+                    {
+                        rightLegs[i].enabled = arm;
+                    }
+                    break;
+                }
+            case ATTACKSURFACES.WEAPON1:
+                {
+                    for (int i = 0; i < weapon_1.Count; i++)
+                    {
+                        weapon_1[i].enabled = arm;
+                    }
+                    break;
+                }
+            case ATTACKSURFACES.WEAPON2:
+                {
+                    for (int i = 0; i < weapon_2.Count; i++)
+                    {
+                        weapon_2[i].enabled = arm;
+                    }
+                    break;
+                }
+            default:
+                {
+                    Debug.LogError($"No valid attacksurface group logic found! {gameObject.name}");
+                    break;
+                }
+        }
+        if (currentAttack != null)
+        {
+            currentAttack.damageOnlyOnce = _damageOnlyOnce;
+        }
+    }
+
 
     //Attack Picking
     public attack getAttack()
@@ -181,14 +334,20 @@ public class EnemyController : MonoBehaviour
     }
 
     //Are we looking at the player?
-    public bool isLookingAtPlayer() { return isLookingAtPlayer(thresholdSightAngle); }
-    public bool isLookingAtPlayer(float thresholdAngle)
+    public bool isLookingAtPlayer() { return isLookingAtPlayer(thresholdSightAngle, false); }
+    public bool isLookingAtPlayer(bool _override) { return isLookingAtPlayer(thresholdSightAngle, _override); }
+    public bool isLookingAtPlayer(float thresholdAngle, bool overrideChecks)
     {
         Vector3 dir = (playerTargetNode.position - transform.position).normalized;
 
         float dotProd = Vector3.Dot(dir, transform.forward);
 
-        return dotProd > thresholdAngle;
+        //If we are not in combat mode or we are losing the player
+        if (!animator.GetBool("AttackMode") || (losePlayerTimer > losePlayerTimeThreshold * 0.5f) || overrideChecks)
+        {
+            return dotProd > thresholdAngle;
+        }
+        return true;
     }
 
     public bool canSeePlayer()
@@ -197,15 +356,44 @@ public class EnemyController : MonoBehaviour
 
         RaycastHit hit;
         Vector3 dirOfPlayerNode = (playerTargetNode.position - eyes.position).normalized;
-        if (Physics.Raycast(eyes.position, dirOfPlayerNode, out hit, maxSpotDistance, sightObstacles)) 
-        { 
-            if (hit.collider.tag == "PlayerTargetNode")
+        //If we not in attack mode or we can see the player in our main cone
+        if (!animator.GetBool("AttackMode") || isLookingAtPlayer(true)) {
+            if (Physics.Raycast(eyes.position, dirOfPlayerNode, out hit, maxSpotDistance, sightObstacles))
             {
-                hitPlayer = true;
+                if (hit.collider.tag == "PlayerTargetNode")
+                {
+                    hitPlayer = true;
+                }
             }
+            return isLookingAtPlayer() && hitPlayer;
+        }
+        //In attack mode and can see the player in our attack circle
+        else
+        {
+            //If the player is within our range larger range of vision
+            if (Physics.Raycast(eyes.position, dirOfPlayerNode, out hit, sixthSenseDistance, sightObstacles))
+            {
+                if (hit.collider.tag == "PlayerTargetNode")
+                {
+                    hitPlayer = true;
+                }
+            }
+            return hitPlayer;
         }
 
-        return isLookingAtPlayer() && hitPlayer; 
+    }
+
+    //Detection
+    public bool lostPlayer()
+    {
+        return (losePlayerTimer >= losePlayerTimeThreshold);
+    }
+
+    //Death
+    void DeathEvent()
+    {
+        isDead = true;
+        onDeath.Invoke();
     }
 
     // Start is called before the first frame update
@@ -218,19 +406,10 @@ public class EnemyController : MonoBehaviour
         playerTargetNode = GameObject.FindGameObjectWithTag("PlayerTargetNode").transform;
         startingLoc = transform.position;
         animator = GetComponent<Animator>();
+        UpdateAttackSurface(ATTACKSURFACES.ALL, false, true);
+        pc = player.GetComponent<PlayerController>();
+        sixthSenseDistance = maxSpotDistance * sixthSenseDistanceFraction;
         onStart.Invoke();
-    }
-
-    //Death
-    void DeathEvent()
-    {
-        isDead = true;
-        onDeath.Invoke();
-    }
-
-    private void Update()
-    {
-        
     }
 
     private void FixedUpdate()
@@ -239,11 +418,16 @@ public class EnemyController : MonoBehaviour
         if (canSeePlayer())
         {
             lastKnownPlayerPosition = player.transform.position;
+            lastKnownPlayerDir = player.GetComponent<movementController>().charcterModel.transform.forward;
             losePlayerTimer = 0.0f;
         }
         //Losing Player
         else
         {
+            if (losePlayerTimer == 0.0f)
+            {
+                lastKnownPlayerPosition = lastKnownPlayerPosition + (lastKnownPlayerDir.normalized * 5.0f);
+            }
             losePlayerTimer += Time.deltaTime; 
         }
 
@@ -304,12 +488,18 @@ public class EnemyController : MonoBehaviour
     {
         if (debugMode)
         {
+            //Draw Wander Target
             Gizmos.color = Color.cyan;
             Gizmos.DrawSphere(wanderTarget, 0.3f);
+            //Draw target
             Gizmos.color = Color.red;
             Gizmos.DrawSphere(target, 0.3f);
+            //Draw last know player pos
             Gizmos.color = Color.yellow;
             Gizmos.DrawSphere(lastKnownPlayerPosition, 0.3f);
+            //Draw Sixth Sense
+            Gizmos.color = new Color(1.5f, 0.5f, 1.0f);
+            Gizmos.DrawWireSphere(transform.position, sixthSenseDistance);
             //Draw Wander Area
             Gizmos.color = new Color(0.0f, 0.0f, 1.0f, 0.3f);
             Gizmos.DrawCube(startingLoc, new Vector3(wanderRange * 2.0f, 0.3f, wanderRange * 2.0f));
@@ -317,5 +507,17 @@ public class EnemyController : MonoBehaviour
     }
 
 #endif
+
+    //I was hit by something
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("PlayerAttackSurface"))
+        {
+            //Get Hurt
+            stopMovement();
+            health -= pc.umbreallaDmg;
+            animator.SetTrigger("Stun");
+        }
+    }
 
 }

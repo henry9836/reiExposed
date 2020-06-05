@@ -15,15 +15,16 @@ public class PlayerController : MonoBehaviour
     public float staminaMaxAmount = 100.0f;
     public float staminaRegenSpeed = 1.0f;
 
+    [Header("Combat")]
+    public float umbreallaDmg = 5.0f;
+
     [Header("Death")]
     public bool dead = false;
 
-    [Header("Damage Color")]
+    [Header("Damage")]
     public Color maxcolor;
     public Color minColor;
     public Image damaged;
-
-
     //Sounds
     public List<AudioClip> hurtSounds = new List<AudioClip>();
     public AudioClip deathSound;
@@ -86,8 +87,16 @@ public class PlayerController : MonoBehaviour
     {
         if (dead == false)
         {
+            //Damage From Enemy and we are not blocking
+            if (other.gameObject.CompareTag("EnemyAttackSurface") && !umberalla.GetComponent<umbrella>().ISBLockjing)
+            {
+                Debug.Log("I was hit and taking damage");
+                health -= other.gameObject.GetComponent<DamageQuery>().QueryDamage();
+                audio.PlayOneShot(hurtSounds[Random.Range(0, hurtSounds.Count)]);
+            }
+
             //Damage From Boss
-            if (other.gameObject.CompareTag("BossAttackSurface") && !umberalla.GetComponent<umbrella>().ISBLockjing)
+            else if (other.gameObject.CompareTag("BossAttackSurface") && !umberalla.GetComponent<umbrella>().ISBLockjing)
             {
                 Debug.Log("I was hit and taking damage");
                 health -= boss.GetComponent<BossController>().QueryDamage();
