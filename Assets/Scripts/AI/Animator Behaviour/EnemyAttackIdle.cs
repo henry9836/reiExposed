@@ -66,8 +66,8 @@ public class EnemyAttackIdle : StateMachineBehaviour
             //Switch attack
             currentAttack = ec.pickAttack();
         }
-        //Are we close enough to attack?
-        else if (((player.transform.position - enemy.transform.position).magnitude > currentAttack.range.x) && ((player.transform.position - enemy.transform.position).magnitude <= currentAttack.range.y))
+        //Are we close enough to attack and facing player
+        else if ((((player.transform.position - enemy.transform.position).magnitude > currentAttack.range.x) && ((player.transform.position - enemy.transform.position).magnitude <= currentAttack.range.y)) && (ec.isLookingAtPlayer(0.3f, true)) && (ec.canSeePlayer()))
         {
             //Attack
             animator.SetTrigger(currentAttack.name);
