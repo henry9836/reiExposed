@@ -11,6 +11,4 @@ public class drone : MonoBehaviour
     {
         GameObject.Instantiate(potions[i], this.gameObject.transform.position, Quaternion.identity);
     }
-
-
 }

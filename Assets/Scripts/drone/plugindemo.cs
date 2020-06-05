@@ -21,14 +21,12 @@ public class plugindemo : MonoBehaviour
         iar = this.gameObject.GetComponent<iamryan>();
         iar.whenFin = whenfinished();
         rei = GameObject.Find("PLAYER_rei");
-        iar.destination = destinaitons[currdestination];
-        iar.movfin1call = true;
+        deliver();
     }
 
 
     public void deliver()
     {
-        Debug.Log("set");
         currdestination = 0;
         candeliver = false;
         iar.destination = destinaitons[currdestination];
@@ -40,6 +38,9 @@ public class plugindemo : MonoBehaviour
     //custom ienum that gets called from other script when the source reaches the destination
     public IEnumerator whenfinished()
     {
+        Debug.Log("done");
+
+
          //allows the script to reinitlise the direction the drone was traveling in 
          Path.currenttdirinit = true;
 

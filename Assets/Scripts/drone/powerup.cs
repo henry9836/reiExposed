@@ -15,10 +15,6 @@ public class powerup : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.gameObject.name);
-
-        
-
 
 
         if (other.gameObject.tag == "Player")
