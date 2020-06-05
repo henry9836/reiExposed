@@ -73,6 +73,7 @@ public class EnemyController : MonoBehaviour
 
     [Header("Events")]
     public UnityEvent onDeath;
+    public UnityEvent onHurt;
     public UnityEvent onStart;
 
     [Header("Body Parts")]
@@ -631,38 +632,56 @@ public class EnemyController : MonoBehaviour
     {
         if (other.CompareTag("PlayerAttackSurface"))
         {
-            if (!animator.GetBool("Blocking") && !animator.GetBool("Attacking"))
+            if (!animator.GetBool("Blocking"))
             {
-                bool blocked = false;
-                int coin = Random.Range(0, 100);
-                //High chance to block if in passive mode
-                if (!aggresiveMode)
-                {
-                    blocked = coin < 50; //50% chance
-                }
-                //Low chance to block if in agro mode
-                else
-                {
-                    blocked = coin < 10; //10% chance
-                }
 
-                if (!blocked)
+                bool blocked = false;
+                if (!animator.GetBool("Attacking"))
+                {
+                    int coin = Random.Range(0, 100);
+                    //High chance to block if in passive mode
+                    if (!aggresiveMode)
+                    {
+                        blocked = coin < 50; //50% chance
+                    }
+                    //Low chance to block if in agro mode
+                    else
+                    {
+                        blocked = coin < 10; //10% chance
+                    }
+
+
+                    if (!blocked)
+                    {
+                        //Get Hurt
+                        stopMovement();
+                        health -= pc.umbreallaDmg;
+                        onHurt.Invoke();
+                        animator.SetTrigger("Stun");
+                    }
+                    else
+                    {
+                        blockSubtractTimer = 0.0f;
+                        blockCount++;
+                        animator.SetTrigger("Block");
+                    }
+
+                    if (blockCount >= blockCountThresholdBeforeAggro)
+                    {
+                        aggresiveMode = true;
+                    }
+
+                }
+                else
                 {
                     //Get Hurt
-                    stopMovement();
                     health -= pc.umbreallaDmg;
-                    animator.SetTrigger("Stun");
-                }
-                else
-                {
-                    blockSubtractTimer = 0.0f;
-                    blockCount++;
-                    animator.SetTrigger("Block");
+                    onHurt.Invoke();
                 }
 
-                if (blockCount >= blockCountThresholdBeforeAggro)
+                if (!animator.GetBool("AttackMode"))
                 {
-                    aggresiveMode = true;
+                    animator.SetBool("AttackMode", true);
                 }
 
             }
