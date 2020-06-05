@@ -79,6 +79,7 @@ public class EnemyController : MonoBehaviour
 
     [Header("Moveset")]
     public bool canBlock = true;
+    public float jumpDistance = 20.0f;
     public List<string> attacks = new List<string>();
     public List<Vector2> attackRanges = new List<Vector2>();
     public List<float> attackDmg = new List<float>();
@@ -121,6 +122,10 @@ public class EnemyController : MonoBehaviour
     private attack currentAttack = null;
     private Vector3 lastKnownPlayerDir;
     private PlayerController pc;
+    private int blockCount;
+    private int blockCountThresholdBeforeAggro = 5;
+    private float blockSubtractTime = 10.0f;
+    private float blockSubtractTimer = 0.0f;
 
     //PLAYER DAMAGE QUERY
     public float QueryDamage()
@@ -463,6 +468,17 @@ public class EnemyController : MonoBehaviour
         //Stop a race condition
         restrictRecalcTimer += Time.deltaTime;
 
+        //Restrict blocking
+        blockSubtractTimer += Time.deltaTime;
+        if (blockSubtractTimer >= blockSubtractTime)
+        {
+            blockCount--;
+            if (blockCount < 0)
+            {
+                blockCount = 0;
+            }
+        }
+
 #if UNITY_EDITOR
         //DEBUGGING
         if (debugMode)
@@ -513,10 +529,41 @@ public class EnemyController : MonoBehaviour
     {
         if (other.CompareTag("PlayerAttackSurface"))
         {
-            //Get Hurt
-            stopMovement();
-            health -= pc.umbreallaDmg;
-            animator.SetTrigger("Stun");
+            if (!animator.GetBool("Blocking"))
+            {
+                bool blocked = false;
+                int coin = Random.Range(0, 100);
+                //High chance to block if in passive mode
+                if (!aggresiveMode)
+                {
+                    blocked = coin < 50; //50% chance
+                }
+                //Low chance to block if in agro mode
+                else
+                {
+                    blocked = coin < 10; //10% chance
+                }
+
+                if (!blocked)
+                {
+                    //Get Hurt
+                    stopMovement();
+                    health -= pc.umbreallaDmg;
+                    animator.SetTrigger("Stun");
+                }
+                else
+                {
+                    blockSubtractTimer = 0.0f;
+                    blockCount++;
+                    animator.SetTrigger("Block");
+                }
+
+                if (blockCount >= blockCountThresholdBeforeAggro)
+                {
+                    aggresiveMode = true;
+                }
+
+            }
         }
     }
 

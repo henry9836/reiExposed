@@ -43,6 +43,7 @@ public class EnemyChase : StateMachineBehaviour
 #if UNITY_EDITOR
         ec.updateCurrentMode("CHASING");
 #endif
+
         //Are we close enough to the player to start our attack?
         if (((ec.lastKnownPlayerPosition - enemy.transform.position).sqrMagnitude > currentAttack.range.x) && ((ec.lastKnownPlayerPosition - enemy.transform.position).sqrMagnitude <= currentAttack.range.y))
         {
@@ -59,6 +60,13 @@ public class EnemyChase : StateMachineBehaviour
         else
         {
             ec.GoToTargetPos(ec.lastKnownPlayerPosition);
+        }
+
+        //If we have just entered our aggro state because of player then time to jump at him lamo (and within range)
+        if (ec.jumpDistance <= Vector3.Distance(ec.lastKnownPlayerPosition, enemy.transform.position) && ec.canSeePlayer() && ec.aggresiveMode)
+        {
+            ec.stopMovement();
+            animator.SetBool("Jump", true);
         }
 
     }
