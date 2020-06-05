@@ -11,40 +11,60 @@ public class plugindemo : MonoBehaviour
     //destinations
     public List<GameObject> destinaitons;
     public int currdestination;
+    private GameObject rei;
+
+    public bool candeliver = false;
 
     void Start()
     {
         //set refrences and initlise
-        currdestination = 0;
         iar = this.gameObject.GetComponent<iamryan>();
         iar.whenFin = whenfinished();
+        rei = GameObject.Find("PLAYER_rei");
+        iar.destination = destinaitons[currdestination];
         iar.movfin1call = true;
     }
+
+
+    public void deliver()
+    {
+        Debug.Log("set");
+        currdestination = 0;
+        candeliver = false;
+        iar.destination = destinaitons[currdestination];
+        iar.movfin1call = true;
+    }
+
 
 
     //custom ienum that gets called from other script when the source reaches the destination
     public IEnumerator whenfinished()
     {
-        //allows the script to reinitlise the direction the drone was traveling in 
-        Path.currenttdirinit = true;
+         //allows the script to reinitlise the direction the drone was traveling in 
+         Path.currenttdirinit = true;
 
-        //alternates between 2 destinations
         if (currdestination == 0)
         {
-            currdestination = 1;
+            if (destinaitons[currdestination] == rei)
+            {
+                yield return new WaitForSeconds(0.25f);
+                iar.source.GetComponent<drone>().drop(0);
+                yield return new WaitForSeconds(1.0f);
+
+                currdestination = 1;
+
+                iar.recalculate();
+                iar.movment = true;
+            }
         }
-        else if (currdestination == 1)
+        else
         {
-            currdestination = 0;
+            candeliver = true;
         }
 
         //update and move again
         iar.destination = destinaitons[currdestination];
         iar.whenFin = whenfinished();
-
-        iar.recalculate();
-        iar.movment = true;
-
 
         yield return null;
     }
