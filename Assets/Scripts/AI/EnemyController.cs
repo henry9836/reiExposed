@@ -90,9 +90,9 @@ public class EnemyController : MonoBehaviour
     public NavMeshAgent agent;
     [HideInInspector]
     public bool isDead = false;
-    [HideInInspector]
+    //[HideInInspector]
     public Vector3 lastKnownPlayerPosition;
-    [HideInInspector]
+    //[HideInInspector]
     public Transform playerTargetNode;
     [HideInInspector]
     public Animator animator;
@@ -100,9 +100,9 @@ public class EnemyController : MonoBehaviour
     public GameObject player;
     [HideInInspector]
     public int selectedAttack;
-    [HideInInspector]
+    //[HideInInspector]
     public Vector3 wanderTarget;
-    [HideInInspector]
+    //[HideInInspector]
     public Vector3 target;
     [HideInInspector]
     public Vector3 startingLoc;
@@ -395,7 +395,10 @@ public class EnemyController : MonoBehaviour
         //Losing Player
         else
         {
-            lastKnownPlayerPosition = lastKnownPlayerPosition + (lastKnownPlayerDir.normalized * 5.0f);
+            if (losePlayerTimer == 0.0f)
+            {
+                lastKnownPlayerPosition = lastKnownPlayerPosition + (lastKnownPlayerDir.normalized * 5.0f);
+            }
             losePlayerTimer += Time.deltaTime; 
         }
 
