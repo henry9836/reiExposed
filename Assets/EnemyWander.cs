@@ -1,9 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class EnemyWander : StateMachineBehaviour
 {
@@ -30,7 +27,7 @@ public class EnemyWander : StateMachineBehaviour
             //Squared for faster exec
             arriveThreshold = ec.arriveDistanceThreshold * ec.arriveDistanceThreshold;
         }
-        
+
         dest = ec.wanderTarget;
 
     }
@@ -52,8 +49,8 @@ public class EnemyWander : StateMachineBehaviour
         //If we are close enough to our wander target stop our AI agent and return to Idle
         if ((ec.wanderTarget - enemy.transform.position).sqrMagnitude <= arriveThreshold)
         {
-            ec.stopMovement();
             animator.SetBool("Idle", true);
+            ec.stopMovement();
         }
     }
 

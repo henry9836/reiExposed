@@ -15,6 +15,9 @@ public class PlayerController : MonoBehaviour
     public float staminaMaxAmount = 100.0f;
     public float staminaRegenSpeed = 1.0f;
 
+    [Header("Combat")]
+    public float umbreallaDmg = 5.0f;
+
     [Header("Death")]
     public bool dead = false;
 
