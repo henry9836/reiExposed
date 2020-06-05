@@ -41,11 +41,11 @@ public class EnemyChase : StateMachineBehaviour
     {
         //DEBUGGING
 #if UNITY_EDITOR
-        ec.updateCurrentMode("CHASING");
+        ec.updateCurrentMode($"CHASING:{currentAttack.name}");
 #endif
 
         //Are we close enough to the player to start our attack?
-        if (((ec.lastKnownPlayerPosition - enemy.transform.position).sqrMagnitude > currentAttack.range.x) && ((ec.lastKnownPlayerPosition - enemy.transform.position).sqrMagnitude <= currentAttack.range.y))
+        if (((ec.lastKnownPlayerPosition - enemy.transform.position).magnitude > currentAttack.range.x) && ((ec.lastKnownPlayerPosition - enemy.transform.position).magnitude <= currentAttack.range.y))
         {
             //Lost player?
             animator.SetBool("LosingPlayer", !ec.canSeePlayer());
@@ -53,9 +53,14 @@ public class EnemyChase : StateMachineBehaviour
             //We have not lost player
             if (!ec.lostPlayer()) {
                 //Attack
-                animator.SetBool("Idle", true);
                 ec.stopMovement();
+                animator.SetBool("Idle", true);
             }
+        }
+        //If we are too close to the player for our attack switch attack
+        else if ((ec.lastKnownPlayerPosition - enemy.transform.position).magnitude < currentAttack.range.x)
+        {
+            currentAttack = ec.pickAttack();
         }
         else
         {
