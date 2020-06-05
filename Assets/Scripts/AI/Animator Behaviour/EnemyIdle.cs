@@ -45,7 +45,6 @@ public class EnemyIdle : StateMachineBehaviour
         animator.SetBool("LosingPlayer", false);
 
         //Attacks Reset
-        animator.ResetTrigger("Attack");
         animator.ResetTrigger("Block");
         animator.ResetTrigger("LosingPlayer");
 
@@ -62,7 +61,7 @@ public class EnemyIdle : StateMachineBehaviour
         ec.updateCurrentMode("IDLE");
 #endif
 
-        //If we can see the player it time to attack
+        //If we can see the player then it time to attack 
         if (ec.canSeePlayer())
         {
             ec.stopMovement();

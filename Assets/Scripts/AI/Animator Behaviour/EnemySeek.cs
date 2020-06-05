@@ -44,6 +44,7 @@ public class EnemySeek : StateMachineBehaviour
         else
         {
             //Explore around the place 
+            //ec.GoToTargetPos(ec.lastKnownPlayerPosition + new Vector3(Random.Range(-ec.seekWanderRange, ec.seekWanderRange), 0.0f, Random.Range(-ec.seekWanderRange, ec.seekWanderRange)));
             ec.GoToTargetPos(ec.lastKnownPlayerPosition + new Vector3(Random.Range(-ec.seekWanderRange, ec.seekWanderRange), 0.0f, Random.Range(-ec.seekWanderRange, ec.seekWanderRange)));
 
             //Leave to next state

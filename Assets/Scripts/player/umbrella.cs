@@ -18,6 +18,7 @@ public class umbrella : MonoBehaviour
     public List<AudioClip> swishSounds = new List<AudioClip>();
     public AudioClip umbrellaActivateSFX;
     public AudioClip umbrellaShoot;
+    public BoxCollider umbrellaHitBox;
 
     private PlayerController playercontrol;
     private GameObject cam;
@@ -38,7 +39,7 @@ public class umbrella : MonoBehaviour
         umbeaalBone = GameObject.Find("rei_umbrella");
         animator = playercontrol.gameObject.GetComponent<Animator>();
         audio = GetComponent<AudioSource>();
-        
+        umbrellaHitBox.enabled = false;
     }
 
     void Update()
@@ -122,14 +123,9 @@ public class umbrella : MonoBehaviour
         cooldown = true;
     }
 
-    public void whack()
+    public void Hitbox(bool toggle)
     {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.parent.parent.position, 2.0f, enemy);
-
-        if (hitColliders.Length != 0)
-        {
-            dodamage(hitColliders[0].ClosestPoint(transform.parent.parent.position), 25.0f);
-        }
+        umbrellaHitBox.enabled = toggle;
     }
 
     void dodamage(Vector3 pos, float attackingfor)
