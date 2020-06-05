@@ -47,6 +47,8 @@ public class EnemyAttackIdle : StateMachineBehaviour
             currentAttack = ec.pickAttack();
         }
 
+        
+
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -60,6 +62,9 @@ public class EnemyAttackIdle : StateMachineBehaviour
         //Lost player?
         animator.SetBool("LosingPlayer", !ec.canSeePlayer());
 
+        //Aggro Mode?
+        animator.SetBool("AggressiveMode", ec.aggresiveMode);
+
         //Are we too close to attack?
         if ((player.transform.position - enemy.transform.position).magnitude < currentAttack.range.x)
         {
@@ -70,6 +75,7 @@ public class EnemyAttackIdle : StateMachineBehaviour
         else if ((((player.transform.position - enemy.transform.position).magnitude > currentAttack.range.x) && ((player.transform.position - enemy.transform.position).magnitude <= currentAttack.range.y)) && (ec.isLookingAtPlayer(0.3f, true)) && (ec.canSeePlayer()))
         {
             //Attack
+            ec.stopMovement();
             animator.SetTrigger(currentAttack.name);
         }
         //Chase player until we are close enough

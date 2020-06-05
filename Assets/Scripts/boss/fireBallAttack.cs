@@ -47,7 +47,7 @@ public class fireBallAttack : StateMachineBehaviour
 
             Debug.DrawLine(fireball.transform.position, targetPosition, Color.magenta, 2.0f);
 
-            fireball.GetComponent<fireBallController>().fullSpeedAheadCaptain();
+            //fireball.GetComponent<fireBallController>().fullSpeedAheadCaptain();
         }
 
         //Play sound effect
