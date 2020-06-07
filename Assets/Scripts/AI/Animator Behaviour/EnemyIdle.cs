@@ -76,15 +76,18 @@ public class EnemyIdle : StateMachineBehaviour
         if (waitTimer >= waitTime)
         {
             //Go somewhere new
-            GetNewWanderTarget();
-            animator.SetBool("Idle", false);
+            if (GetNewWanderTarget())
+            {
+                animator.SetBool("Idle", false);
+                waitTimer = 0.0f;
+            }
         }
     }
 
-    void GetNewWanderTarget()
+    bool GetNewWanderTarget()
     {
         tmp = startingLoc + new Vector3(Random.Range(-wanderRange, wanderRange), 0.0f, Random.Range(-wanderRange, wanderRange));
-        ec.GoToNewWanderPos(tmp);
+        return ec.GoToNewWanderPos(tmp);
     }
 
 }

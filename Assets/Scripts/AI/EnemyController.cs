@@ -141,6 +141,7 @@ public class EnemyController : MonoBehaviour
     private float blockSubtractTime = 10.0f;
     private float blockSubtractTimer = 0.0f;
     private float maxHealth;
+    private NavMeshPath path;
 
     //PLAYER DAMAGE QUERY
     public float QueryDamage()
@@ -393,35 +394,49 @@ public class EnemyController : MonoBehaviour
     }
 
     //Go to a new position
-    public void GoToTargetPosRestricted(Vector3 _target)
+    public bool GoToTargetPosRestricted(Vector3 _target)
     {
-        Debug.Log("Go to the random seek pos");
         if (restrictRecalcTimer >= restrictRecalcTime)
         {
-            Debug.Log("OK Boss");
-            GoToTargetPos(_target);
             restrictRecalcTimer = 0.0f;
+            return GoToTargetPos(_target);
         }
+        return false;
     }
-    public void GoToNewWanderPos(Vector3 _target)
+    public bool GoToNewWanderPos(Vector3 _target)
     {
         if (restrictRecalcTimer >= restrictRecalcTime) {
             wanderTarget = _target;
-            GoToTargetPos(_target);
             restrictRecalcTimer = 0.0f;
+            return GoToTargetPos(_target);
         }
+        return false;
     }
-    public void GoToTargetPos(GameObject _target)
+    public bool GoToTargetPos(GameObject _target)
     {
-        GoToTargetPos(_target.transform.position);
+        return GoToTargetPos(_target.transform.position);
     }
 
-    public void GoToTargetPos(Vector3 _target)
+    public bool GoToTargetPos(Vector3 _target)
     {
         agent.isStopped = true;
-        agent.SetDestination(_target);
+        path = new NavMeshPath();
+        bool tmp = agent.CalculatePath(_target, path);
+        if (!tmp)
+        {
+            Debug.Log("Invalid Path!");
+            return false;
+        }
+        else if (path.status == NavMeshPathStatus.PathPartial || path.status == NavMeshPathStatus.PathInvalid)
+        {
+            Debug.Log("Invalid Path!");
+            return false;
+        }
+
+        agent.SetPath(path);
         target = _target;
         agent.isStopped = false;
+        return true;
     }
 
     //Are we looking at the player?
