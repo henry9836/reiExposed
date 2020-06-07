@@ -9,7 +9,7 @@ public class AddSaves : MonoBehaviour
 
     void Start()
     {
-        saveFile = GameObject.Find("save").GetComponent<saveFile>();
+        saveFile = this.GetComponent<saveFile>();
         //firstSave();
 
         loadCurincies();
