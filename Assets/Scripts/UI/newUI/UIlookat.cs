@@ -6,6 +6,11 @@ public class UIlookat : MonoBehaviour
 {
     public GameObject cam;
 
+    private void Start()
+    {
+        cam = GameObject.Find("Main Camera");
+    }
+
     void Update()
     {
         this.transform.LookAt(cam.transform.position);
