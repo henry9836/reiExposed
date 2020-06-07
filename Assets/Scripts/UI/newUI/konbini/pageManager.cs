@@ -32,8 +32,7 @@ public class pageManager : MonoBehaviour
 
     public void back()
     {
-        //leave the menu 
-
+        this.transform.root.gameObject.SetActive(false);
         GameObject.Find("save").GetComponent<AddSaves>().saveCurincies();
     }
 
