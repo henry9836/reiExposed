@@ -205,16 +205,17 @@ public class movementController : MonoBehaviour
             moveDir = camParent.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed));
             moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed));
 
-            if (Input.GetButton("Jump") && pc.CheckStamina() >= staminaCostJump && !rolling)
-            {
+            //Removed JUMP
+            //if (Input.GetButton("Jump") && pc.CheckStamina() >= staminaCostJump && !rolling)
+            //{
 
-                Debug.Log("Called");
+            //    Debug.Log("Called");
 
-                animator.SetTrigger("jumpUp");
+            //    animator.SetTrigger("jumpUp");
 
-                moveDir.y += jumpForce;
-                pc.ChangeStamina(-staminaCostJump);
-            }
+            //    moveDir.y += jumpForce;
+            //    pc.ChangeStamina(-staminaCostJump);
+            //}
         }
 
         //Rolling Mechanic

@@ -39,6 +39,9 @@ public class EnemyIdle : StateMachineBehaviour
             wanderRange = ec.wanderRange;
         }
 
+        //Reset agro mode
+        ec.aggresiveMode = false;
+
         //Reset States And Triggers
         animator.SetBool("Idle", true);
         animator.SetBool("AttackMode", false);

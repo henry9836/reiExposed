@@ -140,6 +140,7 @@ public class EnemyController : MonoBehaviour
     private int blockCountThresholdBeforeAggro = 5;
     private float blockSubtractTime = 10.0f;
     private float blockSubtractTimer = 0.0f;
+    private float maxHealth;
 
     //PLAYER DAMAGE QUERY
     public float QueryDamage()
@@ -499,7 +500,7 @@ public class EnemyController : MonoBehaviour
         UpdateAttackSurface(ATTACKSURFACES.ALL, false, true);
         pc = player.GetComponent<PlayerController>();
         sixthSenseDistance = maxSpotDistance * sixthSenseDistanceFraction;
-
+        maxHealth = health;
         //Sanity Checks
         if (!(attacks.Count == attackType.Count && attackType.Count == attackRanges.Count))
         {
@@ -580,6 +581,15 @@ public class EnemyController : MonoBehaviour
             {
                 blockCount = 0;
             }
+        }
+
+        //Regen health
+        if (!animator.GetBool("AttackMode"))
+        {
+            health += Time.deltaTime * regenSpeed;
+
+            health = Mathf.Clamp(health, 0.0f, maxHealth);
+
         }
 
 #if UNITY_EDITOR
