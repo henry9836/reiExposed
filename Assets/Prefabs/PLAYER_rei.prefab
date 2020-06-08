@@ -301,7 +301,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1484035663}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -2667,7 +2667,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10c0e9a5c91d6684d949cf8e4a71fa41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  moveSpeed: 4
   sprintSpeedMultipler: 1.1
   jumpForce: 5
   rollMovementOverTime:
@@ -2700,7 +2700,7 @@ MonoBehaviour:
   gravity: 9.80655
   respawnThreshold: -30
   staminaCostSprint: 2
-  staminaCostRoll: 30
+  staminaCostRoll: 20
   staminaCostJump: 0
   feet: {fileID: 1220654361476795706}
   rightFoot: {fileID: 8607651820876554250}
@@ -2736,6 +2736,7 @@ MonoBehaviour:
   staminaAmount: 100
   staminaMaxAmount: 100
   staminaRegenSpeed: 5
+  staminaToAttack: 5
   umbreallaDmg: 5
   dead: 0
   maxcolor: {r: 1, g: 1, b: 1, a: 1}
@@ -2744,7 +2745,6 @@ MonoBehaviour:
   hurtSounds:
   - {fileID: 8300000, guid: 68138a9155d3be64fb6de9e2e2f642e0, type: 3}
   deathSound: {fileID: 8300000, guid: 68138a9155d3be64fb6de9e2e2f642e0, type: 3}
-  umberalla: {fileID: 0}
 --- !u!136 &2569531379931713282
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -6423,7 +6423,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2793113868734903480
 Transform:
   m_ObjectHideFlags: 0
@@ -7055,7 +7055,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1883921220759441390
 Transform:
   m_ObjectHideFlags: 0
