@@ -47,10 +47,12 @@ public class umbrella : MonoBehaviour
     {
         latetest = false;
 
-        if (Input.GetMouseButtonDown(0) && playercontrol.staminaAmount >= playercontrol.staminaToAttack)
+        if (Input.GetMouseButtonDown(0) && !animator.GetBool("Blocking"))
         {
-            playercontrol.ChangeStamina(-playercontrol.staminaToAttack);
-            animator.SetTrigger("Attack");
+            if (playercontrol.staminaAmount >= playercontrol.staminaToAttack) {
+                playercontrol.ChangeStamina(-playercontrol.staminaToAttack);
+                animator.SetTrigger("Attack");
+            }
         }
 
         VFX.GetComponent<VisualEffect>().SetFloat("timer", 0.0f);
@@ -64,10 +66,10 @@ public class umbrella : MonoBehaviour
                 {
                     playercontrol.ChangeStamina(-blockingStamina * Time.deltaTime);
                     blocking();
-                    if (canfire == true)
-                    {
+                    //if (canfire)
+                    //{
                         firemode();
-                    }
+                    //}
                 }
                 else
                 {
@@ -110,8 +112,8 @@ public class umbrella : MonoBehaviour
 
         if (Input.GetAxis("Fire1") > 0.5f)
         {
-            bang();
             animator.SetTrigger("Shoot");
+            bang();
         }
     }
 
