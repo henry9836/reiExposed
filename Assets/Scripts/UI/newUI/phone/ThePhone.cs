@@ -38,18 +38,19 @@ public class ThePhone : MonoBehaviour
         if (open == true)
         {
             thephone.SetActive(true);
-            rei.GetComponent<movementController>().enabled = false;
             rei.transform.GetChild(0).gameObject.SetActive(false);
             phonecam.SetActive(true);
             Time.timeScale = 0.0f;
+            //disbale and enable mesh rendere
         }
         else
         {
             thephone.SetActive(false);
-            rei.GetComponent<movementController>().enabled = true;
             rei.transform.GetChild(0).gameObject.SetActive(true);
             phonecam.SetActive(false);
             Time.timeScale = 1.0f;
+            //disbale and enable mesh rendere
+
         }
     }
 
@@ -63,9 +64,9 @@ public class ThePhone : MonoBehaviour
     }
     public void thecamera()
     {
+        thephone.SetActive(false);
         Time.timeScale = 1.0f;
 
-        //GameObject.Find
     }
     public void amazon()
     { 
