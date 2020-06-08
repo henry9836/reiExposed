@@ -673,10 +673,13 @@ MonoBehaviour:
   informRange: 10
   wanderRange: 10
   seekWanderRange: 10
-  regenSpeed: 0
+  regenSpeed: 0.5
   sightObstacles:
     serializedVersion: 2
     m_Bits: 49665
+  groundLayers:
+    serializedVersion: 2
+    m_Bits: 512
   movementSpeed: 10
   walkSpeed: 4
   runningSpeed: 10
@@ -798,9 +801,9 @@ MonoBehaviour:
   - {x: 10, y: 20}
   - {x: 0, y: 3}
   attackDmg:
-  - 20
+  - 10
   - 1
-  - 20
+  - 15
   attackType: 020000000100000000000000
   debugMode: 1
   currentMode: PENDING
