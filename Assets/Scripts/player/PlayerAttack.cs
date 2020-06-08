@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerAttack : StateMachineBehaviour
 {
+    public Vector2 attackWindow = new Vector2(0.0f, 0.9f);
+
     private umbrella umbrella;
     private bool once = true;
    
@@ -25,7 +27,7 @@ public class PlayerAttack : StateMachineBehaviour
     {
         if (once == true)
         {
-            if ((stateInfo.normalizedTime % 1.0f) >= 0.50f)
+            if ((stateInfo.normalizedTime % 1.0f) >= attackWindow.x)
             {
                 umbrella.Hitbox(true);
                 once = false;
@@ -33,9 +35,9 @@ public class PlayerAttack : StateMachineBehaviour
         }
 
 
-        if ((stateInfo.normalizedTime % 1.0f) >= 0.95f)
+        if ((stateInfo.normalizedTime % 1.0f) >= attackWindow.y)
         {
-            animator.SetTrigger("Exit");
+            animator.SetBool("Attacking", false);
         }
 
 

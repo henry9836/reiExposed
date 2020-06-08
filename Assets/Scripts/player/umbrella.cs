@@ -47,8 +47,9 @@ public class umbrella : MonoBehaviour
     {
         latetest = false;
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && playercontrol.staminaAmount >= playercontrol.staminaToAttack)
         {
+            playercontrol.ChangeStamina(-playercontrol.staminaToAttack);
             animator.SetTrigger("Attack");
         }
 

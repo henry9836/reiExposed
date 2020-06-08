@@ -313,6 +313,11 @@ public class movementController : MonoBehaviour
             animator.SetBool("Sprinting", false);
         }
 
+        //Restrict movement with animation
+        if (animator.GetBool("Blocking"))
+        {
+            //moveDir = new Vector3(0.0f, moveDir.y, 0.0f);
+        }
 
         //Move
         if (!rolling)
