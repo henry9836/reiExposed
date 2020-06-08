@@ -1,14 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
-public class droneteleport : MonoBehaviour
+public class enterToTalk : MonoBehaviour
 {
+
     public GameObject UIelement;
     public bool standing = false;
-    public int scene = 2;
+
+    public GameObject konbiniUI;
+    public GameObject rei;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -16,7 +17,6 @@ public class droneteleport : MonoBehaviour
         {
             UIelement.gameObject.SetActive(true);
             standing = true;
-
         }
     }
 
@@ -26,7 +26,6 @@ public class droneteleport : MonoBehaviour
         {
             standing = false;
             UIelement.gameObject.SetActive(false);
-
         }
     }
 
@@ -36,9 +35,30 @@ public class droneteleport : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
             {
-                SceneToLoadPersistant.sceneToLoadInto = scene;
-                SceneManager.LoadScene(1);
+                ShopNowOpen(true);
             }
         }
     }
+
+    public void ShopNowOpen(bool isOpen)
+    {
+        if (isOpen == true)
+        {
+            konbiniUI.SetActive(true);
+            rei.GetComponent<CharacterController>().enabled = false;
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+        }
+        else
+        {
+            konbiniUI.SetActive(false);
+            rei.GetComponent<CharacterController>().enabled = true;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+
+
+    }
+
+   
 }
