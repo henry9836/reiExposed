@@ -1,5 +1,4 @@
-﻿using Boo.Lang.Environments;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
@@ -15,6 +14,19 @@ public class MythWorkerUnion : MonoBehaviour
     private float checkTime = 5.0f;
     private float checkTimer = 0.0f;
 
+    public bool allDead()
+    {
+        for (int i = 0; i < mythControllers.Count - 1; i++)
+        {
+            if (mythControllers[i].enabled)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+    
     void Start()
     {
         //Find all myths

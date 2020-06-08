@@ -3,8 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using UnityEngine.Rendering.HighDefinition;
-
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEditor.Build;
+using UnityEditor.Build.Reporting;
+#endif
 public class saveFile : MonoBehaviour
+#if UNITY_EDITOR
+, IPostprocessBuildWithReport
+#endif
+
 {
     private string saveFilePath = "test.cfg";
     private StreamWriter righter;
@@ -42,6 +50,16 @@ public class saveFile : MonoBehaviour
         FLOAT,
     };
 
+    void Awake()
+    {
+        if (FileExists(saveFilePath) == false)
+        {
+            StreamWriter tmp = new StreamWriter(saveFilePath, true);
+            tmp.WriteLine();
+            tmp.Close();
+        }
+    }
+
     public void saveitem(string name, int item)
     {
         saveitem(name, item.ToString());
@@ -65,7 +83,7 @@ public class saveFile : MonoBehaviour
             righter = new StreamWriter(saveFilePath, true);
             righter.WriteLine(input1);
             righter.Close();
-            Debug.Log("created");
+            //Debug.Log("created");
         }
         else
         {
@@ -91,11 +109,11 @@ public class saveFile : MonoBehaviour
 
                 righter.Close();
 
-                Debug.Log("overwritten");
+                //Debug.Log("overwritten");
             }
             else
             {
-                Debug.Log("already exists");
+                //Debug.Log("already exists");
             }
         }
     }
@@ -108,14 +126,14 @@ public class saveFile : MonoBehaviour
         {
             if (test.toint == -999999)
             {
-                Debug.LogError("Failed to save >" + name +  "< of type " + type);
+                //Debug.LogError("Failed to save >" + name +  "< of type " + type);
             }
         }
         else if (type == types.FLOAT)
         {
             if (test.tofloat == -999999f)
             {
-                Debug.LogError("Failed to save >" + name + "< of type " + type);
+                //Debug.LogError("Failed to save >" + name + "< of type " + type);
             }
         }
 
@@ -169,4 +187,34 @@ public class saveFile : MonoBehaviour
     {
         return File.Exists(path);
     }
+
+    public int callbackOrder { get { return 0; } }
+
+
+#if UNITY_EDITOR
+
+    public void OnPostprocessBuild(BuildReport report)
+    {
+        string path = report.summary.outputPath;
+        int cutpos = 0;
+
+        for (int i = 0; i < path.Length; i++)
+        {
+            if (path[i] == '/')
+            {
+                cutpos = i;
+            }
+        }
+
+        path = path.Substring(0, cutpos + 1);
+
+        if (FileExists(path + saveFilePath))
+        {
+            File.Delete(path + saveFilePath);
+        }
+
+        File.Copy(saveFilePath, path + saveFilePath);
+    }
+#endif
+
 }
