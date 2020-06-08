@@ -14,7 +14,6 @@ public class ThePhone : MonoBehaviour
     public GameObject maincam;
     public GameObject camgrid;
 
-
     private GameObject[] myths;
     private bool sucess;
 
@@ -82,7 +81,10 @@ public class ThePhone : MonoBehaviour
                 }
             case phonestates.ROLL:
                 {
-
+                    if (Input.GetKeyDown(KeyCode.Tab))
+                    {
+                        BackToMenu();
+                    }
                     break;
                 }
             case phonestates.AMAZON:
@@ -154,6 +156,11 @@ public class ThePhone : MonoBehaviour
 
     public void cameraroll()
     {
+        ThePhoneUI.transform.GetChild(2).gameObject.SetActive(false);
+        ThePhoneUI.transform.GetChild(3).gameObject.SetActive(true);
+
+
+
         screen = phonestates.ROLL;
 
     }
@@ -183,6 +190,9 @@ public class ThePhone : MonoBehaviour
         ThePhoneUI.SetActive(true);
         camgrid.SetActive(false);
 
+        ThePhoneUI.transform.GetChild(2).gameObject.SetActive(true);
+        ThePhoneUI.transform.GetChild(3).gameObject.SetActive(false);
+
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined;
     }
@@ -194,6 +204,13 @@ public class ThePhone : MonoBehaviour
 
     public IEnumerator photo()
     {
+        //phptp qualitys valid
+        //10 meters or closer
+        //1 photo per clue
+        //its in the camera frame
+        //direct line of sight
+
+
         List<GameObject> reenable = new List<GameObject>() { };
 
         for (int i = 0; i < this.gameObject.transform.childCount; i++)
