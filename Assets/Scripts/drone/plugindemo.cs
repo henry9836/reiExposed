@@ -15,7 +15,6 @@ public class plugindemo : MonoBehaviour
     private GameObject rei;
 
     public bool candeliver = false;
-    public GameObject shitUI; 
 
     void Start()
     {
@@ -31,7 +30,6 @@ public class plugindemo : MonoBehaviour
     {
         currdestination = 0;
         candeliver = false;
-        shitUI.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.2f);
         iar.destination = destinaitons[currdestination];
         iar.movfin1call = true;
     }
@@ -61,7 +59,6 @@ public class plugindemo : MonoBehaviour
         else
         {
             candeliver = true;
-            shitUI.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
 
         }
 
