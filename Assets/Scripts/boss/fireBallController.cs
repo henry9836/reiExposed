@@ -39,9 +39,9 @@ public class fireBallController : MonoBehaviour
 
             if (other.tag == "Player")
             {
-                if (!other.gameObject.GetComponent<PlayerController>().umberalla.GetComponent<umbrella>().ISBLockjing) {
+                if (!other.gameObject.GetComponent<umbrella>().ISBLockjing) {
                     other.gameObject.GetComponent<PlayerController>().health -= damage;
-                    other.gameObject.GetComponent<PlayerController>().umberalla.GetComponent<umbrella>().cooldown = true;
+                    other.gameObject.GetComponent<umbrella>().cooldown = true;
                 }
 
                 //make myth agro

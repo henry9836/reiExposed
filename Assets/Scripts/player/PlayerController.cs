@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     public float staminaAmount = 100.0f;
     public float staminaMaxAmount = 100.0f;
     public float staminaRegenSpeed = 1.0f;
+    public float staminaToAttack = 5.0f;
 
     [Header("Combat")]
     public float umbreallaDmg = 5.0f;
@@ -32,10 +33,9 @@ public class PlayerController : MonoBehaviour
     private GameObject staminaUI;
     private GameObject HPui;
     private GameObject boss;
-    [HideInInspector]
-    public GameObject umberalla;
     private List<GameObject> deathUI = new List<GameObject>();
     private AudioSource audio;
+    private umbrella umbrella;
     private bool UIon = false;
 
 
@@ -47,7 +47,6 @@ public class PlayerController : MonoBehaviour
         boss = GameObject.FindGameObjectWithTag("Boss");
         staminaUI = GameObject.Find("staminaUI");
         HPui = GameObject.Find("playersHP");
-        umberalla = GameObject.Find("umbrella ella ella");
         GameObject temp = GameObject.Find("deathUI");
 
         for (int i = 0; i < temp.transform.childCount; i++)
@@ -56,6 +55,7 @@ public class PlayerController : MonoBehaviour
         }
 
         audio = GetComponent<AudioSource>();
+        umbrella = GetComponent<umbrella>();
     }
     public void ChangeStamina(float amount)
     {
@@ -88,7 +88,7 @@ public class PlayerController : MonoBehaviour
         if (dead == false)
         {
             //Damage From Enemy and we are not blocking
-            if (other.gameObject.CompareTag("EnemyAttackSurface") && !umberalla.GetComponent<umbrella>().ISBLockjing)
+            if (other.gameObject.CompareTag("EnemyAttackSurface") && !umbrella.ISBLockjing)
             {
                 Debug.Log("I was hit and taking damage");
                 health -= other.gameObject.GetComponent<DamageQuery>().QueryDamage();
@@ -96,16 +96,16 @@ public class PlayerController : MonoBehaviour
             }
 
             //Damage From Boss
-            else if (other.gameObject.CompareTag("BossAttackSurface") && !umberalla.GetComponent<umbrella>().ISBLockjing)
+            else if (other.gameObject.CompareTag("BossAttackSurface") && !umbrella.ISBLockjing)
             {
                 Debug.Log("I was hit and taking damage");
                 health -= boss.GetComponent<BossController>().QueryDamage();
                 audio.PlayOneShot(hurtSounds[Random.Range(0, hurtSounds.Count)]);
             }
-            else if (other.gameObject.CompareTag("BossAttackSurface") && umberalla.GetComponent<umbrella>().ISBLockjing)
+            else if (other.gameObject.CompareTag("BossAttackSurface") && umbrella.ISBLockjing)
             {
                 Debug.Log("I was hit and but blocked");
-                umberalla.GetComponent<umbrella>().cooldown = true;
+                umbrella.cooldown = true;
                 boss.GetComponent<BossController>().arm(BossController.ARMTYPE.ARM_ALL, false);
             }
             else
@@ -125,15 +125,12 @@ public class PlayerController : MonoBehaviour
 
             if (health <= 0.0f)
             {
-                this.gameObject.GetComponent<Animator>().SetTrigger("deathT");
+                gameObject.GetComponent<Animator>().SetTrigger("Death");
                 dead = true;
                 audio.PlayOneShot(deathSound);
                 StartCoroutine(death());
                 
             }
-
-
-
         }
     }
 
@@ -141,7 +138,6 @@ public class PlayerController : MonoBehaviour
     {
         staminaUI.GetComponent<Image>().fillAmount = staminaAmount / staminaMaxAmount;
         HPui.GetComponent<Image>().fillAmount = health / maxHealth;
-
     }
 
 
