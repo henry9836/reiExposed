@@ -8,7 +8,7 @@ public class fistpersoncontroler : MonoBehaviour
     private Vector3 rotation;
     public CharacterController CC;
     public float speed;
-    public GameObject camera;
+    public GameObject THECAM;
 
     void Update()
     {
@@ -35,7 +35,7 @@ public class fistpersoncontroler : MonoBehaviour
 
         rotation.x = Mathf.Clamp(rotation.x, -89.0f, 89.0f);
 
-        camera.transform.eulerAngles = new Vector2(rotation.x, camera.transform.eulerAngles.y) * mouseSpeed;
+        THECAM.transform.eulerAngles = new Vector2(rotation.x, THECAM.transform.eulerAngles.y) * mouseSpeed;
 
         transform.eulerAngles = new Vector2(0.0f, rotation.y) * mouseSpeed;
     }
