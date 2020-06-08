@@ -5,9 +5,6 @@ using UnityEngine.UI;
 
 public class movementController : MonoBehaviour
 {
-    [Header("Cam Mode")]
-    public bool cameraMode = false;
-    public float camSpeedmult = 0.5f;
 
     [Header("Movement")]
     public float moveSpeed = 10.0f;
@@ -157,9 +154,6 @@ public class movementController : MonoBehaviour
             return;
         }
 
-        //Match camera rotation to cam parent rotation
-        //charcterModel.transform.rotation = camParent.transform.rotation
-
         //Get Cam Dir Input
         moveDirCam = Vector3.zero;
         moveDirCam += camParent.transform.forward * Input.GetAxis("Vertical");
@@ -221,122 +215,115 @@ public class movementController : MonoBehaviour
             //}
         }
 
-
         //Rolling Mechanic
         if (Input.GetButtonDown("Roll") && !rolling)
         {
-            //no rolling in camera mode
-            if (cameraMode != true)
+            //Check stamina
+            if (staminaCostSprint <= pc.staminaAmount)
             {
-                //Check stamina
-                if (staminaCostSprint <= pc.staminaAmount)
+                //Check if area is clear
+                tmpRollDistance = rollDistance;
+                RaycastHit hit;
+                if (Physics.Raycast(feet.transform.position, charcterModel.transform.forward, out hit, tmpRollDistance, rollObstcleLayer))
                 {
-                    //Check if area is clear
-                    tmpRollDistance = rollDistance;
-                    RaycastHit hit;
-                    if (Physics.Raycast(feet.transform.position, charcterModel.transform.forward, out hit, tmpRollDistance, rollObstcleLayer))
-                    {
-                        //If we hit something then only roll to just before the object we hit
-                        tmpRollDistance = hit.distance - 1.0f;
-                    }
-                    //Roll in the forward direction of model
-                    targetRollPosition = transform.position + (charcterModel.transform.forward * tmpRollDistance);
-                    beforeRollPosition = transform.position;
-
-                    //Reset timer
-                    rollTimer = 0.0f;
-
-                    //Stamina
-                    pc.ChangeStamina(-staminaCostRoll);
-
-                    //Lock other movement until roll is complete
-                    rolling = true;
+                    //If we hit something then only roll to just before the object we hit
+                    tmpRollDistance = hit.distance - 1.0f;
                 }
-            }
+                //Roll in the forward direction of model
+                targetRollPosition = transform.position + (charcterModel.transform.forward * tmpRollDistance);
+                beforeRollPosition = transform.position;
 
+                //Reset timer
+                rollTimer = 0.0f;
+
+                //Stamina
+                pc.ChangeStamina(-staminaCostRoll);
+
+                //Lock other movement until roll is complete
+                rolling = true;
+
+                //Animation
+                animator.SetBool("Rolling", true);
+                animator.SetTrigger("Roll");
+            }
         }
 
-
-        if (cameraMode != true)
+        //Lerp between start roll and end roll pos if we are rolling
+        if (rolling)
         {
-            //Lerp between start roll and end roll pos if we are rolling
-            if (rolling)
-            {
-                //Move towards target
-                transform.position = Vector3.Lerp(beforeRollPosition, targetRollPosition, rollMovementOverTime.Evaluate(rollTimer / rollTime));
+            //Move towards target
+            transform.position = Vector3.Lerp(beforeRollPosition, targetRollPosition, rollMovementOverTime.Evaluate(rollTimer / rollTime));
 
-                //Toggle off the roll once we have reached the end of the roll
-                if (rollTimer >= rollTime)
+            //Toggle off the roll once we have reached the end of the roll
+            if (rollTimer >= rollTime)
+            {
+                rolling = false;
+
+                //Animation
+                animator.SetBool("Rolling", false);
+                animator.ResetTrigger("Roll");
+            }
+        }
+
+        //Sprint
+        else if (Input.GetButton("Sprint") && isOnGround && !rolling)
+        {
+            if ((moveDir.x != 0) && (moveDir.z != 0))
+            {
+                //move a little more
+                if (pc.CheckStamina() >= staminaCostSprint * Time.deltaTime)
                 {
-                    rolling = false;
+                    pc.ChangeStamina(-staminaCostSprint * Time.deltaTime);
+                    moveDir += new Vector3(moveDir.x * sprintSpeedMultipler, 0.0f, moveDir.z * sprintSpeedMultipler);
+                    //Animation
+                    animator.SetBool("Running", true);
+
+                    float alpha = sprintLines.material.GetFloat("Vector1_BD31B2DE");
+                    alpha = Mathf.Clamp((alpha + (Time.unscaledDeltaTime * 2.5f)), 0.0f, 1.0f);
+                    sprintLines.material.SetFloat("Vector1_BD31B2DE", alpha);
                 }
             }
-            else if (Input.GetButton("Sprint") && isOnGround && !rolling) //Sprint
-            {
-                if ((moveDir.x != 0) && (moveDir.z != 0))
-                {
-                    //move a little more
-                    if (pc.CheckStamina() >= staminaCostSprint * Time.deltaTime)
-                    {
-                        pc.ChangeStamina(-staminaCostSprint * Time.deltaTime);
-                        moveDir += new Vector3(moveDir.x * sprintSpeedMultipler, 0.0f, moveDir.z * sprintSpeedMultipler);
-                        animator.SetBool("Running", true);
+        }
 
-                        float alpha = sprintLines.material.GetFloat("Vector1_BD31B2DE");
-                        alpha = Mathf.Clamp((alpha + (Time.unscaledDeltaTime * 2.5f)), 0.0f, 1.0f);
-                        sprintLines.material.SetFloat("Vector1_BD31B2DE", alpha);
-                    }
-                }
-            }
+        if (!Input.GetButton("Sprint") || !isOnGround || !(pc.CheckStamina() >= staminaCostSprint))
+        {
+            float alpha = sprintLines.material.GetFloat("Vector1_BD31B2DE");
+            alpha = Mathf.Clamp((alpha - (Time.unscaledDeltaTime * 2.5f)), 0.0f, 1.0f);
+            sprintLines.material.SetFloat("Vector1_BD31B2DE", alpha);
+        }
 
-            if (!Input.GetButton("Sprint") || !isOnGround || !(pc.CheckStamina() >= staminaCostSprint))
-            {
-                float alpha = sprintLines.material.GetFloat("Vector1_BD31B2DE");
-                alpha = Mathf.Clamp((alpha - (Time.unscaledDeltaTime * 2.5f)), 0.0f, 1.0f);
-                sprintLines.material.SetFloat("Vector1_BD31B2DE", alpha);
-            }
+        //Animation
+        //Walking
 
-            //Animation Off
-            //Walking
-            //Debug.Log(moveDir);
-
-
-            if ((moveDir.x == 0) && (moveDir.z == 0))
-            {
-                animator.SetBool("walkin", false);
-            }
-            else
-            {
-                animator.SetBool("walkin", true);
-            }
-            //Sprint
-            if (Input.GetButtonUp("Sprint") || !isOnGround)
-            {
-                animator.SetBool("Running", false);
-            }
-            //Move
-            if (!rolling)
-            {
-                ch.Move(moveDir * Time.deltaTime);
-            }
+        if ((moveDir.x == 0) && (moveDir.z == 0))
+        {
+            animator.SetBool("Running", false);
         }
         else
         {
-            if (rolling)
-            {
-                //Move towards target
-                transform.position = Vector3.Lerp(beforeRollPosition, targetRollPosition, rollMovementOverTime.Evaluate(rollTimer / rollTime));
-
-                //Toggle off the roll once we have reached the end of the roll
-                if (rollTimer >= rollTime)
-                {
-                    rolling = false;
-                }
-            }
-            else
-            {
-                ch.Move(moveDir * Time.deltaTime * camSpeedmult);
-            }
+            animator.SetBool("Running", true);
         }
+        //Sprint
+        if (Input.GetButton("Sprint"))
+        {
+            animator.SetBool("Sprinting", true);
+        }
+        else
+        {
+            animator.SetBool("Sprinting", false);
+        }
+
+        //Restrict movement with animation
+        if (animator.GetBool("Blocking"))
+        {
+            //moveDir = new Vector3(0.0f, moveDir.y, 0.0f);
+        }
+
+        //Move
+        if (!rolling)
+        {
+            ch.Move(moveDir * Time.deltaTime);
+        }
+
     }
 }

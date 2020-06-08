@@ -17,6 +17,7 @@ public class enterToTalk : MonoBehaviour
         {
             UIelement.gameObject.SetActive(true);
             standing = true;
+            GetComponent<AudioSource>().Play();
         }
     }
 
@@ -26,6 +27,7 @@ public class enterToTalk : MonoBehaviour
         {
             standing = false;
             UIelement.gameObject.SetActive(false);
+            GetComponent<AudioSource>().Play();
         }
     }
 
