@@ -154,9 +154,6 @@ public class movementController : MonoBehaviour
             return;
         }
 
-        //Match camera rotation to cam parent rotation
-        //charcterModel.transform.rotation = camParent.transform.rotation
-
         //Get Cam Dir Input
         moveDirCam = Vector3.zero;
         moveDirCam += camParent.transform.forward * Input.GetAxis("Vertical");
@@ -244,6 +241,10 @@ public class movementController : MonoBehaviour
 
                 //Lock other movement until roll is complete
                 rolling = true;
+
+                //Animation
+                animator.SetBool("Rolling", true);
+                animator.SetTrigger("Roll");
             }
         }
 
@@ -257,6 +258,10 @@ public class movementController : MonoBehaviour
             if (rollTimer >= rollTime)
             {
                 rolling = false;
+
+                //Animation
+                animator.SetBool("Rolling", false);
+                animator.ResetTrigger("Roll");
             }
         }
 
@@ -270,6 +275,7 @@ public class movementController : MonoBehaviour
                 {
                     pc.ChangeStamina(-staminaCostSprint * Time.deltaTime);
                     moveDir += new Vector3(moveDir.x * sprintSpeedMultipler, 0.0f, moveDir.z * sprintSpeedMultipler);
+                    //Animation
                     animator.SetBool("Running", true);
 
                     float alpha = sprintLines.material.GetFloat("Vector1_BD31B2DE");
@@ -286,23 +292,25 @@ public class movementController : MonoBehaviour
             sprintLines.material.SetFloat("Vector1_BD31B2DE", alpha);
         }
 
-        //Animation Off
+        //Animation
         //Walking
-        //Debug.Log(moveDir);
-
 
         if ((moveDir.x == 0) && (moveDir.z == 0))
         {
-            animator.SetBool("walkin", false);
+            animator.SetBool("Running", false);
         }
         else
         {
-            animator.SetBool("walkin", true);
+            animator.SetBool("Running", true);
         }
         //Sprint
-        if (Input.GetButtonUp("Sprint") || !isOnGround)
+        if (Input.GetButton("Sprint"))
         {
-            animator.SetBool("Running", false);
+            animator.SetBool("Sprinting", true);
+        }
+        else
+        {
+            animator.SetBool("Sprinting", false);
         }
 
 
