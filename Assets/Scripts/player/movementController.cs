@@ -25,13 +25,12 @@ public class movementController : MonoBehaviour
     public float staminaCostJump = 30.0f;
 
     [Header("Body Parts")]
-    public Transform feet;
-    public Transform rightFoot;
-    public Transform leftFoot;
+    //public Transform feet;
+    //public Transform rightFoot;
+    //public Transform leftFoot;
     public GameObject charcterModel;
     public GameObject camParent;
-    public Transform leftFootTarget;
-    public Transform rightFootTarget;
+    public Transform rollCheckTransform;
 
     [Header("Layer Masks")]
     public LayerMask groundLayer;
@@ -83,47 +82,50 @@ public class movementController : MonoBehaviour
         //Gravity/Landing Section
         //=========================
 
-        //Check for ground below each foot
-        leftFootGrounded = (Physics.Raycast(leftFoot.position, Vector3.down, out hit, feetCheckDistance, groundLayer));
-        if (leftFootGrounded)
-        {
-            Debug.DrawLine(leftFoot.position, hit.point, Color.cyan);
-            leftFoot.position = hit.point;
-        }
-        else
-        {
-            Debug.DrawLine(leftFoot.position, leftFoot.position + (Vector3.down * feetCheckDistance), Color.red);
-            leftFoot.position = leftFoot.position;
-        }
+        ////Check for ground below each foot
+        //leftFootGrounded = (Physics.Raycast(leftFoot.position, Vector3.down, out hit, feetCheckDistance, groundLayer));
+        //if (leftFootGrounded)
+        //{
+        //    Debug.DrawLine(leftFoot.position, hit.point, Color.cyan);
+        //    leftFoot.position = hit.point;
+        //}
+        //else
+        //{
+        //    Debug.DrawLine(leftFoot.position, leftFoot.position + (Vector3.down * feetCheckDistance), Color.red);
+        //    leftFoot.position = leftFoot.position;
+        //}
 
-        rightFootGrounded = (Physics.Raycast(rightFoot.position, Vector3.down, out hit, feetCheckDistance, groundLayer));
+        //rightFootGrounded = (Physics.Raycast(rightFoot.position, Vector3.down, out hit, feetCheckDistance, groundLayer));
 
-        if (rightFootGrounded)
-        {
-            Debug.DrawLine(rightFoot.position, hit.point, Color.cyan);
-            rightFoot.position = hit.point;
-        }
-        else
-        {
-            Debug.DrawLine(rightFoot.position, rightFoot.position + (Vector3.down * feetCheckDistance), Color.red);
-            rightFoot.position = rightFoot.position;
-        }
+        //if (rightFootGrounded)
+        //{
+        //    Debug.DrawLine(rightFoot.position, hit.point, Color.cyan);
+        //    rightFoot.position = hit.point;
+        //}
+        //else
+        //{
+        //    Debug.DrawLine(rightFoot.position, rightFoot.position + (Vector3.down * feetCheckDistance), Color.red);
+        //    rightFoot.position = rightFoot.position;
+        //}
 
-        //Center foot is important as landing is controlled by character controller
-        centerFootGrounded = (Physics.Raycast(feet.position, Vector3.down, out hit, feetCheckDistance, groundLayer));
+        ////Center foot is important as landing is controlled by character controller
+        //centerFootGrounded = (Physics.Raycast(feet.position, Vector3.down, out hit, feetCheckDistance, groundLayer));
 
-        if (centerFootGrounded)
-        {
-            Debug.DrawLine(feet.position, hit.point, Color.cyan);
-        }
-        else
-        {
-            Debug.DrawLine(feet.position, feet.position + (Vector3.down * feetCheckDistance), Color.red);
-        }
+        //if (centerFootGrounded)
+        //{
+        //    Debug.DrawLine(feet.position, hit.point, Color.cyan);
+        //}
+        //else
+        //{
+        //    Debug.DrawLine(feet.position, feet.position + (Vector3.down * feetCheckDistance), Color.red);
+        //}
 
-        //Set whether we are on the ground or not
+        ////Set whether we are on the ground or not
 
-        isOnGround = (rightFootGrounded || leftFootGrounded || centerFootGrounded);
+        //isOnGround = (rightFootGrounded || leftFootGrounded || centerFootGrounded);
+
+        isOnGround = ch.isGrounded;
+
 
         if (isOnGround != previousState)
         {
@@ -188,8 +190,10 @@ public class movementController : MonoBehaviour
         {
             //Move half speed
             moveDir = new Vector3(0.0f, moveDir.y, 0.0f);
-            moveDir += (camParent.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed))) * 0.5f;
-            moveDir += (camParent.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed))) * 0.5f;
+            //moveDir += (camParent.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed))) * 0.5f;
+            //moveDir += (camParent.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed))) * 0.5f;
+            moveDir += camParent.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed));
+            moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed));
 
             //Apply Gravity
             moveDir.y -= gravity * Time.deltaTime;
@@ -224,7 +228,7 @@ public class movementController : MonoBehaviour
                 //Check if area is clear
                 tmpRollDistance = rollDistance;
                 RaycastHit hit;
-                if (Physics.Raycast(feet.transform.position, charcterModel.transform.forward, out hit, tmpRollDistance, rollObstcleLayer))
+                if (Physics.Raycast(rollCheckTransform.position, charcterModel.transform.forward, out hit, tmpRollDistance, rollObstcleLayer))
                 {
                     //If we hit something then only roll to just before the object we hit
                     tmpRollDistance = hit.distance - 1.0f;
