@@ -25,13 +25,12 @@ public class movementController : MonoBehaviour
     public float staminaCostJump = 30.0f;
 
     [Header("Body Parts")]
-    public Transform feet;
-    public Transform rightFoot;
-    public Transform leftFoot;
+    //public Transform feet;
+    //public Transform rightFoot;
+    //public Transform leftFoot;
     public GameObject charcterModel;
     public GameObject camParent;
-    public Transform leftFootTarget;
-    public Transform rightFootTarget;
+    public Transform rollCheckTransform;
 
     [Header("Layer Masks")]
     public LayerMask groundLayer;
@@ -229,7 +228,7 @@ public class movementController : MonoBehaviour
                 //Check if area is clear
                 tmpRollDistance = rollDistance;
                 RaycastHit hit;
-                if (Physics.Raycast(feet.transform.position, charcterModel.transform.forward, out hit, tmpRollDistance, rollObstcleLayer))
+                if (Physics.Raycast(rollCheckTransform.position, charcterModel.transform.forward, out hit, tmpRollDistance, rollObstcleLayer))
                 {
                     //If we hit something then only roll to just before the object we hit
                     tmpRollDistance = hit.distance - 1.0f;
