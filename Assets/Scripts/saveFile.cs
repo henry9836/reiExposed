@@ -208,7 +208,10 @@ public class saveFile : MonoBehaviour
 
         path = path.Substring(0, cutpos + 1);
 
-        //Debug.Log(path);
+        if (FileExists(path + saveFilePath))
+        {
+            File.Delete(path + saveFilePath);
+        }
 
         File.Copy(saveFilePath, path + saveFilePath);
     }
