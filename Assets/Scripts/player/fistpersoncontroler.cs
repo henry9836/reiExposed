@@ -8,6 +8,7 @@ public class fistpersoncontroler : MonoBehaviour
     private Vector3 rotation;
     public CharacterController CC;
     public float speed;
+    public GameObject camera;
 
     void Update()
     {
@@ -32,9 +33,10 @@ public class fistpersoncontroler : MonoBehaviour
         rotation.y += Input.GetAxis("Mouse X");
         rotation.x += -Input.GetAxis("Mouse Y");
 
-        Mathf.Clamp(rotation.x, -89.0f, 89.0f);
+        rotation.x = Mathf.Clamp(rotation.x, -89.0f, 89.0f);
 
+        camera.transform.eulerAngles = new Vector2(rotation.x, camera.transform.eulerAngles.y) * mouseSpeed;
 
-        transform.eulerAngles = (Vector2)rotation * mouseSpeed;
+        transform.eulerAngles = new Vector2(0.0f, rotation.y) * mouseSpeed;
     }
 }
