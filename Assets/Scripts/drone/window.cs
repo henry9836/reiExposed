@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEditorInternal;
+#endif
 using System.Text.RegularExpressions;
 
 #if UNITY_EDITOR
