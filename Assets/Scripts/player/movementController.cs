@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class movementController : MonoBehaviour
 {
+    [Header("Cam Mode")]
+    public bool cameraMode = false;
+    public float camSpeedmult = 0.5f;
 
     [Header("Movement")]
     public float moveSpeed = 10.0f;
@@ -218,99 +221,122 @@ public class movementController : MonoBehaviour
             //}
         }
 
+
         //Rolling Mechanic
         if (Input.GetButtonDown("Roll") && !rolling)
         {
-            //Check stamina
-            if (staminaCostSprint <= pc.staminaAmount)
+            //no rolling in camera mode
+            if (cameraMode != true)
             {
-                //Check if area is clear
-                tmpRollDistance = rollDistance;
-                RaycastHit hit;
-                if (Physics.Raycast(feet.transform.position, charcterModel.transform.forward, out hit, tmpRollDistance, rollObstcleLayer))
+                //Check stamina
+                if (staminaCostSprint <= pc.staminaAmount)
                 {
-                    //If we hit something then only roll to just before the object we hit
-                    tmpRollDistance = hit.distance - 1.0f;
-                }
-                //Roll in the forward direction of model
-                targetRollPosition = transform.position + (charcterModel.transform.forward * tmpRollDistance);
-                beforeRollPosition = transform.position;
+                    //Check if area is clear
+                    tmpRollDistance = rollDistance;
+                    RaycastHit hit;
+                    if (Physics.Raycast(feet.transform.position, charcterModel.transform.forward, out hit, tmpRollDistance, rollObstcleLayer))
+                    {
+                        //If we hit something then only roll to just before the object we hit
+                        tmpRollDistance = hit.distance - 1.0f;
+                    }
+                    //Roll in the forward direction of model
+                    targetRollPosition = transform.position + (charcterModel.transform.forward * tmpRollDistance);
+                    beforeRollPosition = transform.position;
 
-                //Reset timer
-                rollTimer = 0.0f;
+                    //Reset timer
+                    rollTimer = 0.0f;
 
-                //Stamina
-                pc.ChangeStamina(-staminaCostRoll);
+                    //Stamina
+                    pc.ChangeStamina(-staminaCostRoll);
 
-                //Lock other movement until roll is complete
-                rolling = true;
-            }
-        }
-
-        //Lerp between start roll and end roll pos if we are rolling
-        if (rolling)
-        {
-            //Move towards target
-            transform.position = Vector3.Lerp(beforeRollPosition, targetRollPosition, rollMovementOverTime.Evaluate(rollTimer / rollTime));
-
-            //Toggle off the roll once we have reached the end of the roll
-            if (rollTimer >= rollTime)
-            {
-                rolling = false;
-            }
-        }
-
-        //Sprint
-        else if (Input.GetButton("Sprint") && isOnGround && !rolling)
-        {
-            if ((moveDir.x != 0) && (moveDir.z != 0))
-            {
-                //move a little more
-                if (pc.CheckStamina() >= staminaCostSprint * Time.deltaTime)
-                {
-                    pc.ChangeStamina(-staminaCostSprint * Time.deltaTime);
-                    moveDir += new Vector3(moveDir.x * sprintSpeedMultipler, 0.0f, moveDir.z * sprintSpeedMultipler);
-                    animator.SetBool("Running", true);
-
-                    float alpha = sprintLines.material.GetFloat("Vector1_BD31B2DE");
-                    alpha = Mathf.Clamp((alpha + (Time.unscaledDeltaTime * 2.5f)), 0.0f, 1.0f);
-                    sprintLines.material.SetFloat("Vector1_BD31B2DE", alpha);
+                    //Lock other movement until roll is complete
+                    rolling = true;
                 }
             }
+
         }
 
-        if (!Input.GetButton("Sprint") || !isOnGround || !(pc.CheckStamina() >= staminaCostSprint))
+
+        if (cameraMode != true)
         {
-            float alpha = sprintLines.material.GetFloat("Vector1_BD31B2DE");
-            alpha = Mathf.Clamp((alpha - (Time.unscaledDeltaTime * 2.5f)), 0.0f, 1.0f);
-            sprintLines.material.SetFloat("Vector1_BD31B2DE", alpha);
-        }
+            //Lerp between start roll and end roll pos if we are rolling
+            if (rolling)
+            {
+                //Move towards target
+                transform.position = Vector3.Lerp(beforeRollPosition, targetRollPosition, rollMovementOverTime.Evaluate(rollTimer / rollTime));
 
-        //Animation Off
-        //Walking
-        //Debug.Log(moveDir);
+                //Toggle off the roll once we have reached the end of the roll
+                if (rollTimer >= rollTime)
+                {
+                    rolling = false;
+                }
+            }
+            else if (Input.GetButton("Sprint") && isOnGround && !rolling) //Sprint
+            {
+                if ((moveDir.x != 0) && (moveDir.z != 0))
+                {
+                    //move a little more
+                    if (pc.CheckStamina() >= staminaCostSprint * Time.deltaTime)
+                    {
+                        pc.ChangeStamina(-staminaCostSprint * Time.deltaTime);
+                        moveDir += new Vector3(moveDir.x * sprintSpeedMultipler, 0.0f, moveDir.z * sprintSpeedMultipler);
+                        animator.SetBool("Running", true);
+
+                        float alpha = sprintLines.material.GetFloat("Vector1_BD31B2DE");
+                        alpha = Mathf.Clamp((alpha + (Time.unscaledDeltaTime * 2.5f)), 0.0f, 1.0f);
+                        sprintLines.material.SetFloat("Vector1_BD31B2DE", alpha);
+                    }
+                }
+            }
+
+            if (!Input.GetButton("Sprint") || !isOnGround || !(pc.CheckStamina() >= staminaCostSprint))
+            {
+                float alpha = sprintLines.material.GetFloat("Vector1_BD31B2DE");
+                alpha = Mathf.Clamp((alpha - (Time.unscaledDeltaTime * 2.5f)), 0.0f, 1.0f);
+                sprintLines.material.SetFloat("Vector1_BD31B2DE", alpha);
+            }
+
+            //Animation Off
+            //Walking
+            //Debug.Log(moveDir);
 
 
-        if ((moveDir.x == 0) && (moveDir.z == 0))
-        {
-            animator.SetBool("walkin", false);
+            if ((moveDir.x == 0) && (moveDir.z == 0))
+            {
+                animator.SetBool("walkin", false);
+            }
+            else
+            {
+                animator.SetBool("walkin", true);
+            }
+            //Sprint
+            if (Input.GetButtonUp("Sprint") || !isOnGround)
+            {
+                animator.SetBool("Running", false);
+            }
+            //Move
+            if (!rolling)
+            {
+                ch.Move(moveDir * Time.deltaTime);
+            }
         }
         else
         {
-            animator.SetBool("walkin", true);
-        }
-        //Sprint
-        if (Input.GetButtonUp("Sprint") || !isOnGround)
-        {
-            animator.SetBool("Running", false);
-        }
+            if (rolling)
+            {
+                //Move towards target
+                transform.position = Vector3.Lerp(beforeRollPosition, targetRollPosition, rollMovementOverTime.Evaluate(rollTimer / rollTime));
 
-
-        //Move
-        if (!rolling)
-        {
-            ch.Move(moveDir * Time.deltaTime);
+                //Toggle off the roll once we have reached the end of the roll
+                if (rollTimer >= rollTime)
+                {
+                    rolling = false;
+                }
+            }
+            else
+            {
+                ch.Move(moveDir * Time.deltaTime * camSpeedmult);
+            }
         }
-
     }
 }
