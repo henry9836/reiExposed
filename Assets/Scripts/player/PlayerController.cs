@@ -131,9 +131,6 @@ public class PlayerController : MonoBehaviour
                 StartCoroutine(death());
                 
             }
-
-
-
         }
     }
 
@@ -141,7 +138,6 @@ public class PlayerController : MonoBehaviour
     {
         staminaUI.GetComponent<Image>().fillAmount = staminaAmount / staminaMaxAmount;
         HPui.GetComponent<Image>().fillAmount = health / maxHealth;
-
     }
 
 
