@@ -63,6 +63,7 @@ public class EnemyController : MonoBehaviour
     public float seekWanderRange = 10.0f;
     public float regenSpeed = 0.0f;
     public LayerMask sightObstacles;
+    public LayerMask groundLayers;
     
     [Header("Movement Settings")]
     public float movementSpeed = 10.0f;
@@ -538,9 +539,20 @@ public class EnemyController : MonoBehaviour
         //Losing Player
         else
         {
+            //Lead player
             if (losePlayerTimer == 0.0f)
             {
-                lastKnownPlayerPosition = lastKnownPlayerPosition + (lastKnownPlayerDir.normalized * 5.0f);
+                Vector3 playerLead = lastKnownPlayerPosition + (lastKnownPlayerDir.normalized * 5.0f);
+
+                //Check if we will be inside a wall with this lead otherwise use lead
+                if (Physics.CheckBox(playerLead, Vector3.one * 0.1f, Quaternion.identity, ~groundLayers))
+                {
+                    //Already set to the correct value
+                }
+                else
+                {
+                    lastKnownPlayerPosition = playerLead;
+                }
             }
             losePlayerTimer += Time.deltaTime; 
         }
