@@ -304,7 +304,7 @@ public class movementController : MonoBehaviour
             animator.SetBool("Running", true);
         }
         //Sprint
-        if (Input.GetButton("Sprint"))
+        if (Input.GetButton("Sprint") && pc.CheckStamina() >= staminaCostSprint)
         {
             animator.SetBool("Sprinting", true);
         }
