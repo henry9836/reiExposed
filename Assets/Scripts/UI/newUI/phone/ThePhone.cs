@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
-using System.Data.SqlClient;
+using UnityEngine.UI;
 
+//public class photo
 public class ThePhone : MonoBehaviour
 {
     private plugindemo drone;
@@ -17,6 +18,9 @@ public class ThePhone : MonoBehaviour
     private GameObject[] myths;
     private bool sucess;
 
+    public GameObject tetscube;
+
+    public List<bool> validPhotos = new List<bool>() { };
     public enum phonestates 
     {
         NONE,
@@ -35,6 +39,7 @@ public class ThePhone : MonoBehaviour
         canvas = this.gameObject;
         maincam = GameObject.Find("Main Camera");
         myths = GameObject.FindGameObjectsWithTag("Myth");
+        StartCoroutine(LoadScreenShot(0));
 
         //drone = GameObject.Find("Save&Dronemanage").GetComponent<plugindemo>();
         //if (drone.candeliver == true)
@@ -156,13 +161,13 @@ public class ThePhone : MonoBehaviour
 
     public void cameraroll()
     {
+
         ThePhoneUI.transform.GetChild(2).gameObject.SetActive(false);
         ThePhoneUI.transform.GetChild(3).gameObject.SetActive(true);
 
-
+        loadPhotos();
 
         screen = phonestates.ROLL;
-
     }
 
     public void thecamera()
@@ -179,7 +184,6 @@ public class ThePhone : MonoBehaviour
     public void amazon()
     {
         screen = phonestates.AMAZON;
-
     }
 
     public void BackToMenu()
@@ -210,6 +214,7 @@ public class ThePhone : MonoBehaviour
         //its in the camera frame
         //direct line of sight
 
+        validPhotos.Add(true);
 
         List<GameObject> reenable = new List<GameObject>() { };
 
@@ -256,4 +261,50 @@ public class ThePhone : MonoBehaviour
     {
         return File.Exists(path);
     }
+
+    public void loadPhotos()
+    {
+        for (int i = 0; i < validPhotos.Count; i++)
+        {
+            StartCoroutine(LoadScreenShot(i));
+        }
+    }
+
+    IEnumerator LoadScreenShot(int i)
+    {
+        string name = i.ToString() + ".png";
+        string pathPrefix = @"file://";
+        string foldername = "shhhhhSecretFolder";
+        string filename2 = @name;
+
+        string path = "";
+
+#if UNITY_STANDALONE_LINUX
+            path = Directory.GetCurrentDirectory() + "/" + foldername +"/";
+#endif
+
+#if UNITY_STANDALONE_WIN
+        path = Directory.GetCurrentDirectory() + "\\" + foldername + "\\";
+#endif
+
+#if UNITY_EDITOR
+        path = Directory.GetCurrentDirectory() + "\\" + foldername + "\\";
+#endif
+
+        string fullFilename = pathPrefix + path + filename2;
+
+        WWW www = new WWW(fullFilename);
+        Texture2D screenshot = new Texture2D(1920, 1080, TextureFormat.DXT1, false);
+        www.LoadImageIntoTexture(screenshot);
+
+
+        //ThePhoneUI.transform.GetChild(3).GetChild(i).GetComponent<Image>().material.SetTexture("Texture2D_58EC87E3", screenshot);
+        //Image tmp = ThePhoneUI.transform.GetChild(3).GetChild(i).GetComponent<Image>();
+        Image tmp = ThePhoneUI.transform.GetChild(3).GetChild(i).GetComponent<Image>();
+        tmp.sprite = Sprite.Create(www.texture, new Rect(0, 0, www.texture.width, www.texture.height), new Vector2(0, 0));
+        //tetscube.GetComponent<Image>().material.SetTexture("Texture2D_58EC87E3", screenshot);
+
+        yield return null;
+    }
+    
 }
