@@ -39,6 +39,9 @@ public class EnemyIdle : StateMachineBehaviour
             wanderRange = ec.wanderRange;
         }
 
+        //Reset agro mode
+        ec.aggresiveMode = false;
+
         //Reset States And Triggers
         animator.SetBool("Idle", true);
         animator.SetBool("AttackMode", false);
@@ -73,15 +76,18 @@ public class EnemyIdle : StateMachineBehaviour
         if (waitTimer >= waitTime)
         {
             //Go somewhere new
-            GetNewWanderTarget();
-            animator.SetBool("Idle", false);
+            if (GetNewWanderTarget())
+            {
+                animator.SetBool("Idle", false);
+                waitTimer = 0.0f;
+            }
         }
     }
 
-    void GetNewWanderTarget()
+    bool GetNewWanderTarget()
     {
         tmp = startingLoc + new Vector3(Random.Range(-wanderRange, wanderRange), 0.0f, Random.Range(-wanderRange, wanderRange));
-        ec.GoToNewWanderPos(tmp);
+        return ec.GoToNewWanderPos(tmp);
     }
 
 }
