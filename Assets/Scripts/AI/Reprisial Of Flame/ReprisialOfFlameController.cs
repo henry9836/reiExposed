@@ -362,7 +362,6 @@ public class ReprisialOfFlameController : MonoBehaviour
                 animator.SetTrigger("Death");
                 DeathEvent();
             }
-            stopMovement();
             //Leave loop early
             return;
         }

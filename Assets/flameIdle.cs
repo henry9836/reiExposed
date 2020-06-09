@@ -55,8 +55,8 @@ public class flameIdle : StateMachineBehaviour
     {
         float distance = Vector3.Distance(transform.position, player.position);
 
-        //Are close enough to do our attack?
-        if (distance >= currentAttack.range.x && distance < currentAttack.range.y)
+        //Are close enough to do our attack and facing the player?
+        if (distance >= currentAttack.range.x && distance < currentAttack.range.y && rc.isLookingAtPlayer(0.2f))
         {
             if (currentAttack.attackIsBool)
             {
