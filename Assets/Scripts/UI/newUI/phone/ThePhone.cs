@@ -4,7 +4,6 @@ using UnityEngine;
 using System.IO;
 using UnityEngine.UI;
 using System.ComponentModel;
-using UnityEditor.Build;
 
 //public class photo
 public class ThePhone : MonoBehaviour
@@ -447,9 +446,9 @@ public class ThePhone : MonoBehaviour
             {
                 save.saveitem(location, state);
 
-                if (i != (count - 1))
+                if (i != (count))
                 {
-                    for (int j = 0; j < ((count - 1) - i); j++)
+                    for (int j = 0; j < ((count) - i); j++)
                     {
                         //swap save file
                         string x = "state " + (i + 0 + j).ToString() + ".png";
@@ -478,6 +477,7 @@ public class ThePhone : MonoBehaviour
                         }
                     }
                 }
+
                 save.saveitem("imageCount", count - 1);
             }
         }
