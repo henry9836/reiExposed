@@ -338,14 +338,21 @@ public class ThePhone : MonoBehaviour
             saveddata.Add(picof);
         }
 
+        float closes = 999.0f;
+
         for (int i = 0; i < clue.Count; i++)
         {
             //its in the camera frame
             if (clue[i].gameObject.GetComponent<Renderer>().isVisible)
             {
                 //10 meters or closer
-                if (Vector3.Distance(clue[i].transform.position, rei.transform.position) < 10.0f) 
+                float dis = Vector3.Distance(clue[i].transform.position, rei.transform.position);
+                if (dis < 10.0f && dis < closes) 
                 {
+                    if (dis < closes)
+                    {
+                        closes = dis;
+                    }
                     nametoset = clue[i].name;
                 }
             }
