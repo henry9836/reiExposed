@@ -36,6 +36,8 @@ public class ReprisialOfFlameController : MonoBehaviour
         }
     }
 
+    public bool goTime = false;
+
     //Defined Values
     [Header("General Settings")]
     public float health = 100.0f;
@@ -98,6 +100,7 @@ public class ReprisialOfFlameController : MonoBehaviour
 
     private Animator animator;
     private NavMeshPath path;
+    private PlayerController pc;
 
     //PLAYER DAMAGE QUERY
     public float QueryDamage()
@@ -336,6 +339,7 @@ public class ReprisialOfFlameController : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         player = GameObject.FindWithTag("Player");
+        pc = player.GetComponent<PlayerController>();
         startHealth = health;
         playerTargetNode = GameObject.FindGameObjectWithTag("PlayerTargetNode").transform;
         //Sanity Checks
@@ -343,7 +347,7 @@ public class ReprisialOfFlameController : MonoBehaviour
         {
             Debug.LogError($"Attack Lists do not match on {gameObject.name}");
         }
-
+        animator = GetComponent<Animator>();
         onStart.Invoke();
     }
 
@@ -355,8 +359,10 @@ public class ReprisialOfFlameController : MonoBehaviour
         {
             if (!isDead)
             {
+                animator.SetTrigger("Death");
                 DeathEvent();
             }
+            stopMovement();
             //Leave loop early
             return;
         }
@@ -380,6 +386,19 @@ public class ReprisialOfFlameController : MonoBehaviour
 #endif
 
     }
+
+    //I was hit by something
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("PlayerAttackSurface"))
+        {
+            //Get Hurt
+            health -= pc.umbreallaDmg;
+            onHurt.Invoke();
+        }
+    }
+
+
 
 #if UNITY_EDITOR
     private void OnDrawGizmos()
