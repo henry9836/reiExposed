@@ -11423,6 +11423,7 @@ GameObject:
   - component: {fileID: 7412659722776963070}
   - component: {fileID: 600400968175307396}
   - component: {fileID: 382099751}
+  - component: {fileID: 7559864698252949819}
   m_Layer: 0
   m_Name: Reprisal Of Flame
   m_TagString: Boss
@@ -11490,6 +11491,62 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &7559864698252949819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5801858318232294893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76778bf176634e54da038ab18cecd714, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 100
+  thresholdSightAngle: 0.5
+  stuckTimerThreshold: 5
+  stuckVeloThreshold: 1
+  regenSpeed: 0
+  sightObstacles:
+    serializedVersion: 2
+    m_Bits: 32768
+  groundLayers:
+    serializedVersion: 2
+    m_Bits: 512
+  movementSpeed: 10
+  walkSpeed: 4
+  runningSpeed: 15
+  stayAfterArrivalTimeRange: {x: 0, y: 7}
+  arriveDistanceThreshold: 1
+  onDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  onHurt:
+    m_PersistentCalls:
+      m_Calls: []
+  onStart:
+    m_PersistentCalls:
+      m_Calls: []
+  eyes: {fileID: 6485179492549952863}
+  leftArms: []
+  rightArms: []
+  leftLegs: []
+  rightLegs: []
+  otherBody: []
+  attacks: []
+  attackRanges: []
+  attackDmg: []
+  attackIsBool: 
+  debugMode: 1
+  currentMode: PENDING
+  startHealth: 0
+  agent: {fileID: 0}
+  isDead: 0
+  lastKnownPlayerPosition: {x: 0, y: 0, z: 0}
+  playerTargetNode: {fileID: 0}
+  player: {fileID: 0}
+  target: {x: 0, y: 0, z: 0}
 --- !u!1 &5949284872636925767
 GameObject:
   m_ObjectHideFlags: 0

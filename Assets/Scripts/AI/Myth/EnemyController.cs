@@ -166,7 +166,6 @@ public class EnemyController : MonoBehaviour
 
 
     //ATTACK
-
     public void UpdateAttackSurface(ATTACKSURFACES surface, bool arm, bool _damageOnlyOnce)
     {
         switch (surface)
