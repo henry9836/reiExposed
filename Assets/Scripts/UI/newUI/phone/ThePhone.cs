@@ -284,7 +284,7 @@ public class ThePhone : MonoBehaviour
         picUnzoom();
     }
 
-    public IEnumerator photo()
+    public void checkPhotoValid()
     {
         //phptp qualitys valid
         //10 meters or closer
@@ -293,6 +293,12 @@ public class ThePhone : MonoBehaviour
         //direct line of sight
 
         savePhotosData(save.safeItem("imageCount", saveFile.types.INT).toint, "bad"); //"bad" should be whatever photo quality retuns
+    }
+
+    public IEnumerator photo()
+    {
+
+        checkPhotoValid();
 
         List<GameObject> reenable = new List<GameObject>() { };
 
