@@ -113,7 +113,10 @@ public class ThePhone : MonoBehaviour
                 }
             case phonestates.CLUES:
                 {
-
+                    if (Input.GetKeyDown(KeyCode.Tab))
+                    {
+                        BackToMenu();
+                    }
                     break;
                 }
             case phonestates.PICZOOM:
@@ -179,6 +182,11 @@ public class ThePhone : MonoBehaviour
     public void clues()
     {
         screen = phonestates.CLUES;
+
+        ThePhoneUI.transform.GetChild(2).gameObject.SetActive(false);
+        ThePhoneUI.transform.GetChild(4).gameObject.SetActive(true);
+
+        updateclues();
     }
 
     public void cameraroll()
@@ -218,6 +226,8 @@ public class ThePhone : MonoBehaviour
 
         ThePhoneUI.transform.GetChild(2).gameObject.SetActive(true);
         ThePhoneUI.transform.GetChild(3).gameObject.SetActive(false);
+        ThePhoneUI.transform.GetChild(4).gameObject.SetActive(false);
+
 
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined;
@@ -259,8 +269,31 @@ public class ThePhone : MonoBehaviour
         loadPhotos();
 
         ThePhoneUI.transform.GetChild(3).GetChild(10).gameObject.SetActive(false);
+    }
 
+    public void updateclues()
+    {
+        GameObject[] clues = GameObject.FindGameObjectsWithTag("Clue");
 
+        for (int i = 0; i < 3; i++)
+        {
+            ThePhoneUI.transform.GetChild(4).GetChild(i).GetComponent<Image>().color = new Color(0.3f, 0.3f, 0.3f);
+
+        }
+
+        for (int i = 0; i < 10; i++)
+        {
+            string filename = ("state " + (i).ToString() + ".png");
+            string picof = save.safeItem(filename, saveFile.types.STRING).tostring;
+
+            for (int j = 0; j < clues.Length; j++)
+            {
+                if (clues[j].gameObject.name == picof)
+                {
+                    ThePhoneUI.transform.GetChild(4).GetChild(j).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f);
+                }
+            }
+        }
     }
 
     public void takepicture()
@@ -310,40 +343,31 @@ public class ThePhone : MonoBehaviour
             //its in the camera frame
             if (clue[i].gameObject.GetComponent<Renderer>().isVisible)
             {
-                Debug.Log("VISABLE");
-
-                //direct line of sight
                 //10 meters or closer
-                Vector3 fromPosition = rei.transform.position + new Vector3(0.0f, 1.65f, 0.0f);
-                Vector3 toPosition = clue[i].transform.position;
-                Vector3 direction = toPosition - fromPosition;
-                RaycastHit hit;
-                Physics.Raycast(fromPosition, direction, out hit, 10.0f);
-
-                if (clue[i].name == hit.collider.name)
+                if (Vector3.Distance(clue[i].transform.position, rei.transform.position) < 10.0f) 
                 {
-                    Debug.Log("VISABLE AND RAYCASTHIT 10M");
-
-                    //1 photo per clue
-                    bool pass = true;
-                    for (int j = 0; j < saveddata.Count; j++)
-                    {
-                        if (saveddata[j] == clue[i].name)
-                        {
-                            pass = false;
-                        }
-                    }
-                    if (pass == true)
-                    {
-                        Debug.Log("not alreayd photgraphed");
-                        nametoset = clue[i].name;
-                    }
+                    nametoset = clue[i].name;
                 }
             }
         }
 
+        savePhotosData(imagecount, nametoset); 
 
-        savePhotosData(imagecount, nametoset); //"bad" should be whatever photo quality retuns
+        //1 photo per clue
+        //bool pass = true;
+        //for (int j = 0; j < saveddata.Count; j++)
+        //{
+        //    if (saveddata[j] == clue[i].name)
+        //    {
+        //        pass = false;
+        //    }
+        //}
+        //if (pass == true)
+        //{
+        //    Debug.Log("not alreayd photgraphed");
+        //    nametoset = clue[i].name;
+
+        //}
 
 
     }
