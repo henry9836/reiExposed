@@ -17,11 +17,11 @@ public class ThePhone : MonoBehaviour
     public GameObject canvas;
     public GameObject maincam;
     public GameObject camgrid;
+    public Sprite emptyPhotoSpot;
 
     private GameObject[] myths;
     private bool sucess;
 
-    public GameObject tetscube;
 
     private Vector2 restorescale;
     private Vector3 restorePos;
@@ -241,6 +241,7 @@ public class ThePhone : MonoBehaviour
                 ThePhoneUI.transform.GetChild(3).GetChild(i).gameObject.SetActive(false);
             }
         }
+        ThePhoneUI.transform.GetChild(3).GetChild(10).gameObject.SetActive(true);
     }
 
     public void picUnzoom()
@@ -255,11 +256,32 @@ public class ThePhone : MonoBehaviour
         {
             ThePhoneUI.transform.GetChild(3).GetChild(i).gameObject.SetActive(true);
         }
+
+        loadPhotos();
+
+        ThePhoneUI.transform.GetChild(3).GetChild(10).gameObject.SetActive(false);
+
+
     }
 
     public void takepicture()
     {
         StartCoroutine(photo());
+    }
+
+    public void deletePhoto()
+    {
+        int tmp = 10;
+        for (int i = 0; i < 10; i++)
+        {
+            if (ThePhoneUI.transform.GetChild(3).GetChild(i).gameObject.activeSelf)
+            {
+                tmp = i;
+            }
+        }
+        savePhotosData(tmp, "del");
+
+        picUnzoom();
     }
 
     public IEnumerator photo()
@@ -321,9 +343,20 @@ public class ThePhone : MonoBehaviour
 
     public void loadPhotos()
     {
-        for (int i = 0; i < save.safeItem("imageCount", saveFile.types.INT).toint; i++)
+        int i = 0;
+
+
+        for (; i < save.safeItem("imageCount", saveFile.types.INT).toint; i++)
         {
             StartCoroutine(LoadScreenShot(i));
+
+        }
+
+        for (; i < 10; i++)
+        {
+            ThePhoneUI.transform.GetChild(3).GetChild(i).GetComponent<Image>().sprite = emptyPhotoSpot;
+            ThePhoneUI.transform.GetChild(3).GetChild(i).GetComponent<Button>().enabled = false;
+
         }
     }
 
@@ -354,12 +387,10 @@ public class ThePhone : MonoBehaviour
         Texture2D screenshot = new Texture2D(1920, 1080, TextureFormat.DXT1, false);
         www.LoadImageIntoTexture(screenshot);
 
-
-        //ThePhoneUI.transform.GetChild(3).GetChild(i).GetComponent<Image>().material.SetTexture("Texture2D_58EC87E3", screenshot);
-        //Image tmp = ThePhoneUI.transform.GetChild(3).GetChild(i).GetComponent<Image>();
         Image tmp = ThePhoneUI.transform.GetChild(3).GetChild(i).GetComponent<Image>();
         tmp.sprite = Sprite.Create(www.texture, new Rect(0, 0, www.texture.width, www.texture.height), new Vector2(0, 0));
-        //tetscube.GetComponent<Image>().material.SetTexture("Texture2D_58EC87E3", screenshot);
+
+        tmp.gameObject.GetComponent<Button>().enabled = true;
 
         yield return null;
     }
