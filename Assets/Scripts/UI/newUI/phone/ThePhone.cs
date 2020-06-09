@@ -113,7 +113,10 @@ public class ThePhone : MonoBehaviour
                 }
             case phonestates.CLUES:
                 {
-
+                    if (Input.GetKeyDown(KeyCode.Tab))
+                    {
+                        BackToMenu();
+                    }
                     break;
                 }
             case phonestates.PICZOOM:
@@ -179,6 +182,11 @@ public class ThePhone : MonoBehaviour
     public void clues()
     {
         screen = phonestates.CLUES;
+
+        ThePhoneUI.transform.GetChild(2).gameObject.SetActive(false);
+        ThePhoneUI.transform.GetChild(4).gameObject.SetActive(true);
+
+        updateclues();
     }
 
     public void cameraroll()
@@ -218,6 +226,8 @@ public class ThePhone : MonoBehaviour
 
         ThePhoneUI.transform.GetChild(2).gameObject.SetActive(true);
         ThePhoneUI.transform.GetChild(3).gameObject.SetActive(false);
+        ThePhoneUI.transform.GetChild(4).gameObject.SetActive(false);
+
 
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined;
@@ -259,8 +269,31 @@ public class ThePhone : MonoBehaviour
         loadPhotos();
 
         ThePhoneUI.transform.GetChild(3).GetChild(10).gameObject.SetActive(false);
+    }
 
+    public void updateclues()
+    {
+        GameObject[] clues = GameObject.FindGameObjectsWithTag("Clue");
 
+        for (int i = 0; i < 3; i++)
+        {
+            ThePhoneUI.transform.GetChild(4).GetChild(i).GetComponent<Image>().color = new Color(0.3f, 0.3f, 0.3f);
+
+        }
+
+        for (int i = 0; i < 10; i++)
+        {
+            string filename = ("state " + (i).ToString() + ".png");
+            string picof = save.safeItem(filename, saveFile.types.STRING).tostring;
+
+            for (int j = 0; j < clues.Length; j++)
+            {
+                if (clues[j].gameObject.name == picof)
+                {
+                    ThePhoneUI.transform.GetChild(4).GetChild(j).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f);
+                }
+            }
+        }
     }
 
     public void takepicture()
@@ -285,13 +318,65 @@ public class ThePhone : MonoBehaviour
 
     public void checkPhotoValid()
     {
-        //phptp qualitys valid
-        //10 meters or closer
-        //1 photo per clue
-        //its in the camera frame
-        //direct line of sight
+        GameObject[] clues = GameObject.FindGameObjectsWithTag("Clue");
 
-        savePhotosData(save.safeItem("imageCount", saveFile.types.INT).toint, "bad"); //"bad" should be whatever photo quality retuns
+        string nametoset = "bad";
+        int imagecount = save.safeItem("imageCount", saveFile.types.INT).toint;
+
+        List<GameObject> clue = new List<GameObject>() { };
+
+        for (int i = 0; i < clues.Length; i++)
+        {
+            clue.Add(clues[i]);
+        }
+
+        List<string> saveddata = new List<string>() { };
+        for (int i = 0; i < 10; i++)
+        {
+            string filename = ("state " + (i).ToString() + ".png");
+            string picof = save.safeItem(filename, saveFile.types.STRING).tostring;
+            saveddata.Add(picof);
+        }
+
+        float closes = 999.0f;
+
+        for (int i = 0; i < clue.Count; i++)
+        {
+            //its in the camera frame
+            if (clue[i].gameObject.GetComponent<Renderer>().isVisible)
+            {
+                //10 meters or closer
+                float dis = Vector3.Distance(clue[i].transform.position, rei.transform.position);
+                if (dis < 10.0f && dis < closes) 
+                {
+                    if (dis < closes)
+                    {
+                        closes = dis;
+                    }
+                    nametoset = clue[i].name;
+                }
+            }
+        }
+
+        savePhotosData(imagecount, nametoset); 
+
+        //1 photo per clue
+        //bool pass = true;
+        //for (int j = 0; j < saveddata.Count; j++)
+        //{
+        //    if (saveddata[j] == clue[i].name)
+        //    {
+        //        pass = false;
+        //    }
+        //}
+        //if (pass == true)
+        //{
+        //    Debug.Log("not alreayd photgraphed");
+        //    nametoset = clue[i].name;
+
+        //}
+
+
     }
 
     public IEnumerator photo()
@@ -413,7 +498,6 @@ public class ThePhone : MonoBehaviour
         {
             string location = ("state " + i + ".png");
             string photodata = save.safeItem(location, saveFile.types.STRING).tostring;
-            Debug.Log(photodata);
 
             if (photodata == null)
             {
@@ -436,8 +520,11 @@ public class ThePhone : MonoBehaviour
         {
             if (state != "del")
             {
-                save.saveitem(location, state);
-                save.saveitem("imageCount", count + 1);
+                if (i < 10)
+                {
+                    save.saveitem(location, state);
+                    save.saveitem("imageCount", count + 1);
+                }
             }
         }
         else
