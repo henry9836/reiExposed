@@ -34,18 +34,16 @@ public class cameraControler : MonoBehaviour
     private float zOffsetColl;
     private float oldfov;
     private bool FOVonce = true;
+    public GameObject umbrella;
+    public GameObject crosshair;
 
     private bool cooldownlock;
-    private GameObject umbrella;
     private float fov;
-
-    public GameObject crosshair;
     private GameObject pausemenu;
 
 
     private void Awake()
     {
-        umbrella = GameObject.Find("umbrella ella ella");
         Cursor.lockState = CursorLockMode.Locked;
         camPivot = transform.GetChild(0).gameObject;
         camRoot = transform.GetChild(0).GetChild(0).gameObject;
@@ -56,7 +54,7 @@ public class cameraControler : MonoBehaviour
 
     void Update()
     {
-        cooldownlock = umbrella.GetComponent<umbrella>().cooldown;
+        cooldownlock = transform.parent.GetComponent<umbrella>().cooldown;
 
         pitchValueAdj = Mathf.DeltaAngle(camPivot.transform.localRotation.eulerAngles.x, 360.0f - maxPitchUp) / -(maxPitchUp + maxPitchDown);
         zOffset = Mathf.Lerp(2.0f, maxDistance, distCurve.Evaluate(pitchValueAdj));

@@ -25,13 +25,12 @@ public class movementController : MonoBehaviour
     public float staminaCostJump = 30.0f;
 
     [Header("Body Parts")]
-    public Transform feet;
-    public Transform rightFoot;
-    public Transform leftFoot;
+    //public Transform feet;
+    //public Transform rightFoot;
+    //public Transform leftFoot;
     public GameObject charcterModel;
     public GameObject camParent;
-    public Transform leftFootTarget;
-    public Transform rightFootTarget;
+    public Transform rollCheckTransform;
 
     [Header("Layer Masks")]
     public LayerMask groundLayer;
@@ -83,47 +82,50 @@ public class movementController : MonoBehaviour
         //Gravity/Landing Section
         //=========================
 
-        //Check for ground below each foot
-        leftFootGrounded = (Physics.Raycast(leftFoot.position, Vector3.down, out hit, feetCheckDistance, groundLayer));
-        if (leftFootGrounded)
-        {
-            Debug.DrawLine(leftFoot.position, hit.point, Color.cyan);
-            leftFoot.position = hit.point;
-        }
-        else
-        {
-            Debug.DrawLine(leftFoot.position, leftFoot.position + (Vector3.down * feetCheckDistance), Color.red);
-            leftFoot.position = leftFoot.position;
-        }
+        ////Check for ground below each foot
+        //leftFootGrounded = (Physics.Raycast(leftFoot.position, Vector3.down, out hit, feetCheckDistance, groundLayer));
+        //if (leftFootGrounded)
+        //{
+        //    Debug.DrawLine(leftFoot.position, hit.point, Color.cyan);
+        //    leftFoot.position = hit.point;
+        //}
+        //else
+        //{
+        //    Debug.DrawLine(leftFoot.position, leftFoot.position + (Vector3.down * feetCheckDistance), Color.red);
+        //    leftFoot.position = leftFoot.position;
+        //}
 
-        rightFootGrounded = (Physics.Raycast(rightFoot.position, Vector3.down, out hit, feetCheckDistance, groundLayer));
+        //rightFootGrounded = (Physics.Raycast(rightFoot.position, Vector3.down, out hit, feetCheckDistance, groundLayer));
 
-        if (rightFootGrounded)
-        {
-            Debug.DrawLine(rightFoot.position, hit.point, Color.cyan);
-            rightFoot.position = hit.point;
-        }
-        else
-        {
-            Debug.DrawLine(rightFoot.position, rightFoot.position + (Vector3.down * feetCheckDistance), Color.red);
-            rightFoot.position = rightFoot.position;
-        }
+        //if (rightFootGrounded)
+        //{
+        //    Debug.DrawLine(rightFoot.position, hit.point, Color.cyan);
+        //    rightFoot.position = hit.point;
+        //}
+        //else
+        //{
+        //    Debug.DrawLine(rightFoot.position, rightFoot.position + (Vector3.down * feetCheckDistance), Color.red);
+        //    rightFoot.position = rightFoot.position;
+        //}
 
-        //Center foot is important as landing is controlled by character controller
-        centerFootGrounded = (Physics.Raycast(feet.position, Vector3.down, out hit, feetCheckDistance, groundLayer));
+        ////Center foot is important as landing is controlled by character controller
+        //centerFootGrounded = (Physics.Raycast(feet.position, Vector3.down, out hit, feetCheckDistance, groundLayer));
 
-        if (centerFootGrounded)
-        {
-            Debug.DrawLine(feet.position, hit.point, Color.cyan);
-        }
-        else
-        {
-            Debug.DrawLine(feet.position, feet.position + (Vector3.down * feetCheckDistance), Color.red);
-        }
+        //if (centerFootGrounded)
+        //{
+        //    Debug.DrawLine(feet.position, hit.point, Color.cyan);
+        //}
+        //else
+        //{
+        //    Debug.DrawLine(feet.position, feet.position + (Vector3.down * feetCheckDistance), Color.red);
+        //}
 
-        //Set whether we are on the ground or not
+        ////Set whether we are on the ground or not
 
-        isOnGround = (rightFootGrounded || leftFootGrounded || centerFootGrounded);
+        //isOnGround = (rightFootGrounded || leftFootGrounded || centerFootGrounded);
+
+        isOnGround = ch.isGrounded;
+
 
         if (isOnGround != previousState)
         {
@@ -153,9 +155,6 @@ public class movementController : MonoBehaviour
         {
             return;
         }
-
-        //Match camera rotation to cam parent rotation
-        //charcterModel.transform.rotation = camParent.transform.rotation
 
         //Get Cam Dir Input
         moveDirCam = Vector3.zero;
@@ -191,8 +190,10 @@ public class movementController : MonoBehaviour
         {
             //Move half speed
             moveDir = new Vector3(0.0f, moveDir.y, 0.0f);
-            moveDir += (camParent.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed))) * 0.5f;
-            moveDir += (camParent.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed))) * 0.5f;
+            //moveDir += (camParent.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed))) * 0.5f;
+            //moveDir += (camParent.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed))) * 0.5f;
+            moveDir += camParent.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed));
+            moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed));
 
             //Apply Gravity
             moveDir.y -= gravity * Time.deltaTime;
@@ -227,7 +228,7 @@ public class movementController : MonoBehaviour
                 //Check if area is clear
                 tmpRollDistance = rollDistance;
                 RaycastHit hit;
-                if (Physics.Raycast(feet.transform.position, charcterModel.transform.forward, out hit, tmpRollDistance, rollObstcleLayer))
+                if (Physics.Raycast(rollCheckTransform.position, charcterModel.transform.forward, out hit, tmpRollDistance, rollObstcleLayer))
                 {
                     //If we hit something then only roll to just before the object we hit
                     tmpRollDistance = hit.distance - 1.0f;
@@ -244,6 +245,10 @@ public class movementController : MonoBehaviour
 
                 //Lock other movement until roll is complete
                 rolling = true;
+
+                //Animation
+                animator.SetBool("Rolling", true);
+                animator.SetTrigger("Roll");
             }
         }
 
@@ -257,6 +262,10 @@ public class movementController : MonoBehaviour
             if (rollTimer >= rollTime)
             {
                 rolling = false;
+
+                //Animation
+                animator.SetBool("Rolling", false);
+                animator.ResetTrigger("Roll");
             }
         }
 
@@ -270,6 +279,7 @@ public class movementController : MonoBehaviour
                 {
                     pc.ChangeStamina(-staminaCostSprint * Time.deltaTime);
                     moveDir += new Vector3(moveDir.x * sprintSpeedMultipler, 0.0f, moveDir.z * sprintSpeedMultipler);
+                    //Animation
                     animator.SetBool("Running", true);
 
                     float alpha = sprintLines.material.GetFloat("Vector1_BD31B2DE");
@@ -286,25 +296,32 @@ public class movementController : MonoBehaviour
             sprintLines.material.SetFloat("Vector1_BD31B2DE", alpha);
         }
 
-        //Animation Off
+        //Animation
         //Walking
-        //Debug.Log(moveDir);
-
 
         if ((moveDir.x == 0) && (moveDir.z == 0))
         {
-            animator.SetBool("walkin", false);
+            animator.SetBool("Running", false);
         }
         else
         {
-            animator.SetBool("walkin", true);
+            animator.SetBool("Running", true);
         }
         //Sprint
-        if (Input.GetButtonUp("Sprint") || !isOnGround)
+        if (Input.GetButton("Sprint") && pc.CheckStamina() >= staminaCostSprint)
         {
-            animator.SetBool("Running", false);
+            animator.SetBool("Sprinting", true);
+        }
+        else
+        {
+            animator.SetBool("Sprinting", false);
         }
 
+        //Restrict movement with animation
+        if (animator.GetBool("Blocking"))
+        {
+            //moveDir = new Vector3(0.0f, moveDir.y, 0.0f);
+        }
 
         //Move
         if (!rolling)

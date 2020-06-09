@@ -19,26 +19,27 @@ public class umbrella : MonoBehaviour
     public AudioClip umbrellaActivateSFX;
     public AudioClip umbrellaShoot;
     public BoxCollider umbrellaHitBox;
+    public GameObject umbeaalBone;
+    public GameObject boss;
+    public AudioSource audio;
 
     private PlayerController playercontrol;
     private GameObject cam;
-    private GameObject boss;
-    private GameObject umbeaalBone;
     private Animator animator;
     public GameObject VFX;
-    private AudioSource audio;
 
     private bool latetest = false;
   
 
     void Start()
     {
-        playercontrol = this.transform.parent.parent.GetComponent<PlayerController>();
+        playercontrol = GetComponent<PlayerController>();
         cam = GameObject.FindGameObjectWithTag("MainCamera");
-        boss = GameObject.Find("Boss");
-        umbeaalBone = GameObject.Find("rei_umbrella");
         animator = playercontrol.gameObject.GetComponent<Animator>();
-        audio = GetComponent<AudioSource>();
+        if (!audio)
+        {
+            audio = GetComponent<AudioSource>();
+        }
         umbrellaHitBox.enabled = false;
     }
 
@@ -46,9 +47,12 @@ public class umbrella : MonoBehaviour
     {
         latetest = false;
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !animator.GetBool("Blocking"))
         {
-            animator.SetTrigger("Attack");
+            if (playercontrol.staminaAmount >= playercontrol.staminaToAttack) {
+                playercontrol.ChangeStamina(-playercontrol.staminaToAttack);
+                animator.SetTrigger("Attack");
+            }
         }
 
         VFX.GetComponent<VisualEffect>().SetFloat("timer", 0.0f);
@@ -62,10 +66,10 @@ public class umbrella : MonoBehaviour
                 {
                     playercontrol.ChangeStamina(-blockingStamina * Time.deltaTime);
                     blocking();
-                    if (canfire == true)
-                    {
+                    //if (canfire)
+                    //{
                         firemode();
-                    }
+                    //}
                 }
                 else
                 {
@@ -74,15 +78,17 @@ public class umbrella : MonoBehaviour
             }
             else
             {
-                animator.SetBool("blocking", false);
+                //animator.ResetTrigger("Block");
+                animator.SetBool("Blocking", false);
             }
         }
         else
         {
-            animator.SetBool("blocking", false);
+            animator.SetBool("Blocking", false);
             cooldowntimer += Time.deltaTime;
             if (cooldowntimer > cooldowntime)
             {
+                //animator.ResetTrigger("Block");
                 cooldown = false;
                 cooldowntimer = 0.0f;
             }
@@ -92,9 +98,11 @@ public class umbrella : MonoBehaviour
 
     void blocking()
     {
-        animator.SetBool("blocking", true);
-        animator.SetBool("alreadyBlocking", true);
-
+        if (!animator.GetBool("Blocking"))
+        {
+            animator.SetTrigger("Block");
+            animator.SetBool("Blocking", true);
+        }
     }
 
     void firemode()
@@ -104,8 +112,8 @@ public class umbrella : MonoBehaviour
 
         if (Input.GetAxis("Fire1") > 0.5f)
         {
+            animator.SetTrigger("Shoot");
             bang();
-            animator.SetTrigger("shoot");
         }
     }
 
@@ -130,13 +138,15 @@ public class umbrella : MonoBehaviour
 
     void dodamage(Vector3 pos, float attackingfor)
     {
-        float damage = boss.GetComponent<BossController>().IBeanShot(attackingfor);
+        //COMMENTED OUT FOR MIGRATION NEEDS TO BE REBUILT FOR DIFFERENT ENEMYTYPES
 
-        GameObject text = Instantiate(damagedText, pos, Quaternion.identity);
-        text.transform.GetChild(0).GetComponent<Text>().text = null;
-        text.transform.GetChild(0).GetComponent<Text>().text = Mathf.RoundToInt(damage).ToString();
-        text.transform.LookAt(cam.transform.position);
-        text.transform.Rotate(new Vector3(0, 180, 0));
+        //float damage = boss.GetComponent<BossController>().IBeanShot(attackingfor);
+
+        //GameObject text = Instantiate(damagedText, pos, Quaternion.identity);
+        //text.transform.GetChild(0).GetComponent<Text>().text = null;
+        //text.transform.GetChild(0).GetComponent<Text>().text = Mathf.RoundToInt(damage).ToString();
+        //text.transform.LookAt(cam.transform.position);
+        //text.transform.Rotate(new Vector3(0, 180, 0));
     }
 
     void LateUpdate()
