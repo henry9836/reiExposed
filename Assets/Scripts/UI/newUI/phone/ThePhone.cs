@@ -227,7 +227,8 @@ public class ThePhone : MonoBehaviour
             }
         }
 
-        string foldername = "shhhhhSecretFolder/";
+        string fn = Directory.GetCurrentDirectory();
+        string foldername = fn + "\\" + "shhhhhSecretFolder";
         sucess = false; 
 
         if (!Directory.Exists(foldername))
@@ -239,10 +240,10 @@ public class ThePhone : MonoBehaviour
 
         for (int i = 0; i < 10; i++)
         {
-            if (!FileExists(foldername + i.ToString() + ".png"))
+            if (!FileExists(foldername + "\\" + i.ToString() + ".png"))
             {
                 sucess = true;
-                ScreenCapture.CaptureScreenshot(foldername + i.ToString() + ".png");
+                ScreenCapture.CaptureScreenshot(foldername + "\\" + i.ToString() + ".png");
                 i = 10;
             }
 
