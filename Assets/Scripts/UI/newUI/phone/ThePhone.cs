@@ -285,13 +285,67 @@ public class ThePhone : MonoBehaviour
 
     public void checkPhotoValid()
     {
-        //phptp qualitys valid
-        //10 meters or closer
-        //1 photo per clue
-        //its in the camera frame
-        //direct line of sight
+        GameObject[] clues = GameObject.FindGameObjectsWithTag("Clue");
 
-        savePhotosData(save.safeItem("imageCount", saveFile.types.INT).toint, "bad"); //"bad" should be whatever photo quality retuns
+        string nametoset = "bad";
+        int imagecount = save.safeItem("imageCount", saveFile.types.INT).toint;
+
+        List<GameObject> clue = new List<GameObject>() { };
+
+        for (int i = 0; i < clues.Length; i++)
+        {
+            clue.Add(clues[i]);
+        }
+
+        List<string> saveddata = new List<string>() { };
+        for (int i = 0; i < 10; i++)
+        {
+            string filename = ("state " + (i).ToString() + ".png");
+            string picof = save.safeItem(filename, saveFile.types.STRING).tostring;
+            saveddata.Add(picof);
+        }
+
+        for (int i = 0; i < clue.Count; i++)
+        {
+            //its in the camera frame
+            if (clue[i].gameObject.GetComponent<Renderer>().isVisible)
+            {
+                Debug.Log("VISABLE");
+
+                //direct line of sight
+                //10 meters or closer
+                Vector3 fromPosition = rei.transform.position + new Vector3(0.0f, 1.65f, 0.0f);
+                Vector3 toPosition = clue[i].transform.position;
+                Vector3 direction = toPosition - fromPosition;
+                RaycastHit hit;
+                Physics.Raycast(fromPosition, direction, out hit, 10.0f);
+
+                if (clue[i].name == hit.collider.name)
+                {
+                    Debug.Log("VISABLE AND RAYCASTHIT 10M");
+
+                    //1 photo per clue
+                    bool pass = true;
+                    for (int j = 0; j < saveddata.Count; j++)
+                    {
+                        if (saveddata[j] == clue[i].name)
+                        {
+                            pass = false;
+                        }
+                    }
+                    if (pass == true)
+                    {
+                        Debug.Log("not alreayd photgraphed");
+                        nametoset = clue[i].name;
+                    }
+                }
+            }
+        }
+
+
+        savePhotosData(imagecount, nametoset); //"bad" should be whatever photo quality retuns
+
+
     }
 
     public IEnumerator photo()
@@ -413,7 +467,6 @@ public class ThePhone : MonoBehaviour
         {
             string location = ("state " + i + ".png");
             string photodata = save.safeItem(location, saveFile.types.STRING).tostring;
-            Debug.Log(photodata);
 
             if (photodata == null)
             {
@@ -436,8 +489,11 @@ public class ThePhone : MonoBehaviour
         {
             if (state != "del")
             {
-                save.saveitem(location, state);
-                save.saveitem("imageCount", count + 1);
+                if (i < 10)
+                {
+                    save.saveitem(location, state);
+                    save.saveitem("imageCount", count + 1);
+                }
             }
         }
         else
