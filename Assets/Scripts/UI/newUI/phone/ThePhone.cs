@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using UnityEngine.UI;
+using System.ComponentModel;
 
 //public class photo
 public class ThePhone : MonoBehaviour
 {
+    private saveFile save;
     private plugindemo drone;
     public GameObject ThePhoneUI;
     public GameObject rei;
@@ -14,13 +16,16 @@ public class ThePhone : MonoBehaviour
     public GameObject canvas;
     public GameObject maincam;
     public GameObject camgrid;
+    public Sprite emptyPhotoSpot;
 
     private GameObject[] myths;
     private bool sucess;
 
-    public GameObject tetscube;
 
-    public List<bool> validPhotos = new List<bool>() { };
+    private Vector2 restorescale;
+    private Vector3 restorePos;
+    private int restoreID;
+
     public enum phonestates 
     {
         NONE,
@@ -29,6 +34,7 @@ public class ThePhone : MonoBehaviour
         ROLL,
         AMAZON,
         CLUES,
+        PICZOOM,
     };
     public phonestates screen;
 
@@ -40,6 +46,14 @@ public class ThePhone : MonoBehaviour
         maincam = GameObject.Find("Main Camera");
         myths = GameObject.FindGameObjectsWithTag("Myth");
         StartCoroutine(LoadScreenShot(0));
+        save = GameObject.Find("Save&Dronemanage").GetComponent<saveFile>();
+
+        savephotoinit();
+
+
+        savePhotosData(2, "del");
+
+
 
         //drone = GameObject.Find("Save&Dronemanage").GetComponent<plugindemo>();
         //if (drone.candeliver == true)
@@ -100,6 +114,14 @@ public class ThePhone : MonoBehaviour
             case phonestates.CLUES:
                 {
 
+                    break;
+                }
+            case phonestates.PICZOOM:
+                {
+                    if (Input.GetKeyDown(KeyCode.Tab))
+                    {
+                        picUnzoom();
+                    }
                     break;
                 }
             default:
@@ -201,12 +223,67 @@ public class ThePhone : MonoBehaviour
         Cursor.lockState = CursorLockMode.Confined;
     }
 
+    public void picZoom(int photo)
+    {
+        screen = phonestates.PICZOOM;
+        restorePos = ThePhoneUI.transform.GetChild(3).GetChild(photo).transform.localPosition;
+        restorescale = ThePhoneUI.transform.GetChild(3).GetChild(photo).transform.localScale;
+        restoreID = photo; 
+        ThePhoneUI.transform.GetChild(3).GetChild(photo).transform.localScale = new Vector2(5, 5);
+        ThePhoneUI.transform.GetChild(3).GetChild(photo).transform.localPosition = new Vector3(0, 0, -3);
+        ThePhoneUI.transform.GetChild(3).GetChild(photo).GetComponent<Button>().enabled = false;
+
+        for (int i = 0; i < 10; i++)
+        {
+            if (i != photo)
+            {
+                ThePhoneUI.transform.GetChild(3).GetChild(i).gameObject.SetActive(false);
+            }
+        }
+        ThePhoneUI.transform.GetChild(3).GetChild(10).gameObject.SetActive(true);
+    }
+
+    public void picUnzoom()
+    {
+        screen = phonestates.ROLL;
+        ThePhoneUI.transform.GetChild(3).GetChild(restoreID).transform.localScale = restorescale;
+        ThePhoneUI.transform.GetChild(3).GetChild(restoreID).transform.localPosition = restorePos;
+        ThePhoneUI.transform.GetChild(3).GetChild(restoreID).GetComponent<Button>().enabled = true;
+
+
+        for (int i = 0; i < 10; i++)
+        {
+            ThePhoneUI.transform.GetChild(3).GetChild(i).gameObject.SetActive(true);
+        }
+
+        loadPhotos();
+
+        ThePhoneUI.transform.GetChild(3).GetChild(10).gameObject.SetActive(false);
+
+
+    }
+
     public void takepicture()
     {
         StartCoroutine(photo());
     }
 
-    public IEnumerator photo()
+    public void deletePhoto()
+    {
+        int tmp = 10;
+        for (int i = 0; i < 10; i++)
+        {
+            if (ThePhoneUI.transform.GetChild(3).GetChild(i).gameObject.activeSelf)
+            {
+                tmp = i;
+            }
+        }
+        savePhotosData(tmp, "del");
+
+        picUnzoom();
+    }
+
+    public void checkPhotoValid()
     {
         //phptp qualitys valid
         //10 meters or closer
@@ -214,7 +291,13 @@ public class ThePhone : MonoBehaviour
         //its in the camera frame
         //direct line of sight
 
-        validPhotos.Add(true);
+        savePhotosData(save.safeItem("imageCount", saveFile.types.INT).toint, "bad"); //"bad" should be whatever photo quality retuns
+    }
+
+    public IEnumerator photo()
+    {
+
+        checkPhotoValid();
 
         List<GameObject> reenable = new List<GameObject>() { };
 
@@ -265,9 +348,20 @@ public class ThePhone : MonoBehaviour
 
     public void loadPhotos()
     {
-        for (int i = 0; i < validPhotos.Count; i++)
+        int i = 0;
+
+
+        for (; i < save.safeItem("imageCount", saveFile.types.INT).toint; i++)
         {
             StartCoroutine(LoadScreenShot(i));
+
+        }
+
+        for (; i < 10; i++)
+        {
+            ThePhoneUI.transform.GetChild(3).GetChild(i).GetComponent<Image>().sprite = emptyPhotoSpot;
+            ThePhoneUI.transform.GetChild(3).GetChild(i).GetComponent<Button>().enabled = false;
+
         }
     }
 
@@ -298,14 +392,94 @@ public class ThePhone : MonoBehaviour
         Texture2D screenshot = new Texture2D(1920, 1080, TextureFormat.DXT1, false);
         www.LoadImageIntoTexture(screenshot);
 
-
-        //ThePhoneUI.transform.GetChild(3).GetChild(i).GetComponent<Image>().material.SetTexture("Texture2D_58EC87E3", screenshot);
-        //Image tmp = ThePhoneUI.transform.GetChild(3).GetChild(i).GetComponent<Image>();
         Image tmp = ThePhoneUI.transform.GetChild(3).GetChild(i).GetComponent<Image>();
         tmp.sprite = Sprite.Create(www.texture, new Rect(0, 0, www.texture.width, www.texture.height), new Vector2(0, 0));
-        //tetscube.GetComponent<Image>().material.SetTexture("Texture2D_58EC87E3", screenshot);
+
+        tmp.gameObject.GetComponent<Button>().enabled = true;
 
         yield return null;
     }
-    
+
+    public void savephotoinit()
+    {
+        int count = save.safeItem("imageCount", saveFile.types.INT).toint;
+        if (count == -999999)
+        {
+            count = 0;
+        }
+        save.saveitem("imageCount", count);
+
+        for (int i = 0; i < 10; i++)
+        {
+            string location = ("state " + i + ".png");
+            string photodata = save.safeItem(location, saveFile.types.STRING).tostring;
+            Debug.Log(photodata);
+
+            if (photodata == null)
+            {
+                photodata = "del";
+            }
+
+            save.saveitem("state " + i + ".png", photodata);
+        }
+    }
+
+    public void savePhotosData(int i, string state)
+    {
+        int count = save.safeItem("imageCount", saveFile.types.INT).toint;
+
+        string location = ("state " + i + ".png");
+        string tmp = save.safeItem(location, saveFile.types.STRING).tostring;
+
+
+        if (tmp == "del" || tmp == "")
+        {
+            if (state != "del")
+            {
+                save.saveitem(location, state);
+                save.saveitem("imageCount", count + 1);
+            }
+        }
+        else
+        {
+            if (state == "del")
+            {
+                save.saveitem(location, state);
+
+                if (i != (count))
+                {
+                    for (int j = 0; j < ((count) - i); j++)
+                    {
+                        //swap save file
+                        string x = "state " + (i + 0 + j).ToString() + ".png";
+                        string y = "state " + (i + 1 + j).ToString() + ".png";
+
+                        string xdata = save.safeItem(x, saveFile.types.STRING).tostring;
+                        string ydata = save.safeItem(y, saveFile.types.STRING).tostring;
+
+                        save.saveitem(x, ydata);
+                        save.saveitem(y, xdata);
+
+
+                        //swap images
+                        string foldername = Directory.GetCurrentDirectory() + "\\" + "shhhhhSecretFolder";
+                        string pre = foldername + "\\" + (i + 1 + j).ToString() + ".png";              
+                        string post = foldername + "\\" + (i + 0 + j ).ToString() + ".png";
+
+                        if (j == 0)
+                        {
+                            File.Delete(post);
+                        }
+
+                        if (FileExists(pre))
+                        {
+                            File.Move(pre, post);
+                        }
+                    }
+                }
+
+                save.saveitem("imageCount", count - 1);
+            }
+        }
+    }  
 }
