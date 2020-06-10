@@ -67,7 +67,7 @@ public class flameDash : StateMachineBehaviour
         }
 
         //Track player until half way
-        if (dashTimer < dashTotalTime * 0.5f)
+        if (dashTimer < dashTotalTime * 0.75f)
         {
             target = player.transform.position;
         }
