@@ -52,9 +52,6 @@ public class ThePhone : MonoBehaviour
 
         savephotoinit();
 
-
-            
-        
     }
 
     void Update()

@@ -89,6 +89,7 @@ public class umbrella : MonoBehaviour
                 else
                 {
                     movcont.strafemode = false;
+                    shotUI.SetActive(false);
 
                     cooldown = true;
                 }
@@ -96,6 +97,7 @@ public class umbrella : MonoBehaviour
             else
             {
                 movcont.strafemode = false;
+                shotUI.SetActive(false);
 
                 //animator.ResetTrigger("Block");
                 animator.SetBool("Blocking", false);
@@ -103,6 +105,8 @@ public class umbrella : MonoBehaviour
         }
         else
         {
+            shotUI.SetActive(false);
+
             animator.SetBool("Blocking", false);
             cooldowntimer += Time.deltaTime;
             if (cooldowntimer > cooldowntime)
@@ -138,7 +142,7 @@ public class umbrella : MonoBehaviour
         latetest = true;
         VFX.GetComponent<VisualEffect>().SetFloat("timer", 1.0f);
 
-        //add ui
+        shotUI.SetActive(true);
 
         if (Input.GetAxis("Fire1") > 0.5f)
         {
@@ -147,6 +151,8 @@ public class umbrella : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.E))
         {
+
+            cooldown = true;
             VFXController vfx = boss.GetComponent<VFXController>();
             for (int i = 0; i < boss.GetComponent<VFXController>().bodysNoVFX.Count; i++)
             {
