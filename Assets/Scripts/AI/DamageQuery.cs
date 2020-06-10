@@ -6,9 +6,17 @@ public class DamageQuery : MonoBehaviour
 {
 
     public EnemyController ec;
+    public ReprisialOfFlameController rc;
 
     public float QueryDamage()
     {
-        return ec.QueryDamage(); 
+        if (ec)
+        {
+            return ec.QueryDamage();
+        }
+        else
+        {
+            return rc.QueryDamage();
+        }
     }
 }

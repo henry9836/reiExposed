@@ -127,14 +127,14 @@ public class movementController : MonoBehaviour
         isOnGround = ch.isGrounded;
 
 
-        if (isOnGround != previousState)
-        {
-            if (isOnGround)
-            {
-                animator.SetTrigger("jumpLand");
-            }
-        }
-        previousState = isOnGround;
+        //if (isOnGround != previousState)
+        //{
+        //    if (isOnGround)
+        //    {
+        //        animator.SetTrigger("jumpLand");
+        //    }
+        //}
+        //previousState = isOnGround;
 
         //Fell out of map, reset pos
         if (transform.position.y < respawnThreshold)
