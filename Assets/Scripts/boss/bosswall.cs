@@ -10,7 +10,7 @@ public class bosswall : MonoBehaviour
     private void Start()
     {
         TU = GameObject.FindGameObjectWithTag("Player").GetComponent<umbrella>();
-        GameObject.FindGameObjectWithTag("Boss").GetComponent<ReprisialOfFlameController>().enabled = false;
+        GameObject.FindGameObjectWithTag("Boss").GetComponent<ReprisialOfFlameController>().sleepOveride = true;
 
     }
 
@@ -20,7 +20,7 @@ public class bosswall : MonoBehaviour
         {
             if (entered == false)
             {
-                GameObject.FindGameObjectWithTag("Boss").GetComponent<ReprisialOfFlameController>().enabled = true;
+                GameObject.FindGameObjectWithTag("Boss").GetComponent<ReprisialOfFlameController>().sleepOveride = false;
 
                 entered = true;
 
