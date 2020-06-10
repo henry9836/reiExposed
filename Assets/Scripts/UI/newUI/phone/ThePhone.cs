@@ -8,7 +8,7 @@ using System.ComponentModel;
 //public class photo
 public class ThePhone : MonoBehaviour
 {
-    private saveFile save;
+    public saveFile save;
     private plugindemo drone;
     public GameObject ThePhoneUI;
     public GameObject rei;
@@ -47,9 +47,14 @@ public class ThePhone : MonoBehaviour
         myths = GameObject.FindGameObjectsWithTag("Myth");
         StartCoroutine(LoadScreenShot(0));
         save = GameObject.Find("Save&Dronemanage").GetComponent<saveFile>();
+        drone = GameObject.Find("Save&Dronemanage").GetComponent<plugindemo>();
+
 
         savephotoinit();
-        drone = GameObject.Find("Save&Dronemanage").GetComponent<plugindemo>();
+
+
+            
+        
     }
 
     void Update()
