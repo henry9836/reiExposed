@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 public class groupPartcle : MonoBehaviour
 {
     public List<ParticleSystem> particles = new List<ParticleSystem>();
@@ -12,6 +13,7 @@ public class groupPartcle : MonoBehaviour
         {
             if (!particles[i].isPlaying) {
                 particles[i].Play();
+                GetComponent<AudioSource>().Play();
             }
         }
     }

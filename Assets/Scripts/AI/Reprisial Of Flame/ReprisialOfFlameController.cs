@@ -41,6 +41,7 @@ public class ReprisialOfFlameController : MonoBehaviour
 
     //Defined Values
     [Header("General Settings")]
+    public bool sleepOveride;
     public float health = 100.0f;
     [Range(0.0f, 1.0f)]
     public float thresholdSightAngle = 0.5f;
@@ -110,6 +111,7 @@ public class ReprisialOfFlameController : MonoBehaviour
     public attack currentAttack;
     [HideInInspector]
     public Vector3 target;
+
 
 
     private Animator animator;
@@ -382,59 +384,66 @@ public class ReprisialOfFlameController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //UI
-        float ghostAmount = vfxCtrl.Progress(thresholdBeforeUnlock);
-        healthUI.fillAmount = (health / startHealth);
-        ghostUI.fillAmount = ghostAmount;
-        if (ghostAmount <= 0.0f)
+        if (!sleepOveride)
         {
-            unlockedUI.enabled = true;
-            lockedUI.enabled = false;
-        }
-        else
-        {
-            unlockedUI.enabled = false;
-            lockedUI.enabled = true;
-        }
-
-
-        //Are we dead
-        if (health <= 0)
-        {
-            if (!isDead)
+            //UI
+            float ghostAmount = vfxCtrl.Progress(thresholdBeforeUnlock);
+            healthUI.fillAmount = (health / startHealth);
+            ghostUI.fillAmount = ghostAmount;
+            if (ghostAmount <= 0.0f)
             {
-                animator.SetTrigger("Death");
-                vfxBodyAnimatior.SetTrigger("Death");
-                DeathEvent();
-            }
-            //Leave loop early
-            return;
-        }
-
-        //Health effects
-        if (health < (startHealth * 0.5f))
-        {
-            if (!fireHead.activeInHierarchy)
-            {
-                fireHead.SetActive(true);
-            }
-        }
-
-
-#if UNITY_EDITOR
-        //DEBUGGING
-        if (debugMode)
-        {
-            if (isLookingAtPlayer())
-            {
-                Debug.DrawLine(eyes.position, playerTargetNode.position, Color.green);
+                unlockedUI.enabled = true;
+                lockedUI.enabled = false;
             }
             else
             {
-                Debug.DrawLine(eyes.position, playerTargetNode.position, Color.yellow);
+                unlockedUI.enabled = false;
+                lockedUI.enabled = true;
             }
-        }
+
+
+            //Are we dead
+            if (health <= 0)
+            {
+                if (!isDead)
+                {
+                    animator.SetTrigger("Death");
+                    vfxBodyAnimatior.SetTrigger("Death");
+                    DeathEvent();
+                }
+                //Leave loop early
+                return;
+            }
+
+            //Health effects
+            if (health < (startHealth * 0.5f))
+            {
+                if (!fireHead.activeInHierarchy)
+                {
+                    fireHead.SetActive(true);
+                }
+            }
+
+
+#if UNITY_EDITOR
+            //DEBUGGING
+            if (debugMode)
+            {
+                if (isLookingAtPlayer())
+                {
+                    Debug.DrawLine(eyes.position, playerTargetNode.position, Color.green);
+                }
+                else
+                {
+                    Debug.DrawLine(eyes.position, playerTargetNode.position, Color.yellow);
+                }
+            }
 #endif
+        }
+        else
+        {
+            stopMovement();
+        }
 
     }
 
