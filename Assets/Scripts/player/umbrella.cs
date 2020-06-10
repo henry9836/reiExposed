@@ -146,13 +146,14 @@ public class umbrella : MonoBehaviour
         if (inbossroom == true)
         {
             shotUI.SetActive(true);
-            if (Shotdamage == 0)
-            {
-                shotUI.transform.GetChild(0).GetComponent<Text>().text = "Press Q To Load Picture";
-            }
-            else if (Shotdamage == 0 && shottoload + 1 <= 0)
+
+            if (Shotdamage == 0 && shottoload + 1 <= 0)
             {
                 shotUI.transform.GetChild(0).GetComponent<Text>().text = "No Shots Remaining";
+            }
+            else if (Shotdamage == 0)
+            {
+                shotUI.transform.GetChild(0).GetComponent<Text>().text = "Press Q To Load Picture";
             }
             else
             {
@@ -194,11 +195,6 @@ public class umbrella : MonoBehaviour
                 }
             }
         }
-
-
-
-
-
     }
 
     public void bossroomtrigger()
@@ -249,7 +245,7 @@ public class umbrella : MonoBehaviour
     {
         RaycastHit hit;
 
-        if (Physics.Raycast(umbeaalBone.transform.position, -umbeaalBone.transform.right, out hit, Mathf.Infinity, enemy))
+        if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, Mathf.Infinity, enemy))
         {
             dodamage(hit.point, Shotdamage);
            
@@ -277,6 +273,8 @@ public class umbrella : MonoBehaviour
         //text.transform.LookAt(cam.transform.position);
         //text.transform.Rotate(new Vector3(0, 180, 0));
 
+        GameObject tmp = GameObject.Instantiate(damagedText, pos, Quaternion.identity);
+        tmp.transform.GetChild(0).GetComponent<Text>().text = attackingfor.ToString();
         boss.GetComponent<ReprisialOfFlameController>().health -= attackingfor;
 
         Debug.Log("attackign for " + attackingfor);
