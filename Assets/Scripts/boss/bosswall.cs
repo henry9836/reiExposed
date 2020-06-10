@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class bosswall : MonoBehaviour
 {
+    public GameObject phoneMenuUI;
     private umbrella TU;
     private bool entered = false;
 
@@ -21,6 +23,9 @@ public class bosswall : MonoBehaviour
             if (entered == false)
             {
                 GameObject.FindGameObjectWithTag("Boss").GetComponent<ReprisialOfFlameController>().sleepOveride = false;
+                phoneMenuUI.transform.GetChild(0).GetComponent<Button>().interactable = false;
+                phoneMenuUI.transform.GetChild(1).GetComponent<Button>().interactable = false;
+                phoneMenuUI.transform.GetChild(2).GetComponent<Button>().interactable = false;
 
                 entered = true;
 
