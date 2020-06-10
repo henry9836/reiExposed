@@ -8,7 +8,7 @@ using System.ComponentModel;
 //public class photo
 public class ThePhone : MonoBehaviour
 {
-    private saveFile save;
+    public saveFile save;
     private plugindemo drone;
     public GameObject ThePhoneUI;
     public GameObject rei;
@@ -47,9 +47,14 @@ public class ThePhone : MonoBehaviour
         myths = GameObject.FindGameObjectsWithTag("Myth");
         StartCoroutine(LoadScreenShot(0));
         save = GameObject.Find("Save&Dronemanage").GetComponent<saveFile>();
+        drone = GameObject.Find("Save&Dronemanage").GetComponent<plugindemo>();
+
 
         savephotoinit();
-        drone = GameObject.Find("Save&Dronemanage").GetComponent<plugindemo>();
+
+
+            
+        
     }
 
     void Update()
@@ -68,6 +73,16 @@ public class ThePhone : MonoBehaviour
                 }
             case phonestates.HOME:
                 {
+                    if (drone.candeliver == true)
+                    {
+                        ThePhoneUI.transform.GetChild(2).GetChild(3).GetComponent<Button>().interactable = true;
+                    }
+                    else
+                    {
+                        ThePhoneUI.transform.GetChild(2).GetChild(3).GetComponent<Button>().interactable = false;
+                    }
+
+
                     if (Input.GetKeyDown(KeyCode.Tab))
                     {
                         openingephone(false);
@@ -209,6 +224,7 @@ public class ThePhone : MonoBehaviour
         ThePhoneUI.transform.GetChild(2).gameObject.SetActive(false);
         ThePhoneUI.transform.GetChild(5).gameObject.SetActive(true);
         currency.MythTraces = save.safeItem("MythTraces", saveFile.types.INT).toint;
+
         if (currency.MythTraces < 100)
         {
             ThePhoneUI.transform.GetChild(5).GetChild(1).GetComponent<Button>().interactable = false;
@@ -217,6 +233,7 @@ public class ThePhone : MonoBehaviour
         {
             ThePhoneUI.transform.GetChild(5).GetChild(1).GetComponent<Button>().interactable = true;
         }
+
         ThePhoneUI.transform.GetChild(5).GetChild(0).GetComponent<Text>().text = "Mythtraces: " + currency.MythTraces;
 
     }
@@ -286,11 +303,10 @@ public class ThePhone : MonoBehaviour
         {
             currency.MythTraces -= 100;
             save.saveitem("MythTraces", currency.MythTraces);
-            if (drone.candeliver == true)
-            {
-                drone.todrop = 0;
-                drone.deliver();
-            }
+
+            drone.todrop = 0;
+            drone.deliver();
+           
         }
 
         if (currency.MythTraces < 100)
@@ -302,6 +318,9 @@ public class ThePhone : MonoBehaviour
             ThePhoneUI.transform.GetChild(5).GetChild(1).GetComponent<Button>().interactable = true;
         }
         ThePhoneUI.transform.GetChild(5).GetChild(0).GetComponent<Text>().text = "Mythtraces: " + currency.MythTraces;
+
+        BackToMenu();
+
 
     }
 
