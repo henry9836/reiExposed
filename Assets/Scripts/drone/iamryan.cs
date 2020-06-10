@@ -39,7 +39,19 @@ public class iamryan : MonoBehaviour
 
     void Awake()
     {
-        editwindow = editwindow = (window)EditorWindow.GetWindow(typeof(window));
+        editwindow = (window)EditorWindow.GetWindow(typeof(window));
+        //editwindow.stign = save.safeItem("stign", saveFile.types.STRING).tostring;
+        //editwindow.groupEnabled = System.Convert.ToBoolean(save.safeItem("groupEnabled", saveFile.types.STRING).tostring);
+        //editwindow.groupEnabled2 = System.Convert.ToBoolean(save.safeItem("groupEnabled2", saveFile.types.STRING).tostring);
+        //editwindow.movespeed = save.safeItem("movespeed", saveFile.types.FLOAT).tofloat;
+        //editwindow.testbounds = getbounds();
+        //editwindow.stopnextto = System.Convert.ToBoolean(save.safeItem("stopnextto", saveFile.types.STRING).tostring);
+        //editwindow.recalc = System.Convert.ToBoolean(save.safeItem("recalc", saveFile.types.STRING).tostring);
+        //editwindow.recalcwhenidle = save.safeItem("recalcwhenidle", saveFile.types.FLOAT).tofloat;
+        //editwindow.deets = save.safeItem("deets", saveFile.types.FLOAT).tofloat;
+        //editwindow.rateofAnglechange = save.safeItem("rateofAnglechange", saveFile.types.FLOAT).tofloat;
+        //editwindow.dynamicedgesize = save.safeItem("dynamicedgesize", saveFile.types.FLOAT).tofloat;
+        //editwindow.theMask.value = save.safeItem("themask", saveFile.types.INT).toint;
 
     }
 #endif

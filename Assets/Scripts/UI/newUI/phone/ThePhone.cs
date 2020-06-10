@@ -52,9 +52,6 @@ public class ThePhone : MonoBehaviour
 
         savephotoinit();
 
-
-            
-        
     }
 
     void Update()
@@ -352,7 +349,10 @@ public class ThePhone : MonoBehaviour
 
     public void takepicture()
     {
-        StartCoroutine(photo());
+        if (save.safeItem("imageCount", saveFile.types.INT).toint < 10)
+        {
+            StartCoroutine(photo());
+        }
     }
 
     public void deletePhoto()
@@ -413,23 +413,6 @@ public class ThePhone : MonoBehaviour
         }
 
         savePhotosData(imagecount, nametoset); 
-
-        //1 photo per clue
-        //bool pass = true;
-        //for (int j = 0; j < saveddata.Count; j++)
-        //{
-        //    if (saveddata[j] == clue[i].name)
-        //    {
-        //        pass = false;
-        //    }
-        //}
-        //if (pass == true)
-        //{
-        //    Debug.Log("not alreayd photgraphed");
-        //    nametoset = clue[i].name;
-
-        //}
-
 
     }
 

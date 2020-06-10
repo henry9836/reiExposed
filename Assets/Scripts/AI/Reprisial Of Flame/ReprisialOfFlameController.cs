@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class ReprisialOfFlameController : MonoBehaviour
 {
@@ -40,14 +41,17 @@ public class ReprisialOfFlameController : MonoBehaviour
 
     //Defined Values
     [Header("General Settings")]
+    public bool sleepOveride;
     public float health = 100.0f;
     [Range(0.0f, 1.0f)]
     public float thresholdSightAngle = 0.5f;
     public float stuckTimerThreshold = 5.0f;
     public float stuckVeloThreshold = 1.0f;
     public float regenSpeed = 0.0f;
+    public Transform dashCheck;
     public LayerMask sightObstacles;
     public LayerMask groundLayers;
+    public LayerMask dashObstacles;
 
     [Header("Movement Settings")]
     public float movementSpeed = 10.0f;
@@ -60,6 +64,9 @@ public class ReprisialOfFlameController : MonoBehaviour
     public UnityEvent onDeath;
     public UnityEvent onHurt;
     public UnityEvent onStart;
+    [Range(0.05f, 1.0f)]
+    public float thresholdBeforeUnlock = 0.2f;
+    public GameObject fireHead;
 
     [Header("Body Parts")]
     public Transform eyes;
@@ -75,8 +82,15 @@ public class ReprisialOfFlameController : MonoBehaviour
     public List<float> attackDmg = new List<float>();
     public List<bool> attackIsBool = new List<bool>();
 
+    [Header("UI Settings")]
+    public Image lockedUI;
+    public Image unlockedUI;
+    public Image healthUI;
+    public Image ghostUI;
+
     [Header("VFX Settings")]
     public Animator vfxBodyAnimatior;
+    public VFXController vfxCtrl;
 
     [Header("Debug")]
     public bool debugMode;
@@ -99,6 +113,7 @@ public class ReprisialOfFlameController : MonoBehaviour
     public attack currentAttack;
     [HideInInspector]
     public Vector3 target;
+
 
 
     private Animator animator;
@@ -249,6 +264,8 @@ public class ReprisialOfFlameController : MonoBehaviour
         float shortestDistance = Mathf.Infinity;
         float testingDis = 0.0f;
         attack tmp;
+        List<attack> Foundattacks = new List<attack>();
+
         //For all attacks
         for (int i = 0; i < attacks.Count; i++)
         {
@@ -259,9 +276,20 @@ public class ReprisialOfFlameController : MonoBehaviour
             //If this the shortest distance we have found?
             if (testingDis < shortestDistance)
             {
+                Foundattacks.Clear();
+                Foundattacks.Add(tmp);
                 shortestDistance = testingDis;
                 currentAttack = tmp;
             }
+            else if (testingDis == shortestDistance)
+            {
+                Foundattacks.Add(tmp);
+            }
+        }
+
+        if (Foundattacks.Count > 1)
+        {
+            currentAttack = Foundattacks[Random.Range(0, Foundattacks.Count)];
         }
 
         Debug.Log("Picked: " + currentAttack.name);
@@ -351,41 +379,86 @@ public class ReprisialOfFlameController : MonoBehaviour
             Debug.LogError($"Attack Lists do not match on {gameObject.name}");
         }
         animator = GetComponent<Animator>();
+        fireHead.SetActive(false);
+        vfxCtrl = GetComponent<VFXController>();
         onStart.Invoke();
     }
 
     private void FixedUpdate()
     {
-        //Are we dead
-        if (health <= 0)
+        if (!sleepOveride)
         {
-            if (!isDead)
+
+            animator.SetBool("STOP", false);
+            vfxBodyAnimatior.SetBool("STOP", false);
+
+            //UI
+            float ghostAmount = vfxCtrl.Progress(thresholdBeforeUnlock);
+            float healthAmount = (health / startHealth);
+
+            //if (healthAmount < ghostAmount)
+            //{
+            //    health = startHealth - (startHealth * healthAmount);
+            //}
+
+            healthUI.fillAmount = healthAmount;
+            ghostUI.fillAmount = ghostAmount;
+            if (ghostAmount <= 0.0f)
             {
-                animator.SetTrigger("Death");
-                vfxBodyAnimatior.SetTrigger("Death");
-                DeathEvent();
-            }
-            //Leave loop early
-            return;
-        }
-
-
-
-
-#if UNITY_EDITOR
-        //DEBUGGING
-        if (debugMode)
-        {
-            if (isLookingAtPlayer())
-            {
-                Debug.DrawLine(eyes.position, playerTargetNode.position, Color.green);
+                unlockedUI.enabled = true;
+                lockedUI.enabled = false;
             }
             else
             {
-                Debug.DrawLine(eyes.position, playerTargetNode.position, Color.yellow);
+                unlockedUI.enabled = false;
+                lockedUI.enabled = true;
             }
-        }
+
+
+            //Are we dead
+            if (health <= 0)
+            {
+                if (!isDead)
+                {
+                    animator.SetTrigger("Death");
+                    vfxBodyAnimatior.SetTrigger("Death");
+                    DeathEvent();
+                }
+                //Leave loop early
+                return;
+            }
+
+            //Health effects
+            if (health < (startHealth * 0.5f))
+            {
+                if (!fireHead.activeInHierarchy)
+                {
+                    fireHead.SetActive(true);
+                }
+            }
+
+
+#if UNITY_EDITOR
+            //DEBUGGING
+            if (debugMode)
+            {
+                if (isLookingAtPlayer())
+                {
+                    Debug.DrawLine(eyes.position, playerTargetNode.position, Color.green);
+                }
+                else
+                {
+                    Debug.DrawLine(eyes.position, playerTargetNode.position, Color.yellow);
+                }
+            }
 #endif
+        }
+        else
+        {
+            stopMovement();
+            animator.SetBool("STOP", true);
+            vfxBodyAnimatior.SetBool("STOP", true);
+        }
 
     }
 
