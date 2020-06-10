@@ -13,7 +13,6 @@ public class ghostEffect : MonoBehaviour
     public List<GameObject> ghostbody = new List<GameObject>() { };
     public List<GameObject> deactivatedghostbody = new List<GameObject>() { };
 
-
     public GameObject UILocked;
     public GameObject UIunlocked;
 
@@ -27,12 +26,7 @@ public class ghostEffect : MonoBehaviour
     private Vector2 rightpos;
     private float shakespeed = 20.0f;
 
-
-
-
-
-
-    void Start()
+    void Awake()
     {
 
         UILocked = GameObject.Find("ghost_locked");
@@ -42,12 +36,19 @@ public class ghostEffect : MonoBehaviour
         leftpos = startpos + new Vector2(-4.0f, 0.0f);
         rightpos = startpos + new Vector2(3.0f, 0.0f);
 
-        for (int i = 0; i < this.gameObject.transform.childCount; i++)
+        //for (int i = 0; i < this.gameObject.transform.childCount; i++)
+        //{
+        //    if (this.gameObject.transform.GetChild(i).tag == "body")
+        //    {
+        //        body.Add(this.gameObject.transform.GetChild(i).gameObject);
+        //    }
+        //}
+
+        GameObject[] bodys = GameObject.FindGameObjectsWithTag("body");
+
+        for (int i = 0; i < bodys.Length; i++)
         {
-            if (this.gameObject.transform.GetChild(i).tag == "body")
-            {
-                body.Add(this.gameObject.transform.GetChild(i).gameObject);
-            }
+            body.Add(bodys[i]);
         }
 
         for (int i = 0; i < body.Count; i++)
@@ -60,9 +61,26 @@ public class ghostEffect : MonoBehaviour
         {
             GameObject tmp = Instantiate(particles, body[i].gameObject.transform);
 
-            tmp.transform.parent = body[i].GetComponent<SkinnedMeshRenderer>().rootBone;
+            if (body[i].GetComponent<ParentTheThingToTheThing>())
+            {
+                GameObject parent;
+                if (body[i].GetComponent<ParentTheThingToTheThing>().getTransform() != null)
+                {
+                    //Set the things up yay 
+                    tmp.transform.parent = body[i].GetComponent<ParentTheThingToTheThing>().getTransform();
+                    parent = tmp.transform.parent.gameObject;
+                }
+            }
+            else
+            {
+                tmp.transform.parent = body[i].GetComponent<SkinnedMeshRenderer>().rootBone;
+            }
             var sh = tmp.GetComponent<ParticleSystem>().shape;
             tmp.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+            if (meshes[i] == null)
+            {
+                Debug.LogError($"I broke at element {i}, which is called {body[i].name}");
+            }
             sh.mesh = meshes[i];
 
             ghostbody.Add(tmp);
@@ -83,7 +101,8 @@ public class ghostEffect : MonoBehaviour
     {
         ghostpersent = 1.0f - ((float)deactivatedghostbody.Count / (float)ghostbody.Count);
         UIghost.GetComponent<Image>().fillAmount = ghostpersent;
-        UIHP.GetComponent<Image>().fillAmount = (this.gameObject.transform.GetComponent<BossController>().health / this.gameObject.transform.GetComponent<BossController>().maxHealth);
+        //UIHP.GetComponent<Image>().fillAmount = (this.gameObject.transform.GetComponent<BossController>().health / this.gameObject.transform.GetComponent<BossController>().maxHealth);
+        UIHP.GetComponent<Image>().fillAmount = (this.gameObject.transform.GetComponent<ReprisialOfFlameController>().health / this.gameObject.transform.GetComponent<ReprisialOfFlameController>().startHealth);
 
 
 
