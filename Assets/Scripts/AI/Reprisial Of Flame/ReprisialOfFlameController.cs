@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class ReprisialOfFlameController : MonoBehaviour
 {
@@ -60,6 +61,9 @@ public class ReprisialOfFlameController : MonoBehaviour
     public UnityEvent onDeath;
     public UnityEvent onHurt;
     public UnityEvent onStart;
+    [Range(0.05f, 1.0f)]
+    public float thresholdBeforeUnlock = 0.2f;
+    public GameObject fireHead;
 
     [Header("Body Parts")]
     public Transform eyes;
@@ -75,8 +79,15 @@ public class ReprisialOfFlameController : MonoBehaviour
     public List<float> attackDmg = new List<float>();
     public List<bool> attackIsBool = new List<bool>();
 
+    [Header("UI Settings")]
+    public Image lockedUI;
+    public Image unlockedUI;
+    public Image healthUI;
+    public Image ghostUI;
+
     [Header("VFX Settings")]
     public Animator vfxBodyAnimatior;
+    public VFXController vfxCtrl;
 
     [Header("Debug")]
     public bool debugMode;
@@ -351,11 +362,29 @@ public class ReprisialOfFlameController : MonoBehaviour
             Debug.LogError($"Attack Lists do not match on {gameObject.name}");
         }
         animator = GetComponent<Animator>();
+        fireHead.SetActive(false);
+        vfxCtrl = GetComponent<VFXController>();
         onStart.Invoke();
     }
 
     private void FixedUpdate()
     {
+        //UI
+        float ghostAmount = vfxCtrl.Progress(thresholdBeforeUnlock);
+        healthUI.fillAmount = (health / startHealth);
+        ghostUI.fillAmount = ghostAmount;
+        if (ghostAmount <= 0.0f)
+        {
+            unlockedUI.enabled = true;
+            lockedUI.enabled = false;
+        }
+        else
+        {
+            unlockedUI.enabled = false;
+            lockedUI.enabled = true;
+        }
+
+
         //Are we dead
         if (health <= 0)
         {
@@ -369,7 +398,14 @@ public class ReprisialOfFlameController : MonoBehaviour
             return;
         }
 
-
+        //Health effects
+        if (health < (startHealth * 0.5f))
+        {
+            if (!fireHead.activeInHierarchy)
+            {
+                fireHead.SetActive(true);
+            }
+        }
 
 
 #if UNITY_EDITOR

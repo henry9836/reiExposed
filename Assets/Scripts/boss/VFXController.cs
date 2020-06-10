@@ -16,6 +16,42 @@ public class VFXController : MonoBehaviour
 
     private List<GameObject> bodys = new List<GameObject>();
     private List<GameObject> bodysNoVFX = new List<GameObject>();
+    private float startAmount = 0;
+
+    public void UnlockAll()
+    {
+        for (int i = 0; i < bodysNoVFX.Count; i++)
+        {
+            if (bodysNoVFX[i].GetComponent<BossRevealSurfaceController>())
+            {
+                bodysNoVFX[i].GetComponent<BossRevealSurfaceController>().EnableSurface();
+            }
+        }
+    }
+
+    public float Progress() { return Progress(Mathf.Infinity); }
+    public float Progress(float threshold)
+    {
+        float amountLeft = 0;
+
+        for (int i = 0; i < bodysNoVFX.Count; i++)
+        {
+            if (bodysNoVFX[i].GetComponent<BossRevealSurfaceController>())
+            {
+                amountLeft++;
+            }
+        }
+
+        float result = (amountLeft / startAmount);
+
+        if (result <= threshold && result > 0.0f)
+        {
+            UnlockAll();
+            result = 0.0f;
+        }
+
+        return result;
+    }
 
     void Start()
     {
@@ -52,6 +88,8 @@ public class VFXController : MonoBehaviour
 
             bodysNoVFX.Add(bodysNoVFXA[i]);
         }
+
+        startAmount = bodysNoVFX.Count;
     }
 
 }
