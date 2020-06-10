@@ -5,7 +5,8 @@ using UnityEngine;
 public class BossRevealSurfaceController : MonoBehaviour
 {
     public Vector3 outwardDir = Vector3.forward;
-    
+    public LayerMask obsctules;
+
     private float angleThreshold = 0.1f;
 
     GameObject player;
@@ -34,7 +35,18 @@ public class BossRevealSurfaceController : MonoBehaviour
     {
         dirToPlayer = (player.transform.position - sm.bounds.center).normalized;
         float dotProd = Vector3.Dot(dirToPlayer, outwardDir);
-        return (dotProd > angleThreshold);
+        //If we can see the player
+        if (dotProd > angleThreshold)
+        {
+            //If we can raycast to the player
+            RaycastHit hit;
+            if (Physics.Raycast(sm.bounds.center, dirToPlayer, out hit, Mathf.Infinity, obsctules))
+            {
+                return (hit.collider.tag == "Player");
+            }
+            return true;
+        }
+        return false;
     }
 
     private void OnDrawGizmos()

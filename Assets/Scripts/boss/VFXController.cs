@@ -9,6 +9,7 @@ public class VFXController : MonoBehaviour
     public Material transparent;
     public Material visible;
     public VisualEffect vs;
+    public LayerMask obsctules;
 
     public static readonly string PosMap = "PositionMap";
     public static readonly string VelMap = "VelocityMap";
@@ -47,6 +48,7 @@ public class VFXController : MonoBehaviour
             }
 
             bodysNoVFXA[i].GetComponent<BossRevealSurfaceController>().outwardDir = (pos - bones[bestElement].transform.position).normalized;
+            bodysNoVFXA[i].GetComponent<BossRevealSurfaceController>().obsctules = obsctules;
 
             bodysNoVFX.Add(bodysNoVFXA[i]);
         }
