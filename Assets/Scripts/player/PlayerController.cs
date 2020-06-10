@@ -210,7 +210,7 @@ public class PlayerController : MonoBehaviour
 
         }
 
-        if (!dead)
+        if (!dead && health <= 40.0f)
         {
             StartCoroutine(UIflash(false));
         }
