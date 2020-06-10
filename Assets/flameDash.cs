@@ -10,14 +10,15 @@ public class flameDash : StateMachineBehaviour
     public float dashThresholdTime = 0.3f;
     public float dashTotalTime = 1.0f;
 
-
     GameObject player;
     ReprisialOfFlameController rc;
     GameObject boss;
     Vector3 target;
     Vector3 origin;
     NavMeshAgent agent;
+    Transform dashChecker;
     float dashTimer = 0.0f;
+    bool STOPFLAG = false;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -42,10 +43,15 @@ public class flameDash : StateMachineBehaviour
         {
             agent = rc.agent;
         }
+        if (dashChecker == null)
+        {
+            dashChecker = rc.dashCheck;
+        }
 
         origin = boss.transform.position;
         target = player.transform.position;
-        float dashTimer = 0.0f;
+        dashTimer = 0.0f;
+        STOPFLAG = false;
         rc.stopMovement();
     }
 
@@ -54,12 +60,24 @@ public class flameDash : StateMachineBehaviour
     {
         if (rc == null) { return; }
 
-        //Dash quick to player wiht a simple lerp
-        boss.transform.position = Vector3.Lerp(origin, target, dashTimer/dashTotalTime);
+        //Obsctcle?
+        RaycastHit hit;
+        if (Physics.Raycast(dashChecker.position, dashChecker.transform.forward, out hit, 3.0f, rc.dashObstacles))
+        {
+            STOPFLAG = true;
+        }
 
-        dashTimer += Time.deltaTime;
+        if (dashThresholdTime <= stateInfo.normalizedTime) {
+            //Dash quick to player with a simple lerp
+            if (!STOPFLAG)
+            {
+                boss.transform.position = Vector3.Lerp(origin, target, dashTimer / dashTotalTime);
+            }
 
-        if (dashTimer >= dashTotalTime)
+            dashTimer += Time.deltaTime;
+        }
+
+        if (dashTimer >= dashTotalTime || STOPFLAG)
         {
             animator.SetBool("Dashing", false);
         }

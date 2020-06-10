@@ -48,8 +48,10 @@ public class ReprisialOfFlameController : MonoBehaviour
     public float stuckTimerThreshold = 5.0f;
     public float stuckVeloThreshold = 1.0f;
     public float regenSpeed = 0.0f;
+    public Transform dashCheck;
     public LayerMask sightObstacles;
     public LayerMask groundLayers;
+    public LayerMask dashObstacles;
 
     [Header("Movement Settings")]
     public float movementSpeed = 10.0f;
