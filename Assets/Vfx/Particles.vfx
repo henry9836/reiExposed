@@ -94,9 +94,9 @@ MonoBehaviour:
   categories: []
   uiBounds:
     serializedVersion: 2
-    x: -375
+    x: -358
     y: -327
-    width: 1557
+    width: 1540
     height: 2403
 --- !u!114 &114350483966674976
 MonoBehaviour:
@@ -220,7 +220,7 @@ MonoBehaviour:
   - {fileID: 114780028408030698}
   - {fileID: 8926484042661614654}
   dataType: 0
-  capacity: 100000
+  capacity: 1000000
   stripCapacity: 16
   particlePerStripCount: 16
   m_Space: 0
@@ -314,7 +314,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
-      m_SerializableObject: 50000
+      m_SerializableObject: 25000
     m_Space: 2147483647
   m_Property:
     name: Rate
@@ -711,7 +711,7 @@ VisualEffectResource:
       deadListIn[deadIndex];\r\n#else\r\n            uint index = particleIndex;\r\n#endif\r\n           
       attributeBuffer.Store3((index * 0x8 + 0x0) << 2,asuint(attributes.position));\n           
       attributeBuffer.Store3((index * 0x8 + 0x4) << 2,asuint(attributes.velocity));\n           
-      attributeBuffer.Store((index * 0x1 + 0xC3600) << 2,asuint(attributes.lifetime));\n           
+      attributeBuffer.Store((index * 0x1 + 0x7A1200) << 2,asuint(attributes.lifetime));\n           
       attributeBuffer.Store((index * 0x8 + 0x3) << 2,uint(attributes.alive));\n           
       attributeBuffer.Store((index * 0x8 + 0x7) << 2,asuint(attributes.age));\n           
       \n\r\n        }\r\n    }\r\n}\r\n"
@@ -758,7 +758,7 @@ VisualEffectResource:
       = (attributeBuffer.Load((index * 0x8 + 0x3) << 2));\n\t\t\n\r\n\t\tif (attributes.alive)\r\n\t\t{\r\n\t\t\tattributes.position
       = asfloat(attributeBuffer.Load3((index * 0x8 + 0x0) << 2));\n\t\t\tattributes.velocity
       = asfloat(attributeBuffer.Load3((index * 0x8 + 0x4) << 2));\n\t\t\tattributes.lifetime
-      = asfloat(attributeBuffer.Load((index * 0x1 + 0xC3600) << 2));\n\t\t\tattributes.mass
+      = asfloat(attributeBuffer.Load((index * 0x1 + 0x7A1200) << 2));\n\t\t\tattributes.mass
       = (float)1;\n\t\t\tattributes.age = asfloat(attributeBuffer.Load((index * 0x8
       + 0x7) << 2));\n\t\t\t\n\r\n\r\n// Initialize built-in needed attributes\r\n#if
       VFX_USE_OLDPOSITION_CURRENT\r\n\t\t\tattributes.oldPosition = attributes.position;\r\n#endif\r\n#if
@@ -790,7 +790,7 @@ VisualEffectResource:
       \r\n            }            \r\n        }\r\n#endif\r\n#else\r\n\t\tattributes.position
       = asfloat(attributeBuffer.Load3((index * 0x8 + 0x0) << 2));\n\t\tattributes.velocity
       = asfloat(attributeBuffer.Load3((index * 0x8 + 0x4) << 2));\n\t\tattributes.lifetime
-      = asfloat(attributeBuffer.Load((index * 0x1 + 0xC3600) << 2));\n\t\tattributes.mass
+      = asfloat(attributeBuffer.Load((index * 0x1 + 0x7A1200) << 2));\n\t\tattributes.mass
       = (float)1;\n\t\tattributes.alive = (attributeBuffer.Load((index * 0x8 + 0x3)
       << 2));\n\t\tattributes.age = asfloat(attributeBuffer.Load((index * 0x8 + 0x7)
       << 2));\n\t\t\n\r\n\t\t\r\n#if VFX_USE_OLDPOSITION_CURRENT\r\n\t\tattributes.oldPosition
@@ -938,7 +938,7 @@ VisualEffectResource:
       = indirectBuffer[index];\n\t\t\t\t\t\tattributes.position = asfloat(attributeBuffer.Load3((index
       * 0x8 + 0x0) << 2));\n\t\t\t\t\t\tattributes.velocity = asfloat(attributeBuffer.Load3((index
       * 0x8 + 0x4) << 2));\n\t\t\t\t\t\tattributes.lifetime = asfloat(attributeBuffer.Load((index
-      * 0x1 + 0xC3600) << 2));\n\t\t\t\t\t\tattributes.color = float3(1, 1, 1);\n\t\t\t\t\t\tattributes.alpha
+      * 0x1 + 0x7A1200) << 2));\n\t\t\t\t\t\tattributes.color = float3(1, 1, 1);\n\t\t\t\t\t\tattributes.alpha
       = (float)1;\n\t\t\t\t\t\tattributes.alive = (attributeBuffer.Load((index *
       0x8 + 0x3) << 2));\n\t\t\t\t\t\tattributes.axisX = float3(1, 0, 0);\n\t\t\t\t\t\tattributes.axisY
       = float3(0, 1, 0);\n\t\t\t\t\t\tattributes.axisZ = float3(0, 0, 1);\n\t\t\t\t\t\tattributes.angleX
@@ -952,7 +952,7 @@ VisualEffectResource:
       !HAS_STRIPS\n\t\t\t\t\t\tif (!attributes.alive)\n\t\t\t\t\t\t\treturn o;\n\t\t\t\t\t\t#endif\n\t\t\t\t\t\t\t\n\t\t\t\t\t\tattributes.position
       = asfloat(attributeBuffer.Load3((index * 0x8 + 0x0) << 2));\n\t\t\t\t\t\tattributes.velocity
       = asfloat(attributeBuffer.Load3((index * 0x8 + 0x4) << 2));\n\t\t\t\t\t\tattributes.lifetime
-      = asfloat(attributeBuffer.Load((index * 0x1 + 0xC3600) << 2));\n\t\t\t\t\t\tattributes.color
+      = asfloat(attributeBuffer.Load((index * 0x1 + 0x7A1200) << 2));\n\t\t\t\t\t\tattributes.color
       = float3(1, 1, 1);\n\t\t\t\t\t\tattributes.alpha = (float)1;\n\t\t\t\t\t\tattributes.axisX
       = float3(1, 0, 0);\n\t\t\t\t\t\tattributes.axisY = float3(0, 1, 0);\n\t\t\t\t\t\tattributes.axisZ
       = float3(0, 0, 1);\n\t\t\t\t\t\tattributes.angleX = (float)0;\n\t\t\t\t\t\tattributes.angleY
@@ -1175,7 +1175,7 @@ VisualEffectResource:
       = indirectBuffer[index];\n\t\t\t\t\t\tattributes.position = asfloat(attributeBuffer.Load3((index
       * 0x8 + 0x0) << 2));\n\t\t\t\t\t\tattributes.velocity = asfloat(attributeBuffer.Load3((index
       * 0x8 + 0x4) << 2));\n\t\t\t\t\t\tattributes.lifetime = asfloat(attributeBuffer.Load((index
-      * 0x1 + 0xC3600) << 2));\n\t\t\t\t\t\tattributes.color = float3(1, 1, 1);\n\t\t\t\t\t\tattributes.alpha
+      * 0x1 + 0x7A1200) << 2));\n\t\t\t\t\t\tattributes.color = float3(1, 1, 1);\n\t\t\t\t\t\tattributes.alpha
       = (float)1;\n\t\t\t\t\t\tattributes.alive = (attributeBuffer.Load((index *
       0x8 + 0x3) << 2));\n\t\t\t\t\t\tattributes.axisX = float3(1, 0, 0);\n\t\t\t\t\t\tattributes.axisY
       = float3(0, 1, 0);\n\t\t\t\t\t\tattributes.axisZ = float3(0, 0, 1);\n\t\t\t\t\t\tattributes.angleX
@@ -1189,7 +1189,7 @@ VisualEffectResource:
       !HAS_STRIPS\n\t\t\t\t\t\tif (!attributes.alive)\n\t\t\t\t\t\t\treturn o;\n\t\t\t\t\t\t#endif\n\t\t\t\t\t\t\t\n\t\t\t\t\t\tattributes.position
       = asfloat(attributeBuffer.Load3((index * 0x8 + 0x0) << 2));\n\t\t\t\t\t\tattributes.velocity
       = asfloat(attributeBuffer.Load3((index * 0x8 + 0x4) << 2));\n\t\t\t\t\t\tattributes.lifetime
-      = asfloat(attributeBuffer.Load((index * 0x1 + 0xC3600) << 2));\n\t\t\t\t\t\tattributes.color
+      = asfloat(attributeBuffer.Load((index * 0x1 + 0x7A1200) << 2));\n\t\t\t\t\t\tattributes.color
       = float3(1, 1, 1);\n\t\t\t\t\t\tattributes.alpha = (float)1;\n\t\t\t\t\t\tattributes.axisX
       = float3(1, 0, 0);\n\t\t\t\t\t\tattributes.axisY = float3(0, 1, 0);\n\t\t\t\t\t\tattributes.axisZ
       = float3(0, 0, 1);\n\t\t\t\t\t\tattributes.angleX = (float)0;\n\t\t\t\t\t\tattributes.angleY
@@ -1867,15 +1867,15 @@ VisualEffectResource:
         - m_ExpressionIndex: 8
           m_Value: 1
         - m_ExpressionIndex: 9
-          m_Value: 3.549399
-        - m_ExpressionIndex: 11
           m_Value: 0
+        - m_ExpressionIndex: 11
+          m_Value: 1
         - m_ExpressionIndex: 12
           m_Value: 0.24
         - m_ExpressionIndex: 13
-          m_Value: 67.79352
+          m_Value: 1
         - m_ExpressionIndex: 14
-          m_Value: 13.132775
+          m_Value: 0.05882353
         - m_ExpressionIndex: 16
           m_Value: 0.5
         - m_ExpressionIndex: 18
@@ -1903,7 +1903,7 @@ VisualEffectResource:
         - m_ExpressionIndex: 37
           m_Value: 2
         - m_ExpressionIndex: 39
-          m_Value: 50000
+          m_Value: 25000
         - m_ExpressionIndex: 41
           m_Value: 1
         - m_ExpressionIndex: 42
@@ -1979,9 +1979,9 @@ VisualEffectResource:
         - m_ExpressionIndex: 15
           m_Value:
             serializedVersion: 2
-            key0: {r: 3.2111173, g: 3.8499782, b: 3.8499782, a: 1}
-            key1: {r: 0.8264406, g: 0.9899845, b: 0.9899845, a: 1}
-            key2: {r: 0.7482645, g: 0.8962264, b: 0.8962264, a: 0}
+            key0: {r: 3.849978, g: 3.2251124, b: 3.5906153, a: 1}
+            key1: {r: 1, g: 0.5707547, b: 0.6481465, a: 1}
+            key2: {r: 1, g: 0.759434, b: 0.76650006, a: 0}
             key3: {r: 0, g: 0, b: 0, a: 0}
             key4: {r: 0, g: 0, b: 0, a: 0}
             key5: {r: 0, g: 0, b: 0, a: 0}
@@ -1989,7 +1989,7 @@ VisualEffectResource:
             key7: {r: 0, g: 0, b: 0, a: 0}
             ctime0: 0
             ctime1: 11565
-            ctime2: 60716
+            ctime2: 59367
             ctime3: 65535
             ctime4: 0
             ctime5: 0
@@ -2023,7 +2023,7 @@ VisualEffectResource:
       index: 67
     m_Buffers:
     - type: 1
-      size: 900288
+      size: 9000000
       layout:
       - name: position
         type: 3
@@ -2052,10 +2052,10 @@ VisualEffectResource:
       - name: lifetime
         type: 1
         offset:
-          bucket: 800256
+          bucket: 8000000
           structure: 1
           element: 0
-      capacity: 100032
+      capacity: 1000000
       stride: 4
     - type: 1
       size: 1
@@ -2069,7 +2069,7 @@ VisualEffectResource:
       capacity: 1
       stride: 4
     - type: 4
-      size: 100000
+      size: 1000000
       layout: []
       capacity: 0
       stride: 4
@@ -2142,7 +2142,7 @@ VisualEffectResource:
       shaderSourceIndex: -1
   - type: 1
     flags: 1
-    capacity: 100000
+    capacity: 1000000
     layer: 4294967295
     buffers:
     - nameId: attributeBuffer
@@ -3510,7 +3510,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.Gradient, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"colorKeys":[{"color":{"r":3.2111172676086427,"g":3.84997820854187,"b":3.84997820854187,"a":1.0},"time":0.0},{"color":{"r":0.8264405727386475,"g":0.9899845123291016,"b":0.9899845123291016,"a":1.0},"time":0.1764705926179886},{"color":{"r":0.748264491558075,"g":0.8962264060974121,"b":0.8962264060974121,"a":1.0},"time":0.9264667630195618},{"color":{"r":0.0,"g":0.0,"b":0.0,"a":1.0},"time":1.0}],"alphaKeys":[{"alpha":1.0,"time":0.0},{"alpha":1.0,"time":1.0}],"gradientMode":0}'
+      m_SerializableObject: '{"colorKeys":[{"color":{"r":3.849977970123291,"g":3.2251124382019045,"b":3.5906152725219728,"a":1.0},"time":0.0},{"color":{"r":1.0,"g":0.5707547068595886,"b":0.6481465101242065,"a":1.0},"time":0.1764705926179886},{"color":{"r":1.0,"g":0.7594339847564697,"b":0.7665000557899475,"a":1.0},"time":0.9058823585510254},{"color":{"r":0.0,"g":0.0,"b":0.0,"a":1.0},"time":1.0}],"alphaKeys":[{"alpha":1.0,"time":0.0},{"alpha":1.0,"time":1.0}],"gradientMode":0}'
     m_Space: 2147483647
   m_Property:
     name: gradient
@@ -4750,7 +4750,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
-  m_UIPosition: {x: -375, y: 1895}
+  m_UIPosition: {x: -358, y: 1917}
   m_UICollapsed: 0
   m_UISuperCollapsed: 1
   m_InputSlots: []
@@ -5676,7 +5676,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.Color, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"r":67.79351806640625,"g":13.13277530670166,"b":3.549398899078369,"a":0.0}'
+      m_SerializableObject: '{"r":1.0,"g":0.05882352963089943,"b":0.0,"a":1.0}'
     m_Space: 2147483647
   m_Property:
     name: 

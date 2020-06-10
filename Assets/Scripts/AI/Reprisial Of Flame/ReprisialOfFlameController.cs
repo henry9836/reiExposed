@@ -75,6 +75,9 @@ public class ReprisialOfFlameController : MonoBehaviour
     public List<float> attackDmg = new List<float>();
     public List<bool> attackIsBool = new List<bool>();
 
+    [Header("VFX Settings")]
+    public Animator vfxBodyAnimatior;
+
     [Header("Debug")]
     public bool debugMode;
     public string currentMode = "PENDING";
@@ -360,6 +363,7 @@ public class ReprisialOfFlameController : MonoBehaviour
             if (!isDead)
             {
                 animator.SetTrigger("Death");
+                vfxBodyAnimatior.SetTrigger("Death");
                 DeathEvent();
             }
             //Leave loop early

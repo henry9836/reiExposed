@@ -10,7 +10,6 @@ public class VFXGhostEffectBuilder : MonoBehaviour
 
     public GameObject template;
     public GameObject VFXGroupFolder;
-    public bool Build = false;
 
     public static readonly string PosMap = "PositionMap";
     public static readonly string VelMap = "VelocityMap";
@@ -18,29 +17,27 @@ public class VFXGhostEffectBuilder : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        if (Build)
+        GameObject[] bodys = GameObject.FindGameObjectsWithTag("body");
+        GameObject[] bodysNoVFX = GameObject.FindGameObjectsWithTag("bodyNoVFX");
+
+        for (int i = 0; i < bodys.Length; i++)
         {
-            GameObject[] bodys = GameObject.FindGameObjectsWithTag("body");
 
-            for (int i = 0; i < bodys.Length; i++)
-            {
+            GameObject tmp = Instantiate(template, Vector3.zero, Quaternion.identity);
+            tmp.transform.parent = VFXGroupFolder.transform;
+            tmp.AddComponent<SkinnedMeshBaker>();
+            tmp.GetComponent<SkinnedMeshBaker>()._source = bodys[i].GetComponent<SkinnedMeshRenderer>();
 
-                //if ((i % 4) == 0) {
+            tmp.GetComponent<VisualEffect>().SetTexture(PosMap, tmp.GetComponent<SkinnedMeshBaker>().PositionMap);
+            tmp.GetComponent<VisualEffect>().SetTexture(VelMap, tmp.GetComponent<SkinnedMeshBaker>().VelocityMap);
 
-                GameObject tmp = Instantiate(template, Vector3.zero, Quaternion.identity);
-                tmp.transform.parent = VFXGroupFolder.transform;
-                tmp.AddComponent<SkinnedMeshBaker>();
-                tmp.GetComponent<SkinnedMeshBaker>()._source = bodys[i].GetComponent<SkinnedMeshRenderer>();
-
-                tmp.GetComponent<VisualEffect>().SetTexture(PosMap, tmp.GetComponent<SkinnedMeshBaker>().PositionMap);
-                tmp.GetComponent<VisualEffect>().SetTexture(VelMap, tmp.GetComponent<SkinnedMeshBaker>().VelocityMap);
-
-                //}
-
-                bodys[i].GetComponent<SkinnedMeshRenderer>().enabled = false;
-            }
-
+            bodys[i].GetComponent<SkinnedMeshRenderer>().enabled = false;
         }
+
+        for (int i = 0; i < bodysNoVFX.Length; i++)
+        {
+            bodysNoVFX[i].GetComponent<SkinnedMeshRenderer>().enabled = false;
+        } 
 
     }
 }
