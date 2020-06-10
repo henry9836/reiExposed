@@ -260,6 +260,8 @@ public class ReprisialOfFlameController : MonoBehaviour
         float shortestDistance = Mathf.Infinity;
         float testingDis = 0.0f;
         attack tmp;
+        List<attack> Foundattacks = new List<attack>();
+
         //For all attacks
         for (int i = 0; i < attacks.Count; i++)
         {
@@ -270,9 +272,20 @@ public class ReprisialOfFlameController : MonoBehaviour
             //If this the shortest distance we have found?
             if (testingDis < shortestDistance)
             {
+                Foundattacks.Clear();
+                Foundattacks.Add(tmp);
                 shortestDistance = testingDis;
                 currentAttack = tmp;
             }
+            else if (testingDis == shortestDistance)
+            {
+                Foundattacks.Add(tmp);
+            }
+        }
+
+        if (Foundattacks.Count > 1)
+        {
+            currentAttack = Foundattacks[Random.Range(0, Foundattacks.Count)];
         }
 
         Debug.Log("Picked: " + currentAttack.name);
