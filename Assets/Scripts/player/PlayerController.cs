@@ -67,6 +67,18 @@ public class PlayerController : MonoBehaviour
         return staminaAmount;
     }
 
+    public void CheckDeath()
+    {
+        if (health <= 0.0f)
+        {
+            gameObject.GetComponent<Animator>().SetTrigger("Death");
+            dead = true;
+            audio.PlayOneShot(deathSound);
+            StartCoroutine(death());
+
+        }
+    }
+
     private void Update()
     {
         uiupdate();

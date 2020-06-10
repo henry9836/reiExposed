@@ -78,7 +78,12 @@ public class AttackHost : MonoBehaviour
         {
             if (Vector3.Distance(player.transform.position, origin) <= range)
             {
+                Debug.Log("HURTTY TIME");
                 pc.health -= dmg;
+                if (!pc.dead)
+                {
+                    pc.CheckDeath();
+                }
                 armed = false;
             }
         }
