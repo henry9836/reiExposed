@@ -150,7 +150,7 @@ public class umbrella : MonoBehaviour
             {
                 shotUI.transform.GetChild(0).GetComponent<Text>().text = "Press Q To Load Picture";
             }
-            else if (Shotdamage == 0 && shottoload < 0)
+            else if (Shotdamage == 0 && shottoload + 1 <= 0)
             {
                 shotUI.transform.GetChild(0).GetComponent<Text>().text = "No Shots Remaining";
             }
@@ -159,7 +159,7 @@ public class umbrella : MonoBehaviour
                 shotUI.transform.GetChild(0).GetComponent<Text>().text = "Loaded, Click To Shoot";
             }
 
-            shotUI.transform.GetChild(1).GetComponent<Text>().text = "Pictures left to load: " + shottoload + 1;
+            shotUI.transform.GetChild(1).GetComponent<Text>().text = "Pictures left to load: " + (shottoload + 1).ToString();
 
             if (Input.GetAxis("Fire1") > 0.5f)
             {
