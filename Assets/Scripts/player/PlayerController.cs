@@ -108,10 +108,6 @@ public class PlayerController : MonoBehaviour
                 umbrella.cooldown = true;
                 boss.GetComponent<BossController>().arm(BossController.ARMTYPE.ARM_ALL, false);
             }
-            else
-            {
-                Debug.Log("I was hit and but ignoring");
-            }
 
 
             if (health <= 40.0f)
