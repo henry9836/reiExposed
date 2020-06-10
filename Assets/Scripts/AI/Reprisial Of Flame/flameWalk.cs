@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class flameWalk : StateMachineBehaviour
 {
+    public float dashDistanceTheshold = 10.0f;
+
     Transform player;
     Transform transform;
+    Transform boss;
     Animator vfxAnimator;
     ReprisialOfFlameController rc;
     ReprisialOfFlameController.attack currentAttack;
@@ -31,6 +34,10 @@ public class flameWalk : StateMachineBehaviour
         {
             vfxAnimator = rc.vfxBodyAnimatior;
         }
+        if (boss == null)
+        {
+            boss = animator.gameObject.transform;
+        }
 
         currentAttack = rc.getAttack();
     }
@@ -49,6 +56,12 @@ public class flameWalk : StateMachineBehaviour
         {
             animator.SetBool("Idle", true);
             vfxAnimator.SetBool("Idle", true);
+        }
+
+        //Dash To Player if too far
+        if (dashDistanceTheshold <= Vector3.Distance(player.position, boss.position))
+        {
+            animator.SetBool("Dashing", true);
         }
     }
 

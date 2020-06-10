@@ -386,6 +386,10 @@ public class ReprisialOfFlameController : MonoBehaviour
     {
         if (!sleepOveride)
         {
+
+            animator.SetBool("STOP", false);
+            vfxBodyAnimatior.SetBool("STOP", false);
+
             //UI
             float ghostAmount = vfxCtrl.Progress(thresholdBeforeUnlock);
             healthUI.fillAmount = (health / startHealth);
@@ -443,6 +447,8 @@ public class ReprisialOfFlameController : MonoBehaviour
         else
         {
             stopMovement();
+            animator.SetBool("STOP", true);
+            vfxBodyAnimatior.SetBool("STOP", true);
         }
 
     }
