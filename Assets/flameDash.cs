@@ -6,7 +6,6 @@ using UnityEngine.AI;
 public class flameDash : StateMachineBehaviour
 {
 
-    public float stopTrackingAtProgress = 0.5f;
     public float dashThresholdTime = 0.3f;
     public float dashTotalTime = 1.0f;
 
@@ -62,9 +61,15 @@ public class flameDash : StateMachineBehaviour
 
         //Obsctcle?
         RaycastHit hit;
-        if (Physics.Raycast(dashChecker.position, dashChecker.transform.forward, out hit, 3.0f, rc.dashObstacles))
+        if (Physics.Raycast(dashChecker.position, dashChecker.transform.forward, out hit, 1.0f, rc.dashObstacles))
         {
             STOPFLAG = true;
+        }
+
+        //Track player until half way
+        if (dashTimer < dashTotalTime * 0.5f)
+        {
+            target = player.transform.position;
         }
 
         if (dashThresholdTime <= stateInfo.normalizedTime) {
