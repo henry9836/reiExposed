@@ -33,29 +33,24 @@ public class iamryan : MonoBehaviour
     public GameObject source;
     public GameObject destination;
 
-    private saveFile save;
+    public saveFile save;
 
 #if UNITY_EDITOR
-    //awake for self initlisation, start initlisation is done by the user in their own script
+
     void Awake()
     {
-        editwindow = (window)EditorWindow.GetWindow(typeof(window));
+        editwindow = editwindow = (window)EditorWindow.GetWindow(typeof(window));
+
     }
 #endif
-
 
     void Start()
     {
 
-        save = this.GetComponent<saveFile>();
 #if UNITY_EDITOR
 
         savedll();
 #endif
-
-
-
-        //Path.themask = ~(1 << save.safeItem("themask", saveFile.types.INT).toint);
         Path.themask = save.safeItem("themask", saveFile.types.INT).toint;
 
     }
@@ -191,7 +186,21 @@ public class iamryan : MonoBehaviour
         if (editwindow == null)
         {
             editwindow = (window)EditorWindow.GetWindow(typeof(window));
+
+            editwindow.stign = save.safeItem("stign", saveFile.types.STRING).tostring;
+            editwindow.groupEnabled = System.Convert.ToBoolean(save.safeItem("groupEnabled", saveFile.types.STRING).tostring);
+            editwindow.groupEnabled2 = System.Convert.ToBoolean(save.safeItem("groupEnabled2", saveFile.types.STRING).tostring);
+            editwindow.movespeed = save.safeItem("movespeed", saveFile.types.FLOAT).tofloat;
+            editwindow.testbounds = getbounds();
+            editwindow.stopnextto = System.Convert.ToBoolean(save.safeItem("stopnextto", saveFile.types.STRING).tostring);
+            editwindow.recalc = System.Convert.ToBoolean(save.safeItem("recalc", saveFile.types.STRING).tostring);
+            editwindow.recalcwhenidle = save.safeItem("recalcwhenidle", saveFile.types.FLOAT).tofloat;
+            editwindow.deets = save.safeItem("deets", saveFile.types.FLOAT).tofloat;
+            editwindow.rateofAnglechange = save.safeItem("rateofAnglechange", saveFile.types.FLOAT).tofloat;
+            editwindow.dynamicedgesize = save.safeItem("dynamicedgesize", saveFile.types.FLOAT).tofloat;
+            editwindow.theMask.value = save.safeItem("themask", saveFile.types.INT).toint;
         }
+
         Gizmos.DrawWireCube(editwindow.testbounds.center, editwindow.testbounds.extents);
 
         //walkable nodes

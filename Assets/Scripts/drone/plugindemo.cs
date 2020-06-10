@@ -16,6 +16,8 @@ public class plugindemo : MonoBehaviour
 
     public bool candeliver = false;
 
+
+    public int todrop = 0;
     void Start()
     {
         //set refrences and initlise
@@ -47,7 +49,7 @@ public class plugindemo : MonoBehaviour
             if (destinaitons[currdestination] == rei)
             {
                 yield return new WaitForSeconds(0.25f);
-                iar.source.GetComponent<drone>().drop(0);
+                iar.source.GetComponent<drone>().drop(todrop);
                 yield return new WaitForSeconds(1.0f);
 
                 currdestination = 1;

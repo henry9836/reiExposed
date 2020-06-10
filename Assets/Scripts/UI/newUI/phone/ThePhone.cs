@@ -8,7 +8,7 @@ using System.ComponentModel;
 //public class photo
 public class ThePhone : MonoBehaviour
 {
-    private saveFile save;
+    public saveFile save;
     private plugindemo drone;
     public GameObject ThePhoneUI;
     public GameObject rei;
@@ -19,12 +19,12 @@ public class ThePhone : MonoBehaviour
     public Sprite emptyPhotoSpot;
 
     private GameObject[] myths;
-    private bool sucess;
-
 
     private Vector2 restorescale;
     private Vector3 restorePos;
     private int restoreID;
+
+    
 
     public enum phonestates 
     {
@@ -47,19 +47,14 @@ public class ThePhone : MonoBehaviour
         myths = GameObject.FindGameObjectsWithTag("Myth");
         StartCoroutine(LoadScreenShot(0));
         save = GameObject.Find("Save&Dronemanage").GetComponent<saveFile>();
+        drone = GameObject.Find("Save&Dronemanage").GetComponent<plugindemo>();
+
 
         savephotoinit();
 
 
-        savePhotosData(2, "del");
-
-
-
-        //drone = GameObject.Find("Save&Dronemanage").GetComponent<plugindemo>();
-        //if (drone.candeliver == true)
-        //{
-        //    drone.deliver();
-        //}
+            
+        
     }
 
     void Update()
@@ -78,6 +73,16 @@ public class ThePhone : MonoBehaviour
                 }
             case phonestates.HOME:
                 {
+                    if (drone.candeliver == true)
+                    {
+                        ThePhoneUI.transform.GetChild(2).GetChild(3).GetComponent<Button>().interactable = true;
+                    }
+                    else
+                    {
+                        ThePhoneUI.transform.GetChild(2).GetChild(3).GetComponent<Button>().interactable = false;
+                    }
+
+
                     if (Input.GetKeyDown(KeyCode.Tab))
                     {
                         openingephone(false);
@@ -86,8 +91,7 @@ public class ThePhone : MonoBehaviour
                 }
             case phonestates.CAMERA:
                 {
-
-                    if (Input.GetKeyDown(KeyCode.L))
+                    if (Input.GetMouseButtonDown(0))
                     {
                         takepicture();
                     }
@@ -108,7 +112,10 @@ public class ThePhone : MonoBehaviour
                 }
             case phonestates.AMAZON:
                 {
-
+                    if (Input.GetKeyDown(KeyCode.Tab))
+                    {
+                        BackToMenu();
+                    }
                     break;
                 }
             case phonestates.CLUES:
@@ -214,6 +221,21 @@ public class ThePhone : MonoBehaviour
     public void amazon()
     {
         screen = phonestates.AMAZON;
+        ThePhoneUI.transform.GetChild(2).gameObject.SetActive(false);
+        ThePhoneUI.transform.GetChild(5).gameObject.SetActive(true);
+        currency.MythTraces = save.safeItem("MythTraces", saveFile.types.INT).toint;
+
+        if (currency.MythTraces < 100)
+        {
+            ThePhoneUI.transform.GetChild(5).GetChild(1).GetComponent<Button>().interactable = false;
+        }
+        else
+        {
+            ThePhoneUI.transform.GetChild(5).GetChild(1).GetComponent<Button>().interactable = true;
+        }
+
+        ThePhoneUI.transform.GetChild(5).GetChild(0).GetComponent<Text>().text = "Mythtraces: " + currency.MythTraces;
+
     }
 
     public void BackToMenu()
@@ -227,7 +249,10 @@ public class ThePhone : MonoBehaviour
         ThePhoneUI.transform.GetChild(2).gameObject.SetActive(true);
         ThePhoneUI.transform.GetChild(3).gameObject.SetActive(false);
         ThePhoneUI.transform.GetChild(4).gameObject.SetActive(false);
+        ThePhoneUI.transform.GetChild(5).gameObject.SetActive(false);
 
+
+        save.saveitem("MythTraces", currency.MythTraces);
 
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined;
@@ -270,6 +295,35 @@ public class ThePhone : MonoBehaviour
 
         ThePhoneUI.transform.GetChild(3).GetChild(10).gameObject.SetActive(false);
     }
+
+
+    public void amazonshop(int item)
+    {
+        if (item == 0)
+        {
+            currency.MythTraces -= 100;
+            save.saveitem("MythTraces", currency.MythTraces);
+
+            drone.todrop = 0;
+            drone.deliver();
+           
+        }
+
+        if (currency.MythTraces < 100)
+        {
+            ThePhoneUI.transform.GetChild(5).GetChild(1).GetComponent<Button>().interactable = false;
+        }
+        else
+        {
+            ThePhoneUI.transform.GetChild(5).GetChild(1).GetComponent<Button>().interactable = true;
+        }
+        ThePhoneUI.transform.GetChild(5).GetChild(0).GetComponent<Text>().text = "Mythtraces: " + currency.MythTraces;
+
+        BackToMenu();
+
+
+    }
+
 
     public void updateclues()
     {
@@ -397,7 +451,6 @@ public class ThePhone : MonoBehaviour
 
         string fn = Directory.GetCurrentDirectory();
         string foldername = fn + "\\" + "shhhhhSecretFolder";
-        sucess = false; 
 
         if (!Directory.Exists(foldername))
         {
@@ -410,7 +463,6 @@ public class ThePhone : MonoBehaviour
         {
             if (!FileExists(foldername + "\\" + i.ToString() + ".png"))
             {
-                sucess = true;
                 ScreenCapture.CaptureScreenshot(foldername + "\\" + i.ToString() + ".png");
                 i = 10;
             }
@@ -446,7 +498,6 @@ public class ThePhone : MonoBehaviour
         {
             ThePhoneUI.transform.GetChild(3).GetChild(i).GetComponent<Image>().sprite = emptyPhotoSpot;
             ThePhoneUI.transform.GetChild(3).GetChild(i).GetComponent<Button>().enabled = false;
-
         }
     }
 
