@@ -45,10 +45,9 @@ public class flameHeavyAttack : StateMachineBehaviour
         if (stateInfo.normalizedTime > visualTrigger && !armedVis) {
             ah.triggerVisuals(AttackHost.ATTACKS.SLAM);
             armedVis = true;
+            //Attack!
+            ah.Attack(AttackHost.ATTACKS.SLAM);
         }
-
-        //Attack!
-        ah.Attack(AttackHost.ATTACKS.SLAM);
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
