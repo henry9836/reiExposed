@@ -18,7 +18,7 @@ public class flameWalk : StateMachineBehaviour
             rc = animator.gameObject.GetComponent<ReprisialOfFlameController>();
         }
         //If we are the VFX animator
-        if (rc == null) { return; }
+        if (rc == null || !rc.enabled) { return; }
         if (player == null)
         {
             player = rc.player.transform;
@@ -39,7 +39,7 @@ public class flameWalk : StateMachineBehaviour
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         //If we are the VFX animator
-        if (rc == null) { return; }
+        if (rc == null || !rc.enabled) { return; }
 
         rc.GoToTargetPos(player.position);
 
