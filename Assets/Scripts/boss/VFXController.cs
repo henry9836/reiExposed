@@ -23,13 +23,13 @@ public class VFXController : MonoBehaviour
 
         for (int i = 0; i < bodysA.Length; i++)
         {
-            bodys[i].GetComponent<SkinnedMeshRenderer>().material = transparent;
+            //bodysA[i].GetComponent<SkinnedMeshRenderer>().material = transparent;
             bodys.Add(bodysA[i]);
         }
 
         for (int i = 0; i < bodysNoVFXA.Length; i++)
         {
-            bodysNoVFXA[i].GetComponent<SkinnedMeshRenderer>().material = transparent;
+            bodysNoVFXA[i].GetComponent<SkinnedMeshRenderer>().enabled = false;
             bodysNoVFX.Add(bodysNoVFXA[i]);
         }
     }
