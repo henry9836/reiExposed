@@ -38,6 +38,7 @@ public class umbrella : MonoBehaviour
     private float Shotdamage = 0.0f;
     private List<string> saveddata = new List<string>() { };
 
+    private bool inbossroom = false;
     public GameObject shotUI;
 
 
@@ -89,6 +90,7 @@ public class umbrella : MonoBehaviour
                 else
                 {
                     movcont.strafemode = false;
+                    shotUI.SetActive(false);
 
                     cooldown = true;
                 }
@@ -96,6 +98,7 @@ public class umbrella : MonoBehaviour
             else
             {
                 movcont.strafemode = false;
+                shotUI.SetActive(false);
 
                 //animator.ResetTrigger("Block");
                 animator.SetBool("Blocking", false);
@@ -103,6 +106,8 @@ public class umbrella : MonoBehaviour
         }
         else
         {
+            shotUI.SetActive(false);
+
             animator.SetBool("Blocking", false);
             cooldowntimer += Time.deltaTime;
             if (cooldowntimer > cooldowntime)
@@ -138,38 +143,62 @@ public class umbrella : MonoBehaviour
         latetest = true;
         VFX.GetComponent<VisualEffect>().SetFloat("timer", 1.0f);
 
-        //add ui
-
-        if (Input.GetAxis("Fire1") > 0.5f)
+        if (inbossroom == true)
         {
-            animator.SetTrigger("Shoot");
-            bang();
-        }
-        else if (Input.GetKeyDown(KeyCode.E))
-        {
-            VFXController vfx = boss.GetComponent<VFXController>();
-            for (int i = 0; i < boss.GetComponent<VFXController>().bodysNoVFX.Count; i++)
+            shotUI.SetActive(true);
+            if (Shotdamage == 0)
             {
-                if (vfx.bodysNoVFX[i].GetComponent<BossRevealSurfaceController>())
+                shotUI.transform.GetChild(0).GetComponent<Text>().text = "Press Q To Load Picture";
+            }
+            else if (Shotdamage == 0 && shottoload < 0)
+            {
+                shotUI.transform.GetChild(0).GetComponent<Text>().text = "No Shots Remaining";
+            }
+            else
+            {
+                shotUI.transform.GetChild(0).GetComponent<Text>().text = "Loaded, Click To Shoot";
+            }
+
+            shotUI.transform.GetChild(1).GetComponent<Text>().text = "Pictures left to load: " + shottoload + 1;
+
+            if (Input.GetAxis("Fire1") > 0.5f)
+            {
+                animator.SetTrigger("Shoot");
+                bang();
+            }
+            else if (Input.GetKeyDown(KeyCode.E))
+            {
+
+                cooldown = true;
+                VFXController vfx = boss.GetComponent<VFXController>();
+                for (int i = 0; i < boss.GetComponent<VFXController>().bodysNoVFX.Count; i++)
                 {
-                    if (vfx.bodysNoVFX[i].GetComponent<BossRevealSurfaceController>().isPlayerLookingAtMe())
+                    if (vfx.bodysNoVFX[i].GetComponent<BossRevealSurfaceController>())
                     {
-                        vfx.bodysNoVFX[i].GetComponent<BossRevealSurfaceController>().EnableSurface();
+                        if (vfx.bodysNoVFX[i].GetComponent<BossRevealSurfaceController>().isPlayerLookingAtMe())
+                        {
+                            vfx.bodysNoVFX[i].GetComponent<BossRevealSurfaceController>().EnableSurface();
+                        }
+                    }
+
+                }
+            }
+            else if (Input.GetKeyDown(KeyCode.Q))
+            {
+                if (shottoload >= 0)
+                {
+                    if (Shotdamage == 0)
+                    {
+                        loadshot();
                     }
                 }
+            }
+        }
 
-            }
-        }
-        else if (Input.GetKeyDown(KeyCode.Q))
-        {
-            if (shottoload >= 0)
-            {
-                if (Shotdamage == 0)
-                {
-                    loadshot();
-                }
-            }
-        }
+
+
+
+
     }
 
     public void bossroomtrigger()
@@ -184,6 +213,7 @@ public class umbrella : MonoBehaviour
             }
         }
         shottoload = saveddata.Count - 1;
+        inbossroom = true;
     }
 
     private void loadshot()
@@ -202,7 +232,6 @@ public class umbrella : MonoBehaviour
                 pass = false;
             }
         }
-        //if game
 
         if (pass == true)
         {
@@ -227,7 +256,6 @@ public class umbrella : MonoBehaviour
         }
 
         Shotdamage = 0.0f;
-        //just aim better 
         movcont.strafemode = false;
         cooldown = true;
     }
@@ -248,6 +276,8 @@ public class umbrella : MonoBehaviour
         //text.transform.GetChild(0).GetComponent<Text>().text = Mathf.RoundToInt(damage).ToString();
         //text.transform.LookAt(cam.transform.position);
         //text.transform.Rotate(new Vector3(0, 180, 0));
+
+        boss.GetComponent<ReprisialOfFlameController>().health -= attackingfor;
 
         Debug.Log("attackign for " + attackingfor);
     }
