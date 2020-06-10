@@ -35,6 +35,15 @@ public class iamryan : MonoBehaviour
 
     public saveFile save;
 
+#if UNITY_EDITOR
+
+    void Awake()
+    {
+        editwindow = editwindow = (window)EditorWindow.GetWindow(typeof(window));
+
+    }
+#endif
+
     void Start()
     {
 
@@ -42,7 +51,6 @@ public class iamryan : MonoBehaviour
 
         savedll();
 #endif
-
         Path.themask = save.safeItem("themask", saveFile.types.INT).toint;
 
     }
