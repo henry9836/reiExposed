@@ -25,10 +25,15 @@ public class BossRevealSurfaceController : MonoBehaviour
         {
             if (isPlayerLookingAtMe())
             {
-                sm.enabled = true;
-                Destroy(this);
+                EnableSurface();
             }
         }
+    }
+
+    public void EnableSurface()
+    {
+        sm.enabled = true;
+        Destroy(this);
     }
 
     public bool isPlayerLookingAtMe()
