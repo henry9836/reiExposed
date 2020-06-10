@@ -32,6 +32,7 @@ public class window : EditorWindow
     [MenuItem("Window/PathFinding")]
 
 
+
     //all elements in the window, the elemets apply to variables that can be set or read from other code 
     void OnGUI()
     {
