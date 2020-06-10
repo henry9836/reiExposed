@@ -349,7 +349,10 @@ public class ThePhone : MonoBehaviour
 
     public void takepicture()
     {
-        StartCoroutine(photo());
+        if (save.safeItem("imageCount", saveFile.types.INT).toint < 10)
+        {
+            StartCoroutine(photo());
+        }
     }
 
     public void deletePhoto()
