@@ -6,10 +6,8 @@ using UnityEngine.AI;
 public class flameDash : StateMachineBehaviour
 {
 
-    public float stopTrackingAtProgress = 0.5f;
     public float dashThresholdTime = 0.3f;
     public float dashTotalTime = 1.0f;
-
 
     GameObject player;
     ReprisialOfFlameController rc;
@@ -17,7 +15,9 @@ public class flameDash : StateMachineBehaviour
     Vector3 target;
     Vector3 origin;
     NavMeshAgent agent;
+    Transform dashChecker;
     float dashTimer = 0.0f;
+    bool STOPFLAG = false;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -42,10 +42,15 @@ public class flameDash : StateMachineBehaviour
         {
             agent = rc.agent;
         }
+        if (dashChecker == null)
+        {
+            dashChecker = rc.dashCheck;
+        }
 
         origin = boss.transform.position;
         target = player.transform.position;
-        float dashTimer = 0.0f;
+        dashTimer = 0.0f;
+        STOPFLAG = false;
         rc.stopMovement();
     }
 
@@ -54,12 +59,30 @@ public class flameDash : StateMachineBehaviour
     {
         if (rc == null) { return; }
 
-        //Dash quick to player wiht a simple lerp
-        boss.transform.position = Vector3.Lerp(origin, target, dashTimer/dashTotalTime);
+        //Obsctcle?
+        RaycastHit hit;
+        if (Physics.Raycast(dashChecker.position, dashChecker.transform.forward, out hit, 1.0f, rc.dashObstacles))
+        {
+            STOPFLAG = true;
+        }
 
-        dashTimer += Time.deltaTime;
+        //Track player until half way
+        if (dashTimer < dashTotalTime * 0.5f)
+        {
+            target = player.transform.position;
+        }
 
-        if (dashTimer >= dashTotalTime)
+        if (dashThresholdTime <= stateInfo.normalizedTime) {
+            //Dash quick to player with a simple lerp
+            if (!STOPFLAG)
+            {
+                boss.transform.position = Vector3.Lerp(origin, target, dashTimer / dashTotalTime);
+            }
+
+            dashTimer += Time.deltaTime;
+        }
+
+        if (dashTimer >= dashTotalTime || STOPFLAG)
         {
             animator.SetBool("Dashing", false);
         }
