@@ -147,9 +147,13 @@ public class umbrella : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.E))
         {
-            //boss reveal surface controler
-            //if (boss.)
-            //take photo
+            for (int i = 0; i < boss.GetComponent<VFXController>().bodysNoVFX.Count; i++)
+            {
+                if (boss.GetComponent<VFXController>().bodysNoVFX[i].GetComponent<BossRevealSurfaceController>().isPlayerLookingAtMe())
+                {
+                    boss.GetComponent<VFXController>().bodysNoVFX[i].GetComponent<BossRevealSurfaceController>().EnableSurface();
+                }
+            }
         }
         else if (Input.GetKeyDown(KeyCode.Q))
         {
