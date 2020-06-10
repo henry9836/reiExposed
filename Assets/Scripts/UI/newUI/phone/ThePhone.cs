@@ -414,23 +414,6 @@ public class ThePhone : MonoBehaviour
 
         savePhotosData(imagecount, nametoset); 
 
-        //1 photo per clue
-        //bool pass = true;
-        //for (int j = 0; j < saveddata.Count; j++)
-        //{
-        //    if (saveddata[j] == clue[i].name)
-        //    {
-        //        pass = false;
-        //    }
-        //}
-        //if (pass == true)
-        //{
-        //    Debug.Log("not alreayd photgraphed");
-        //    nametoset = clue[i].name;
-
-        //}
-
-
     }
 
     public IEnumerator photo()
