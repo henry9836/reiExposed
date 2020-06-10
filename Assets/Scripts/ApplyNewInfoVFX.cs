@@ -10,9 +10,9 @@ public class ApplyNewInfoVFX : MonoBehaviour
     public static readonly string VelMap = "VelocityMap";
 
     public int count;
-
-    private SkinnedMeshBaker sb;
-    private VisualEffect vfx;
+     
+    public SkinnedMeshBaker sb;
+    public VisualEffect vfx;
 
     private void Start()
     {
@@ -22,11 +22,14 @@ public class ApplyNewInfoVFX : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (count < 60) {
+        //if (count < 60) {
             GetComponent<VisualEffect>().SetTexture(PosMap, sb.PositionMap);
             GetComponent<VisualEffect>().SetTexture(VelMap, sb.VelocityMap);
-            count++;
-            Debug.Log("updated");
-        }
+
+        Debug.Log($"{sb.PositionMap.name}|{sb.VelocityMap.name}|{vfx.enabled}|{sb.enabled}|");
+
+            //count++;
+            //Debug.Log("updated");
+        //}
     }
 }

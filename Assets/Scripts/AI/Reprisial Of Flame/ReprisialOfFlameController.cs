@@ -121,7 +121,7 @@ public class ReprisialOfFlameController : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("QUERY REQUEST RECEIVED BUT THERE IS NO CURRENT ATTACK ASSIGNED");
+            Debug.LogWarning("QUERY REQUEST RECEIVED BUT THERE IS NO CURRENT ATTACK ASSIGNED" + gameObject.name);
             return 0.0f;
         }
     }
@@ -356,7 +356,6 @@ public class ReprisialOfFlameController : MonoBehaviour
 
     private void FixedUpdate()
     {
-
         //Are we dead
         if (health <= 0)
         {
