@@ -6,7 +6,7 @@ public class BossRevealSurfaceController : MonoBehaviour
 {
     public Vector3 outwardDir = Vector3.forward;
     
-    private float angleThreshold = 0.3f;
+    private float angleThreshold = 0.1f;
 
     GameObject player;
     SkinnedMeshRenderer sm;
@@ -16,6 +16,18 @@ public class BossRevealSurfaceController : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player");
         sm = GetComponent<SkinnedMeshRenderer>();
+    }
+
+    private void FixedUpdate()
+    {
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            if (isPlayerLookingAtMe())
+            {
+                sm.enabled = true;
+                Destroy(this);
+            }
+        }
     }
 
     public bool isPlayerLookingAtMe()
