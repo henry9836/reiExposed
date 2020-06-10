@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UIlookat : MonoBehaviour
 {
-    public GameObject cam;
+    private GameObject cam;
 
     private void Start()
     {
