@@ -147,12 +147,17 @@ public class umbrella : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.E))
         {
+            VFXController vfx = boss.GetComponent<VFXController>();
             for (int i = 0; i < boss.GetComponent<VFXController>().bodysNoVFX.Count; i++)
             {
-                if (boss.GetComponent<VFXController>().bodysNoVFX[i].GetComponent<BossRevealSurfaceController>().isPlayerLookingAtMe())
+                if (vfx.bodysNoVFX[i].GetComponent<BossRevealSurfaceController>())
                 {
-                    boss.GetComponent<VFXController>().bodysNoVFX[i].GetComponent<BossRevealSurfaceController>().EnableSurface();
+                    if (vfx.bodysNoVFX[i].GetComponent<BossRevealSurfaceController>().isPlayerLookingAtMe())
+                    {
+                        vfx.bodysNoVFX[i].GetComponent<BossRevealSurfaceController>().EnableSurface();
+                    }
                 }
+
             }
         }
         else if (Input.GetKeyDown(KeyCode.Q))

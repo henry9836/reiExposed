@@ -10,6 +10,8 @@ public class bosswall : MonoBehaviour
     private void Start()
     {
         TU = GameObject.FindGameObjectWithTag("Player").GetComponent<umbrella>();
+        GameObject.FindGameObjectWithTag("Boss").GetComponent<ReprisialOfFlameController>().enabled = false;
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -18,6 +20,8 @@ public class bosswall : MonoBehaviour
         {
             if (entered == false)
             {
+                GameObject.FindGameObjectWithTag("Boss").GetComponent<ReprisialOfFlameController>().enabled = true;
+
                 entered = true;
 
                 this.GetComponent<BoxCollider>().enabled = true;
