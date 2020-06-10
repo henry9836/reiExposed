@@ -38,6 +38,8 @@ public class umbrella : MonoBehaviour
     private float Shotdamage = 0.0f;
     private List<string> saveddata = new List<string>() { };
 
+    public GameObject shotUI;
+
 
 
     void Start()
@@ -145,6 +147,8 @@ public class umbrella : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.E))
         {
+            //boss reveal surface controler
+            //if (boss.)
             //take photo
         }
         else if (Input.GetKeyDown(KeyCode.Q))
