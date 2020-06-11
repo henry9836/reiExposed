@@ -54,12 +54,12 @@ public class ReprisialOfFlameController : MonoBehaviour
     public LayerMask dashObstacles;
 
     [Header("Movement Settings")]
-    public float movementSpeed = 10.0f;
-    public float walkSpeed = 4.0f;
-    public float runningSpeed = 15.0f;
+    public float movementSpeed = 3.5f;
+    public float movementSpeedAgro = 5f;
+    public float turnSpeed = 120.0f;
+    public float turnSpeedAgro = 250.0f;
     public Vector2 stayAfterArrivalTimeRange = new Vector2(0.0f, 7.0f);
-    public float arriveDistanceThreshold = 1.0f;
-
+    public float arriveDistanceThreshold = 1.0f; 
     [Header("Events")]
     public UnityEvent onDeath;
     public UnityEvent onHurt;
@@ -435,7 +435,15 @@ public class ReprisialOfFlameController : MonoBehaviour
                 {
                     fireHead.SetActive(true);
                 }
+                agent.speed = movementSpeedAgro;
+                agent.angularSpeed = turnSpeedAgro;
             }
+            else
+            {
+                agent.speed = movementSpeed;
+                agent.angularSpeed = turnSpeed;
+            }
+
 
 
 #if UNITY_EDITOR
