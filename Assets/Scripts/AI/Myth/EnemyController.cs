@@ -144,6 +144,11 @@ public class EnemyController : MonoBehaviour
     private float maxHealth;
     private NavMeshPath path;
 
+    public void kys()
+    {
+        Destroy(this.gameObject);
+    }
+
     //PLAYER DAMAGE QUERY
     public float QueryDamage()
     {
@@ -583,6 +588,8 @@ public class EnemyController : MonoBehaviour
             {
                 DeathEvent();
             }
+
+            kys();
         }
 
         //Stop a race condition
