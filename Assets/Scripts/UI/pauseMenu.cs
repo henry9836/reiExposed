@@ -109,9 +109,9 @@ public class pauseMenu : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Time.timeScale = 1.0f;
         paused = !paused;
+        SceneToLoadPersistant.sceneToLoadInto = 2;
+
         SceneManager.LoadScene(1);
-
-
 
     }
 
