@@ -1,10 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class bosswall : MonoBehaviour
 {
+    public UnityEvent onEnter;
+
     public GameObject phoneMenuUI;
     private umbrella TU;
     private bool entered = false;
@@ -31,6 +34,9 @@ public class bosswall : MonoBehaviour
 
                 this.GetComponent<BoxCollider>().enabled = true;
                 TU.bossroomtrigger();
+
+                onEnter.Invoke();
+
             }
 
         }
