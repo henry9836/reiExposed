@@ -95,6 +95,12 @@ public class EnemyController : MonoBehaviour
     public List<float> attackDmg = new List<float>();
     public List<MOVESETRESTRICTION> attackType = new List<MOVESETRESTRICTION>();
 
+    [Header("KillObjects")]
+    public CapsuleCollider col;
+    public CapsuleCollider col2;
+    public GameObject destoryThis;
+    public GameObject destoryThis2;
+
     [Header("Debug")]
     public bool debugMode;
     public string currentMode = "PENDING";
@@ -146,7 +152,10 @@ public class EnemyController : MonoBehaviour
 
     public void kys()
     {
-        Destroy(this.gameObject);
+        Destroy(destoryThis);
+        Destroy(destoryThis2);
+        Destroy(animator);
+        this.enabled = false;
     }
 
     //PLAYER DAMAGE QUERY
