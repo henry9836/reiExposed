@@ -121,7 +121,8 @@ public class pauseMenu : MonoBehaviour
 
         Time.timeScale = 1.0f;
         paused = !paused;
-        SceneManager.LoadScene(0);
+        SceneToLoadPersistant.sceneToLoadInto = 0;
+        SceneManager.LoadScene(1);
 
     }
 
