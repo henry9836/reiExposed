@@ -396,10 +396,10 @@ public class ReprisialOfFlameController : MonoBehaviour
             float ghostAmount = vfxCtrl.Progress(thresholdBeforeUnlock);
             float healthAmount = (health / startHealth);
 
-            if (healthAmount < ghostAmount)
-            {
-                health = startHealth - (startHealth * healthAmount);
-            }
+            //if (healthAmount < ghostAmount)
+            //{
+            //    health = startHealth - (startHealth * healthAmount);
+            //}
 
             healthUI.fillAmount = healthAmount;
             ghostUI.fillAmount = ghostAmount;
