@@ -11,6 +11,7 @@ public class bosswall : MonoBehaviour
     public GameObject phoneMenuUI;
     private umbrella TU;
     private bool entered = false;
+    public GameObject bossHPUI;
 
     private void Start()
     {
@@ -29,7 +30,7 @@ public class bosswall : MonoBehaviour
                 phoneMenuUI.transform.GetChild(0).GetComponent<Button>().interactable = false;
                 phoneMenuUI.transform.GetChild(1).GetComponent<Button>().interactable = false;
                 phoneMenuUI.transform.GetChild(2).GetComponent<Button>().interactable = false;
-
+                bossHPUI.SetActive(true);
                 entered = true;
 
                 this.GetComponent<BoxCollider>().enabled = true;
