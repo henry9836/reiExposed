@@ -14,7 +14,9 @@
 
 using namespace std;
 
-int SERVERPORT = 27100;
+const int SERVERPORT = 27100;
+const int clientSlots = 2560;
+const int BUFFERSIZE = 2048;
 
 struct clientStruct {
 public:
@@ -34,6 +36,53 @@ void error(std::string str) {
     exit(60);
 }
 
+void ClientThread(clientStruct* client) {
+
+    cout << "THREAD " << this_thread::get_id() << " CALLED my client is: " << client->clientSocket << endl;
+
+    char clientBuffer[BUFFERSIZE];
+    int n = 0;
+    string clientTmp = "";
+
+    //Read packet from client
+    bzero(clientBuffer, BUFFERSIZE);
+    if (n = read(client->clientSocket, clientBuffer, BUFFERSIZE) < 1) {
+        cout << "RESET CAUGHT!";
+        close(client->clientSocket);
+        delete client;
+        return;
+    }
+
+    //Convert to string
+    std::string userInput = clientBuffer;
+    cout << "Got: " << userInput << endl;
+
+    //Decode packet from client
+
+
+    //Logic
+
+    //Send packet to client
+    string data = "PING BOI";
+
+    bzero(clientBuffer, BUFFERSIZE);
+    if (send(client->clientSocket, data.c_str(), data.size(), 0) < 1) {
+        cout << "RESET CAUGHT!";
+        close(client->clientSocket);
+        delete client;
+        return;
+    }
+
+    //Disconnect Client
+    cout << "Closing Thread " << this_thread::get_id() << endl;
+    close(client->clientSocket);
+
+    //Cleanup
+    delete client;
+}
+
+
+//Inits Server And Handles Initaliation Connection Of Client
 void server() {
 
     int sockfd, newsockfd, portno;
@@ -63,25 +112,24 @@ void server() {
         cout << "Port: " << SERVERPORT << " Bound" << endl;
     }
 
-    listen(sockfd, 32);
+    listen(sockfd, clientSlots);
 
     clilen = sizeof(cli_addr);
-
+    
+    //Accept Client Connection
     while (true)
     {
-
-        cout << "Waiting For Connection..." << endl;
+        cout << "Waiting For A New Client" << endl;
 
         newsockfd = accept(sockfd, (struct sockaddr*)&cli_addr, &clilen);
 
-        cout << "Connection Found!" << endl;
+        cout << "Connection Recieved!" << endl;
 
         if (newsockfd < 0) {
-            error("ERROR Cannot Accept Connection");
+            error("ERROR Cannot Accept Connection, Socket Error " + newsockfd);
         }
         else {
-            //new thread(ClientThread, new clientStruct(newsockfd, cli_addr, clilen));
-            cout << "Connection Closed Cause Debgging" << endl;
+            new thread(ClientThread, new clientStruct(newsockfd, cli_addr, clilen));
         }
     }
 
