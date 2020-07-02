@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using System.Net.Sockets;
 
@@ -9,6 +10,7 @@ public class datadump
     {
 
     }
+
     public datadump(int pack, string ID, string msg, int curr, int itm1, int itm2, int itm3)
     {
         tpacketType = pack;
@@ -29,8 +31,52 @@ public class datadump
     public int titem3;
 }
 
+public class multipass
+{
+    public multipass()
+    {
+
+    }
+
+    public multipass(datadump package, int mpport, string mpip, TcpClient mpclient, byte[] mpdata, NetworkStream mpstream, int mppackettype, string mpID, string mpmessage, int mpcurr, int mpitem1, int mpitem2, int mpitem3)
+    {
+        mpdatadump = package;
+        port = mpport;
+        IP = mpip;
+        client = mpclient;
+        data = mpdata;
+        stream = mpstream;
+
+        ddpackettype = mppackettype;
+        ddID = mpID;
+        ddmessage = mpmessage;
+        ddcurr = mpcurr;
+        dditem1 = mpitem1;
+        dditem2 = mpitem2;
+        dditem3 = mpitem3;
+    }
+
+    public datadump mpdatadump;
+
+    public int port;
+    public string IP;
+    public TcpClient client;
+    public byte[] data;
+    public NetworkStream stream;
+
+    public int ddpackettype;
+    public string ddID;
+    public string ddmessage;
+    public int ddcurr;
+    public int dditem1;
+    public int dditem2;
+    public int dditem3;
+}
+
 public class packagetosend : MonoBehaviour
 {
+    const int BUFFERSIZE = 2048;
+
     public enum sendpackettypes
     {
         ACK,
@@ -46,7 +92,7 @@ public class packagetosend : MonoBehaviour
     byte[] data;
     private NetworkStream stream;
 
-    public int ddpackettype;
+    public sendpackettypes ddpackettype;
     public string ddID;
     public string ddmessage;
     public int ddcurr;
@@ -54,45 +100,62 @@ public class packagetosend : MonoBehaviour
     public int dditem2;
     public int dditem3;
 
-
-    private void Start()
-    {
-        ddpackettype = 2;
-    }
-
     public void Update()
     {
         if (toPackage == true)
         {
             toPackage = false;
-            datadump tmp = new datadump(ddpackettype, ddID, ddmessage, ddcurr, dditem1, dditem2, dditem3);
-
+            datadump tmp = new datadump((int)ddpackettype, ddID, ddmessage, ddcurr, dditem1, dditem2, dditem3);
             send(tmp);
         }
     }
 
-
     public void send(datadump package)
     {
-        client = new TcpClient(IP, port);
-        string pack = encoder(package);
-        data = System.Text.Encoding.ASCII.GetBytes(pack);
-        stream = client.GetStream();
-        stream.Write(data, 0, data.Length);
+        multipass tmp = new multipass(package, port, IP, client, data, stream, (int)ddpackettype, ddID, ddmessage, ddcurr, dditem1, dditem2, dditem3);
+        ThreadPool.QueueUserWorkItem(ThreadProc, tmp);
+    }
+    
+
+    static void ThreadProc(System.Object stateInfo)
+    {
+        multipass mp = stateInfo as multipass;
+        string pack = encoder(mp.mpdatadump);
+        mp.client = new TcpClient(mp.IP, mp.port);
+        mp.data = System.Text.Encoding.ASCII.GetBytes(pack);
+        mp.stream = mp.client.GetStream();
+        mp.stream.Write(mp.data, 0, mp.data.Length);
         Debug.Log("sent: " + pack);
-        data = new byte[256];
+        mp.data = new byte[BUFFERSIZE];
         string responcedata = string.Empty;
-        int bytes = stream.Read(data, 0, data.Length);
-        responcedata = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
-
+        int bytes = mp.stream.Read(mp.data, 0, mp.data.Length);
+        responcedata = System.Text.Encoding.ASCII.GetString(mp.data, 0, bytes);
         datadump tmp = decoder(responcedata);
-        Debug.Log("type:" + tmp.tpacketType + " ID:" + tmp.tID + " msg:" + tmp.tmessage + " curr:" + tmp.tcurr + " itm1:" + tmp.titem1 + " itm2:" + tmp.titem2 + " itm3:" + tmp.titem3);
 
-        stream.Close();
-        client.Close();
+        switch ((sendpackettypes)tmp.tpacketType)
+        {
+            case sendpackettypes.ACK:
+                {
+                    Debug.Log("type: " + tmp.tpacketType + " msg:" + tmp.tmessage);
+                    break;
+                }
+            case sendpackettypes.PACKAGERECIVE:
+                {
+                    Debug.Log("type:" + tmp.tpacketType + " ID:" + tmp.tID + " msg:" + tmp.tmessage + " curr:" + tmp.tcurr + " itm1:" + tmp.titem1 + " itm2:" + tmp.titem2 + " itm3:" + tmp.titem3);
+                    break;
+                }
+            default:
+                {
+                    Debug.Log("invalid packet type");
+                    break;
+                }
+        }
+
+        mp.stream.Close();
+        mp.client.Close();
     }
 
-    public datadump decoder(string responce)
+    public static datadump decoder(string responce)
     {
         List<string> decoding = new List<string>() { };
         string resp = responce;
@@ -104,7 +167,7 @@ public class packagetosend : MonoBehaviour
         {
             case sendpackettypes.ACK:
                 {
-                    thedata.tmessage = resp.Substring(0, resp.IndexOf("--"));
+                    thedata.tmessage = resp;
                     break;
                 }
             case sendpackettypes.PACKAGERECIVE:
@@ -134,7 +197,7 @@ public class packagetosend : MonoBehaviour
         return (thedata);
     }
 
-    public string encoder(datadump dump)
+    public static string encoder(datadump dump)
     {
         string thestring = "";
 
@@ -145,7 +208,7 @@ public class packagetosend : MonoBehaviour
                     thestring += "0" + "--";
 
                     //placeholder
-                    thestring += "1";
+                    thestring += dump.tmessage;
                     break;
                 }
             case sendpackettypes.PACKAGESEND:
