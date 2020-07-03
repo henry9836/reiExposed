@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using System.Net.Sockets;
+using UnityEngine.UI;
 
 public class datadump
 {
@@ -22,6 +23,17 @@ public class datadump
         titem3 = itm3;
     }
 
+    public datadump(int pack, string msg)
+    {
+        tpacketType = pack;
+        tmessage = msg;
+    }
+
+    public datadump(int pack)
+    {
+        tpacketType = pack;
+    }
+
     public int tpacketType;
     public string tID;
     public string tmessage;
@@ -38,7 +50,7 @@ public class multipass
 
     }
 
-    public multipass(datadump package, int mpport, string mpip, TcpClient mpclient, byte[] mpdata, NetworkStream mpstream, int mppackettype, string mpID, string mpmessage, int mpcurr, int mpitem1, int mpitem2, int mpitem3)
+    public multipass(datadump package, int mpport, string mpip, TcpClient mpclient, byte[] mpdata, NetworkStream mpstream)
     {
         mpdatadump = package;
         port = mpport;
@@ -47,13 +59,13 @@ public class multipass
         data = mpdata;
         stream = mpstream;
 
-        ddpackettype = mppackettype;
-        ddID = mpID;
-        ddmessage = mpmessage;
-        ddcurr = mpcurr;
-        dditem1 = mpitem1;
-        dditem2 = mpitem2;
-        dditem3 = mpitem3;
+        ddpackettype = mpdatadump.tpacketType;
+        ddID = mpdatadump.tID;
+        ddmessage = mpdatadump.tmessage;
+        ddcurr = mpdatadump.tcurr;
+        dditem1 = mpdatadump.titem1;
+        dditem2 = mpdatadump.titem2;
+        dditem3 = mpdatadump.titem3;
     }
 
     public datadump mpdatadump;
@@ -100,19 +112,63 @@ public class packagetosend : MonoBehaviour
     public int dditem2;
     public int dditem3;
 
+    public GameObject usertextbox;
+    public GameObject usercurr;
+    public GameObject useritem1;
+    public GameObject useritem2;
+    public GameObject useritem3;
+
     public void Update()
     {
         if (toPackage == true)
         {
             toPackage = false;
-            datadump tmp = new datadump((int)ddpackettype, ddID, ddmessage, ddcurr, dditem1, dditem2, dditem3);
-            send(tmp);
+            send(0);
         }
     }
 
-    public void send(datadump package)
+    public void send(int type)
     {
-        multipass tmp = new multipass(package, port, IP, client, data, stream, (int)ddpackettype, ddID, ddmessage, ddcurr, dditem1, dditem2, dditem3);
+        datadump package = new datadump();
+        ddpackettype = (sendpackettypes)type;
+
+        switch (ddpackettype)
+        {
+            case sendpackettypes.ACK:
+                {
+                    if (ddmessage == "")
+                    {
+                        ddmessage = "ping";
+                    }
+
+                    package = new datadump((int)ddpackettype, ddmessage);
+                    break;
+                }
+            case sendpackettypes.PACKAGESEND:
+                {
+                    ddID = "STEAM_0:0:98612737"; //TODO replace with propper steamID
+                    ddmessage = usertextbox.GetComponent<Text>().text;
+                    ddcurr = convert(usercurr.GetComponent<Text>().text);
+                    dditem1 = convert(useritem1.GetComponent<Text>().text);
+                    dditem2 = convert(useritem2.GetComponent<Text>().text);
+                    dditem3 = convert(useritem3.GetComponent<Text>().text);
+
+                    package = new datadump((int)ddpackettype, ddID, ddmessage, ddcurr, dditem1, dditem2, dditem3);
+                    break;
+                }
+            case sendpackettypes.PACKAGERECIVE:
+                {
+                    package = new datadump((int)ddpackettype);
+                    break;
+                }
+            default:
+                {
+                    Debug.Log("invalid packet type");
+                    break;
+                }
+        }
+
+        multipass tmp = new multipass(package, port, IP, client, data, stream);
         ThreadPool.QueueUserWorkItem(ThreadProc, tmp);
     }
     
@@ -136,7 +192,7 @@ public class packagetosend : MonoBehaviour
         {
             case sendpackettypes.ACK:
                 {
-                    Debug.Log("type: " + tmp.tpacketType + " msg:" + tmp.tmessage);
+                    Debug.Log("type:" + tmp.tpacketType + " msg:" + tmp.tmessage);
                     break;
                 }
             case sendpackettypes.PACKAGERECIVE:
@@ -206,8 +262,6 @@ public class packagetosend : MonoBehaviour
             case sendpackettypes.ACK:
                 {
                     thestring += "0" + "--";
-
-                    //placeholder
                     thestring += dump.tmessage;
                     break;
                 }
@@ -235,5 +289,20 @@ public class packagetosend : MonoBehaviour
         }
 
         return (thestring);
+    }
+
+    public int convert(string input)
+    {
+        int number;
+        bool test = int.TryParse(input, out number);
+
+        if (test)
+        {
+            return (number);
+        }
+        else
+        {
+            return (0);
+        }
     }
 }
