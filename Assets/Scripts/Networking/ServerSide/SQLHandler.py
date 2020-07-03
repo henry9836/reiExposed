@@ -1,6 +1,30 @@
 from _thread import *
 import mysql.connector
 import socket
+import enum
+
+#init
+dbUsername = ""
+dbPassword = ""
+dbTable = ""
+HOST = '' #All interfaces
+PORT = 27110
+MAXRECV = 2048
+SEPERATOR = "--"
+
+#CONNECTION INFO
+class PACKET(enum.Enum): 
+    ACK = 0
+    PACKAGE_SEND = 1
+    PACKAGE_RECIEVE = 2
+
+class packetStruct:
+	def __init__(self, input):
+		self.data = self.extractData(input)
+
+
+	def extractData(input):
+		return input.split(SEPERATOR)
 
 #CREATE A ENTRY
 def createPackage(ID, MSG, CURR, A1, A2, A3):
@@ -11,40 +35,45 @@ def createPackage(ID, MSG, CURR, A1, A2, A3):
 	db.commit()
 	print("Code here :)")
 
-def getPackage():
+def getPackage(_cursor):
 	q = "SELECT * FROM Packages ORDER BY RAND() LIMIT 1"
-	cursor.execute(q)
-	for x in cursor:
-		print(x)
-	print("Code here :)")
+	_cursor.execute(q)
+	return _cursor
 
 def clientThread(conn):
+	#Connect To DB
+	print("Thread Connecting To DataBase...")
+	db = mysql.connector.connect(host="localhost",user=dbUsername, password=dbPassword, database=dbTable)
+
+	print("Connected To Database!")
+
+	#create cursor
+	cursor = db.cursor()
+
 	data = conn.recv(MAXRECV)
 	data = data.decode().rstrip("\n");
 	print(data)
 	if data[0] == "0":
 		print("ACK")
+		conn.send("0--".encode())
 	elif data[0] == "1":
 		print("PACKAGE_SEND")
 		createPackage();
 	elif data[0] == "2":
 		print("PACKAGE_RECIEVE")
-		getPackage();
+		getPackage(cursor);
 	else:
 		print("Unknown Package Type " + data[0])
 	'''except:
 		print("FATAL Error cannot process data, closing connection...")'''
 	#outdata = "Processing Data From Client"
 	#conn.send(outdata.encode())
+
+	#disconnect
+	cursor.close()
+	db.close()
 	conn.close()
 
-#init
-dbUsername = ""
-dbPassword = ""
-dbTable = ""
-HOST = '' #All interfaces
-PORT = 27110
-MAXRECV = 2048
 
 #Create Local Server
 print("Creating Local Socket...")
@@ -61,12 +90,12 @@ dbPassword = credFile.readline().rstrip("\n")
 dbTable = credFile.readline().rstrip("\n")
 credFile.close
 
-print("Connecting To Database")
+print("Testing Database Connection...")
 
 #connect to db
 db = mysql.connector.connect(host="localhost",user=dbUsername, password=dbPassword, database=dbTable)
 
-print("Connected To Database!")
+print("Connected To Database Successfully!")
 
 #create cursor
 cursor = db.cursor()
