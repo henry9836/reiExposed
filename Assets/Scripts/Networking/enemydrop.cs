@@ -32,8 +32,8 @@ public class enemydrop : MonoBehaviour
         UIpop.transform.GetChild(3).gameObject.GetComponent<Text>().text = packagetosend.enemieDrops[0].titem2.ToString();
         UIpop.transform.GetChild(4).gameObject.GetComponent<Text>().text = packagetosend.enemieDrops[0].titem3.ToString();
 
-        UIpop.transform.GetChild(0).gameObject.GetComponent<Text>().fontSize =  UIpop.transform.GetChild(0).gameObject.GetComponent<Text>().cachedTextGenerator.fontSizeUsedForBestFit;
 
+  
         packagetosend.enemieDrops.RemoveAt(0);
 
         UIpop.SetActive(true);
