@@ -118,7 +118,21 @@ public class packagetosend : MonoBehaviour
     public GameObject useritem2;
     public GameObject useritem3;
 
-    public void Update()
+    public static List<datadump> enemieDrops = new List<datadump>() { };
+
+    void Start()
+    {
+        //GameObject[] enemylist = GameObject.FindGameObjectsWithTag("Enemy");
+
+        //for (int i = 0; i < enemylist.Length; i++)
+        //{
+        //    send(2);
+        //}
+
+        send(2);
+    }
+
+    void Update()
     {
         if (toPackage == true)
         {
@@ -197,6 +211,7 @@ public class packagetosend : MonoBehaviour
                 }
             case sendpackettypes.PACKAGERECIVE:
                 {
+                    enemieDrops.Add(tmp);
                     Debug.Log("type:" + tmp.tpacketType + " ID:" + tmp.tID + " msg:" + tmp.tmessage + " curr:" + tmp.tcurr + " itm1:" + tmp.titem1 + " itm2:" + tmp.titem2 + " itm3:" + tmp.titem3);
                     break;
                 }
