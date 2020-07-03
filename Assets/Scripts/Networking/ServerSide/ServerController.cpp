@@ -151,6 +151,16 @@ void ClientThread(clientStruct* client) {
         cout << data;
         break;
     }
+    //Store
+    case PACKAGE_SEND: 
+    {
+        break;
+    }
+    //Send
+    case PACKAGE_RECIEVE:
+    {
+        break;
+    }
     default: {
         cout << "[WARN] No PACKET TYPE Logic exists for {" << packet->type << "}" << endl;
         break;
