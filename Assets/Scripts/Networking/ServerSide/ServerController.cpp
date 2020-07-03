@@ -17,6 +17,84 @@ using namespace std;
 const int SERVERPORT = 27100;
 const int clientSlots = 2560;
 const int BUFFERSIZE = 2048;
+const string SEPERATOR = "--";
+
+enum PACKET {
+    ACK,
+    PACKAGE_SEND,
+    PACKAGE_RECIEVE,
+};
+
+vector<string> extractData(string input) {
+    vector<string> data;
+
+    for (size_t i = 0; i < input.length(); i++)
+    {
+        //Push back 
+        size_t cutPoint = input.find_first_of(SEPERATOR);
+        data.push_back(input.substr(0, cutPoint));
+        input = input.substr(cutPoint + SEPERATOR.length());
+        cout << "CUT INPUT TO: " << input << endl;
+    }
+
+    cout << "FULL DATA" << endl;
+
+    for (size_t i = 0; i < data.size(); i++)
+    {
+        cout << data[i] << endl;
+    }
+
+
+    return data;
+}
+
+/// <PACKET FORMATTING>
+/// ACK
+/// TYPE--
+/// PACKAGE
+/// TYPE--STEAMID--MSG--CURR--ITM1-ITM2-ITM3
+/// </PACKET FORMATTING>
+
+struct packetStruct {
+public:
+    PACKET type;
+    int item1 = 0;
+    int item2 = 0;
+    int item3 = 0;
+    int curr = 10;
+    string msg = "Good luck!";
+
+    packetStruct();
+
+    packetStruct(string input) {
+        //Decode
+        vector<string> data = extractData(input);
+
+        //Determine PACKET TYPE
+        type = (PACKET)stoi(data[0]);
+
+        switch (type)
+        {
+            case PACKAGE_SEND: {
+                msg = data[2];
+                curr = stoi(data[3]);
+                item1 = stoi(data[4]);
+                item2 = stoi(data[5]);
+                item3 = stoi(data[6]);
+                break;
+            }
+            case PACKAGE_RECIEVE:
+            case ACK: {
+                break;
+            }
+            default: {
+                cout << "[WARN] Unknown Packet Type {" << type << "}" << endl;
+                break;
+            }
+        }
+    };
+
+};
 
 struct clientStruct {
 public:
@@ -43,6 +121,8 @@ void ClientThread(clientStruct* client) {
     char clientBuffer[BUFFERSIZE];
     int n = 0;
     string clientTmp = "";
+    packetStruct* packet;
+    std::string data = "0--error";
 
     //Read packet from client
     bzero(clientBuffer, BUFFERSIZE);
@@ -54,22 +134,37 @@ void ClientThread(clientStruct* client) {
     }
 
     //Convert to string
-    std::string userInput = clientBuffer;
-    cout << "Got: " << userInput << endl;
+    data = clientBuffer;
+    cout << "Recieved: " << data << endl;
 
     //Decode packet from client
+    packet = new packetStruct(data);
 
+    //reset data
+    data = "0--error";
 
     //Logic
+    switch (packet->type)
+    {
+    case ACK: {
+        data = to_string(ACK) + SEPERATOR + "pong";
+        cout << data;
+        break;
+    }
+    default: {
+        cout << "[WARN] No PACKET TYPE Logic exists for {" << packet->type << "}" << endl;
+        break;
+    }
+    }
 
     //Send packet to client
-    string data = "PING BOI";
 
     bzero(clientBuffer, BUFFERSIZE);
     if (send(client->clientSocket, data.c_str(), data.size(), 0) < 1) {
         cout << "RESET CAUGHT!";
         close(client->clientSocket);
         delete client;
+        delete packet;
         return;
     }
 
@@ -79,6 +174,7 @@ void ClientThread(clientStruct* client) {
 
     //Cleanup
     delete client;
+    delete packet;
 }
 
 
