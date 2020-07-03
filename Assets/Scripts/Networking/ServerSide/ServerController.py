@@ -8,7 +8,7 @@ dbUsername = ""
 dbPassword = ""
 dbTable = ""
 HOST = '' #All interfaces
-PORT = 27110
+PORT = 27010
 MAXRECV = 2048
 SEPERATOR = "--"
 
