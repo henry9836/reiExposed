@@ -1,4 +1,6 @@
+from _thread import *
 import mysql.connector
+import socket
 
 #CREATE A ENTRY
 def createPackage(ID, MSG, CURR, A1, A2, A3):
@@ -16,10 +18,40 @@ def getPackage():
 		print(x)
 	print("Code here :)")
 
+def clientThread(conn):
+	data = conn.recv(MAXRECV)
+	data = data.decode().rstrip("\n");
+	print(data)
+	if data[0] == "0":
+		print("ACK")
+	elif data[0] == "1":
+		print("PACKAGE_SEND")
+		createPackage();
+	elif data[0] == "2":
+		print("PACKAGE_RECIEVE")
+		getPackage();
+	else:
+		print("Unknown Package Type " + data[0])
+	'''except:
+		print("FATAL Error cannot process data, closing connection...")'''
+	#outdata = "Processing Data From Client"
+	#conn.send(outdata.encode())
+	conn.close()
+
 #init
 dbUsername = ""
 dbPassword = ""
 dbTable = ""
+HOST = '' #All interfaces
+PORT = 27110
+MAXRECV = 2048
+
+#Create Local Server
+print("Creating Local Socket...")
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #Creates socket
+s.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
+s.bind((HOST, PORT))
+s.listen(15) #accepts connections backlog
 
 #read login from file
 credFileLoc = "creds.txt"
@@ -29,23 +61,27 @@ dbPassword = credFile.readline().rstrip("\n")
 dbTable = credFile.readline().rstrip("\n")
 credFile.close
 
-print("Connecting With Creds:")
-print(dbUsername)
-print(dbPassword)
-print(dbTable)
+print("Connecting To Database")
 
 #connect to db
 db = mysql.connector.connect(host="localhost",user=dbUsername, password=dbPassword, database=dbTable)
 
 print("Connected To Database!")
 
-#
+#create cursor
 cursor = db.cursor()
-cursor.execute("SHOW TABLES")
-for x in cursor:
-	print(x)
+print("Ready To Query Database!")
 
-createPackage("1234Asdf", "Python Is Cool!", 1234, 1, 1, 0)
-print("Getting Random Package...")
-getPackage()
+print("Starting Local Server...")
+while 1:
+	conn, addr = s.accept()
+	print('Client connected ' + addr[0] + ':' + str(addr[1]))
+	start_new_thread(clientThread, (conn,))
+
+#createPackage("1234Asdf", "Python Is Cool!", 1234, 1, 1, 0)
+#print("Getting Random Package...")
+#getPackage()
+
+s.close()
+
 print("Done.")
