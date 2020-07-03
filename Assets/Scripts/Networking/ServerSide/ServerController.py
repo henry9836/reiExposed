@@ -88,31 +88,30 @@ def clientThread(conn):
 	#Decode Packet
 	packet = packetStruct(data)
 
-	if packet.type == PACKET.ACK.value:
-		print("ACK")
-		conn.send("0--ACK".encode())
-	elif packet.type == PACKET.PACKAGE_SEND.value:
-		print("PACKAGE_SEND")
-		if packet.type > 0:
+	#Is Valid Packet?
+	if packet.type >= 0:
+		if packet.type == PACKET.ACK.value:
+			print("ACK")
+			conn.send(("0"+SEPERATOR+"ACK").encode())
+		elif packet.type == PACKET.PACKAGE_SEND.value:
+			print("PACKAGE_SEND")
 			createPackage(packet, cursor, db);
-			conn.send("0--VALID".encode())
+			conn.send(("0"+SEPERATOR+"VALID").encode())
+		elif packet.type == PACKET.PACKAGE_RECIEVE.value:
+			print("PACKAGE_RECIEVE")
+			package = getPackage(cursor).fetchone();
+			conn.send(("2"+SEPERATOR+str(package[1])+SEPERATOR+str(package[2])+SEPERATOR+str(package[3])+SEPERATOR+str(package[4])+SEPERATOR+str(package[5])).encode())
 		else:
-			conn.send("0--INVALID".encode())
-	elif packet.type == PACKET.PACKAGE_RECIEVE.value:
-		print("PACKAGE_RECIEVE")
-
-		#getPackage(cursor);
+			print("Unknown Package Type " + data[0])
+			conn.send(("0"+SEPERATOR+"UNKNOWN").encode())
 	else:
-		print("Unknown Package Type " + data[0])
-		conn.send("0--UNKNOWN".encode())
-	'''except:
-		print("FATAL Error cannot process data, closing connection...")'''
-	#outdata = "Processing Data From Client"
-	#conn.send(outdata.encode())
+		conn.send(("0"+SEPERATOR+"INVALID").encode())
 
 	#disconnect
+	print("Disconnecting From Database...")
 	cursor.close()
 	db.close()
+	print("Terminating Connection...")
 	conn.close()
 
 
