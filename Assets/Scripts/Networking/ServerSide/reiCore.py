@@ -128,7 +128,7 @@ credFile = open(credFileLoc, 'r')
 dbUsername = credFile.readline().rstrip("\n")
 dbPassword = credFile.readline().rstrip("\n")
 dbTable = credFile.readline().rstrip("\n")
-credFile.close
+credFile.close()
 
 print("Testing Database Connection...")
 
