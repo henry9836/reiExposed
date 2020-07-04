@@ -8,7 +8,7 @@ dbUsername = ""
 dbPassword = ""
 dbTable = ""
 HOST = '' #All interfaces
-PORT = 27010
+PORT = 27100
 MAXRECV = 2048
 SEPERATOR = "--"
 ERROR_GENERAL = -1
@@ -127,7 +127,8 @@ def clientThread(conn):
 			elif packet.type == PACKET.PACKAGE_RECIEVE.value:
 				print("PACKAGE_RECIEVE")
 				package = getPackage(cursor).fetchone();
-				conn.send(("2"+SEPERATOR+str(package[1])+SEPERATOR+str(package[2])+SEPERATOR+str(package[3])+SEPERATOR+str(package[4])+SEPERATOR+str(package[5])).encode('utf-8', 'replace'))
+				conn.send(("2"+SEPERATOR+str(package[0])+SEPERATOR+str(package[1])+SEPERATOR+str(package[2])+SEPERATOR+str(package[3])+SEPERATOR+str(package[4])+SEPERATOR+str(package[5])).encode('utf-8', 'replace'))
+				print("Sent back package")
 			else:
 				print("Unknown Package Type " + data[0])
 				conn.send(("0"+SEPERATOR+"UNKNOWN").encode('utf-8', 'replace'))

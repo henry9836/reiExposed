@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.Text;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
@@ -129,7 +130,7 @@ public class packagetosend : MonoBehaviour
         //    send(2);
         //}
 
-        send(2);
+        send(sendpackettypes.PACKAGERECIVE);
     }
 
     void Update()
@@ -137,14 +138,14 @@ public class packagetosend : MonoBehaviour
         if (toPackage == true)
         {
             toPackage = false;
-            send(0);
+            send(ddpackettype);
         }
     }
 
-    public void send(int type)
+    public void send(sendpackettypes type)
     {
         datadump package = new datadump();
-        ddpackettype = (sendpackettypes)type;
+        ddpackettype = type;
 
         switch (ddpackettype)
         {
@@ -189,30 +190,31 @@ public class packagetosend : MonoBehaviour
 
     static void ThreadProc(System.Object stateInfo)
     {
+        UTF8Encoding utf8 = new UTF8Encoding();
         multipass mp = stateInfo as multipass;
         string pack = encoder(mp.mpdatadump);
         mp.client = new TcpClient(mp.IP, mp.port);
-        mp.data = System.Text.Encoding.ASCII.GetBytes(pack);
+        mp.data = utf8.GetBytes(pack);
         mp.stream = mp.client.GetStream();
         mp.stream.Write(mp.data, 0, mp.data.Length);
         Debug.Log("sent: " + pack);
         mp.data = new byte[BUFFERSIZE];
         string responcedata = string.Empty;
         int bytes = mp.stream.Read(mp.data, 0, mp.data.Length);
-        responcedata = System.Text.Encoding.ASCII.GetString(mp.data, 0, bytes);
+        responcedata = utf8.GetString(mp.data);
         datadump tmp = decoder(responcedata);
 
         switch ((sendpackettypes)tmp.tpacketType)
         {
             case sendpackettypes.ACK:
                 {
-                    Debug.Log("type:" + tmp.tpacketType + " msg:" + tmp.tmessage);
+                    Debug.Log("Recieved: " + ((sendpackettypes)tmp.tpacketType).ToString() + " msg:" + tmp.tmessage);
                     break;
                 }
             case sendpackettypes.PACKAGERECIVE:
                 {
+                    Debug.Log("Recieved:" + ((sendpackettypes)tmp.tpacketType).ToString() + " ID:" + tmp.tID + " msg:" + tmp.tmessage + " curr:" + tmp.tcurr + " itm1:" + tmp.titem1 + " itm2:" + tmp.titem2 + " itm3:" + tmp.titem3);
                     enemieDrops.Add(tmp);
-                    Debug.Log("type:" + tmp.tpacketType + " ID:" + tmp.tID + " msg:" + tmp.tmessage + " curr:" + tmp.tcurr + " itm1:" + tmp.titem1 + " itm2:" + tmp.titem2 + " itm3:" + tmp.titem3);
                     break;
                 }
             default:
@@ -231,6 +233,7 @@ public class packagetosend : MonoBehaviour
         List<string> decoding = new List<string>() { };
         string resp = responce;
         datadump thedata = new datadump();
+        Debug.Log("Decoding: " + resp);
         thedata.tpacketType = int.Parse(resp.Substring(0, 1));
         resp = resp.Substring(3);
 
@@ -243,10 +246,20 @@ public class packagetosend : MonoBehaviour
                 }
             case sendpackettypes.PACKAGERECIVE:
                 {
+
                     for (int i = 0; i < 5; i++)
                     {
-                        decoding.Add(resp.Substring(0, resp.IndexOf("--")));
-                        resp = resp.Substring(resp.IndexOf("--") + 2);
+                        //Error Handling
+                        if (resp.IndexOf("--") == -1)
+                        {
+                            decoding.Add(resp);
+                            break;
+                        }
+                        else
+                        {
+                            decoding.Add(resp.Substring(0, resp.IndexOf("--")));
+                            resp = resp.Substring(resp.IndexOf("--") + 2);
+                        }
                     }
 
                     thedata.tID = decoding[0];
