@@ -1,4 +1,5 @@
 import socket
+import random
 
 IP = "45.32.245.198"
 FILE = "fuzz.txt"
@@ -7,7 +8,16 @@ MAXRECV = 2048
 
 
 def sendServer(data):
-	packet = "1--FUZZER--" + data + "--12--1--1--0"
+	currP = "10"
+	itemP1 = "1"
+	itemP2 = "2"
+	itemP3 = "3"
+	if randomMode:
+		currP = str(random.randint(-9999, 9999))
+		itemP1 = str(random.randint(-9999, 9999))
+		itemP2 = str(random.randint(-9999, 9999))
+		itemP3 = str(random.randint(-9999, 9999))
+	packet = "1--FUZZER--" + data + "--"+currP+"--"+itemP1+"--"+itemP2+"--"+itemP3+""
 	sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	sock.connect(server_address)
 	if user_in == "y":
@@ -20,6 +30,11 @@ def sendServer(data):
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_address = (IP, PORT)
 user_in = input("Would you like to fuzz manually [N/y]")
+user_randomMode = input("Would you like to fuzz game values? [N/y]")
+randomMode = False;
+
+if user_randomMode == "y":
+	randomMode = True
 
 if user_in == "y":
 	sendServer(input("Message: "))
