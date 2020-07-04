@@ -7,10 +7,11 @@ MAXRECV = 2048
 
 
 def sendServer(data):
-	packet = "1--Tester--" + data + "--12--1--1--0"
+	packet = "1--FUZZER--" + data + "--12--1--1--0"
 	sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	sock.connect(server_address)
-	#print("Sending Packet: [" + packet + "]")
+	if user_in == "y":
+		print("Sending Packet: [" + packet + "]")
 	sock.send(packet.encode('utf-8', 'replace'))
 	data = sock.recv(MAXRECV)
 	print(data.decode('utf-8', 'replace'))
@@ -24,16 +25,17 @@ if user_in == "y":
 	sendServer(input("Message: "))
 else:
 	#get amount of lines
-	lineCount = sum(1 for line in open(FILE))
+	lineCount = sum(1 for line in open(FILE, encoding='utf-8'))
 	print("Fuzzing Server With File: " + FILE)
 	count = 1
-	with open(FILE) as f:
-		line = f.readline().rstrip('\n')
-		while line:
-			print("PACKET {" + line + "}" + " (" + str(round((count/lineCount)*100, 1)) + "%/100%)")
-			sendServer(line)
-			line = f.readline().rstrip('\n')
-			count += 1
+	with open(FILE, "r", encoding='utf-8') as f:
+		lines = f.readlines()
+
+	for x in lines:
+		print(str(round((count/lineCount)*100, 1)) + "% Complete")
+		sendServer(x)
+		count += 1
+			
 
 
 print("Done.")

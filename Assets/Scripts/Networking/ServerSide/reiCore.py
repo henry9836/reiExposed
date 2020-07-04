@@ -21,69 +21,64 @@ class PACKET(enum.Enum):
 
 class packetStruct:
 	def __init__(self, input, db):
-		self.data = input.split(SEPERATOR)
-		#determine type
 		try:
-			self.type = int(self.data[0])
-		except:
-			print("Invalid Packet Type")
-			self.type = ERROR_GENERAL #error value
-			return;
-
-		print(self.data)
-
-		#setup packet depending on type of packet
-		if self.type == PACKET.PACKAGE_SEND.value:
-			#try:
-			#grab character blacklist
-			blacklistFile = open("blacklist.txt", 'r')
-			blacklist = blacklistFile.read().splitlines()
-			blacklistFile.close()
-
-			#check for naughtyness
-			for i in range(1, 6):
-				for y in blacklist:
-					tmp = str(self.data[i]).lower()
-					y = y.lower()
-					if y in tmp:
-						print("Invalid Word Found: " + y)
-						self.type = ERROR_GENERAL #error value
-						return;
-					elif tmp == '':
-						print("Null Value Found!")
-						self.type = ERROR_GENERAL #error value
-						return;
-
-			#assign values
-			self.ID = str(self.data[1])
-			self.msg = str(self.data[2])
-			self.curr = int(self.data[3])
-			self.item1 = int(self.data[4])
-			self.item2 = int(self.data[5])
-			self.item3 = int(self.data[6])
-
-			#check for default curr
-			if (self.curr < 10):
-				print("Invalid Amount Of Currency")
+			self.data = input.split(SEPERATOR)
+			#determine type
+			try:
+				self.type = int(self.data[0])
+			except:
+				print("Invalid Packet Type")
 				self.type = ERROR_GENERAL #error value
 				return;
 
+			print(self.data)
 
-			#except:
-				#print("Invalid Packet Structure")
-				#self.type = ERROR_GENERAL #error value
-				#return;
-		#RECIEVE
-		#Nothing Values
-		elif self.type == PACKET.ACK.value or  self.type == PACKET.PACKAGE_RECIEVE.value:
-			pass
-		else:
-			print("Unknown Packet Type {" + str(self.type) + "}")
-			print(PACKET.ACK.value)
-			print(type(PACKET.ACK.value))
+			#setup packet depending on type of packet
+			if self.type == PACKET.PACKAGE_SEND.value:
+				#try:
+				#grab character blacklist
+				blacklistFile = open("blacklist.txt", 'r')
+				blacklist = blacklistFile.read().splitlines()
+				blacklistFile.close()
+
+				#check for naughtyness
+				for i in range(1, 6):
+					for y in blacklist:
+						tmp = str(self.data[i]).lower()
+						y = y.lower()
+						if y in tmp:
+							print("Invalid Word Found: " + y)
+							self.type = ERROR_GENERAL #error value
+							return;
+						elif tmp == '':
+							print("Null Value Found!")
+							self.type = ERROR_GENERAL #error value
+							return;
+
+				#assign values
+				self.ID = str(self.data[1])
+				self.msg = str(self.data[2])
+				self.curr = int(self.data[3])
+				self.item1 = int(self.data[4])
+				self.item2 = int(self.data[5])
+				self.item3 = int(self.data[6])
+
+				#check for default curr
+				if (self.curr < 10):
+					print("Invalid Amount Of Currency")
+					self.type = ERROR_GENERAL #error value
+					return;
+			#Nothing Values
+			elif self.type == PACKET.ACK.value or  self.type == PACKET.PACKAGE_RECIEVE.value:
+				pass
+			else:
+				print("Unknown Packet Type {" + str(self.type) + "}")
+				self.type = ERROR_GENERAL #error value
+				return;
+		except:
+			print("Invalid Packet Structure")
 			self.type = ERROR_GENERAL #error value
 			return;
-
 
 #CREATE A ENTRY
 def createPackage(packet, _cursor, _db):
@@ -112,7 +107,6 @@ def clientThread(conn):
 
 	data = conn.recv(MAXRECV)
 
-	#https://docs.python.org/3/howto/unicode.html
 	data = data.decode('utf-8', 'replace').rstrip('\n')
 
 	print(data)
@@ -121,24 +115,27 @@ def clientThread(conn):
 	packet = packetStruct(data, db)
 
 	#Is Valid Packet?
-	if packet.type >= 0:
-		if packet.type == PACKET.ACK.value:
-			print("ACK")
-			conn.send(("0"+SEPERATOR+"ACK").encode('utf-8', 'replace'))
-		elif packet.type == PACKET.PACKAGE_SEND.value:
-			print("PACKAGE_SEND")
-			createPackage(packet, cursor, db);
-			conn.send(("0"+SEPERATOR+"VALID").encode('utf-8', 'replace'))
-		elif packet.type == PACKET.PACKAGE_RECIEVE.value:
-			print("PACKAGE_RECIEVE")
-			package = getPackage(cursor).fetchone();
-			conn.send(("2"+SEPERATOR+str(package[1])+SEPERATOR+str(package[2])+SEPERATOR+str(package[3])+SEPERATOR+str(package[4])+SEPERATOR+str(package[5])).encode('utf-8', 'replace'))
+	try:
+		if packet.type >= 0:
+			if packet.type == PACKET.ACK.value:
+				print("ACK")
+				conn.send(("0"+SEPERATOR+"ACK").encode('utf-8', 'replace'))
+			elif packet.type == PACKET.PACKAGE_SEND.value:
+				print("PACKAGE_SEND")
+				createPackage(packet, cursor, db);
+				conn.send(("0"+SEPERATOR+"VALID").encode('utf-8', 'replace'))
+			elif packet.type == PACKET.PACKAGE_RECIEVE.value:
+				print("PACKAGE_RECIEVE")
+				package = getPackage(cursor).fetchone();
+				conn.send(("2"+SEPERATOR+str(package[1])+SEPERATOR+str(package[2])+SEPERATOR+str(package[3])+SEPERATOR+str(package[4])+SEPERATOR+str(package[5])).encode('utf-8', 'replace'))
+			else:
+				print("Unknown Package Type " + data[0])
+				conn.send(("0"+SEPERATOR+"UNKNOWN").encode('utf-8', 'replace'))
 		else:
-			print("Unknown Package Type " + data[0])
-			conn.send(("0"+SEPERATOR+"UNKNOWN").encode('utf-8', 'replace'))
-	else:
-		conn.send(("0"+SEPERATOR+"INVALID").encode('utf-8', 'replace'))
-
+			print("Bad Packet Type")
+			conn.send(("0"+SEPERATOR+"INVALID").encode('utf-8', 'replace'))
+	except:
+		print("There was a problem with the request")
 	#disconnect
 	print("Disconnecting From Database...")
 	cursor.close()
