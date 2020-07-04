@@ -35,12 +35,17 @@ class packetStruct:
 		#setup packet depending on type of packet
 		if self.type == PACKET.PACKAGE_SEND.value:
 			try:
-				self.ID = self.data[1]
-				self.msg = self.data[2]
+				self.ID = str(self.data[1])
+				self.msg = str(self.data[2])
 				self.curr = int(self.data[3])
 				self.item1 = int(self.data[4])
 				self.item2 = int(self.data[5])
 				self.item3 = int(self.data[6])
+				#check for default curr
+				if (self.curr < 10):
+					print("Invalid Amount Of Currency")
+					self.type = ERROR_GENERAL #error value
+					return;
 			except:
 				print("Invalid Packet Structure")
 				self.type = ERROR_GENERAL #error value
@@ -63,7 +68,6 @@ def createPackage(packet, _cursor, _db):
 	_cursor.execute(q, v)
 	#save changes
 	_db.commit()
-	print("Code here :)")
 
 #GET A RANDOM ENTRY
 def getPackage(_cursor):
