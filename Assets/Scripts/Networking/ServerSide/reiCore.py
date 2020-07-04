@@ -20,7 +20,7 @@ class PACKET(enum.Enum):
     PACKAGE_RECIEVE = 2
 
 class packetStruct:
-	def __init__(self, input):
+	def __init__(self, input, db):
 		self.data = input.split(SEPERATOR)
 		#determine type
 		try:
@@ -34,22 +34,45 @@ class packetStruct:
 
 		#setup packet depending on type of packet
 		if self.type == PACKET.PACKAGE_SEND.value:
-			try:
-				self.ID = str(self.data[1])
-				self.msg = str(self.data[2])
-				self.curr = int(self.data[3])
-				self.item1 = int(self.data[4])
-				self.item2 = int(self.data[5])
-				self.item3 = int(self.data[6])
-				#check for default curr
-				if (self.curr < 10):
-					print("Invalid Amount Of Currency")
-					self.type = ERROR_GENERAL #error value
-					return;
-			except:
-				print("Invalid Packet Structure")
+			#try:
+			#grab character blacklist
+			blacklistFile = open("blacklist.txt", 'r')
+			blacklist = blacklistFile.read().splitlines()
+			blacklistFile.close()
+
+			#check for naughtyness
+			for i in range(1, 6):
+				for y in blacklist:
+					tmp = str(self.data[i]).lower()
+					y = y.lower()
+					if y in tmp:
+						print("Invalid Word Found: " + y)
+						self.type = ERROR_GENERAL #error value
+						return;
+					elif tmp == '':
+						print("Null Value Found!")
+						self.type = ERROR_GENERAL #error value
+						return;
+
+			#assign values
+			self.ID = str(self.data[1])
+			self.msg = str(self.data[2])
+			self.curr = int(self.data[3])
+			self.item1 = int(self.data[4])
+			self.item2 = int(self.data[5])
+			self.item3 = int(self.data[6])
+
+			#check for default curr
+			if (self.curr < 10):
+				print("Invalid Amount Of Currency")
 				self.type = ERROR_GENERAL #error value
 				return;
+
+
+			#except:
+				#print("Invalid Packet Structure")
+				#self.type = ERROR_GENERAL #error value
+				#return;
 		#RECIEVE
 		#Nothing Values
 		elif self.type == PACKET.ACK.value or  self.type == PACKET.PACKAGE_RECIEVE.value:
@@ -60,6 +83,7 @@ class packetStruct:
 			print(type(PACKET.ACK.value))
 			self.type = ERROR_GENERAL #error value
 			return;
+
 
 #CREATE A ENTRY
 def createPackage(packet, _cursor, _db):
@@ -78,7 +102,8 @@ def getPackage(_cursor):
 def clientThread(conn):
 	#Connect To DB
 	print("Thread Connecting To Database...")
-	db = mysql.connector.connect(host="localhost",user=dbUsername, password=dbPassword, database=dbTable)
+
+	db = mysql.connector.connect(host="localhost",user=dbUsername, password=dbPassword, database=dbTable, charset='utf8', use_unicode=True)
 
 	print("Connected To Database!")
 
@@ -86,30 +111,33 @@ def clientThread(conn):
 	cursor = db.cursor()
 
 	data = conn.recv(MAXRECV)
-	data = data.decode().rstrip("\n");
+
+	#https://docs.python.org/3/howto/unicode.html
+	data = data.decode('utf-8', 'replace').rstrip('\n')
+
 	print(data)
 
 	#Decode Packet
-	packet = packetStruct(data)
+	packet = packetStruct(data, db)
 
 	#Is Valid Packet?
 	if packet.type >= 0:
 		if packet.type == PACKET.ACK.value:
 			print("ACK")
-			conn.send(("0"+SEPERATOR+"ACK").encode())
+			conn.send(("0"+SEPERATOR+"ACK").encode('utf-8', 'replace'))
 		elif packet.type == PACKET.PACKAGE_SEND.value:
 			print("PACKAGE_SEND")
 			createPackage(packet, cursor, db);
-			conn.send(("0"+SEPERATOR+"VALID").encode())
+			conn.send(("0"+SEPERATOR+"VALID").encode('utf-8', 'replace'))
 		elif packet.type == PACKET.PACKAGE_RECIEVE.value:
 			print("PACKAGE_RECIEVE")
 			package = getPackage(cursor).fetchone();
-			conn.send(("2"+SEPERATOR+str(package[1])+SEPERATOR+str(package[2])+SEPERATOR+str(package[3])+SEPERATOR+str(package[4])+SEPERATOR+str(package[5])).encode())
+			conn.send(("2"+SEPERATOR+str(package[1])+SEPERATOR+str(package[2])+SEPERATOR+str(package[3])+SEPERATOR+str(package[4])+SEPERATOR+str(package[5])).encode('utf-8', 'replace'))
 		else:
 			print("Unknown Package Type " + data[0])
-			conn.send(("0"+SEPERATOR+"UNKNOWN").encode())
+			conn.send(("0"+SEPERATOR+"UNKNOWN").encode('utf-8', 'replace'))
 	else:
-		conn.send(("0"+SEPERATOR+"INVALID").encode())
+		conn.send(("0"+SEPERATOR+"INVALID").encode('utf-8', 'replace'))
 
 	#disconnect
 	print("Disconnecting From Database...")
@@ -137,7 +165,7 @@ credFile.close()
 print("Testing Database Connection...")
 
 #connect to db
-db_T = mysql.connector.connect(host="localhost",user=dbUsername, password=dbPassword, database=dbTable)
+db_T = mysql.connector.connect(host="localhost",user=dbUsername, password=dbPassword, database=dbTable, charset='utf8', use_unicode=True)
 
 print("Connected To Database Successfully!")
 
