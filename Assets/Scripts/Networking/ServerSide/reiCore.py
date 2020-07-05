@@ -63,9 +63,21 @@ class packetStruct:
 				self.item2 = int(self.data[5])
 				self.item3 = int(self.data[6])
 
-				#check for default curr
+				#check for incorrect values
 				if (self.curr < 10):
 					print("Invalid Amount Of Currency")
+					self.type = ERROR_GENERAL #error value
+					return;
+				elif (self.item1 < 0):
+					print("Item1 Amount Invalid")
+					self.type = ERROR_GENERAL #error value
+					return;
+				elif (self.item2 < 0):
+					print("Item2 Amount Invalid")
+					self.type = ERROR_GENERAL #error value
+					return;
+				elif (self.item3 < 0):
+					print("Item3 Amount Invalid")
 					self.type = ERROR_GENERAL #error value
 					return;
 			#Nothing Values

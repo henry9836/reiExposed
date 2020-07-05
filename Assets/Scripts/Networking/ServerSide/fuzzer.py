@@ -3,7 +3,7 @@ import random
 
 IP = "45.32.245.198"
 FILE = "fuzz.txt"
-PORT = 27010
+PORT = 27100
 MAXRECV = 2048
 
 
