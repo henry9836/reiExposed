@@ -18,6 +18,8 @@ public class clientcencorship : MonoBehaviour
     private string saveFilePath = "sjw.txt";
     private StreamWriter righter;
 
+    public string debugTOCENCOR;
+
     void Awake()
     {
         if (FileExists(saveFilePath) == false)
@@ -30,23 +32,28 @@ public class clientcencorship : MonoBehaviour
 
     void Start()
     {
-        string tmp = watchYourProfanity("The the fu Ckquick brown fox fox jumps ̀ ́ ̂ ̃ ̄ ̅ ̆ ̇ ̈ ̉ ̊Блять вы, сука! ̣ ̤ ̥ ̦ ̧ ̨ ̫ ̬ ̭ ̮ ̯ ̰ ̱ ̲ ̳ ̴ ̵ ̶ ̷ ̸ ̹ ̺ ̻ ̼ ̽ ̾ ̿ ̀ ́ ͂ ̓ ̈́ ͅ ͆ ͇ ͈ ͉ ͊ ͋ ͌ ͍ ͎ ͏ ͠ ͡ ͢ ͣ ͤ ͥ ͦ ͧ ͨ ͩ ͪ ͫ ͬ ͭ ͮ ͯ the lazy fu ck Fuck dog dog.");
+        string tmp = watchYourProfanity(debugTOCENCOR);
         Debug.Log(tmp);
     }
 
     public string watchYourProfanity(string dump)
     {
+        string[] graballlines = File.ReadAllLines(saveFilePath);
+        List<string> dawords = new List<string>() { };
 
-        for (int j = 0; j < 2; j++)
+        for (int i = 0; i < graballlines.Length; i++)
         {
-            string check = "fuck";
+            dawords.Add(graballlines[i]);
+        }
+
+
+        for (int j = 0; j < dawords.Count; j++)
+        {
+            string check = dawords[j];
             string newcheck = "";
             string checkto = "";
 
-            if (j == 1)
-            {
-                check = "the";
-            }
+
 
             for (int i = 0; i < check.Length; i++)
             {
@@ -62,14 +69,12 @@ public class clientcencorship : MonoBehaviour
 
             string rxp = @"(?i)(" + newcheck + ")(.*?)";
 
-            Debug.Log(rxp);
 
             Regex rx = new Regex(rxp);
             MatchCollection ans = rx.Matches(dump);
 
             for (int i = ans.Count - 1; i > -1; i--)
             {
-                //Debug.Log(ans[i].Index + " " + ans[i].Length + " " + ans[i].Value);
                 dump = dump.Remove(ans[i].Index, ans[i].Length);
                 dump = dump.Insert(ans[i].Index, checkto);
             }
