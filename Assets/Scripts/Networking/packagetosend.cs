@@ -233,7 +233,7 @@ public class packagetosend : MonoBehaviour
         List<string> decoding = new List<string>() { };
         string resp = responce;
         datadump thedata = new datadump();
-        Debug.Log("Decoding: " + resp);
+        //Debug.Log("Decoding: " + resp);
         thedata.tpacketType = int.Parse(resp.Substring(0, 1));
         resp = resp.Substring(3);
 
