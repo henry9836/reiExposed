@@ -14,7 +14,7 @@ public class seekBoss : StateMachineBehaviour
     GameObject player;
     NavMeshAgent agent;
     BossController.bossAttacks attack;
-
+    public AudioClip groundSlam;
 
     void Reset(Animator animator)
     {
@@ -24,15 +24,50 @@ public class seekBoss : StateMachineBehaviour
         animator.ResetTrigger("Fireball");
         animator.ResetTrigger("BodySlam");
         animator.ResetTrigger("Exit");
+
+        if (animator.GetBool("PlayGroundSlamWhenBack"))
+        {
+            bc.GetComponent<AudioSource>().PlayOneShot(groundSlam);
+        }
+
+        animator.SetBool("PlayGroundSlamWhenBack", false);
+
     }
 
     void PickAttack()
     {
-        //Pick a random attack
-        attack = (BossController.bossAttacks)Random.Range(0, (int)BossController.bossAttacks.FIREBALL + 1);
+        //Filter attacks from distances
+        List<BossController.bossAttacks> validAttacks = new List<BossController.bossAttacks>();
 
-        //Query attack range from boss controller
-        bc.neededAttackRange = bc.attackTriggerRanges[(int)attack];
+        float currentDistance = Vector3.Distance(bc.gameObject.transform.position, player.transform.position);
+
+        for (int i = 0; i < (int)BossController.bossAttacks.FIREBALL; i++)
+        {
+            //if we are close enough push onto list but not too close
+            if ((bc.attackTriggerRanges[i].x < currentDistance) && (bc.attackTriggerRanges[i].y >= currentDistance))
+            {
+                validAttacks.Add((BossController.bossAttacks)i);
+            }
+        }
+
+        //If we have a valid attack
+        if (validAttacks.Count > 0) 
+        {
+
+            //From the valid attacks pick a random attack
+            attack = validAttacks[Random.Range(0, validAttacks.Count)];
+
+        }
+
+        //Fallback we don't have an attack
+        else
+        {
+            //Pick a random attack
+            attack = (BossController.bossAttacks)Random.Range(0, (int)BossController.bossAttacks.FIREBALL + 1);
+        }
+
+        //Query needed attack range from boss controller
+        bc.neededAttackRange = bc.attackTriggerRanges[(int)attack].y;
         needAttackRange = bc.neededAttackRange;
         bc.animationOverrideFunc(false);
 
@@ -71,11 +106,11 @@ public class seekBoss : StateMachineBehaviour
             agent.ResetPath();
             agent.isStopped = false;
 
-            if (bc.isBossLookingAtPlayer(bc.angleThresholdBeforeMoving))
-            {
-                animator.SetTrigger("Fireball");
-            }
-            /*
+            //if (bc.isBossLookingAtPlayer(bc.angleThresholdBeforeMoving))
+            //{
+            //    animator.SetBool("Charging", true);
+            //}
+
             switch (attack)
             {
                 case BossController.bossAttacks.BODYSLAM:
@@ -90,7 +125,8 @@ public class seekBoss : StateMachineBehaviour
                 case BossController.bossAttacks.CHARGE:
                     {
                         //Are we looking at player?
-                        if (bc.isBossLookingAtPlayer(bc.angleThresholdBeforeMoving)) {
+                        if (bc.isBossLookingAtPlayer(bc.angleThresholdBeforeMoving))
+                        {
                             animator.SetBool("Charging", true);
                         }
                         break;
@@ -119,7 +155,7 @@ public class seekBoss : StateMachineBehaviour
                         break;
                     }
             }
-            */
+
 
         }
 

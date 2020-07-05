@@ -34,28 +34,27 @@ public class cameraControler : MonoBehaviour
     private float zOffsetColl;
     private float oldfov;
     private bool FOVonce = true;
+    public GameObject umbrella;
+    public GameObject crosshair;
 
     private bool cooldownlock;
-    private GameObject umbrella;
     private float fov;
-
-    public GameObject crosshair;
     private GameObject pausemenu;
 
 
     private void Awake()
     {
-        umbrella = GameObject.Find("umbrella ella ella");
         Cursor.lockState = CursorLockMode.Locked;
         camPivot = transform.GetChild(0).gameObject;
         camRoot = transform.GetChild(0).GetChild(0).gameObject;
         mainCam = transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Camera>();
         pausemenu = GameObject.Find("pauseMenu");
+        crosshair = GameObject.Find("crosshair");
     }
 
     void Update()
     {
-        cooldownlock = umbrella.GetComponent<umbrella>().cooldown;
+        cooldownlock = transform.parent.GetComponent<umbrella>().cooldown;
 
         pitchValueAdj = Mathf.DeltaAngle(camPivot.transform.localRotation.eulerAngles.x, 360.0f - maxPitchUp) / -(maxPitchUp + maxPitchDown);
         zOffset = Mathf.Lerp(2.0f, maxDistance, distCurve.Evaluate(pitchValueAdj));
@@ -106,10 +105,15 @@ public class cameraControler : MonoBehaviour
         }
         crosshair.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, ADStimer);
         camRoot.transform.localPosition = new Vector3(Mathf.Lerp(0.0f, 0.4f, ADStimer), 0.0f, zOffsetColl);
-        if (pausemenu.GetComponent<pauseMenu>().paused == false)
-        {
-            Time.timeScale = Mathf.Lerp(1.0f, 0.3f, ADStimer);
-        }
+        //=============================
+        // REMOVED
+        //-----------------------------
+        // SLOW MOTION EFFECT
+        //=============================
+        //if (pausemenu.GetComponent<pauseMenu>().paused == false)
+        //{
+        //    Time.timeScale = Mathf.Lerp(1.0f, 0.3f, ADStimer);
+        //}
         mainCam.fieldOfView = fov;
         CameraRotation();
     }
@@ -165,13 +169,14 @@ public class cameraControler : MonoBehaviour
         if (Physics.Raycast(origin, direction, out hit, zOffset, obstacleLayers))
         {
             Debug.DrawLine(origin, hit.point, Color.yellow);
+
             if (ADS == true)
             {
                 aimDistance = hit.distance;
             }
             else
             {
-                hitDistance = hit.distance;
+                hitDistance =  hit.distance;
             }
         }
         else

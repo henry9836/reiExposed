@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
-
+using UnityEngine.Events;
 public class BossController : MonoBehaviour
 {
     public enum bossAttacks
@@ -42,15 +42,18 @@ public class BossController : MonoBehaviour
     [HideInInspector]
     public float lastUpdatedAttackDamage = 0.0f;
 
+    public bool sleepOverride = false;
     public bool animationOverride = false;
     public bool trackPlayer = true;
+    [Range(0.05f, 0.5f)]
+    public float checkPlayerPositionInterval = 0.5f;
     public float turnSpeed = 0.1f;
     public float chargeSpeed = 30.0f;
     public float health;
     public float maxHealth = 1000.0f;
     [Range(0.0f, 1.0f)]
     public float angleThresholdBeforeMoving = 0.95f;
-    public List<float> attackTriggerRanges = new List<float>();
+    public List<Vector2> attackTriggerRanges = new List<Vector2>();
     public List<BoxCollider> leftArms = new List<BoxCollider>();
     public List<BoxCollider> rightArms = new List<BoxCollider>();
     public List<BoxCollider> leftLegs = new List<BoxCollider>();
@@ -58,14 +61,65 @@ public class BossController : MonoBehaviour
     public List<BoxCollider> otherBody = new List<BoxCollider>();
     public List<Transform> fireBallCannonLocations = new List<Transform>();
 
+    //Sounds
+    public List<AudioClip> hurtSounds = new List<AudioClip>();
+
+    public UnityEvent onDeath;
+   
+
     private bool onlyApplyDamageOnce = true;
+    private bool alreadyAppliedDamage = false;
     private bool deathonce = true;
     private UPDATE_MODE updateMode = UPDATE_MODE.DEFAULT;
+    private Vector3 lastKnownPlayerPosition = Vector3.zero;
+    private float playerCheckTimer = 0.0f;
+    private AudioSource audio;
+
+    public void sleepOverrideFunc(bool mode)
+    {
+        sleepOverride = mode;
+
+        if (!mode)
+        {
+            GetComponent<Animator>().SetBool("Idle", false);
+        }
+
+    }
+    public Vector3 predictPlayerPosition(float projectileSpeed, GameObject projectile)
+    {
+        //Positions
+        Vector3 result = Vector3.zero;
+        Vector3 currentPosition = player.transform.position;
+
+        //Get Direction
+        Vector3 directionOfMovement = (currentPosition - lastKnownPlayerPosition).normalized;
+
+        //Get velocity
+        float time = checkPlayerPositionInterval + playerCheckTimer;
+        float distance = Vector3.Distance(currentPosition, lastKnownPlayerPosition);
+        float velocity = distance / time;
+        Vector3 targetVelocity = directionOfMovement * velocity;
+
+
+        //velocity *= velocity;
+
+        //Get Time to hit target
+        float timeToHit = distance / projectileSpeed;
+
+        //Get Predicted Position
+        result = currentPosition + ((directionOfMovement * velocity)*timeToHit)*65.0f;
+
+
+        Debug.DrawRay(projectile.transform.position, result, Color.red, 2.0f);
+
+        return result;
+    }
 
     public void arm(ARMTYPE type, bool arm, float attackDamage, bool _onlyApplyDamageOnce)
     {
         lastUpdatedAttackDamage = attackDamage;
         onlyApplyDamageOnce = _onlyApplyDamageOnce;
+        alreadyAppliedDamage = false;
         switch (type)
         {
             case ARMTYPE.ARM_LEFT_ARMS:
@@ -172,11 +226,12 @@ public class BossController : MonoBehaviour
     {
         float result = lastUpdatedAttackDamage;
 
-        if (onlyApplyDamageOnce)
+        if (onlyApplyDamageOnce && alreadyAppliedDamage)
         {
             lastUpdatedAttackDamage = 0.0f;
         }
 
+        alreadyAppliedDamage = true;
         return result;
     }
 
@@ -207,11 +262,14 @@ public class BossController : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         player = GameObject.FindGameObjectWithTag("Player");
 
+        lastKnownPlayerPosition = player.transform.position;
+
         if (trackPlayer)
         {
             agent.angularSpeed = 0.0f;
         }
-
+        GetComponent<Animator>().SetBool("Idle", true);
+        audio = GetComponent<AudioSource>();
     }
 
     public bool isBossLookingAtPlayer(float thresholdAngle)
@@ -226,49 +284,69 @@ public class BossController : MonoBehaviour
 
     private void Update()
     {
-
-        if (updateMode == UPDATE_MODE.DEFAULT)
+        if (!sleepOverride)
         {
 
-            if (trackPlayer && !animationOverride)
+            playerCheckTimer += Time.deltaTime;
+
+            if (playerCheckTimer > checkPlayerPositionInterval)
             {
-                Vector3 dir = (player.transform.position - transform.position).normalized;
-                Quaternion endRot = Quaternion.LookRotation(dir, transform.up);
-
-
-                if (isBossLookingAtPlayer(angleThresholdBeforeMoving))
-                {
-                    agent.isStopped = false;
-                }
-                else if (!agent.isStopped)
-                {
-                    agent.isStopped = true;
-                }
-
-                //transform.rotation = Quaternion.Lerp(transform.rotation, endRot, 0.005f);
-
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, endRot, turnSpeed * Time.deltaTime);
-
+                lastKnownPlayerPosition = player.transform.position;
+                playerCheckTimer = 0.0f;
             }
 
-            if (deathonce == true)
+            if (deathonce)
             {
                 if (health <= 0.0f)
                 {
                     deathonce = false;
                     death();
+                    return;
+                }
+
+
+                if (updateMode == UPDATE_MODE.DEFAULT)
+                {
+
+                    if (trackPlayer && !animationOverride)
+                    {
+                        Vector3 dir = (player.transform.position - transform.position).normalized;
+                        Quaternion endRot = Quaternion.LookRotation(dir, transform.up);
+
+
+                        if (isBossLookingAtPlayer(angleThresholdBeforeMoving))
+                        {
+                            agent.isStopped = false;
+                        }
+                        else if (!agent.isStopped)
+                        {
+                            agent.isStopped = true;
+                        }
+
+                        //transform.rotation = Quaternion.Lerp(transform.rotation, endRot, 0.005f);
+
+                        transform.rotation = Quaternion.RotateTowards(transform.rotation, endRot, turnSpeed * Time.deltaTime);
+
+                    }
+
+
+                }
+                else if (updateMode == UPDATE_MODE.CHARGE_ATTACK)
+                {
+                    transform.Translate(transform.forward * Time.deltaTime * chargeSpeed, Space.World);
+                }
+                else
+                {
+                    Debug.LogWarning($"Cannot run boss update as [{updateMode}] has no update behaviour");
                 }
             }
         }
-        else if (updateMode == UPDATE_MODE.CHARGE_ATTACK)
-        {
-            transform.Translate(transform.forward * Time.deltaTime * chargeSpeed, Space.World);
-        }
         else
         {
-            Debug.LogWarning($"Cannot run boss update as [{updateMode}] has no update behaviour");
+            agent.isStopped = true;
+            agent.ResetPath();
+            agent.isStopped = false;
         }
-
     }
 
     public float IBeanShot(float damage)
@@ -281,39 +359,48 @@ public class BossController : MonoBehaviour
             health -= damage;
 
             delt = damage;
-            Debug.Log("full damage");
         }
         else if ((health / maxHealth) > (this.gameObject.GetComponent<ghostEffect>().ghostpersent))
         {
             health = maxHealth * (this.gameObject.GetComponent<ghostEffect>().ghostpersent);
 
             delt = startHealth - health;
-            Debug.Log("not full damage");
+            this.gameObject.GetComponent<ghostEffect>().shakeIcon();
         }
         else
         {
             delt = 0.0f;
-            Debug.Log("no damage");
+            this.gameObject.GetComponent<ghostEffect>().shakeIcon();
+
         }
+
+        audio.PlayOneShot(hurtSounds[Random.Range(0, hurtSounds.Count)]);
 
         return (delt);
     }
 
     void death()
     {
+        onDeath.Invoke();
+        GetComponent<Animator>().SetTrigger("Dead");
+        agent.isStopped = true;
+        agent.ResetPath();
+        agent.isStopped = false;
         this.gameObject.GetComponent<ghostEffect>().UIHP.GetComponent<Image>().fillAmount = 0.0f;
-        Destroy(this.gameObject);
-
-
     }
 
     private void OnTriggerEnter(Collider other)
     {
+
         if (updateMode == UPDATE_MODE.CHARGE_ATTACK)
         {
-            GetComponent<Animator>().SetBool("Charging", false);
-            animationOverrideFunc(false);
-            updateMode = UPDATE_MODE.DEFAULT;
+            //If not ground
+            if (other.gameObject.layer != LayerMask.NameToLayer("Ground"))
+            {
+                GetComponent<Animator>().SetBool("Charging", false);
+                animationOverrideFunc(false);
+                updateMode = UPDATE_MODE.DEFAULT;
+            }
         }
     }
 
