@@ -123,14 +123,12 @@ public class packagetosend : MonoBehaviour
 
     void Start()
     {
-        //GameObject[] enemylist = GameObject.FindGameObjectsWithTag("Enemy");
+        GameObject[] enemylist = GameObject.FindGameObjectsWithTag("Myth");
 
-        //for (int i = 0; i < enemylist.Length; i++)
-        //{
-        //    send(2);
-        //}
-
-        send(sendpackettypes.PACKAGERECIVE);
+        for (int i = 0; i < enemylist.Length + 100; i++)
+        {
+            send(sendpackettypes.PACKAGERECIVE);
+        }
     }
 
     void Update()
@@ -141,7 +139,7 @@ public class packagetosend : MonoBehaviour
             send(ddpackettype);
         }
     }
-
+    public void send(int type) { send((sendpackettypes)type); }
     public void send(sendpackettypes type)
     {
         datadump package = new datadump();
