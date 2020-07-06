@@ -95,6 +95,12 @@ public class EnemyController : MonoBehaviour
     public List<float> attackDmg = new List<float>();
     public List<MOVESETRESTRICTION> attackType = new List<MOVESETRESTRICTION>();
 
+    [Header("KillObjects")]
+    public CapsuleCollider col;
+    public CapsuleCollider col2;
+    public GameObject destoryThis;
+    public GameObject destoryThis2;
+
     [Header("Debug")]
     public bool debugMode;
     public string currentMode = "PENDING";
@@ -143,6 +149,14 @@ public class EnemyController : MonoBehaviour
     private float blockSubtractTimer = 0.0f;
     private float maxHealth;
     private NavMeshPath path;
+
+    public void kys()
+    {
+        Destroy(destoryThis);
+        Destroy(destoryThis2);
+        Destroy(animator);
+        this.enabled = false;
+    }
 
     //PLAYER DAMAGE QUERY
     public float QueryDamage()
@@ -583,6 +597,8 @@ public class EnemyController : MonoBehaviour
             {
                 DeathEvent();
             }
+
+            kys();
         }
 
         //Stop a race condition
