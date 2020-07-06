@@ -9,7 +9,7 @@ public class AIAttackContainer : MonoBehaviour
     public bool damageOnlyOnce = true;
     public AIBody.BodyParts bodyPartsUsedInAttack;
     public bool mustFacePlayer = true;
-    public bool overrideTrackingVisonCone = false;
+    public bool overrideTrackingVisionCone = false;
     [Range(0.0f, 1.0f)]
     public float facePlayerThreshold = 0.75f;
     public Vector2 rangeForAttack = new Vector2(1.0f, 10.0f);

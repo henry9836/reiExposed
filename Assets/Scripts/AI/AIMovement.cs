@@ -41,6 +41,7 @@ public class AIMovement : MonoBehaviour
     private float initalRotSpeed = 10.0f;
 
     private Vector3 initalPosition = Vector3.zero;
+    private NavMeshAgent agent;
 
     public bool canReachDest(Vector3 dest)
     {
@@ -64,7 +65,13 @@ public class AIMovement : MonoBehaviour
         initalPosition = transform.position;
         initalRotSpeed = rotSpeed;
         initalMoveSpeed = moveSpeed;
+        agent = GetComponent<NavMeshAgent>();
+        agent.speed = moveSpeed;
+        agent.angularSpeed = rotSpeed;
     }
+
+
+
 
 
 }

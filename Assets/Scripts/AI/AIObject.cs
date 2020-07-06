@@ -8,7 +8,8 @@ using UnityEngine;
 [RequireComponent(typeof(AIMovement))]
 [RequireComponent(typeof(AIInformer))]
 [RequireComponent(typeof(AIBody))]
-public abstract class AIObject : MonoBehaviour
+[RequireComponent(typeof(Animator))]
+public class AIObject : MonoBehaviour
 {
     public List<AIAttackContainer> attacks = new List<AIAttackContainer>();
     public AIModeSwitcher switcher;
