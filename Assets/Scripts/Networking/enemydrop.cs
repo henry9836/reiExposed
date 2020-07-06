@@ -10,6 +10,8 @@ public class enemydrop : MonoBehaviour
     public bool test = false;
     public GameObject censor;
 
+    public GameObject dropmessage;
+
     private void Update()
     {
         if (test == true)
@@ -20,8 +22,7 @@ public class enemydrop : MonoBehaviour
     }
 
     public void enemyiskil() //no
-    {
-
+    { 
         StartCoroutine(mess());
     }
 
@@ -54,8 +55,13 @@ public class enemydrop : MonoBehaviour
             yield return null;
         }
 
-        //UIpop.SetActive(false);
+        UIpop.SetActive(false);
 
         yield return null;
+    }
+
+    public void dropondeath(Transform mythsTransform)
+    {
+        GameObject.Instantiate(dropmessage, mythsTransform);
     }
 }

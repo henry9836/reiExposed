@@ -125,7 +125,7 @@ public class packagetosend : MonoBehaviour
     {
         GameObject[] enemylist = GameObject.FindGameObjectsWithTag("Myth");
 
-        for (int i = 0; i < enemylist.Length + 100; i++)
+        for (int i = 0; i < enemylist.Length; i++)
         {
             send(sendpackettypes.PACKAGERECIVE);
         }
