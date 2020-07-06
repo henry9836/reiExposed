@@ -34,8 +34,6 @@ public abstract class AIObject : MonoBehaviour
     [SerializeField]
     public float turnSpeed = 2.0f;
     [SerializeField]
-    public Transform target;
-    [SerializeField]
     public GameObject player;
 
 
