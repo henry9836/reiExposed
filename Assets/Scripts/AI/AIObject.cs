@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class BossBase : MonoBehaviour
+public abstract class AIObject : MonoBehaviour
 {
+    public List<> attacks;
     public float health = 300.0f;
-    [SerializeField]
+    public float startHealth = 0.0f;
     public float revealAmount = 0.0f;
+    [Range(1, 10)]
+    public int amountofModes = 1;
+
     [SerializeField]
     public float movementSpeed = 10.0f;
     [SerializeField]
@@ -15,4 +19,12 @@ public abstract class BossBase : MonoBehaviour
     public float turnSpeed = 2.0f;
     [SerializeField]
     public Transform target;
+    [SerializeField]
+    public GameObject player;
+
+    private void Start()
+    {
+        startHealth = health;
+    }
+
 }
