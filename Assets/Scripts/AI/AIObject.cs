@@ -7,6 +7,7 @@ using UnityEngine;
 [RequireComponent(typeof(AITracker))]
 [RequireComponent(typeof(AIMovement))]
 [RequireComponent(typeof(AIInformer))]
+[RequireComponent(typeof(AIBody))]
 public abstract class AIObject : MonoBehaviour
 {
     public List<AIAttackContainer> attacks = new List<AIAttackContainer>();
@@ -14,6 +15,7 @@ public abstract class AIObject : MonoBehaviour
     public AITracker tracker;
     public AIMovement movement;
     public AIInformer informer;
+    public AIBody body;
     public float health = 300.0f;
     [HideInInspector]
     public float startHealth = 0.0f;
@@ -22,6 +24,8 @@ public abstract class AIObject : MonoBehaviour
     [Range(1, 10)]
     public int amountofModes = 1;
     public int selectedAttack = -1;
+    [HideInInspector]
+    public int currentMode = 0;
 
     [SerializeField]
     public float movementSpeed = 10.0f;
@@ -71,9 +75,14 @@ public abstract class AIObject : MonoBehaviour
         {
             informer = GetComponent<AIInformer>();
         }
+        if (body == null)
+        {
+            body = GetComponent<AIBody>();
+        }
 
         //Safety Checks
         selectedAttack = -1;
+        currentMode = 0;
     }
 
 
