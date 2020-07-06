@@ -37,52 +37,42 @@ public class AIAttackContainer : MonoBehaviour
             case 1:
                 {
                     return allowedModeOne;
-                    //break;
                 }
             case 2:
                 {
                     return allowedModeTwo;
-                    //break;
                 }
             case 3:
                 {
                     return allowedModeThree;
-                    //break;
                 }
             case 4:
                 {
                     return allowedModeFour;
-                    //break;
                 }
             case 5:
                 {
                     return allowedModeFive;
-                    //break;
                 }
             case 6:
                 {
                     return allowedModeSix;
-                    //break;
                 }
             case 7:
                 {
                     return allowedModeSeven;
-                    //break;
                 }
             case 8:
                 {
                     return allowedModeEight;
-                    //break;
                 }
             case 9:
                 {
                     return allowedModeNine;
-                    //break;
                 }
             case 10:
                 {
                     return allowedModeTen;
-                    //break;
                 }
         }
 
