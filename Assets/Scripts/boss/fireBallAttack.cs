@@ -7,15 +7,17 @@ public class fireBallAttack : StateMachineBehaviour
 
     public int fireballAmount = 3;
     public Vector2 fireballAmountRange = new Vector2(2, 5);
-    [Range(0.2f, 1.0f)]
+    //[Range(0.2f, 1.0f)]
     public float fireBallSpread = 15.0f;
     public float fireballThrowFrame = 0.5f;
     public Vector2 sizeRange = new Vector2(0.3f, 1.0f);
     public GameObject fireballPrefab;
+    public List<AudioClip> sfx;
 
 
     BossController bc;
     GameObject player;
+    AudioSource audio;
     int loopCount = 0;
     bool fireballFired = false;
 
@@ -45,8 +47,11 @@ public class fireBallAttack : StateMachineBehaviour
 
             Debug.DrawLine(fireball.transform.position, targetPosition, Color.magenta, 2.0f);
 
-            fireball.GetComponent<fireBallController>().fullSpeedAheadCaptain();
+            //fireball.GetComponent<fireBallController>().fullSpeedAheadCaptain();
         }
+
+        //Play sound effect
+        audio.PlayOneShot(sfx[Random.Range(0, sfx.Count)]);
 
     }
 
@@ -57,6 +62,7 @@ public class fireBallAttack : StateMachineBehaviour
         player = bc.player;
         loopCount = 0;
         bc.animationOverrideFunc(true);
+        audio = bc.gameObject.GetComponent<AudioSource>();
     }
 
     //OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

@@ -4,16 +4,22 @@ using UnityEngine;
 
 public class PlayerAttack : StateMachineBehaviour
 {
-    private GameObject umbrella;
+    public Vector2 attackWindow = new Vector2(0.0f, 0.9f);
+
+    private umbrella umbrella;
     private bool once = true;
    
 
     //OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        umbrella = GameObject.Find("umbrella ella ella");
+        if (umbrella == null)
+        {
+            umbrella = animator.GetComponent<umbrella>();
+        }
         animator.SetBool("Attacking", true);
         once = true;
+        animator.ResetTrigger("Attack");
     }
 
     //OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -21,31 +27,27 @@ public class PlayerAttack : StateMachineBehaviour
     {
         if (once == true)
         {
-            if ((stateInfo.normalizedTime % 1.0f) >= 0.50f)
+            if ((stateInfo.normalizedTime % 1.0f) >= attackWindow.x)
             {
-                umbrella.GetComponent<umbrella>().whack();
+                umbrella.Hitbox(true);
                 once = false;
             }
         }
 
 
-        if ((stateInfo.normalizedTime % 1.0f) >= 0.95f)
+        if ((stateInfo.normalizedTime % 1.0f) >= attackWindow.y)
         {
-            animator.SetTrigger("Exit");
+            animator.SetBool("Attacking", false);
         }
 
 
     }
 
-
-
-
-
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
-    //override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    
-    //}
+    override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        umbrella.Hitbox(false);
+    }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
     //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

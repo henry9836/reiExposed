@@ -7,10 +7,14 @@ public class fireBallController : MonoBehaviour
 
     public float travelSpeed = 5.0f;
     public float damage = 10.0f;
+    public float killOverrideTime = 5.0f;
+    public LayerMask hittableSurfaces;
+    public EnemyController ec;
 
     private bool canDie = false;
+    private float killTimer = 0.0f;
 
-    public void fullSpeedAheadCaptain()
+    void Start()
     {
         StartCoroutine(liveThenDie());
     }
@@ -19,24 +23,38 @@ public class fireBallController : MonoBehaviour
     void Update()
     {
         transform.Translate(transform.forward * Time.deltaTime * travelSpeed, Space.World);
+
+        killTimer += Time.deltaTime;
+
+        if (killTimer > killOverrideTime)
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (canDie)
+        if (canDie && (((1 << other.gameObject.layer) & hittableSurfaces) != 0))
         {
+
             if (other.tag == "Player")
             {
-                other.gameObject.GetComponent<PlayerController>().health -= damage;
-            }
+                if (!other.gameObject.GetComponent<umbrella>().ISBLockjing) {
+                    other.gameObject.GetComponent<PlayerController>().health -= damage;
+                    other.gameObject.GetComponent<umbrella>().cooldown = true;
+                }
 
+                //make myth agro
+                ec.aggresiveMode = true;
+
+            }
             Destroy(gameObject);
         }
     }
 
     IEnumerator liveThenDie()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.1f);
         canDie = true;
         yield return null;
     }

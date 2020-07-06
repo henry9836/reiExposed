@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class photoDelay : StateMachineBehaviour
 {
-    public GameObject photo;
+    private GameObject photo;
     private bool once = true;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
