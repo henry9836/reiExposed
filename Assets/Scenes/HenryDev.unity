@@ -617,10 +617,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 628591980}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99036789c3f587e43810afd4f30184ba, type: 3}
+  m_Script: {fileID: 11500000, guid: 17602e23bd9480540bec4cb0587d4e47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weapon: {fileID: 628591982}
+  health: 300
+  revealAmount: 0
+  movementSpeed: 10
+  fastMoveMuilt: 1.5
+  turnSpeed: 2
+  target: {fileID: 0}
 --- !u!114 &628591982
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -630,9 +635,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 628591980}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a3ecf7ec6c194e47bf8eb4cf0f0797c, type: 3}
+  m_Script: {fileID: 11500000, guid: b429b835ff5dd1749b5ca917038648ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bossBase: {fileID: 628591981}
 --- !u!65 &628591983
 BoxCollider:
   m_ObjectHideFlags: 0
