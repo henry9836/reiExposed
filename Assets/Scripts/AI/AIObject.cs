@@ -25,7 +25,7 @@ public abstract class AIObject : MonoBehaviour
     public int amountofModes = 1;
     public int selectedAttack = -1;
     [HideInInspector]
-    public int currentMode = 0;
+    public int currentMode = 1;
 
     [SerializeField]
     public float movementSpeed = 10.0f;
