@@ -3,22 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-/*
- * 	moveSpeed
-	rotSpeed
-	movement override
-	rotation override
-	full_override
-	fastMoveSpeedMulti
-	fastRotSpeedMulti
-	initalRotSpeed
-	initalMoveSpeed
-	initalPosition
-	wanderRange
-	canReachDest?
-	goToPos
- */
-
 [RequireComponent(typeof(NavMeshAgent))]
 public class AIMovement : MonoBehaviour
 {
@@ -36,12 +20,24 @@ public class AIMovement : MonoBehaviour
     public float fastMoveMulti = 1.5f;
     public float fastRotMulti = 1.5f;
     public float wanderRange = 10.0f;
+    public float arriveThreshold = 1.5f;
+    [HideInInspector]
+    public Vector3 initalPosition = Vector3.zero;
+    [HideInInspector]
+    public Vector3 lastUpdatedPos;
 
     private float initalMoveSpeed = 10.0f;
     private float initalRotSpeed = 10.0f;
-
-    private Vector3 initalPosition = Vector3.zero;
     private NavMeshAgent agent;
+
+    public Vector3 pickWanderPosition()
+    {
+        Vector3 target = initalPosition;
+
+        target += new Vector3(Random.Range(-wanderRange, wanderRange), 0.0f, Random.Range(-wanderRange, wanderRange));
+
+        return target;
+    }
 
     public bool canReachDest(Vector3 dest)
     {
@@ -52,12 +48,20 @@ public class AIMovement : MonoBehaviour
 
     public void goToPosition(Vector3 pos)
     {
-        ////////////////////////
+        agent.SetDestination(pos);
+        lastUpdatedPos = pos;
     }
 
     public void setOverride(OVERRIDE newMode)
     {
         overrideMode = newMode;
+    }
+
+    public void stopMovement()
+    {
+        agent.isStopped = true;
+        agent.ResetPath();
+        agent.isStopped = false;
     }
 
     private void Start()

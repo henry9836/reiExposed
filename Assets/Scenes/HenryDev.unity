@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 32.792137, g: 40.631256, b: 53.777443, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -376,62 +376,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &386643100
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 386643102}
-  - component: {fileID: 386643101}
-  m_Layer: 0
-  m_Name: NetworkTime
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &386643101
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 386643100}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52302e60c548a3d4cb08c031185584bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  toPackage: 0
-  ddpackettype: 1
-  ddID: GAME
-  ddmessage: msg
-  ddcurr: 10
-  dditem1: 1
-  dditem2: 2
-  dditem3: 3
-  usertextbox: {fileID: 1669955519}
-  usercurr: {fileID: 1976922621}
-  useritem1: {fileID: 780482773}
-  useritem2: {fileID: 1684398032}
-  useritem3: {fileID: 1758770260}
---- !u!4 &386643102
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 386643100}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 32.585346, y: 17.182838, z: -16.139637}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 13
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &392660315
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -711,12 +655,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &780482773 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2355191485200494849, guid: ada5bee6243ddf04e96e40a6209bf7fd,
-    type: 3}
-  m_PrefabInstance: {fileID: 392660315}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &800858387
 GameObject:
   m_ObjectHideFlags: 0
@@ -1252,6 +1190,7 @@ GameObject:
   - component: {fileID: 1570756685}
   - component: {fileID: 1570756684}
   - component: {fileID: 1570756683}
+  - component: {fileID: 1570756696}
   m_Layer: 0
   m_Name: Boss
   m_TagString: Boss
@@ -1278,14 +1217,12 @@ MonoBehaviour:
   informer: {fileID: 0}
   body: {fileID: 0}
   health: 300
+  selectedAttack: {fileID: 0}
+  amountofModes: 1
   startHealth: 0
   revealAmount: 0
-  amountofModes: 1
-  selectedAttack: -1
   currentMode: 1
-  movementSpeed: 10
-  fastMoveMuilt: 1.5
-  turnSpeed: 2
+  animator: {fileID: 0}
   player: {fileID: 0}
 --- !u!95 &1570756684
 Animator:
@@ -1318,7 +1255,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e6be34206a56eb41a0ebdf0f21e20ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  head: []
+  head:
+  - {fileID: 1570756692}
   leftarms: []
   rightarms: []
   leftlegs: []
@@ -1360,6 +1298,9 @@ MonoBehaviour:
   fastMoveMulti: 1.5
   fastRotMulti: 1.5
   wanderRange: 10
+  arriveThreshold: 1.5
+  initalPosition: {x: 0, y: 0, z: 0}
+  lastUpdatedPos: {x: 0, y: 0, z: 0}
 --- !u!195 &1570756688
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1397,9 +1338,11 @@ MonoBehaviour:
   lastSeenPos: {x: 0, y: 0, z: 0}
   lastSeenDir: {x: 0, y: 0, z: 0}
   lastSeenVelo: 0
+  predictedPlayerPos: {x: 0, y: 0, z: 0}
   target: {fileID: 0}
   eyes: {fileID: 0}
   visionCone: 0.75
+  timeTillLostPlayer: 10
   visionObsctcles:
     serializedVersion: 2
     m_Bits: 0
@@ -1428,15 +1371,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 084cb613cb9443d4a8936dade09221ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackName: Untitled Attack
+  attackName: Example Attack
   damage: 5
   damageOnlyOnce: 1
   bodyPartsUsedInAttack: 0
   mustFacePlayer: 1
   overrideTrackingVisionCone: 0
   facePlayerThreshold: 0.75
-  rangeForAttack: {x: 1, y: 10}
-  triggerName: Untitled Trigger
+  rangeForAttack: {x: 0, y: 10}
+  triggerName: Attack1
   allowedModeOne: 1
   allowedModeTwo: 1
   allowedModeThree: 1
@@ -1519,8 +1462,21 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1570756696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1570756682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d757b79b764f4924091cda3812ad9466, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debugMode: 0
 --- !u!1001 &1663105148
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1590,18 +1546,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2c53e190d646f9545905cf4cd78c7e07, type: 3}
---- !u!1 &1669955519 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 9195724142321005701, guid: ada5bee6243ddf04e96e40a6209bf7fd,
-    type: 3}
-  m_PrefabInstance: {fileID: 392660315}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1684398032 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2203221486494564248, guid: ada5bee6243ddf04e96e40a6209bf7fd,
-    type: 3}
-  m_PrefabInstance: {fileID: 392660315}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1747375505
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1697,18 +1641,6 @@ VisualEffect:
   m_CorrespondingSourceObject: {fileID: 3280323251882281423, guid: 066c0d768adc23846b4764399c51395a,
     type: 3}
   m_PrefabInstance: {fileID: 1747375505}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1758770260 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7663834862458991725, guid: ada5bee6243ddf04e96e40a6209bf7fd,
-    type: 3}
-  m_PrefabInstance: {fileID: 392660315}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1976922621 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1087985917651067137, guid: ada5bee6243ddf04e96e40a6209bf7fd,
-    type: 3}
-  m_PrefabInstance: {fileID: 392660315}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2613965856092978861
 PrefabInstance:

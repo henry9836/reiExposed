@@ -8,6 +8,7 @@ using UnityEngine;
 [RequireComponent(typeof(AIMovement))]
 [RequireComponent(typeof(AIInformer))]
 [RequireComponent(typeof(AIBody))]
+[RequireComponent(typeof(AIDebugger))]
 [RequireComponent(typeof(Animator))]
 public class AIObject : MonoBehaviour
 {
@@ -17,25 +18,24 @@ public class AIObject : MonoBehaviour
     public AIMovement movement;
     public AIInformer informer;
     public AIBody body;
+
     public float health = 300.0f;
+    public AIAttackContainer selectedAttack;
+    [Range(1, 10)]
+    public int amountofModes = 1;
+
     [HideInInspector]
     public float startHealth = 0.0f;
     [HideInInspector]
     public float revealAmount = 0.0f;
-    [Range(1, 10)]
-    public int amountofModes = 1;
-    public int selectedAttack = -1;
     [HideInInspector]
     public int currentMode = 1;
+    [HideInInspector]
+    public Animator animator;
 
     [SerializeField]
-    public float movementSpeed = 10.0f;
-    [SerializeField]
-    public float fastMoveMuilt = 1.5f;
-    [SerializeField]
-    public float turnSpeed = 2.0f;
-    [SerializeField]
     public GameObject player;
+
 
 
     /// <summary>
@@ -45,7 +45,24 @@ public class AIObject : MonoBehaviour
     public int selectAttack()
     {
         //Select best attack from range and allowed modes
+
+        //PLACEHOLDER
+        selectedAttack = attacks[Random.Range(0, attacks.Count)];
+
         return 0;
+    }
+
+    public void bindAttack(int i)
+    {
+        if (i < attacks.Count && i >= 0)
+        {
+            selectedAttack = attacks[i];
+        }
+    }
+
+    public void unbindAttack()
+    {
+        selectedAttack = null;
     }
 
     private void Start()
@@ -78,11 +95,23 @@ public class AIObject : MonoBehaviour
         {
             body = GetComponent<AIBody>();
         }
+        if (player == null)
+        {
+            player = GameObject.FindWithTag("Player");
+        }
+
+        animator = GetComponent<Animator>();
 
         //Safety Checks
-        selectedAttack = -1;
+        selectedAttack = null;
         currentMode = 0;
+
+        //Disable hitboxes
+        body.updateHitBox(AIBody.BodyParts.ALL, false);
     }
 
-
+    public AIAttackContainer getSelectedAttack()
+    {
+        return selectedAttack;
+    }
 }
