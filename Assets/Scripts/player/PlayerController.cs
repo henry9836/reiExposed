@@ -67,6 +67,18 @@ public class PlayerController : MonoBehaviour
         return staminaAmount;
     }
 
+    public void CheckDeath()
+    {
+        if (health <= 0.0f)
+        {
+            gameObject.GetComponent<Animator>().SetTrigger("Death");
+            dead = true;
+            audio.PlayOneShot(deathSound);
+            StartCoroutine(death());
+
+        }
+    }
+
     private void Update()
     {
         uiupdate();
@@ -107,10 +119,6 @@ public class PlayerController : MonoBehaviour
                 Debug.Log("I was hit and but blocked");
                 umbrella.cooldown = true;
                 boss.GetComponent<BossController>().arm(BossController.ARMTYPE.ARM_ALL, false);
-            }
-            else
-            {
-                Debug.Log("I was hit and but ignoring");
             }
 
 
@@ -202,7 +210,7 @@ public class PlayerController : MonoBehaviour
 
         }
 
-        if (!dead)
+        if (!dead && health <= 40.0f)
         {
             StartCoroutine(UIflash(false));
         }

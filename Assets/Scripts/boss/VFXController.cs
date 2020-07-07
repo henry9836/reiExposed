@@ -15,7 +15,7 @@ public class VFXController : MonoBehaviour
     public static readonly string VelMap = "VelocityMap";
 
     private List<GameObject> bodys = new List<GameObject>();
-    private List<GameObject> bodysNoVFX = new List<GameObject>();
+    public List<GameObject> bodysNoVFX = new List<GameObject>();
     private float startAmount = 0;
 
     public void UnlockAll()
