@@ -46,6 +46,10 @@ public class AIMovement : MonoBehaviour
         return true;
     }
 
+    public bool agentArrived()
+    {
+        return (agent.remainingDistance != Mathf.Infinity && agent.pathStatus == NavMeshPathStatus.PathComplete && agent.remainingDistance == 0.0f);
+    }
     public void goToPosition(Vector3 pos)
     {
         agent.SetDestination(pos);
