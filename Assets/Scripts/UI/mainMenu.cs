@@ -43,7 +43,6 @@ public class mainMenu : MonoBehaviour
 
     public void play()
     {
-        SceneToLoadPersistant.sceneToLoadInto = 3;
         SceneManager.LoadScene(1);
         Cursor.visible = false;
     }
