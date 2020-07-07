@@ -6,8 +6,6 @@ using UnityEngine.VFX;
 
 public class umbrella : MonoBehaviour
 {
-    public saveFile save;
-
     public bool canfire = false;
     public float blockingStamina;
     public bool cooldown = false;
@@ -30,18 +28,8 @@ public class umbrella : MonoBehaviour
     private Animator animator;
     public GameObject VFX;
 
-    private movementController movcont;
-
     private bool latetest = false;
-
-    private int shottoload = -999;
-    private float Shotdamage = 0.0f;
-    private List<string> saveddata = new List<string>() { };
-
-    private bool inbossroom = false;
-    public GameObject shotUI;
-
-
+  
 
     void Start()
     {
@@ -53,10 +41,6 @@ public class umbrella : MonoBehaviour
             audio = GetComponent<AudioSource>();
         }
         umbrellaHitBox.enabled = false;
-
-        movcont = GetComponent<movementController>();
-        save = GameObject.Find("Save&Dronemanage").GetComponent<saveFile>();
-
     }
 
     void Update()
@@ -65,8 +49,7 @@ public class umbrella : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0) && !animator.GetBool("Blocking"))
         {
-            if (playercontrol.staminaAmount >= playercontrol.staminaToAttack) 
-            {
+            if (playercontrol.staminaAmount >= playercontrol.staminaToAttack) {
                 playercontrol.ChangeStamina(-playercontrol.staminaToAttack);
                 animator.SetTrigger("Attack");
             }
@@ -83,31 +66,24 @@ public class umbrella : MonoBehaviour
                 {
                     playercontrol.ChangeStamina(-blockingStamina * Time.deltaTime);
                     blocking();
-
-                    firemode();
-                    
+                    //if (canfire)
+                    //{
+                        firemode();
+                    //}
                 }
                 else
                 {
-                    movcont.strafemode = false;
-                    shotUI.SetActive(false);
-
                     cooldown = true;
                 }
             }
             else
             {
-                movcont.strafemode = false;
-                shotUI.SetActive(false);
-
                 //animator.ResetTrigger("Block");
                 animator.SetBool("Blocking", false);
             }
         }
         else
         {
-            shotUI.SetActive(false);
-
             animator.SetBool("Blocking", false);
             cooldowntimer += Time.deltaTime;
             if (cooldowntimer > cooldowntime)
@@ -122,15 +98,6 @@ public class umbrella : MonoBehaviour
 
     void blocking()
     {
-        movcont.strafemode = true;
-
-        RaycastHit hit;
-        if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, Mathf.Infinity, ball))
-        {
-            hit.point = new Vector3(hit.point.x, 0.0f, hit.point.z); // 0.0f should be playerhieght
-            movcont.charcterModel.transform.LookAt(hit.point);
-        }
-
         if (!animator.GetBool("Blocking"))
         {
             animator.SetTrigger("Block");
@@ -143,116 +110,24 @@ public class umbrella : MonoBehaviour
         latetest = true;
         VFX.GetComponent<VisualEffect>().SetFloat("timer", 1.0f);
 
-        if (inbossroom == true)
+        if (Input.GetAxis("Fire1") > 0.5f)
         {
-            shotUI.SetActive(true);
-
-            if (Shotdamage == 0 && shottoload + 1 <= 0)
-            {
-                shotUI.transform.GetChild(0).GetComponent<Text>().text = "No Shots Remaining";
-            }
-            else if (Shotdamage == 0)
-            {
-                shotUI.transform.GetChild(0).GetComponent<Text>().text = "Press Q To Load Picture";
-            }
-            else
-            {
-                shotUI.transform.GetChild(0).GetComponent<Text>().text = "Loaded, Click To Shoot";
-            }
-
-            shotUI.transform.GetChild(1).GetComponent<Text>().text = "Pictures left to load: " + (shottoload + 1).ToString();
-
-            if (Input.GetAxis("Fire1") > 0.5f)
-            {
-                animator.SetTrigger("Shoot");
-                bang();
-            }
-            else if (Input.GetKeyDown(KeyCode.E))
-            {
-
-                cooldown = true;
-                VFXController vfx = boss.GetComponent<VFXController>();
-                for (int i = 0; i < boss.GetComponent<VFXController>().bodysNoVFX.Count; i++)
-                {
-                    if (vfx.bodysNoVFX[i].GetComponent<BossRevealSurfaceController>())
-                    {
-                        if (vfx.bodysNoVFX[i].GetComponent<BossRevealSurfaceController>().isPlayerLookingAtMe())
-                        {
-                            vfx.bodysNoVFX[i].GetComponent<BossRevealSurfaceController>().EnableSurface();
-                        }
-                    }
-
-                }
-            }
-            else if (Input.GetKeyDown(KeyCode.Q))
-            {
-                if (shottoload >= 0)
-                {
-                    if (Shotdamage == 0)
-                    {
-                        loadshot();
-                    }
-                }
-            }
+            animator.SetTrigger("Shoot");
+            bang();
         }
-    }
-
-    public void bossroomtrigger()
-    {
-        for (int i = 0; i < 10; i++)
-        {
-            string filename = ("state " + (i).ToString() + ".png");
-            string picof = save.safeItem(filename, saveFile.types.STRING).tostring;
-            if (picof != "del")
-            {
-                saveddata.Add(picof);
-            }
-        }
-        shottoload = saveddata.Count - 1;
-        inbossroom = true;
-    }
-
-    private void loadshot()
-    {
-        bool pass = true;
-
-        for (int j = 0; j < shottoload; j++)
-        {
-            if (saveddata[j] == saveddata[shottoload])
-            {
-                pass = false;
-            }
-
-            if (saveddata[shottoload] == "bad")
-            {
-                pass = false;
-            }
-        }
-
-        if (pass == true)
-        {
-            Shotdamage = 100;
-        }
-        else
-        {
-            Shotdamage = -50;
-        }
-
-        shottoload -= 1;
     }
 
     void bang()
     {
         RaycastHit hit;
 
-        if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, Mathf.Infinity, enemy))
+        if (Physics.Raycast(umbeaalBone.transform.position, -umbeaalBone.transform.right, out hit, Mathf.Infinity, enemy))
         {
-            dodamage(hit.point, Shotdamage);
-           
+            dodamage(hit.point, 100.0f);
+
         }
 
-        Shotdamage = 0.0f;
-        movcont.strafemode = false;
+        //just aim better 
         cooldown = true;
     }
 
@@ -272,12 +147,6 @@ public class umbrella : MonoBehaviour
         //text.transform.GetChild(0).GetComponent<Text>().text = Mathf.RoundToInt(damage).ToString();
         //text.transform.LookAt(cam.transform.position);
         //text.transform.Rotate(new Vector3(0, 180, 0));
-
-        GameObject tmp = GameObject.Instantiate(damagedText, pos, Quaternion.identity);
-        tmp.transform.GetChild(0).GetComponent<Text>().text = attackingfor.ToString();
-        boss.GetComponent<ReprisialOfFlameController>().health -= attackingfor;
-
-        Debug.Log("attackign for " + attackingfor);
     }
 
     void LateUpdate()

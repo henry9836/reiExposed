@@ -14,7 +14,6 @@ public class movementController : MonoBehaviour
     public float rollTime = 0.5f;
     public float rollDistance = 5.0f;
     public float feetCheckDistance = 0.5f;
-    public bool strafemode = false;
 
     [Header("World")]
     public float gravity = 9.41f;
@@ -165,7 +164,7 @@ public class movementController : MonoBehaviour
 
 
         //Rotate towards movement in relation to cam direction
-        if (moveDirCam != Vector3.zero && !rolling && !strafemode)
+        if (moveDirCam != Vector3.zero && !rolling)
         {
 
             //Get cam rotation
@@ -193,7 +192,6 @@ public class movementController : MonoBehaviour
             moveDir = new Vector3(0.0f, moveDir.y, 0.0f);
             //moveDir += (camParent.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed))) * 0.5f;
             //moveDir += (camParent.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed))) * 0.5f;
-
             moveDir += camParent.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed));
             moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed));
 

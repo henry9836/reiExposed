@@ -5,10 +5,7 @@ using UnityEngine;
 public class flameIdle : StateMachineBehaviour
 {
 
-    public float dashDistanceTheshold = 10.0f;
-
     Transform player;
-    Transform boss;
     Transform transform;
     Animator vfxAnimator;
     ReprisialOfFlameController rc;
@@ -34,10 +31,6 @@ public class flameIdle : StateMachineBehaviour
         if (vfxAnimator == null)
         {
             vfxAnimator = rc.vfxBodyAnimatior;
-        }
-        if (boss == null)
-        {
-            boss = animator.gameObject.transform;
         }
 
         //Reset values
@@ -98,13 +91,6 @@ public class flameIdle : StateMachineBehaviour
             vfxAnimator.SetBool("Idle", false);
             animator.SetBool("Idle", false);
         }
-
-        //Dash To Player if too far
-        if (dashDistanceTheshold <= Vector3.Distance(player.position, boss.position))
-        {
-            animator.SetBool("Dashing", true);
-        }
-
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
