@@ -26,6 +26,8 @@ public class ApplyNewInfoVFX : MonoBehaviour
             GetComponent<VisualEffect>().SetTexture(PosMap, sb.PositionMap);
             GetComponent<VisualEffect>().SetTexture(VelMap, sb.VelocityMap);
 
+        Debug.Log($"{sb.PositionMap.name}|{sb.VelocityMap.name}|{vfx.enabled}|{sb.enabled}|");
+
             //count++;
             //Debug.Log("updated");
         //}
