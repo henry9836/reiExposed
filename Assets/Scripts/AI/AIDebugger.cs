@@ -57,6 +57,25 @@ public class AIDebugger : MonoBehaviour
                 {
                     Gizmos.color = Color.red;
                     Gizmos.DrawSphere(tracker.predictedPlayerPos, 0.5f);
+
+                    Gizmos.color = Color.yellow;
+                    Gizmos.DrawWireCube(tracker.predictedPlayerPos, new Vector3(tracker.seekWanderRange, 2.0f, tracker.seekWanderRange));
+
+                    Gizmos.color = Color.cyan;
+                    Gizmos.DrawSphere(movement.getDest(), 0.5f);
+
+                    Gizmos.color = Color.red;
+                    Debug.DrawLine(ai.transform.position, ai.player.transform.position);
+                }
+                else if (ai.animator.GetBool("CanSeePlayer"))
+                {
+                    Gizmos.color = Color.green;
+                    Debug.DrawLine(ai.transform.position, ai.player.transform.position);
+                }
+                else
+                {
+                    Gizmos.color = Color.red;
+                    Debug.DrawLine(ai.transform.position, ai.player.transform.position);
                 }
 
                 //Body

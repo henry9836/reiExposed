@@ -20,6 +20,7 @@ public class AITracker : MonoBehaviour
     public float timeTillLostPlayer = 10.0f;
     public float maxSpotDistance = 50.0f;
     public float sixthSenseMaxDistance = 4.0f;
+    public float seekWanderRange = 10.0f;
 
     public LayerMask visionObsctcles;
 
@@ -34,8 +35,9 @@ public class AITracker : MonoBehaviour
     public Vector3 estimateNewPosition()
     {
         ////////////////////////////////
+        predictedPlayerPos = lastSeenPos + (lastSeenDir * 7.0f);
 
-        return Vector3.zero;
+        return predictedPlayerPos;
     }
 
     public bool canSeePlayer() { return canSeePlayer(visionCone); }
@@ -50,9 +52,9 @@ public class AITracker : MonoBehaviour
         else 
         { 
             RaycastHit hit;
-            if (Physics.Raycast(eyes.position, (playerTargetNode.position - eyes.position).normalized, out hit, maxSpotDistance, visionObsctcles))
+            //if (Physics.Raycast(eyes.position, (playerTargetNode.position - eyes.position).normalized, out hit, maxSpotDistance, visionObsctcles))
+            if (Physics.Raycast(eyes.position, (playerTargetNode.position - eyes.position).normalized, out hit, Mathf.Infinity, visionObsctcles))
             {
-                Debug.DrawLine(eyes.position, hit.point, Color.red);
                 if (hit.collider.tag == "PlayerTargetNode")
                 {
                     //Can we see player within our cone
@@ -68,6 +70,9 @@ public class AITracker : MonoBehaviour
     public bool isFacingPlayer(float _vCone) {
         Vector3 dir = (playerTargetNode.position - transform.position).normalized;
         float dotProd = Vector3.Dot(dir, eyes.transform.forward);
+
+        Debug.Log($"Dir: {dir} Prod: {dotProd}/{_vCone}");
+
         return (dotProd >= _vCone);
     }
 
@@ -94,25 +99,26 @@ public class AITracker : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //Track Player 
-        animator.SetBool("CanSeePlayer", canSeePlayer());
+        //Timer
+        lostPlayerTimer += Time.deltaTime;
 
         //Can We See Player
-        if (animator.GetBool("CanSeePlayer"))
+        if (canSeePlayer())
         {
             //Update Infomation About Player
             lastSeenPos = player.transform.position;
-            lastSeenDir = playerModel.forward;
+            lastSeenDir = playerModel.forward.normalized;
+            animator.SetBool("CanSeePlayer", true);
 
             //Reset
             lostPlayerTimer = 0.0f;
             animator.SetBool("LosingPlayer", false);
         }
         //Losing Player
-        else if (lostPlayerTimer <= timeTillLostPlayer)
+        else if (lostPlayerTimer > 1.0f)
         {
-            lostPlayerTimer += Time.deltaTime;
             animator.SetBool("LosingPlayer", true);
+            animator.SetBool("CanSeePlayer", false);
 
             if (lostPlayerTimer >= timeTillLostPlayer)
             {

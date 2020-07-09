@@ -57,9 +57,16 @@ public class AIChase : StateMachineBehaviour
         //Close enough to attack
         else
         {
-            //Trigger Animation
-            movement.stopMovement();
-            animator.SetTrigger(attack.triggerName);
+            //Can we see the player?
+            if (tracker.canSeePlayer()) {
+                //Do we need to face player to attack, if so do we use an override if so then compare to override other if we are using an overrride use default settings or if we don't care about facing the player
+                if ((attack.mustFacePlayer && tracker.isFacingPlayer() && !attack.overrideTrackingVisionCone) || !attack.mustFacePlayer || (attack.mustFacePlayer && tracker.isFacingPlayer(attack.facePlayerThreshold) && attack.overrideTrackingVisionCone))
+                {
+                    //ATTACK
+                    movement.stopMovement();
+                    animator.SetTrigger(attack.triggerName);
+                }
+            }
         }
     }
 

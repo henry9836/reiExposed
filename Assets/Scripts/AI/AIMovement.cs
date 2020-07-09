@@ -15,8 +15,8 @@ public class AIMovement : MonoBehaviour
 
     public OVERRIDE overrideMode = OVERRIDE.NO_OVERRIDE;
 
-    public float moveSpeed = 10.0f;
-    public float rotSpeed = 10.0f;
+    public float moveSpeed = 3.5f;
+    public float rotSpeed = 120.0f;
     public float fastMoveMulti = 1.5f;
     public float fastRotMulti = 1.5f;
     public float wanderRange = 10.0f;
@@ -50,6 +50,12 @@ public class AIMovement : MonoBehaviour
     {
         return (agent.remainingDistance != Mathf.Infinity && agent.pathStatus == NavMeshPathStatus.PathComplete && agent.remainingDistance == 0.0f);
     }
+
+    public Vector3 getDest()
+    {
+        return agent.destination;
+    }
+
     public void goToPosition(Vector3 pos)
     {
         agent.SetDestination(pos);

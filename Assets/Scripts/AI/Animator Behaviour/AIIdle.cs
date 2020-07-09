@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class AIIdle : StateMachineBehaviour
 {
-
     public Vector2 idleWaitTime = new Vector2(0.5f, 5.0f);
 
     private float timer = 0.0f;
@@ -30,6 +29,15 @@ public class AIIdle : StateMachineBehaviour
 
         waittime = Random.Range(idleWaitTime.x, idleWaitTime.y);
         timer = 0.0f;
+
+        //Reset Values
+        animator.ResetTrigger("LostPlayer");
+
+        //Attacks
+        for (int i = 0; i < ai.attacks.Count; i++)
+        {
+            animator.ResetTrigger(ai.attacks[i].triggerName);
+        }
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

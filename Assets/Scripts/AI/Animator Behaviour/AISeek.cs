@@ -35,7 +35,7 @@ public class AISeek : StateMachineBehaviour
         //Once we have arrived to a location pick a new position in last known area
         if (movement.agentArrived())
         {
-            movement.goToPosition();
+            movement.goToPosition(tracker.predictedPlayerPos + new Vector3(Random.Range(-tracker.seekWanderRange, tracker.seekWanderRange), 0.0f, Random.Range(-tracker.seekWanderRange, tracker.seekWanderRange)));
         }
     }
 
