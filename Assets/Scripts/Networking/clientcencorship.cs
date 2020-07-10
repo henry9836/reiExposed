@@ -57,7 +57,8 @@ public class clientcencorship : MonoBehaviour
 
             for (int i = 0; i < check.Length; i++)
             {
-                checkto += "*";
+                //checkto += "*";
+                checkto += "▇";
             }
 
             for (int i = 0; i < check.Length - 1; i++)
