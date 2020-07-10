@@ -36,17 +36,47 @@ public class AIObject : MonoBehaviour
     [SerializeField]
     public GameObject player;
 
+    private List<int> validAttacks = new List<int>();
 
-
-    /// <summary>
-    /// NEEDS TO BE DONE
-    /// </summary>
-    /// <returns></returns>
+    //Selects a random attack to use againest the player
     public int selectAttack()
     {
+        float distance = Vector3.Distance(tracker.lastSeenPos, transform.position);
+        validAttacks.Clear();
+        int fallbackAttack = 0;
+        float closestAttack = Mathf.Infinity;
+
         //SELECT FROM RANGE AND MODE
 
-        bindAttack(Random.Range(0, attacks.Count));
+        for (int i = 0; i < attacks.Count; i++)
+        {
+            //Attack can be used in our behaviour mode
+            if (attacks[i].allowedOnMode(currentMode))
+            {
+                //We are within range for an attack
+                if (attacks[i].rangeForAttack.y <= distance)
+                {
+                    validAttacks.Add(i);
+                }
+                //record attack if it closer than the last closest attack
+                else if (distance - attacks[i].rangeForAttack.y < closestAttack)
+                {
+                    closestAttack = distance - attacks[i].rangeForAttack.y;
+                    fallbackAttack = i;
+                }
+            }
+        }
+
+        //If validAttack is populated
+        if (validAttacks.Count > 0)
+        {
+            bindAttack(validAttacks[Random.Range(0, validAttacks.Count)]);
+        }
+        //Use fallback attack
+        else
+        {
+            bindAttack(fallbackAttack);
+        }
 
         return 0;
     }
