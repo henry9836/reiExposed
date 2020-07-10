@@ -20,7 +20,7 @@ public class materialDither : MonoBehaviour
     void Update()
     {
         float dist = Vector3.Distance(cam.position, player.position);
-        Debug.Log(dist);
+        //Debug.Log(dist);
         reimat.SetFloat("Vector1_A8AC28E2", dist);
         gunMat.SetFloat("Vector1_A8AC28E2", dist);
     }
