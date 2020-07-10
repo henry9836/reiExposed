@@ -7,9 +7,15 @@ using UnityEngine.SceneManagement;
 public class pauseMenu : MonoBehaviour
 {
     public bool paused = false;
+    public bool settinged = false;
+
     private GameObject camMove;
 
     public List<GameObject> pauseitems = new List<GameObject>() { };
+    public List<GameObject> settingsItem = new List<GameObject>() { };
+
+    public GameObject settingsapply;
+
 
     private Vector3 canvaspos;
     public GameObject smoke1;
@@ -38,11 +44,6 @@ public class pauseMenu : MonoBehaviour
         canvaspos = new Vector3(this.gameObject.GetComponent<RectTransform>().anchoredPosition.x, this.gameObject.GetComponent<RectTransform>().anchoredPosition.y, 0.0f);
 
         camMove = GameObject.Find("camParent");
-        for (int i = 0; i < this.gameObject.transform.childCount; i++)
-        {
-            pauseitems.Add(this.gameObject.transform.GetChild(i).gameObject);
-           
-        }
     }
 
     void Update()
@@ -127,9 +128,33 @@ public class pauseMenu : MonoBehaviour
     }
 
     public void settings()
-    { 
-    
+    {
+        if (settinged)
+        {
+            //settingsapply.GetComponent<Settings>().apply();
+            settinged = false;
+            for (int i = 0; i < pauseitems.Count; i++)
+            {
+                pauseitems[i].SetActive(true);
+            }
+            for (int i = 0; i < settingsItem.Count; i++)
+            {
+                settingsItem[i].SetActive(false);
+            }
+        }
+        else
+        {
+            settinged = true;
 
+            for (int i = 0; i < pauseitems.Count; i++)
+            {
+                pauseitems[i].SetActive(false);
+            }
+            for (int i = 0; i < settingsItem.Count; i++)
+            {
+                settingsItem[i].SetActive(true);
+            }
+        }
     }
 
 
