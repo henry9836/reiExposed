@@ -25,7 +25,6 @@ public class Settings : MonoBehaviour
     public void apply()
     {
         mouseSence = float.Parse(settingsmousesencetext.GetComponent<Text>().text);
-        Debug.Log($"In mouse: {mouseSence} and we turned it into {Mathf.Clamp(mouseSence, 0.0f, 10.0f)}");
         mouseSence = Mathf.Clamp(mouseSence, 0.0f, 10.0f);
         CC.mouseSensitivity = mouseSence;
         settingsmousesencetext.GetComponent<Text>().text = mouseSence.ToString("F2");
