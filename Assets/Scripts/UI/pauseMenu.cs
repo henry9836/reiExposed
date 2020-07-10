@@ -109,7 +109,7 @@ public class pauseMenu : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Time.timeScale = 1.0f;
         paused = !paused;
-        SceneToLoadPersistant.sceneToLoadInto = 2;
+        SceneToLoadPersistant.sceneToLoadInto = SceneManager.GetActiveScene().buildIndex;
 
         SceneManager.LoadScene(1);
 
@@ -123,6 +123,12 @@ public class pauseMenu : MonoBehaviour
         paused = !paused;
         SceneToLoadPersistant.sceneToLoadInto = 0;
         SceneManager.LoadScene(1);
+
+    }
+
+    public void settings()
+    { 
+    
 
     }
 
