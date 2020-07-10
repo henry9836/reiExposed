@@ -39,13 +39,6 @@ public class AIMovement : MonoBehaviour
         return target;
     }
 
-    public bool canReachDest(Vector3 dest)
-    {
-        ///////////////////////
-
-        return true;
-    }
-
     public bool agentArrived()
     {
         return (agent.remainingDistance != Mathf.Infinity && agent.pathStatus == NavMeshPathStatus.PathComplete && agent.remainingDistance == 0.0f);
@@ -56,10 +49,32 @@ public class AIMovement : MonoBehaviour
         return agent.destination;
     }
 
-    public void goToPosition(Vector3 pos)
+    //Go to a new position
+    public bool goToPosition(Vector3 pos)
     {
-        agent.SetDestination(pos);
+        Debug.DrawLine(pos, pos + Vector3.up * 1000.0f, Color.red, 5.0f);
+
+        //Stop movement
+        stopMovement();
+
+        //Create a path
+        NavMeshPath path = new NavMeshPath();
+        bool result = agent.CalculatePath(pos, path);
+        if (!result)
+        {
+            Debug.Log("Invalid Path!");
+            return false;
+        }
+        else if (path.status == NavMeshPathStatus.PathPartial || path.status == NavMeshPathStatus.PathInvalid)
+        {
+            Debug.Log("Invalid Path!");
+            return false;
+        }
+
+        //Go to Destination
+        agent.SetPath(path);
         lastUpdatedPos = pos;
+        return true;
     }
 
     public void setOverride(OVERRIDE newMode)
@@ -84,7 +99,13 @@ public class AIMovement : MonoBehaviour
         agent.angularSpeed = rotSpeed;
     }
 
-
+    private void FixedUpdate()
+    {
+        if (!goToPosition(lastUpdatedPos))
+        {
+            stopMovement();
+        }
+    }
 
 
 

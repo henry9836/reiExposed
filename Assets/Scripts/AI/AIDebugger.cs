@@ -40,6 +40,9 @@ public class AIDebugger : MonoBehaviour
             {
 
                 //Visual Drawing
+                Gizmos.color = Color.cyan;
+                Gizmos.DrawSphere(movement.getDest(), 0.5f);
+
 
                 //Wander
                 Gizmos.color = Color.cyan;
@@ -61,8 +64,8 @@ public class AIDebugger : MonoBehaviour
                     Gizmos.color = Color.yellow;
                     Gizmos.DrawWireCube(tracker.predictedPlayerPos, new Vector3(tracker.seekWanderRange, 2.0f, tracker.seekWanderRange));
 
-                    Gizmos.color = Color.cyan;
-                    Gizmos.DrawSphere(movement.getDest(), 0.5f);
+                    //Gizmos.color = Color.cyan;
+                    //Gizmos.DrawSphere(movement.getDest(), 0.5f);
 
                     Gizmos.color = Color.red;
                     Debug.DrawLine(ai.transform.position, ai.player.transform.position);
@@ -125,7 +128,7 @@ public class AIDebugger : MonoBehaviour
             {
                 //Wander
                 Gizmos.color = Color.cyan;
-                Gizmos.DrawWireCube(movement.initalPosition, new Vector3(movement.wanderRange * 2.0f, 2.0f, movement.wanderRange * 2.0f));
+                Gizmos.DrawWireCube(transform.position, new Vector3(movement.wanderRange * 2.0f, 2.0f, movement.wanderRange * 2.0f));
 
                 //Body
                 Gizmos.color = Color.white;

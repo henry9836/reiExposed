@@ -53,6 +53,8 @@ public class AIAttackEvent : StateMachineBehaviour
             ai.body.updateHitBox(attackParts, false);
         }
 
+        ai.unbindAttack();
+
         animator.SetBool("Attacking", false);
     }
 }

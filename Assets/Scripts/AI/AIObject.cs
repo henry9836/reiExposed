@@ -44,10 +44,9 @@ public class AIObject : MonoBehaviour
     /// <returns></returns>
     public int selectAttack()
     {
-        //Select best attack from range and allowed modes
+        //SELECT FROM RANGE AND MODE
 
-        //PLACEHOLDER
-        selectedAttack = attacks[Random.Range(0, attacks.Count)];
+        bindAttack(Random.Range(0, attacks.Count));
 
         return 0;
     }

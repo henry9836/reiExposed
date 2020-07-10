@@ -32,19 +32,21 @@ public class AIWander : StateMachineBehaviour
     {
         if (!pickedTarget)
         {
+
             //Pick a random spot within wandering range from inital pos
             wanderTarget = movement.pickWanderPosition();
-            //Can reach destination
-            if (movement.canReachDest(wanderTarget))
+
+            //Go to target
+            if (movement.goToPosition(wanderTarget))
             {
-                //Go to target
-                movement.goToPosition(wanderTarget);
                 pickedTarget = true;
             }
+            
         }
         else
         {
             //If we are close enough to our destination stop
+            Debug.Log($"{Vector3.Distance(ai.transform.position, wanderTarget)}/{movement.arriveThreshold}");
             if (Vector3.Distance(ai.transform.position, wanderTarget) < movement.arriveThreshold)
             {
                 movement.stopMovement();
