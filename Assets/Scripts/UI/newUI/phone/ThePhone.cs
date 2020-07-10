@@ -18,7 +18,7 @@ public class ThePhone : MonoBehaviour
     public GameObject camgrid;
     public Sprite emptyPhotoSpot;
 
-    private GameObject[] myths;
+    public MythWorkerUnion myths;
 
     private Vector2 restorescale;
     private Vector3 restorePos;
@@ -44,7 +44,7 @@ public class ThePhone : MonoBehaviour
         rei = GameObject.FindGameObjectWithTag("Player");
         canvas = this.gameObject;
         maincam = GameObject.Find("Main Camera");
-        myths = GameObject.FindGameObjectsWithTag("Myth");
+        myths = GameObject.FindGameObjectWithTag("GameManager").GetComponent<MythWorkerUnion>();
         StartCoroutine(LoadScreenShot(0));
         save = GameObject.Find("Save&Dronemanage").GetComponent<saveFile>();
         drone = GameObject.Find("Save&Dronemanage").GetComponent<plugindemo>();
@@ -150,9 +150,11 @@ public class ThePhone : MonoBehaviour
             rei.GetComponent<movementController>().enabled = false;
             rei.GetComponent<fistpersoncontroler>().enabled = true;
             rei.GetComponent<umbrella>().enabled = false;
-            foreach (GameObject tmp in myths)
+            foreach (GameObject tmp in myths.mythObjects)
             {
-                tmp.transform.GetChild(1).gameObject.SetActive(false);
+                if (tmp.GetComponent<EnemyController>().enabled) {
+                    tmp.transform.GetChild(1).gameObject.SetActive(false);
+                }
             }
             rei.transform.GetChild(1).gameObject.SetActive(false);
             rei.GetComponent<Animator>().enabled = false;
@@ -170,9 +172,12 @@ public class ThePhone : MonoBehaviour
             rei.GetComponent<movementController>().enabled = true;
             rei.GetComponent<fistpersoncontroler>().enabled = false;
             rei.GetComponent<umbrella>().enabled = true;
-            foreach (GameObject tmp in myths)
+            foreach (GameObject tmp in myths.mythObjects)
             {
-                tmp.transform.GetChild(1).gameObject.SetActive(true);
+                if (tmp.GetComponent<EnemyController>().enabled)
+                {
+                   tmp.transform.GetChild(1).gameObject.SetActive(true);
+                }
             }
             rei.transform.GetChild(1).gameObject.SetActive(true);
             rei.GetComponent<Animator>().enabled = true;

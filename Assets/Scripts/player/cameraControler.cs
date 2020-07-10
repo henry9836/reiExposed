@@ -10,7 +10,7 @@ public class cameraControler : MonoBehaviour
     private Camera mainCam;
 
     private string mouseXInputName = "Mouse X", mouseYInputName = "Mouse Y";
-    [SerializeField] private float mouseSensitivity = 180f;
+    public float mouseSensitivity = 1.0f;
 
     [SerializeField] private float lerpSpeed = 12f;
     public AnimationCurve distCurve;
@@ -120,8 +120,8 @@ public class cameraControler : MonoBehaviour
 
     private void CameraRotation()
     {
-        float mouseX = Mathf.Clamp(Input.GetAxisRaw(mouseXInputName) * mouseSensitivity * Time.unscaledDeltaTime, -50f, 50f);
-        float mouseY = Mathf.Clamp(Input.GetAxisRaw(mouseYInputName) * mouseSensitivity * Time.unscaledDeltaTime, -50f, 50f);
+        float mouseX = Mathf.Clamp(Input.GetAxisRaw(mouseXInputName) * mouseSensitivity * 25.0f * Time.unscaledDeltaTime, -50f, 50f);
+        float mouseY = Mathf.Clamp(Input.GetAxisRaw(mouseYInputName) * mouseSensitivity * 25.0f * Time.unscaledDeltaTime, -50f, 50f);
 
         // Clamp and smooth vertical rotation
         xAxisRot += mouseY;
