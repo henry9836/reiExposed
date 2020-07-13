@@ -30,6 +30,12 @@ public class AIChase : StateMachineBehaviour
 
         player = ai.player.transform;
 
+        //Reset Triggers
+        for (int i = 0; i < ai.attacks.Count; i++)
+        {
+            animator.ResetTrigger(ai.attacks[i].triggerName);
+        }
+
         //If there is no attack bound
         if (ai.selectedAttack == null)
         {
