@@ -15,7 +15,7 @@ public class AITracker : MonoBehaviour
     public Transform target;
     [SerializeField]
     public Transform eyes;
-    [Range(0.0f, 1.0f)]
+    [Range(-1.0f, 1.0f)]
     public float visionCone = 0.75f;
     public float timeTillLostPlayer = 10.0f;
     public float maxSpotDistance = 50.0f;
@@ -34,7 +34,6 @@ public class AITracker : MonoBehaviour
 
     public Vector3 estimateNewPosition()
     {
-        ////////////////////////////////
         predictedPlayerPos = lastSeenPos + (lastSeenDir * 7.0f);
 
         return predictedPlayerPos;
@@ -58,7 +57,7 @@ public class AITracker : MonoBehaviour
                 if (hit.collider.tag == "PlayerTargetNode")
                 {
                     //Can we see player within our cone
-                    return isFacingPlayer();
+                    return isFacingPlayer(_vCone);
                 }
             }
         }
@@ -71,7 +70,10 @@ public class AITracker : MonoBehaviour
         Vector3 dir = (playerTargetNode.position - transform.position).normalized;
         float dotProd = Vector3.Dot(dir, eyes.transform.forward);
 
-        Debug.Log($"Dir: {dir} Prod: {dotProd}/{_vCone}");
+        if (!(dotProd >= _vCone))
+        {
+            Debug.Log($"INVALID DOT: {dotProd}");
+        }
 
         return (dotProd >= _vCone);
     }
@@ -108,6 +110,7 @@ public class AITracker : MonoBehaviour
             //Update Infomation About Player
             lastSeenPos = player.transform.position;
             lastSeenDir = playerModel.forward.normalized;
+
             animator.SetBool("CanSeePlayer", true);
 
             //Reset

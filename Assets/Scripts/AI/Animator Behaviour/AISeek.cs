@@ -32,6 +32,10 @@ public class AISeek : StateMachineBehaviour
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        if (ai == null)
+        {
+            return;
+        }
         //Once we have arrived to a location pick a new position in last known area
         if (movement.agentArrived())
         {

@@ -81,8 +81,29 @@ public class AIObject : MonoBehaviour
         return 0;
     }
 
+    public float QueryDamage()
+    {
+        if (selectedAttack == null)
+        {
+            return 0.0f;
+        }
+        else
+        {
+            float dmg = selectedAttack.damage;
+
+            if (selectedAttack.damageOnlyOnce)
+            {
+                unbindAttack();
+            }
+
+            return dmg;
+        }
+    }
+
     public void bindAttack(int i)
     {
+        Debug.Log("Bound Attack");
+
         if (i < attacks.Count && i >= 0)
         {
             selectedAttack = attacks[i];
@@ -91,10 +112,11 @@ public class AIObject : MonoBehaviour
 
     public void unbindAttack()
     {
+        Debug.Log("unbound Attack");
         selectedAttack = null;
     }
 
-    private void Start()
+    private void Awake()
     {
         startHealth = health;
         AIAttackContainer[] attacksArray = GetComponents<AIAttackContainer>();
