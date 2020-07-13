@@ -25,49 +25,59 @@ public class Settings : MonoBehaviour
 
     public void apply()
     {
-        if (once == true)
+        if (once)
         {
             once = false;
+            return;
         }
         else
         {
             once = true;
-            float tmpSence = mouseSence;
+        }
 
-            float t1mouseSence;
-            float t2mouseSence = settingsmousesenceslider.GetComponent<Slider>().value;
-
-
-            if (float.TryParse(settingsmousesencetext.GetComponent<InputField>().text, out t1mouseSence)){}
-            else
-            {
-                t1mouseSence = 0.0f;
-            }
-
-            if (t2mouseSence != tmpSence)
-            {
-                t2mouseSence = 10.0f *((t2mouseSence / 10) * (t2mouseSence / 10)) / (1 + (1 - (t2mouseSence / 10) ) * 1.6f);
-
-                mouseSence = t2mouseSence;
-                mouseSence = Mathf.Clamp(mouseSence, 0.0f, 10.0f);
-
-                settingsmousesencetext.GetComponent<InputField>().text = mouseSence.ToString("F2");
-
-            }
-            else if (t1mouseSence != tmpSence)
-            {
-
-                mouseSence = t1mouseSence;
-                mouseSence = Mathf.Clamp(mouseSence, 0.0f, 10.0f);
-
-                settingsmousesencetext.GetComponent<InputField>().text = mouseSence.ToString();
-                settingsmousesenceslider.GetComponent<Slider>().value = mouseSence;
+        mouseSence = Mathf.Clamp(mouseSence, 0.0f, 10.0f);
 
 
-            }
 
-            CC.mouseSensitivity = mouseSence;
+        float t1mouseSence;
+        float t2mouseSence = settingsmousesenceslider.GetComponent<Slider>().value;
+
+
+        if (float.TryParse(settingsmousesencetext.GetComponent<InputField>().text, out t1mouseSence)){}
+        else
+        {
+            
+            t1mouseSence = 0.0f;
+        }
+
+        float t3 = 10.0f * ((t2mouseSence / 10) * (t2mouseSence / 10)) / (1 + (1 - (t2mouseSence / 10)) * 1.6f);
+
+        if (t3 != mouseSence)
+        {
+            t2mouseSence = 10.0f *((t2mouseSence / 10) * (t2mouseSence / 10)) / (1 + (1 - (t2mouseSence / 10) ) * 1.6f);
+
+            mouseSence = t2mouseSence;
+            mouseSence = Mathf.Clamp(mouseSence, 0.0f, 10.0f);
+
+            settingsmousesencetext.GetComponent<InputField>().text = mouseSence.ToString("F2");
 
         }
+        else if (t1mouseSence != mouseSence)
+        {
+
+            mouseSence = t1mouseSence;
+            mouseSence = Mathf.Clamp(mouseSence, 0.0f, 10.0f);
+
+            settingsmousesenceslider.GetComponent<Slider>().value = 10.0f * ((mouseSence / 10) * (mouseSence / 10)) / (1 + (1 - (mouseSence / 10)) * 1.6f);
+
+
+            settingsmousesencetext.GetComponent<InputField>().text = mouseSence.ToString();
+
+
+        }
+
+        CC.mouseSensitivity = mouseSence;
+
+        
     }
 }

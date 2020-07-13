@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Text.RegularExpressions;
 using System.IO;
+using System.Threading;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -18,7 +20,7 @@ public class clientcencorship : MonoBehaviour
     private string saveFilePath = "sjw.txt";
     private StreamWriter righter;
 
-    public string debugTOCENCOR;
+    public List<string> dawords = new List<string>();
 
     void Awake()
     {
@@ -28,24 +30,22 @@ public class clientcencorship : MonoBehaviour
             tmp.WriteLine();
             tmp.Close();
         }
+        string[] graballlines = File.ReadAllLines(saveFilePath);
+        for (int i = 0; i < graballlines.Length; i++)
+        {
+            Debug.Log($"{i}");
+            dawords.Add(graballlines[i]);
+        }
     }
 
-    void Start()
-    {
-        string tmp = watchYourProfanity(debugTOCENCOR);
-        Debug.Log(tmp);
-    }
+
+
 
     public string watchYourProfanity(string dump)
     {
-        string[] graballlines = File.ReadAllLines(saveFilePath);
-        List<string> dawords = new List<string>() { };
+        ThreadPool.QueueUserWorkItem(ThreadProc, tmp);
 
-        for (int i = 0; i < graballlines.Length; i++)
-        {
-            dawords.Add(graballlines[i]);
-        }
-
+        Debug.Log("WATCH YOUR P{RRPRPRRIEOKWGJERGIJGREIEPJR LAG TMEI!");
 
         for (int j = 0; j < dawords.Count; j++)
         {
@@ -57,7 +57,6 @@ public class clientcencorship : MonoBehaviour
 
             for (int i = 0; i < check.Length; i++)
             {
-                //checkto += "*";
                 checkto += "▇";
             }
 
@@ -81,6 +80,11 @@ public class clientcencorship : MonoBehaviour
             }
         }
         return (dump);
+    }
+
+    static void ThreadProc(System.Object stateInfo)
+    {
+
     }
 
 

@@ -15,6 +15,8 @@ public class messagepickup : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
+            Debug.Log(canvas);
+            Debug.Log(canvas.GetComponent<enemydrop>());
             canvas.GetComponent<enemydrop>().enemyiskil();
             Destroy(this.gameObject); 
         }
