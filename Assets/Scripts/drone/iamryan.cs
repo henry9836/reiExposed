@@ -39,7 +39,10 @@ public class iamryan : MonoBehaviour
 
     void Awake()
     {
-        editwindow = (window)EditorWindow.GetWindow(typeof(window));
+        //editwindow = (window)EditorWindow.GetWindow(typeof(window));
+
+
+
         //editwindow.stign = save.safeItem("stign", saveFile.types.STRING).tostring;
         //editwindow.groupEnabled = System.Convert.ToBoolean(save.safeItem("groupEnabled", saveFile.types.STRING).tostring);
         //editwindow.groupEnabled2 = System.Convert.ToBoolean(save.safeItem("groupEnabled2", saveFile.types.STRING).tostring);
@@ -61,7 +64,7 @@ public class iamryan : MonoBehaviour
 
 #if UNITY_EDITOR
 
-        savedll();
+        //savedll();
 #endif
         Path.themask = save.safeItem("themask", saveFile.types.INT).toint;
 
@@ -73,7 +76,7 @@ public class iamryan : MonoBehaviour
 #if UNITY_EDITOR
         if (saveWindow == true)
         {
-            savedll();
+            //savedll();
             saveWindow = false;
         }
 #endif
@@ -174,11 +177,11 @@ public class iamryan : MonoBehaviour
             extents = new Vector3(Mathf.Abs(extents.x) + edgesize, Mathf.Abs(extents.y) + edgesize, Mathf.Abs(extents.z) + edgesize);
             Path.BBbounds = new Bounds(middlepos, extents);
 
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
 
-            editwindow.testbounds = Path.BBbounds;
-            editwindow.testbounds.extents *= 2.0f;
-#endif
+//            editwindow.testbounds = Path.BBbounds;
+//            editwindow.testbounds.extents *= 2.0f;
+//#endif
 
         }
 
@@ -192,68 +195,68 @@ public class iamryan : MonoBehaviour
 #if UNITY_EDITOR
 
     //draws gizmoes when in editor mode
-    void OnDrawGizmos()
-    {
-        //bounds
-        if (editwindow == null)
-        {
-            editwindow = (window)EditorWindow.GetWindow(typeof(window));
+    //void OnDrawGizmos()
+    //{
+    //    //bounds
+    //    if (editwindow == null)
+    //    {
+    //        editwindow = (window)EditorWindow.GetWindow(typeof(window));
 
-            editwindow.stign = save.safeItem("stign", saveFile.types.STRING).tostring;
-            editwindow.groupEnabled = System.Convert.ToBoolean(save.safeItem("groupEnabled", saveFile.types.STRING).tostring);
-            editwindow.groupEnabled2 = System.Convert.ToBoolean(save.safeItem("groupEnabled2", saveFile.types.STRING).tostring);
-            editwindow.movespeed = save.safeItem("movespeed", saveFile.types.FLOAT).tofloat;
-            editwindow.testbounds = getbounds();
-            editwindow.stopnextto = System.Convert.ToBoolean(save.safeItem("stopnextto", saveFile.types.STRING).tostring);
-            editwindow.recalc = System.Convert.ToBoolean(save.safeItem("recalc", saveFile.types.STRING).tostring);
-            editwindow.recalcwhenidle = save.safeItem("recalcwhenidle", saveFile.types.FLOAT).tofloat;
-            editwindow.deets = save.safeItem("deets", saveFile.types.FLOAT).tofloat;
-            editwindow.rateofAnglechange = save.safeItem("rateofAnglechange", saveFile.types.FLOAT).tofloat;
-            editwindow.dynamicedgesize = save.safeItem("dynamicedgesize", saveFile.types.FLOAT).tofloat;
-            editwindow.theMask.value = save.safeItem("themask", saveFile.types.INT).toint;
-        }
+    //        editwindow.stign = save.safeItem("stign", saveFile.types.STRING).tostring;
+    //        editwindow.groupEnabled = System.Convert.ToBoolean(save.safeItem("groupEnabled", saveFile.types.STRING).tostring);
+    //        editwindow.groupEnabled2 = System.Convert.ToBoolean(save.safeItem("groupEnabled2", saveFile.types.STRING).tostring);
+    //        editwindow.movespeed = save.safeItem("movespeed", saveFile.types.FLOAT).tofloat;
+    //        editwindow.testbounds = getbounds();
+    //        editwindow.stopnextto = System.Convert.ToBoolean(save.safeItem("stopnextto", saveFile.types.STRING).tostring);
+    //        editwindow.recalc = System.Convert.ToBoolean(save.safeItem("recalc", saveFile.types.STRING).tostring);
+    //        editwindow.recalcwhenidle = save.safeItem("recalcwhenidle", saveFile.types.FLOAT).tofloat;
+    //        editwindow.deets = save.safeItem("deets", saveFile.types.FLOAT).tofloat;
+    //        editwindow.rateofAnglechange = save.safeItem("rateofAnglechange", saveFile.types.FLOAT).tofloat;
+    //        editwindow.dynamicedgesize = save.safeItem("dynamicedgesize", saveFile.types.FLOAT).tofloat;
+    //        editwindow.theMask.value = save.safeItem("themask", saveFile.types.INT).toint;
+    //    }
 
-        Gizmos.DrawWireCube(editwindow.testbounds.center, editwindow.testbounds.extents);
+    //    Gizmos.DrawWireCube(editwindow.testbounds.center, editwindow.testbounds.extents);
 
-        //walkable nodes
-        for (int i = 0; i < Path.nodes.Count; i++)
-        {
-            if (Path.nodes[i].getwalkable())
-            {
-                Gizmos.color = Color.red;
-                Gizmos.DrawCube(Path.nodes[i].returnpos(), new Vector3((Path.detail / 8.0f), (Path.detail / 8.0f), (Path.detail / 8.0f)));
-            }
-        }
+    //    //walkable nodes
+    //    for (int i = 0; i < Path.nodes.Count; i++)
+    //    {
+    //        if (Path.nodes[i].getwalkable())
+    //        {
+    //            Gizmos.color = Color.red;
+    //            Gizmos.DrawCube(Path.nodes[i].returnpos(), new Vector3((Path.detail / 8.0f), (Path.detail / 8.0f), (Path.detail / 8.0f)));
+    //        }
+    //    }
 
-        //path source is taking
-        for (int i = 0; i < Path.pathlist.Count; i++)
-        {
-            Gizmos.color = Color.blue;
-            Gizmos.DrawCube(Path.pathlist[i].returnpos(), new Vector3((Path.detail / 4.0f), (Path.detail / 4.0f), (Path.detail / 4.0f)));
-        }
-    }
+    //    //path source is taking
+    //    for (int i = 0; i < Path.pathlist.Count; i++)
+    //    {
+    //        Gizmos.color = Color.blue;
+    //        Gizmos.DrawCube(Path.pathlist[i].returnpos(), new Vector3((Path.detail / 4.0f), (Path.detail / 4.0f), (Path.detail / 4.0f)));
+    //    }
+    //}
 
 
-    public void savedll()
-    {
-        save.saveitem("stign", editwindow.stign);
-        save.saveitem("groupEnabled", editwindow.groupEnabled.ToString());
-        save.saveitem("groupEnabled2", editwindow.groupEnabled2.ToString());
-        save.saveitem("movespeed", editwindow.movespeed);
-        save.saveitem("testbounds.center.x", editwindow.testbounds.center.x);
-        save.saveitem("testbounds.center.y", editwindow.testbounds.center.y);
-        save.saveitem("testbounds.center.z", editwindow.testbounds.center.z);
-        save.saveitem("testbounds.size.x", editwindow.testbounds.size.x);
-        save.saveitem("testbounds.size.y", editwindow.testbounds.size.y);
-        save.saveitem("testbounds.size.z", editwindow.testbounds.size.z);
-        save.saveitem("stopnextto", editwindow.stopnextto.ToString());
-        save.saveitem("recalc", editwindow.recalc.ToString());
-        save.saveitem("recalcwhenidle", editwindow.recalcwhenidle);
-        save.saveitem("deets", editwindow.deets);
-        save.saveitem("rateofAnglechange", editwindow.rateofAnglechange);
-        save.saveitem("dynamicedgesize", editwindow.dynamicedgesize);
-        save.saveitem("themask", editwindow.theMask.value);
-    }
+    //public void savedll()
+    //{
+    //    save.saveitem("stign", editwindow.stign);
+    //    save.saveitem("groupEnabled", editwindow.groupEnabled.ToString());
+    //    save.saveitem("groupEnabled2", editwindow.groupEnabled2.ToString());
+    //    save.saveitem("movespeed", editwindow.movespeed);
+    //    save.saveitem("testbounds.center.x", editwindow.testbounds.center.x);
+    //    save.saveitem("testbounds.center.y", editwindow.testbounds.center.y);
+    //    save.saveitem("testbounds.center.z", editwindow.testbounds.center.z);
+    //    save.saveitem("testbounds.size.x", editwindow.testbounds.size.x);
+    //    save.saveitem("testbounds.size.y", editwindow.testbounds.size.y);
+    //    save.saveitem("testbounds.size.z", editwindow.testbounds.size.z);
+    //    save.saveitem("stopnextto", editwindow.stopnextto.ToString());
+    //    save.saveitem("recalc", editwindow.recalc.ToString());
+    //    save.saveitem("recalcwhenidle", editwindow.recalcwhenidle);
+    //    save.saveitem("deets", editwindow.deets);
+    //    save.saveitem("rateofAnglechange", editwindow.rateofAnglechange);
+    //    save.saveitem("dynamicedgesize", editwindow.dynamicedgesize);
+    //    save.saveitem("themask", editwindow.theMask.value);
+    //}
 
 #endif
 

@@ -12,23 +12,50 @@ public class enemydrop : MonoBehaviour
 
     public GameObject dropmessage;
 
+    public int messagesToShow = 0;
+
+    [HideInInspector]
+    public bool messageDisplayFlag = false;
+
+    private clientcencorship clientCencorship;
+
+    private void Start()
+    {
+        clientCencorship = censor.GetComponent<clientcencorship>();
+    }
+
     private void Update()
     {
         if (test == true)
         {
             test = false;
-            enemyiskil();
+            //enemyiskil();
         }
     }
 
-    public void enemyiskil() //no
-    { 
-        StartCoroutine(mess());
+    private void FixedUpdate() //no
+    {
+        if (messagesToShow > 0) {
+            if (!messageDisplayFlag)
+            {
+                if (clientCencorship.getMessageCount() > 0)
+                {
+                    StartCoroutine(mess());
+                    messagesToShow--;
+                }
+            }
+        }
+    }
+
+    public void processMessage()
+    {
+        StartCoroutine(clientCencorship.watchYourProfanity(packagetosend.enemieDrops[0].tmessage));
     }
 
     public IEnumerator mess()
     {
-        UIpop.transform.GetChild(0).gameObject.GetComponent<Text>().text = censor.GetComponent<clientcencorship>().watchYourProfanity(packagetosend.enemieDrops[0].tmessage);
+        messageDisplayFlag = true;
+        UIpop.transform.GetChild(0).gameObject.GetComponent<Text>().text = clientCencorship.getMessageAndRemove(0);
         //cencor3ed
         //UIpop.transform.GetChild(0).gameObject.GetComponent<Text>().text = packagetosend.enemieDrops[0].tmessage;
 
@@ -37,8 +64,6 @@ public class enemydrop : MonoBehaviour
         UIpop.transform.GetChild(3).gameObject.GetComponent<Text>().text = packagetosend.enemieDrops[0].titem2.ToString();
         UIpop.transform.GetChild(4).gameObject.GetComponent<Text>().text = packagetosend.enemieDrops[0].titem3.ToString();
 
-
-  
         packagetosend.enemieDrops.RemoveAt(0);
 
         UIpop.SetActive(true);
@@ -56,7 +81,7 @@ public class enemydrop : MonoBehaviour
         }
 
         UIpop.SetActive(false);
-
+        messageDisplayFlag = false;
         yield return null;
     }
 
