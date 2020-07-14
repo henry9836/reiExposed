@@ -20,6 +20,7 @@ public class AIObject : MonoBehaviour
     public AIBody body;
     public PlayerController playerCtrl;
     public Animator forwardAnimationsTo;
+    public bool startInSleepState = false;
 
     public float health = 300.0f;
     [Range(0.0f, 1.0f)]
@@ -45,6 +46,11 @@ public class AIObject : MonoBehaviour
     private float initalVFXObjects;
     private List<int> validAttacks = new List<int>();
     private bool deathFlag = false;
+
+    public void sleepOverride(bool sleep)
+    {
+        animator.SetBool("Sleep", sleep);
+    }
 
     //Selects a random attack to use againest the player
     public int selectAttack()
@@ -164,6 +170,8 @@ public class AIObject : MonoBehaviour
         }
 
         animator = GetComponent<Animator>();
+
+        sleepOverride(startInSleepState);
 
         //Safety Checks
         selectedAttack = null;
