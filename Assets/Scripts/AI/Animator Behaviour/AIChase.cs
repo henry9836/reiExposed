@@ -8,6 +8,7 @@ public class AIChase : StateMachineBehaviour
     AIObject ai;
     AIMovement movement;
     AITracker tracker;
+    AIForwardAnimator forwarder;
 
     AIAttackContainer attack;
     Transform player;
@@ -31,6 +32,13 @@ public class AIChase : StateMachineBehaviour
         {
             tracker = ai.tracker;
         }
+        if (forwarder == null)
+        {
+            if (animator.GetBehaviour<AIForwardAnimator>() != null)
+            {
+                forwarder = animator.GetBehaviour<AIForwardAnimator>();
+            }
+        }
 
         player = ai.player.transform;
 
@@ -38,6 +46,10 @@ public class AIChase : StateMachineBehaviour
         for (int i = 0; i < ai.attacks.Count; i++)
         {
             animator.ResetTrigger(ai.attacks[i].triggerName);
+            if (forwarder != null)
+            {
+                forwarder.ResetTrigger(ai.attacks[i].triggerName);
+            }
         }
 
         //If there is no attack bound
@@ -96,6 +108,10 @@ public class AIChase : StateMachineBehaviour
                     //ATTACK
                     movement.stopMovement();
                     animator.SetTrigger(attack.triggerName);
+                    if (forwarder != null)
+                    {
+                        forwarder.SetTrigger(attack.triggerName);
+                    }
                 }
                 else
                 {

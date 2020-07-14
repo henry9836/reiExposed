@@ -19,8 +19,11 @@ public class AIObject : MonoBehaviour
     public AIInformer informer;
     public AIBody body;
     public PlayerController playerCtrl;
+    public Animator forwardAnimationsTo;
 
     public float health = 300.0f;
+    [Range(0.0f, 1.0f)]
+    public float revealThreshold = 0.15f;
     public AIAttackContainer selectedAttack;
     [Range(1, 10)]
     public int amountofModes = 1;
@@ -162,7 +165,15 @@ public class AIObject : MonoBehaviour
 
         animator = GetComponent<Animator>();
 
-        if (GetComponent<VFXController>())
+        //Safety Checks
+        selectedAttack = null;
+        currentMode = 0;
+
+        //Disable hitboxes
+        body.updateHitBox(AIBody.BodyParts.ALL, false);
+
+        //VFX if boss
+        if (GetComponent<VFXController>() != null)
         {
             vfx = GetComponent<VFXController>();
         }
@@ -171,12 +182,7 @@ public class AIObject : MonoBehaviour
         {
             initalVFXObjects = vfx.bodysNoVFX.Count;
         }
-        //Safety Checks
-        selectedAttack = null;
-        currentMode = 0;
 
-        //Disable hitboxes
-        body.updateHitBox(AIBody.BodyParts.ALL, false);
     }
 
     private void FixedUpdate()
@@ -185,6 +191,30 @@ public class AIObject : MonoBehaviour
         if (initalVFXObjects == 0)
         {
             initalVFXObjects = vfx.bodysNoVFX.Count;
+        }
+
+        //Reveal Update
+        if (vfx != null)
+        {
+            Debug.Log($"{revealAmount}<{revealThreshold}");
+
+            revealAmount = 0.0f;
+
+            if (vfx.bodysNoVFX.Count != 0)
+            {
+                revealAmount = (float)vfx.bodysNoVFX.Count / (float)initalVFXObjects;
+            }
+
+            if (revealAmount < revealThreshold)
+            {
+                
+
+                for (int i = 0; i < vfx.bodysNoVFX.Count; i++)
+                {
+                    vfx.bodysNoVFX[i].GetComponent<BossRevealSurfaceController>().EnableSurface();
+                }
+                vfx.bodysNoVFX.Clear();
+            }
         }
 
         //Death
@@ -219,6 +249,7 @@ public class AIObject : MonoBehaviour
                     {
                         revealAmount = (float)vfx.bodysNoVFX.Count / (float)initalVFXObjects;
                     }
+
                 }
 
                 revealAmount *= startHealth;
