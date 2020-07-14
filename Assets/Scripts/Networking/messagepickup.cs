@@ -16,6 +16,7 @@ public class messagepickup : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
+
             canvas.messagesToShow++;
             Destroy(this.gameObject); 
         }
