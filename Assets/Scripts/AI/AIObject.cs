@@ -18,8 +18,12 @@ public class AIObject : MonoBehaviour
     public AIMovement movement;
     public AIInformer informer;
     public AIBody body;
+    public PlayerController playerCtrl;
+    public Animator forwardAnimationsTo;
 
     public float health = 300.0f;
+    [Range(0.0f, 1.0f)]
+    public float revealThreshold = 0.15f;
     public AIAttackContainer selectedAttack;
     [Range(1, 10)]
     public int amountofModes = 1;
@@ -36,7 +40,11 @@ public class AIObject : MonoBehaviour
     [SerializeField]
     public GameObject player;
 
+    public VFXController vfx;
+
+    private float initalVFXObjects;
     private List<int> validAttacks = new List<int>();
+    private bool deathFlag = false;
 
     //Selects a random attack to use againest the player
     public int selectAttack()
@@ -81,8 +89,29 @@ public class AIObject : MonoBehaviour
         return 0;
     }
 
+    public float QueryDamage()
+    {
+        if (selectedAttack == null)
+        {
+            return 0.0f;
+        }
+        else
+        {
+            float dmg = selectedAttack.damage;
+
+            if (selectedAttack.damageOnlyOnce)
+            {
+                unbindAttack();
+            }
+
+            return dmg;
+        }
+    }
+
     public void bindAttack(int i)
     {
+        Debug.Log("Bound Attack");
+
         if (i < attacks.Count && i >= 0)
         {
             selectedAttack = attacks[i];
@@ -91,10 +120,11 @@ public class AIObject : MonoBehaviour
 
     public void unbindAttack()
     {
+        Debug.Log("unbound Attack");
         selectedAttack = null;
     }
 
-    private void Start()
+    private void Awake()
     {
         startHealth = health;
         AIAttackContainer[] attacksArray = GetComponents<AIAttackContainer>();
@@ -128,6 +158,10 @@ public class AIObject : MonoBehaviour
         {
             player = GameObject.FindWithTag("Player");
         }
+        if (playerCtrl == null)
+        {
+            playerCtrl = player.GetComponent<PlayerController>();
+        }
 
         animator = GetComponent<Animator>();
 
@@ -137,10 +171,102 @@ public class AIObject : MonoBehaviour
 
         //Disable hitboxes
         body.updateHitBox(AIBody.BodyParts.ALL, false);
+
+        //VFX if boss
+        if (GetComponent<VFXController>() != null)
+        {
+            vfx = GetComponent<VFXController>();
+        }
+
+        if (vfx != null)
+        {
+            initalVFXObjects = vfx.bodysNoVFX.Count;
+        }
+
+    }
+
+    private void FixedUpdate()
+    {
+
+        if (initalVFXObjects == 0)
+        {
+            initalVFXObjects = vfx.bodysNoVFX.Count;
+        }
+
+        //Reveal Update
+        if (vfx != null)
+        {
+            Debug.Log($"{revealAmount}<{revealThreshold}");
+
+            revealAmount = 0.0f;
+
+            if (vfx.bodysNoVFX.Count != 0)
+            {
+                revealAmount = (float)vfx.bodysNoVFX.Count / (float)initalVFXObjects;
+            }
+
+            if (revealAmount < revealThreshold)
+            {
+                
+
+                for (int i = 0; i < vfx.bodysNoVFX.Count; i++)
+                {
+                    vfx.bodysNoVFX[i].GetComponent<BossRevealSurfaceController>().EnableSurface();
+                }
+                vfx.bodysNoVFX.Clear();
+            }
+        }
+
+        //Death
+        if (health <= 0.0f)
+        {
+            if (!deathFlag)
+            {
+                health = 0.0f;
+                deathFlag = true;
+                animator.SetTrigger("Death");
+                movement.stopMovement();
+            }
+        }
     }
 
     public AIAttackContainer getSelectedAttack()
     {
         return selectedAttack;
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (health > 0.0f)
+        {
+            if (other.tag == "PlayerAttackSurface")
+            {
+                float revealAmount = 0.0f;
+
+                if (vfx != null)
+                {
+                    if (vfx.bodysNoVFX.Count != 0)
+                    {
+                        revealAmount = (float)vfx.bodysNoVFX.Count / (float)initalVFXObjects;
+                    }
+
+                }
+
+                revealAmount *= startHealth;
+
+                if (playerCtrl.umbreallaDmg < (health - revealAmount))
+                {
+                    health -= playerCtrl.umbreallaDmg;
+
+                }
+                else
+                {
+                    health = revealAmount;
+
+                }
+
+            }
+        }
+    }
+
 }

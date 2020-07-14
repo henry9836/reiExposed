@@ -21,6 +21,7 @@ public class BossRevealSurfaceController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        //Disable later
         if (Input.GetKeyDown(KeyCode.Return))
         {
             if (isPlayerLookingAtMe())
@@ -47,7 +48,7 @@ public class BossRevealSurfaceController : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(sm.bounds.center, dirToPlayer, out hit, Mathf.Infinity, obsctules))
             {
-                return (hit.collider.tag == "Player");
+                return (hit.collider.tag == "Player") || (hit.collider.tag == "PlayerTargetNode");
             }
             return true;
         }
