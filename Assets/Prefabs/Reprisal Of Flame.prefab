@@ -8849,6 +8849,7 @@ GameObject:
   - component: {fileID: 2782350833649286467}
   - component: {fileID: 2782350833649286466}
   - component: {fileID: 5801858317880847800}
+  - component: {fileID: 5801858317880847806}
   m_Layer: 0
   m_Name: Reprisal Of Flame
   m_TagString: Boss
@@ -9150,6 +9151,7 @@ MonoBehaviour:
   movement: {fileID: 0}
   informer: {fileID: 0}
   body: {fileID: 0}
+  playerCtrl: {fileID: 0}
   health: 300
   selectedAttack: {fileID: 0}
   amountofModes: 1
@@ -9158,6 +9160,7 @@ MonoBehaviour:
   currentMode: 1
   animator: {fileID: 0}
   player: {fileID: 0}
+  vfx: {fileID: 0}
 --- !u!114 &5801858317880847800
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9189,6 +9192,22 @@ MonoBehaviour:
   allowedModeEight: 1
   allowedModeNine: 1
   allowedModeTen: 1
+--- !u!114 &5801858317880847806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2782350833649286465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 307efe9c7936378409414c1adcee8146, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBar: {fileID: 0}
+  revealBar: {fileID: 0}
+  lockedUI: {fileID: 0}
+  unlockUI: {fileID: 0}
 --- !u!1 &2897127156490118877
 GameObject:
   m_ObjectHideFlags: 0

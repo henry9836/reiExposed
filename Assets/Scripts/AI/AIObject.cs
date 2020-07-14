@@ -18,6 +18,7 @@ public class AIObject : MonoBehaviour
     public AIMovement movement;
     public AIInformer informer;
     public AIBody body;
+    public PlayerController playerCtrl;
 
     public float health = 300.0f;
     public AIAttackContainer selectedAttack;
@@ -36,7 +37,11 @@ public class AIObject : MonoBehaviour
     [SerializeField]
     public GameObject player;
 
+    public VFXController vfx;
+
+    private float initalVFXObjects;
     private List<int> validAttacks = new List<int>();
+    private bool deathFlag = false;
 
     //Selects a random attack to use againest the player
     public int selectAttack()
@@ -150,9 +155,22 @@ public class AIObject : MonoBehaviour
         {
             player = GameObject.FindWithTag("Player");
         }
+        if (playerCtrl == null)
+        {
+            playerCtrl = player.GetComponent<PlayerController>();
+        }
 
         animator = GetComponent<Animator>();
 
+        if (GetComponent<VFXController>())
+        {
+            vfx = GetComponent<VFXController>();
+        }
+
+        if (vfx != null)
+        {
+            initalVFXObjects = vfx.bodysNoVFX.Count;
+        }
         //Safety Checks
         selectedAttack = null;
         currentMode = 0;
@@ -161,8 +179,63 @@ public class AIObject : MonoBehaviour
         body.updateHitBox(AIBody.BodyParts.ALL, false);
     }
 
+    private void FixedUpdate()
+    {
+
+        if (initalVFXObjects == 0)
+        {
+            initalVFXObjects = vfx.bodysNoVFX.Count;
+        }
+
+        //Death
+        if (health <= 0.0f)
+        {
+            if (!deathFlag)
+            {
+                health = 0.0f;
+                deathFlag = true;
+                animator.SetTrigger("Death");
+                movement.stopMovement();
+            }
+        }
+    }
+
     public AIAttackContainer getSelectedAttack()
     {
         return selectedAttack;
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (health > 0.0f)
+        {
+            if (other.tag == "PlayerAttackSurface")
+            {
+                float revealAmount = 0.0f;
+
+                if (vfx != null)
+                {
+                    if (vfx.bodysNoVFX.Count != 0)
+                    {
+                        revealAmount = (float)vfx.bodysNoVFX.Count / (float)initalVFXObjects;
+                    }
+                }
+
+                revealAmount *= startHealth;
+
+                if (playerCtrl.umbreallaDmg < (health - revealAmount))
+                {
+                    health -= playerCtrl.umbreallaDmg;
+
+                }
+                else
+                {
+                    health = revealAmount;
+
+                }
+
+            }
+        }
+    }
+
 }

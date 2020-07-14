@@ -70,11 +70,6 @@ public class AITracker : MonoBehaviour
         Vector3 dir = (playerTargetNode.position - transform.position).normalized;
         float dotProd = Vector3.Dot(dir, eyes.transform.forward);
 
-        if (!(dotProd >= _vCone))
-        {
-            Debug.Log($"INVALID DOT: {dotProd}");
-        }
-
         return (dotProd >= _vCone);
     }
 
