@@ -423,10 +423,10 @@ MonoBehaviour:
   m_CaretColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_CustomCaretColor: 0
   m_SelectionColor: {r: 0.65882355, g: 0.80784315, b: 1, a: 0.7529412}
-  m_Text: 
+  m_Text: 1
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
-  m_ReadOnly: 0
+  m_ReadOnly: 1
 --- !u!1 &657959909
 GameObject:
   m_ObjectHideFlags: 0
@@ -562,10 +562,10 @@ MonoBehaviour:
   m_CaretColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_CustomCaretColor: 0
   m_SelectionColor: {r: 0.65882355, g: 0.80784315, b: 1, a: 0.7529412}
-  m_Text: 
+  m_Text: 2
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
-  m_ReadOnly: 0
+  m_ReadOnly: 1
 --- !u!1 &705425287
 GameObject:
   m_ObjectHideFlags: 0
@@ -1555,10 +1555,10 @@ MonoBehaviour:
   m_CaretColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_CustomCaretColor: 0
   m_SelectionColor: {r: 0.65882355, g: 0.80784315, b: 1, a: 0.7529412}
-  m_Text: 
+  m_Text: 3
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
-  m_ReadOnly: 0
+  m_ReadOnly: 1
 --- !u!1 &1535652046
 GameObject:
   m_ObjectHideFlags: 0
@@ -3007,7 +3007,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4436421388229115906
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4232,8 +4232,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -656, y: 205.56}
-  m_SizeDelta: {x: 160, y: 20}
+  m_AnchoredPosition: {x: -644.59, y: 199.17}
+  m_SizeDelta: {x: 262.80014, y: 32.77064}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1651944391565429839
 MonoBehaviour:
@@ -4279,12 +4279,23 @@ MonoBehaviour:
   m_HandleRect: {fileID: 8091758348652160447}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 1
+  m_MaxValue: 10
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 2.08
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 718334882}
+        m_MethodName: UpdateInfomation
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2487443461203298774
 GameObject:
   m_ObjectHideFlags: 0
@@ -7402,12 +7413,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 3ff64f775dc8a0445b34d1024123cad2, type: 3}
     m_FontSize: 14
     m_FontStyle: 0
-    m_BestFit: 0
-    m_MinSize: 10
-    m_MaxSize: 40
+    m_BestFit: 1
+    m_MinSize: 1
+    m_MaxSize: 300
     m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 0
@@ -7997,7 +8008,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1918981430307128991
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8103,6 +8114,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5992930034594324319}
   - component: {fileID: 50109332974236458}
+  - component: {fileID: 718334882}
   m_Layer: 5
   m_Name: settingsMenu
   m_TagString: Untagged
@@ -8138,14 +8150,31 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5034596088148230088}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: acb5af03f62f87a4eb089546475a3722, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseSence: 0
+  mouseSence: 1
   CC: {fileID: 0}
-  settingsmousesencetext: {fileID: 0}
+  settingsmousesencetext: {fileID: 6247396182118617026}
+--- !u!114 &718334882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5034596088148230088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3375f3ff60a5855408652bc79c17002c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slider: {fileID: 1651944391565429839}
+  text: {fileID: 1480841565795851027}
+  type: 1
+  CC: {fileID: 0}
+  mouseSence: 0
 --- !u!1 &5159980063919038370
 GameObject:
   m_ObjectHideFlags: 0
@@ -11185,7 +11214,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &3465803109536389974
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11249,8 +11278,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -496, y: 200.56}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: -644.59, y: 158.14}
+  m_SizeDelta: {x: 262.79532, y: 49.274124}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8198914881806239105
 CanvasRenderer:
@@ -11330,24 +11359,35 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6086815394698014125}
   m_TextComponent: {fileID: 8946585995319763357}
   m_Placeholder: {fileID: 2916740125429558229}
-  m_ContentType: 0
+  m_ContentType: 3
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 0
+  m_KeyboardType: 2
   m_LineType: 0
   m_HideMobileInput: 0
-  m_CharacterValidation: 0
+  m_CharacterValidation: 2
   m_CharacterLimit: 0
   m_OnEndEdit:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 718334882}
+        m_MethodName: UpdateInfomation
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
   m_CaretColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_CustomCaretColor: 0
   m_SelectionColor: {r: 0.65882355, g: 0.80784315, b: 1, a: 0.7529412}
-  m_Text: 
+  m_Text: 5.0
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
   m_ReadOnly: 0
@@ -11368,7 +11408,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4554669677223849461
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12805,7 +12845,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5156459043838365354
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12877,7 +12917,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &282779738397641285
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13052,7 +13092,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: 1
 --- !u!1 &7827297847974256578
 GameObject:
   m_ObjectHideFlags: 0
@@ -13129,7 +13169,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: 2
 --- !u!1 &7827297848284691865
 GameObject:
   m_ObjectHideFlags: 0
@@ -13591,7 +13631,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: itm1
+  m_Text: 1
 --- !u!1 &7827297848902670249
 GameObject:
   m_ObjectHideFlags: 0
@@ -13727,10 +13767,10 @@ MonoBehaviour:
   m_CaretColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_CustomCaretColor: 0
   m_SelectionColor: {r: 0.65882355, g: 0.80784315, b: 1, a: 0.7529412}
-  m_Text: 
+  m_Text: 10
   m_CaretBlinkRate: 0.85
   m_CaretWidth: 1
-  m_ReadOnly: 0
+  m_ReadOnly: 1
 --- !u!1 &7827297848925042508
 GameObject:
   m_ObjectHideFlags: 0
@@ -13884,7 +13924,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: 10
 --- !u!1 &7827297849087590508
 GameObject:
   m_ObjectHideFlags: 0
@@ -14038,7 +14078,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: 3
 --- !u!1 &7827297849438179943
 GameObject:
   m_ObjectHideFlags: 0
@@ -14152,7 +14192,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: itm2
+  m_Text: 2
 --- !u!1 &7827297849492855749
 GameObject:
   m_ObjectHideFlags: 0
@@ -14563,7 +14603,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: itm3
+  m_Text: 3
 --- !u!1 &7827297849930663943
 GameObject:
   m_ObjectHideFlags: 0
@@ -14640,7 +14680,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: curr
+  m_Text: 10
 --- !u!1 &8074063870677690513
 GameObject:
   m_ObjectHideFlags: 0
@@ -15446,7 +15486,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3248923855635900098
 RectTransform:
   m_ObjectHideFlags: 0
@@ -15519,7 +15559,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8700578531047528300}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
@@ -15531,19 +15571,19 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 3ff64f775dc8a0445b34d1024123cad2, type: 3}
     m_FontSize: 14
     m_FontStyle: 2
-    m_BestFit: 0
-    m_MinSize: 10
-    m_MaxSize: 40
+    m_BestFit: 1
+    m_MinSize: 1
+    m_MaxSize: 300
     m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Enter text...
+  m_Text: 
 --- !u!1 &8704847443076285201
 GameObject:
   m_ObjectHideFlags: 0
@@ -15944,7 +15984,7 @@ MonoBehaviour:
   useritem1: {fileID: 7827297847973034414}
   useritem2: {fileID: 7827297847974256578}
   useritem3: {fileID: 7827297849219397943}
-  TwitterInput: {fileID: 0}
+  TwitterInput: {fileID: 170617010}
 --- !u!114 &1556185552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15963,6 +16003,8 @@ MonoBehaviour:
   censor: {fileID: 9041403550462819723}
   dropmessage: {fileID: 6353657438120898036, guid: b47ddf7f3609e2045bb9b18740b47ae1,
     type: 3}
+  messagesToShow: 0
+  messageDisplayFlag: 0
 --- !u!114 &7827297848864967607
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15975,16 +16017,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b637d0692a1f4d54598f130775ce28ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugTOCENCOR: "you shoudl die and suck my weenie  the quifox faG got fox jumps
-    \u0300 \u0301 \u0302 \u0303 \u0304 \u0305 \u0306 \u0307 \u0308 \u0309 \u030A\u0411\u043B\u044F\u0442\u044C
-    \u0432\u044B, \u0441\u0443\u043A\u0430! \u0323 \u0324 \u0325 \u0326 \u0327 \u0328
-    \u032B \u032C \u032D \u032E \u032F \u0330\u043F\u043E\u043B\u043E\u0432\u043E\u0435
-    \u0441\u043D\u043E\u0448\u0435\u043D\u0438\u0435 \u0331 \u0332 \u0333 \u0334
-    \u0335 \u0336 \u0337 \u0338 \u0339        KYS\u033A \u033B \u033C \u033D \u033E
-    \u033F \u0340 \u0341 \u0342 \u0343 \u0344 \u0345 \u0346 \u0347 \u0348 \u0349
-    \u034A \u034B \u034C \u034D \u034E \u034F \u0360 \u0361 \u0362 \u0363 \u0364
-    \u0365 \u0366 \u0367 \u0368 \u0369 \u036A \u036B \u036C \u036D \u036E \u036F
-    the lazy fu ck Fuck dog dog."
 --- !u!1 &9195724142321005701
 GameObject:
   m_ObjectHideFlags: 0
