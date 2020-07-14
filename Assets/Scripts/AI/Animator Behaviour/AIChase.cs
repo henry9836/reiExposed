@@ -19,6 +19,10 @@ public class AIChase : StateMachineBehaviour
         {
             ai = animator.gameObject.GetComponent<AIObject>();
         }
+        if (ai == null)
+        {
+            return;
+        }
         if (movement == null)
         {
             movement = ai.movement;
