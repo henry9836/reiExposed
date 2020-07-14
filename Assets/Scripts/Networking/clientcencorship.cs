@@ -12,6 +12,17 @@ using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 #endif
 
+public static class filterInfo {
+    [HideInInspector]
+    public static bool threadProcessing = false;
+}
+
+public class passthrough
+{
+    public List<string> dawords;
+    public string dump;
+}
+
 public class clientcencorship : MonoBehaviour
 #if UNITY_EDITOR
 , IPostprocessBuildWithReport
@@ -20,7 +31,24 @@ public class clientcencorship : MonoBehaviour
     private string saveFilePath = "sjw.txt";
     private StreamWriter righter;
 
-    public List<string> dawords = new List<string>();
+    public static List<string> dawords = new List<string>();
+    public static List<string> messages = new List<string>();
+
+    private passthrough currDump = null;
+    private bool processLock = false;
+
+    public int getMessageCount()
+    {
+        return messages.Count;
+    }
+
+    public string getMessageAndRemove(int i)
+    {
+        Debug.Log($"Message List Size: {messages.Count}");
+        string msg = messages[i];
+        messages.RemoveAt(i);
+        return msg;
+    }
 
     void Awake()
     {
@@ -38,22 +66,47 @@ public class clientcencorship : MonoBehaviour
         }
     }
 
-
-
-
-    public string watchYourProfanity(string dump)
+    public IEnumerator watchYourProfanity(string dump)
     {
-        ThreadPool.QueueUserWorkItem(ThreadProc, tmp);
-
-        Debug.Log("WATCH YOUR P{RRPRPRRIEOKWGJERGIJGREIEPJR LAG TMEI!");
-
-        for (int j = 0; j < dawords.Count; j++)
+        //Wait for another IEnumator
+        while (processLock)
         {
-            string check = dawords[j];
+            yield return null;
+        }
+
+        //Lock this IEnumator
+        processLock = true;
+
+        //Wait till other thread is done
+        while (filterInfo.threadProcessing)
+        {
+            yield return null;
+        }
+
+        //spawn thread
+        currDump = new passthrough();
+        currDump.dawords = dawords;
+        currDump.dump = dump;
+        ThreadPool.QueueUserWorkItem(ThreadProc, currDump);
+
+        //Unlock IEnumator
+        processLock = false;
+        yield return null;
+    }
+
+    static void ThreadProc(System.Object stateInfo)
+    {
+        //Lock Thread
+        filterInfo.threadProcessing = true;
+
+        passthrough PT = stateInfo as passthrough;
+
+
+        for (int j = 0; j < PT.dawords.Count; j++)
+        {
+            string check = PT.dawords[j];
             string newcheck = "";
             string checkto = "";
-
-
 
             for (int i = 0; i < check.Length; i++)
             {
@@ -71,20 +124,20 @@ public class clientcencorship : MonoBehaviour
 
 
             Regex rx = new Regex(rxp);
-            MatchCollection ans = rx.Matches(dump);
+            MatchCollection ans = rx.Matches(PT.dump);
 
             for (int i = ans.Count - 1; i > -1; i--)
             {
-                dump = dump.Remove(ans[i].Index, ans[i].Length);
-                dump = dump.Insert(ans[i].Index, checkto);
+                PT.dump = PT.dump.Remove(ans[i].Index, ans[i].Length);
+                PT.dump = PT.dump.Insert(ans[i].Index, checkto);
             }
         }
-        return (dump);
-    }
 
-    static void ThreadProc(System.Object stateInfo)
-    {
+        //Append onto list
+        messages.Add(PT.dump);
 
+        //Unlock Thread
+        filterInfo.threadProcessing = false;
     }
 
 
