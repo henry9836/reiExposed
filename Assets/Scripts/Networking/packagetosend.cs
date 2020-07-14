@@ -5,6 +5,7 @@ using System.Threading;
 using UnityEngine;
 using System.Net.Sockets;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class datadump
 {
@@ -118,6 +119,7 @@ public class packagetosend : MonoBehaviour
     public GameObject useritem1;
     public GameObject useritem2;
     public GameObject useritem3;
+    public GameObject TwitterInput;
 
     public static List<datadump> enemieDrops = new List<datadump>() { };
 
@@ -167,6 +169,8 @@ public class packagetosend : MonoBehaviour
                     dditem3 = convert(useritem3.GetComponent<Text>().text);
 
                     package = new datadump((int)ddpackettype, ddID, ddmessage, ddcurr, dditem1, dditem2, dditem3);
+
+
                     break;
                 }
             case sendpackettypes.PACKAGERECIVE:
@@ -183,6 +187,11 @@ public class packagetosend : MonoBehaviour
 
         multipass tmp = new multipass(package, port, IP, client, data, stream);
         ThreadPool.QueueUserWorkItem(ThreadProc, tmp);
+
+        if (tmp.ddpackettype == 1) {
+            StartCoroutine(returnToMainTmp());
+            TwitterInput.SetActive(false);
+        }
     }
     
 
@@ -221,6 +230,8 @@ public class packagetosend : MonoBehaviour
                     break;
                 }
         }
+
+
 
         mp.stream.Close();
         mp.client.Close();
@@ -331,4 +342,11 @@ public class packagetosend : MonoBehaviour
             return (0);
         }
     }
+
+    IEnumerator returnToMainTmp()
+    {
+        yield return new WaitForSeconds(3.0f);
+        SceneManager.LoadScene(0);
+    }
+
 }
