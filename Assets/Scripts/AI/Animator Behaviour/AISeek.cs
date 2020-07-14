@@ -8,6 +8,7 @@ public class AISeek : StateMachineBehaviour
     AITracker tracker;
     AIObject ai;
     AIMovement movement;
+    AIForwardAnimator forwarder;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -24,7 +25,13 @@ public class AISeek : StateMachineBehaviour
         {
             tracker = ai.tracker;
         }
-
+        if (forwarder == null)
+        {
+            if (animator.GetBehaviour<AIForwardAnimator>() != null)
+            {
+                forwarder = animator.GetBehaviour<AIForwardAnimator>();
+            }
+        }
         //Go to where we think player will be
         movement.goToPosition(tracker.estimateNewPosition());
     }
@@ -32,6 +39,10 @@ public class AISeek : StateMachineBehaviour
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        if (ai == null)
+        {
+            return;
+        }
         //Once we have arrived to a location pick a new position in last known area
         if (movement.agentArrived())
         {
