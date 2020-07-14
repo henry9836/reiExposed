@@ -38,7 +38,7 @@ public class umbrella : MonoBehaviour
     private float Shotdamage = 0.0f;
     private List<string> saveddata = new List<string>() { };
 
-    private bool inbossroom = false;
+    public bool inbossroom = false;
     public GameObject shotUI;
 
 
@@ -179,7 +179,12 @@ public class umbrella : MonoBehaviour
                         if (vfx.bodysNoVFX[i].GetComponent<BossRevealSurfaceController>().isPlayerLookingAtMe())
                         {
                             vfx.bodysNoVFX[i].GetComponent<BossRevealSurfaceController>().EnableSurface();
+                            vfx.bodysNoVFX.RemoveAt(i);
                         }
+                    }
+                    else
+                    {
+                        vfx.bodysNoVFX.RemoveAt(i);
                     }
 
                 }
