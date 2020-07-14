@@ -44,16 +44,15 @@ public class Items : MonoBehaviour
 
         for (int i = 0; i < biginvin.Count; i++)
         {
-            Debug.Log(biginvin[i].itemtype);
+            Debug.Log("biginvi " + biginvin[i].itemtype);
         }
 
         for (int i = 0; i < equipped.Count; i++)
         {
-            Debug.Log(equipped[i].itemtype);
+            Debug.Log("equpiied " + equipped[i].itemtype);
         }
 
     }
-
 
     public void gaineditem(AllItems toadd)
     {
@@ -67,13 +66,44 @@ public class Items : MonoBehaviour
             biginvin.Add(tmp);
 
             //can aslo fit in equipped
-            if (equipped.Count <= equpiiedsize)
+            if (equipped.Count < equpiiedsize)
             {
                 tmp.equipped = true;
                 tmp.equippedpos = equipped.Count;
                 equipped.Add(tmp);
             }
+            else
+            {
+                tmp.equipped = false;
+                tmp.equippedpos = -1;
+            }
         }
+    }
+
+    public void equipItem(int biginvinpos)
+    {
+        singleItem tmp = biginvin[biginvinpos];
+
+        if (equipped.Count < equpiiedsize && tmp.equipped == false)
+        {
+            tmp.equippedpos = equipped.Count;
+            tmp.equipped = true;
+        }
+    }
+
+    public void upequipItem(int biginvinpos)
+    {
+        singleItem tmp = biginvin[biginvinpos];
+
+        for (int i = tmp.equippedpos; i < equipped.Count - 1; i++)
+        {
+            equipped[i] = equipped[i + 1];
+
+        }
+        equipped.RemoveAt(equipped.Count - 1);
+
+        tmp.equipped = false;
+        tmp.equippedpos = -1;
     }
 
     public void removeitembiginvin(int biginvinpos)
@@ -86,7 +116,7 @@ public class Items : MonoBehaviour
         removeitem(equipped[equippedpos]);
     }
 
-    public void removeitem(singleItem toremove)
+    private void removeitem(singleItem toremove)
     {
         if (toremove.equipped == true)
         {

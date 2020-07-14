@@ -61,7 +61,6 @@ public class clientcencorship : MonoBehaviour
         string[] graballlines = File.ReadAllLines(saveFilePath);
         for (int i = 0; i < graballlines.Length; i++)
         {
-            Debug.Log($"{i}");
             dawords.Add(graballlines[i]);
         }
     }
