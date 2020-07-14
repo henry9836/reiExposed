@@ -46,6 +46,16 @@ public class AIChase : StateMachineBehaviour
 
     }
 
+    Vector3 getBestPositionForAttack()
+    {
+        Vector3 result = Vector3.zero;
+        Vector3 direction = (ai.transform.position - tracker.lastSeenPos).normalized;
+        //Go to a position that is in the middle of the range of attack in relation to the player's last seen position
+        result = tracker.lastSeenPos + (direction * ((attack.rangeForAttack.y - attack.rangeForAttack.x) * 0.5f));
+
+        return result;
+    }
+
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -57,25 +67,35 @@ public class AIChase : StateMachineBehaviour
         //If we are too far from the player to attack go to player
         if (Vector3.Distance(ai.transform.position, player.position) > attack.rangeForAttack.y)
         {
-            movement.goToPosition(tracker.lastSeenPos);
+            movement.goToPosition(getBestPositionForAttack());
         }
         //Too close to attack pick new attack!
         else if (Vector3.Distance(ai.transform.position, player.position) < attack.rangeForAttack.x)
         {
+            movement.stopMovement();
             ai.selectAttack();
             attack = ai.getSelectedAttack();
         }
         //Close enough to attack
         else
         {
+            //Go to the in between location for attack
+            //movement.goToPosition(getBestPositionForAttack());
             //Can we see the player?
             if (tracker.canSeePlayer()) {
+
+                //Debug Statement :D
+                //Debug.Log($"{(attack.mustFacePlayer && tracker.isFacingPlayer() && !attack.overrideTrackingVisionCone)} || {!attack.mustFacePlayer} || {(attack.mustFacePlayer && tracker.isFacingPlayer(attack.facePlayerThreshold) && attack.overrideTrackingVisionCone)}");
                 //Do we need to face player to attack, if so do we use an override if so then compare to override other if we are using an overrride use default settings or if we don't care about facing the player
                 if ((attack.mustFacePlayer && tracker.isFacingPlayer() && !attack.overrideTrackingVisionCone) || !attack.mustFacePlayer || (attack.mustFacePlayer && tracker.isFacingPlayer(attack.facePlayerThreshold) && attack.overrideTrackingVisionCone))
                 {
                     //ATTACK
                     movement.stopMovement();
                     animator.SetTrigger(attack.triggerName);
+                }
+                else
+                {
+                    movement.goToPosition(tracker.lastSeenPos);
                 }
             }
         }
