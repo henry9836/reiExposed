@@ -204,7 +204,7 @@ public class AIObject : MonoBehaviour
         //Reveal Update
         if (vfx != null)
         {
-            Debug.Log($"{revealAmount}<{revealThreshold}");
+            //Debug.Log($"{revealAmount}<{revealThreshold}");
 
             revealAmount = 0.0f;
 
