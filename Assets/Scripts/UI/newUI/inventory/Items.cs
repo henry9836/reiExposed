@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class singleItem
 {
@@ -13,6 +14,11 @@ public class singleItem
 
 public class Items : MonoBehaviour
 {
+    public List<Sprite> images = new List<Sprite> { };
+    //on biginvin
+    public slot slotsref;
+
+
     public enum AllItems
     { 
         NONE,
@@ -32,25 +38,18 @@ public class Items : MonoBehaviour
 
     void Start()
     {
-        for (int i = 0; i < 10; i++)
+
+        for (int i = 0; i < 52; i++)
         {
             gaineditem(AllItems.PLUSHEALH);
         }
-        gaineditem(AllItems.MINUSHEALTH);
 
-        removeitemequipped(2);
 
-        gaineditem(AllItems.MINUSHEALTH);
+        removeitembiginvin(0);
+        gaineditem(AllItems.PLUSSPEED);
 
-        for (int i = 0; i < biginvin.Count; i++)
-        {
-            Debug.Log("biginvi " + biginvin[i].itemtype);
-        }
 
-        for (int i = 0; i < equipped.Count; i++)
-        {
-            Debug.Log("equpiied " + equipped[i].itemtype);
-        }
+        slotsref.itemchange();
 
     }
 
@@ -84,11 +83,13 @@ public class Items : MonoBehaviour
     {
         singleItem tmp = biginvin[biginvinpos];
 
-        if (equipped.Count < equpiiedsize && tmp.equipped == false)
+        if ((equipped.Count < equpiiedsize) && (tmp.equipped == false))
         {
             tmp.equippedpos = equipped.Count;
             tmp.equipped = true;
+            equipped.Add(tmp);
         }
+
     }
 
     public void upequipItem(int biginvinpos)
