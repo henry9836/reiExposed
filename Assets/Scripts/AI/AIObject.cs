@@ -68,7 +68,7 @@ public class AIObject : MonoBehaviour
             if (attacks[i].allowedOnMode(currentMode))
             {
                 //We are within range for an attack
-                if (attacks[i].rangeForAttack.y <= distance)
+                if (attacks[i].rangeForAttack.y >= distance)
                 {
                     validAttacks.Add(i);
                 }
@@ -84,6 +84,7 @@ public class AIObject : MonoBehaviour
         //If validAttack is populated
         if (validAttacks.Count > 0)
         {
+            Debug.Log("Found Valid Attack");
             bindAttack(validAttacks[Random.Range(0, validAttacks.Count)]);
         }
         //Use fallback attack
@@ -116,11 +117,11 @@ public class AIObject : MonoBehaviour
 
     public void bindAttack(int i)
     {
-        Debug.Log("Bound Attack");
 
         if (i < attacks.Count && i >= 0)
         {
             selectedAttack = attacks[i];
+            Debug.Log($"Bound Attack {attacks[i].triggerName}");
         }
     }
 
@@ -206,7 +207,6 @@ public class AIObject : MonoBehaviour
         //Reveal Update
         if (vfx != null)
         {
-            Debug.Log($"{revealAmount}<{revealThreshold}");
 
             revealAmount = 0.0f;
 

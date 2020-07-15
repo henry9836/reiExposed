@@ -79,7 +79,41 @@ public class AIMovement : MonoBehaviour
 
     public void setOverride(OVERRIDE newMode)
     {
-        overrideMode = newMode;
+        overrideMode = newMode; 
+        switch (overrideMode)
+        {
+            case OVERRIDE.NO_OVERRIDE:
+                {
+                    Debug.Log("Set No Override");
+                    agent.isStopped = false;
+                    agent.speed = initalMoveSpeed;
+                    agent.angularSpeed = initalRotSpeed;
+                    break;
+                }
+            case OVERRIDE.ROT_OVERRIDE:
+                {
+                    agent.angularSpeed = 0.0f;
+                    break;
+                }
+            case OVERRIDE.MOVE_OVERRIDE:
+                {
+                    agent.speed = 0.0f;
+                    break;
+                }
+            case OVERRIDE.FULL_OVERRIDE:
+                {
+                    Debug.Log("Set All Override");
+                    agent.isStopped = true;
+                    agent.angularSpeed = 0.0f;
+                    agent.speed = 0.0f;
+                    break;
+                }
+            default:
+                {
+                    Debug.LogWarning($"No behaviour setup for {overrideMode}");
+                    break;
+                }
+        }
     }
 
     public void stopMovement()
@@ -106,7 +140,5 @@ public class AIMovement : MonoBehaviour
             stopMovement();
         }
     }
-
-
 
 }
