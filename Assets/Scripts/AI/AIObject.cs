@@ -49,7 +49,7 @@ public class AIObject : MonoBehaviour
 
     public void sleepOverride(bool sleep)
     {
-        animator.SetBool("Sleep", sleep);
+        animator.SetBool("Sleeping", sleep);
     }
 
     //Selects a random attack to use againest the player
@@ -171,7 +171,6 @@ public class AIObject : MonoBehaviour
 
         animator = GetComponent<Animator>();
 
-        sleepOverride(startInSleepState);
 
         //Safety Checks
         selectedAttack = null;
@@ -190,6 +189,9 @@ public class AIObject : MonoBehaviour
         {
             initalVFXObjects = vfx.bodysNoVFX.Count;
         }
+
+        
+        sleepOverride(startInSleepState);
 
     }
 
