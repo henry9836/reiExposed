@@ -39,17 +39,15 @@ public class Items : MonoBehaviour
     void Start()
     {
 
-        for (int i = 0; i < 52; i++)
-        {
-            gaineditem(AllItems.PLUSHEALH);
-        }
 
-
-        removeitembiginvin(0);
-        gaineditem(AllItems.PLUSSPEED);
-
-
-        slotsref.itemchange();
+        ////////////////////demo/////////////////////
+        //for (int i = 0; i < 52; i++)
+        //{
+        //    gaineditem(AllItems.PLUSHEALH);
+        //}
+        //removeitembiginvin(0);
+        //gaineditem(AllItems.PLUSSPEED);
+        //slotsref.itemchange();
 
     }
 
