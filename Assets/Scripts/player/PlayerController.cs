@@ -103,22 +103,16 @@ public class PlayerController : MonoBehaviour
             if (other.gameObject.CompareTag("EnemyAttackSurface") && !umbrella.ISBLockjing)
             {
                 Debug.Log("I was hit and taking damage");
-                health -= other.gameObject.GetComponent<DamageQuery>().QueryDamage();
+                health -= other.gameObject.transform.root.GetComponent<AIObject>().QueryDamage();
                 audio.PlayOneShot(hurtSounds[Random.Range(0, hurtSounds.Count)]);
             }
-
-            //Damage From Boss
-            else if (other.gameObject.CompareTag("BossAttackSurface") && !umbrella.ISBLockjing)
-            {
-                Debug.Log("I was hit and taking damage");
-                health -= boss.GetComponent<BossController>().QueryDamage();
-                audio.PlayOneShot(hurtSounds[Random.Range(0, hurtSounds.Count)]);
-            }
-            else if (other.gameObject.CompareTag("BossAttackSurface") && umbrella.ISBLockjing)
+            else if (other.gameObject.CompareTag("EnemyAttackSurface") && umbrella.ISBLockjing)
             {
                 Debug.Log("I was hit and but blocked");
                 umbrella.cooldown = true;
-                boss.GetComponent<BossController>().arm(BossController.ARMTYPE.ARM_ALL, false);
+
+                //Disable hitboxes
+                boss.GetComponent<AIObject>().body.updateHitBox(AIBody.BodyParts.ALL, false);
             }
 
 

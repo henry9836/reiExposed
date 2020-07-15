@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
 
-    public ReprisialOfFlameController rc;
+    public AIObject boss;
     public UnityEvent GameOverEvent;
 
 
@@ -15,12 +15,12 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        rc = GameObject.FindGameObjectWithTag("Boss").GetComponent<ReprisialOfFlameController>();
+        boss = GameObject.FindGameObjectWithTag("Boss").GetComponent<AIObject>();
     }
 
     private void FixedUpdate()
     {
-        if (rc.health <= 0.0f)
+        if (boss.health <= 0.0f)
         {
             if (once)
             {
