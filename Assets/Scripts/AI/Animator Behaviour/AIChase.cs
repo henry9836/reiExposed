@@ -64,8 +64,6 @@ public class AIChase : StateMachineBehaviour
         attack = ai.getSelectedAttack();
         wrongAttackChosenTimer = 0.0f;
 
-        movement.setOverride(AIMovement.OVERRIDE.NO_OVERRIDE);
-
     }
 
     Vector3 getBestPositionForAttack()

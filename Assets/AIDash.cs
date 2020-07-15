@@ -69,9 +69,6 @@ public class AIDash : StateMachineBehaviour
         if (!dashing && ((stateInfo.normalizedTime % 1.0f) >= dashTrigger))
         {
             dashing = true;
-        }
-        else if (dashing)
-        {
             movement.setOverride(AIMovement.OVERRIDE.FULL_OVERRIDE);
         }
         if (!lostPlayerTracking && ((stateInfo.normalizedTime % 1.0f) >= losePlayerTrigger))
@@ -98,7 +95,6 @@ public class AIDash : StateMachineBehaviour
         //Ends on animation over
         if ((stateInfo.normalizedTime % 1.0f) >= endDashTrigger)
         {
-            movement.setOverride(AIMovement.OVERRIDE.NO_OVERRIDE);
             forwarder.SetBool("Dashing", false);
             animator.SetBool("Dashing", false);
         }
@@ -108,7 +104,10 @@ public class AIDash : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-
+        if (movement != null)
+        {
+            movement.setOverride(AIMovement.OVERRIDE.NO_OVERRIDE);
+        }
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
