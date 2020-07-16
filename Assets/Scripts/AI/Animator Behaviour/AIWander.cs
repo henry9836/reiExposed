@@ -7,6 +7,7 @@ public class AIWander : StateMachineBehaviour
 
     AIObject ai;
     AIMovement movement;
+    AIForwardAnimator forwarder;
 
     Vector3 wanderTarget;
     bool pickedTarget;
@@ -23,6 +24,13 @@ public class AIWander : StateMachineBehaviour
         {
             movement = ai.movement;
         }
+        if (forwarder == null)
+        {
+            if (animator.GetBehaviour<AIForwardAnimator>() != null)
+            {
+                forwarder = animator.GetBehaviour<AIForwardAnimator>();
+            }
+        }
 
         pickedTarget = false;
     }
@@ -30,6 +38,10 @@ public class AIWander : StateMachineBehaviour
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        if (ai == null)
+        {
+            return;
+        }
         if (!pickedTarget)
         {
 
@@ -46,11 +58,14 @@ public class AIWander : StateMachineBehaviour
         else
         {
             //If we are close enough to our destination stop
-            Debug.Log($"{Vector3.Distance(ai.transform.position, wanderTarget)}/{movement.arriveThreshold}");
             if (Vector3.Distance(ai.transform.position, wanderTarget) < movement.arriveThreshold)
             {
                 movement.stopMovement();
                 animator.SetBool("Idle", true);
+                if (forwarder != null)
+                {
+                    forwarder.SetBool("Idle", true);
+                }
             }
         }
 

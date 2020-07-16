@@ -11,12 +11,14 @@ public class bosswall : MonoBehaviour
     public GameObject phoneMenuUI;
     private umbrella TU;
     private bool entered = false;
+    AIObject ai;
     public GameObject bossHPUI;
 
     private void Start()
     {
         TU = GameObject.FindGameObjectWithTag("Player").GetComponent<umbrella>();
-        GameObject.FindGameObjectWithTag("Boss").GetComponent<ReprisialOfFlameController>().sleepOveride = true;
+        ai = GameObject.FindGameObjectWithTag("Boss").GetComponent<AIObject>();
+        ai.sleepOverride(true);
 
     }
 
@@ -26,7 +28,7 @@ public class bosswall : MonoBehaviour
         {
             if (entered == false)
             {
-                GameObject.FindGameObjectWithTag("Boss").GetComponent<ReprisialOfFlameController>().sleepOveride = false;
+                ai.sleepOverride(false);
                 phoneMenuUI.transform.GetChild(0).GetComponent<Button>().interactable = false;
                 phoneMenuUI.transform.GetChild(1).GetComponent<Button>().interactable = false;
                 phoneMenuUI.transform.GetChild(2).GetComponent<Button>().interactable = false;

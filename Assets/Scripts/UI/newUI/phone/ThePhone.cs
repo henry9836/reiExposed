@@ -33,8 +33,8 @@ public class ThePhone : MonoBehaviour
         CAMERA,
         ROLL,
         AMAZON,
-        CLUES,
         PICZOOM,
+        INVENTORY,
     };
     public phonestates screen;
 
@@ -72,11 +72,11 @@ public class ThePhone : MonoBehaviour
                 {
                     if (drone.candeliver == true)
                     {
-                        ThePhoneUI.transform.GetChild(2).GetChild(3).GetComponent<Button>().interactable = true;
+                        ThePhoneUI.transform.GetChild(2).GetChild(2).GetComponent<Button>().interactable = true;
                     }
                     else
                     {
-                        ThePhoneUI.transform.GetChild(2).GetChild(3).GetComponent<Button>().interactable = false;
+                        ThePhoneUI.transform.GetChild(2).GetChild(2).GetComponent<Button>().interactable = false;
                     }
 
 
@@ -115,14 +115,6 @@ public class ThePhone : MonoBehaviour
                     }
                     break;
                 }
-            case phonestates.CLUES:
-                {
-                    if (Input.GetKeyDown(KeyCode.Tab))
-                    {
-                        BackToMenu();
-                    }
-                    break;
-                }
             case phonestates.PICZOOM:
                 {
                     if (Input.GetKeyDown(KeyCode.Tab))
@@ -130,6 +122,11 @@ public class ThePhone : MonoBehaviour
                         picUnzoom();
                     }
                     break;
+                }
+            case phonestates.INVENTORY:
+                {
+                    break;
+                
                 }
             default:
                 {
@@ -144,21 +141,20 @@ public class ThePhone : MonoBehaviour
         if (open == true)
         {
             ThePhoneUI.SetActive(true);
-            rei.transform.GetChild(0).gameObject.SetActive(false);
-            phonecam.SetActive(true);
-            maincam.SetActive(false);
-            rei.GetComponent<movementController>().enabled = false;
-            rei.GetComponent<fistpersoncontroler>().enabled = true;
-            rei.GetComponent<umbrella>().enabled = false;
-            foreach (GameObject tmp in myths.mythObjects)
-            {
-                if (tmp.GetComponent<EnemyController>().enabled) {
-                    tmp.transform.GetChild(1).gameObject.SetActive(false);
-                }
-            }
-            rei.transform.GetChild(1).gameObject.SetActive(false);
-            rei.GetComponent<Animator>().enabled = false;
-            Time.timeScale = 0.0f;
+            //rei.transform.GetChild(0).gameObject.SetActive(false);
+            //phonecam.SetActive(true);
+            //maincam.SetActive(false);
+            //rei.GetComponent<movementController>().enabled = false;
+            //rei.GetComponent<fistpersoncontroler>().enabled = true;
+            //rei.GetComponent<umbrella>().enabled = false;
+            //foreach (GameObject tmp in myths.mythObjects)
+            //{
+            //    if (tmp.GetComponent<EnemyController>().enabled) {
+            //        tmp.transform.GetChild(1).gameObject.SetActive(false);
+            //    }
+            //}
+            //rei.transform.GetChild(1).gameObject.SetActive(false);
+            //rei.GetComponent<Animator>().enabled = false;
             screen = phonestates.HOME;
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.Confined;
@@ -166,41 +162,29 @@ public class ThePhone : MonoBehaviour
         else
         {
             ThePhoneUI.SetActive(false);
-            rei.transform.GetChild(0).gameObject.SetActive(true);
-            phonecam.SetActive(false);
-            maincam.SetActive(true);
-            rei.GetComponent<movementController>().enabled = true;
-            rei.GetComponent<fistpersoncontroler>().enabled = false;
-            rei.GetComponent<umbrella>().enabled = true;
-            foreach (GameObject tmp in myths.mythObjects)
-            {
-                if (tmp.GetComponent<EnemyController>().enabled)
-                {
-                   tmp.transform.GetChild(1).gameObject.SetActive(true);
-                }
-            }
-            rei.transform.GetChild(1).gameObject.SetActive(true);
-            rei.GetComponent<Animator>().enabled = true;
-            Time.timeScale = 1.0f;
+            //rei.transform.GetChild(0).gameObject.SetActive(true);
+            //phonecam.SetActive(false);
+            //maincam.SetActive(true);
+            //rei.GetComponent<movementController>().enabled = true;
+            //rei.GetComponent<fistpersoncontroler>().enabled = false;
+            //rei.GetComponent<umbrella>().enabled = true;
+            //foreach (GameObject tmp in myths.mythObjects)
+            //{
+            //    if (tmp.GetComponent<EnemyController>().enabled)
+            //    {
+            //       tmp.transform.GetChild(1).gameObject.SetActive(true);
+            //    }
+            //}
+            //rei.transform.GetChild(1).gameObject.SetActive(true);
+            //rei.GetComponent<Animator>().enabled = true;
             screen = phonestates.NONE;
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
         }
     }
 
-    public void clues()
-    {
-        screen = phonestates.CLUES;
-
-        ThePhoneUI.transform.GetChild(2).gameObject.SetActive(false);
-        ThePhoneUI.transform.GetChild(4).gameObject.SetActive(true);
-
-        updateclues();
-    }
-
     public void cameraroll()
     {
-
         ThePhoneUI.transform.GetChild(2).gameObject.SetActive(false);
         ThePhoneUI.transform.GetChild(3).gameObject.SetActive(true);
 
@@ -213,10 +197,19 @@ public class ThePhone : MonoBehaviour
     {
         screen = phonestates.CAMERA;
 
+        rei.transform.GetChild(0).gameObject.SetActive(false);
+        phonecam.SetActive(true);
+        maincam.SetActive(false);
+        rei.GetComponent<movementController>().enabled = false;
+        rei.GetComponent<fistpersoncontroler>().enabled = true;
+        rei.GetComponent<umbrella>().enabled = false;
+        rei.transform.GetChild(1).gameObject.SetActive(false);
+        rei.GetComponent<Animator>().enabled = false;
+
+
         ThePhoneUI.SetActive(false);
-        Time.timeScale = 1.0f;
         Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.lockState = CursorLockMode.Locked;
         camgrid.SetActive(true);
     }
 
@@ -224,19 +217,19 @@ public class ThePhone : MonoBehaviour
     {
         screen = phonestates.AMAZON;
         ThePhoneUI.transform.GetChild(2).gameObject.SetActive(false);
-        ThePhoneUI.transform.GetChild(5).gameObject.SetActive(true);
+        ThePhoneUI.transform.GetChild(4).gameObject.SetActive(true);
         currency.MythTraces = save.safeItem("MythTraces", saveFile.types.INT).toint;
 
         if (currency.MythTraces < 100)
         {
-            ThePhoneUI.transform.GetChild(5).GetChild(1).GetComponent<Button>().interactable = false;
+            ThePhoneUI.transform.GetChild(4).GetChild(1).GetComponent<Button>().interactable = false;
         }
         else
         {
-            ThePhoneUI.transform.GetChild(5).GetChild(1).GetComponent<Button>().interactable = true;
+            ThePhoneUI.transform.GetChild(4).GetChild(1).GetComponent<Button>().interactable = true;
         }
 
-        ThePhoneUI.transform.GetChild(5).GetChild(0).GetComponent<Text>().text = "Mythtraces: " + currency.MythTraces;
+        ThePhoneUI.transform.GetChild(4).GetChild(0).GetComponent<Text>().text = "Mythtraces: " + currency.MythTraces;
 
     }
 
@@ -244,15 +237,21 @@ public class ThePhone : MonoBehaviour
     {
         screen = phonestates.HOME;
 
-        Time.timeScale = 0.0f;
         ThePhoneUI.SetActive(true);
         camgrid.SetActive(false);
 
         ThePhoneUI.transform.GetChild(2).gameObject.SetActive(true);
         ThePhoneUI.transform.GetChild(3).gameObject.SetActive(false);
         ThePhoneUI.transform.GetChild(4).gameObject.SetActive(false);
-        ThePhoneUI.transform.GetChild(5).gameObject.SetActive(false);
 
+        rei.transform.GetChild(0).gameObject.SetActive(true);
+        phonecam.SetActive(false);
+        maincam.SetActive(true);
+        rei.GetComponent<movementController>().enabled = true;
+        rei.GetComponent<fistpersoncontroler>().enabled = false;
+        rei.GetComponent<umbrella>().enabled = true;
+        rei.transform.GetChild(1).gameObject.SetActive(true);
+        rei.GetComponent<Animator>().enabled = true;
 
         save.saveitem("MythTraces", currency.MythTraces);
 
@@ -313,20 +312,20 @@ public class ThePhone : MonoBehaviour
 
         if (currency.MythTraces < 100)
         {
-            ThePhoneUI.transform.GetChild(5).GetChild(1).GetComponent<Button>().interactable = false;
+            ThePhoneUI.transform.GetChild(4).GetChild(1).GetComponent<Button>().interactable = false;
         }
         else
         {
-            ThePhoneUI.transform.GetChild(5).GetChild(1).GetComponent<Button>().interactable = true;
+            ThePhoneUI.transform.GetChild(4).GetChild(1).GetComponent<Button>().interactable = true;
         }
-        ThePhoneUI.transform.GetChild(5).GetChild(0).GetComponent<Text>().text = "Mythtraces: " + currency.MythTraces;
+        ThePhoneUI.transform.GetChild(4).GetChild(0).GetComponent<Text>().text = "Mythtraces: " + currency.MythTraces;
 
         BackToMenu();
 
 
     }
 
-
+    //check all phots for clues
     public void updateclues()
     {
         GameObject[] clues = GameObject.FindGameObjectsWithTag("Clue");

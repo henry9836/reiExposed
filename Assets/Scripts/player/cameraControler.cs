@@ -120,8 +120,8 @@ public class cameraControler : MonoBehaviour
 
     private void CameraRotation()
     {
-        float mouseX = Mathf.Clamp(Input.GetAxisRaw(mouseXInputName) * mouseSensitivity * 25.0f * Time.unscaledDeltaTime, -50f, 50f);
-        float mouseY = Mathf.Clamp(Input.GetAxisRaw(mouseYInputName) * mouseSensitivity * 25.0f * Time.unscaledDeltaTime, -50f, 50f);
+        float mouseX = Mathf.Clamp(Input.GetAxisRaw(mouseXInputName) * mouseSensitivity * 100.0f * Time.unscaledDeltaTime, -50f, 50f);
+        float mouseY = Mathf.Clamp(Input.GetAxisRaw(mouseYInputName) * mouseSensitivity * 100.0f * Time.unscaledDeltaTime, -50f, 50f);
 
         // Clamp and smooth vertical rotation
         xAxisRot += mouseY;
