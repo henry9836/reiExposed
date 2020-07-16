@@ -84,8 +84,7 @@ public class AIMovement : MonoBehaviour
         {
             case OVERRIDE.NO_OVERRIDE:
                 {
-                    Debug.Log("Set No Override");
-                    agent.enabled = true;
+                    //agent.enabled = true;
                     agent.isStopped = false;
                     agent.speed = initalMoveSpeed;
                     agent.angularSpeed = initalRotSpeed;
@@ -103,9 +102,8 @@ public class AIMovement : MonoBehaviour
                 }
             case OVERRIDE.FULL_OVERRIDE:
                 {
-                    Debug.Log("Set All Override");
                     agent.isStopped = true;
-                    agent.enabled = false;
+                    //agent.enabled = false;
                     break;
                 }
             default:
