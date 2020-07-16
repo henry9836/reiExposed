@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MultipleVFXHandler : MonoBehaviour
 {
-    List<ParticleSystem> particles = new List<ParticleSystem>();
+    public List<ParticleSystem> particles = new List<ParticleSystem>();
 
     public void Play(int i)
     {
