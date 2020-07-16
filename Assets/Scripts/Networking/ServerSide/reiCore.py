@@ -9,7 +9,7 @@ dbPassword = ""
 dbTable = ""
 HOST = '' #All interfaces
 PORT = 27100
-MAXRECV = 2048
+MAXRECV = 8192 # 4*2048 (UTF-8 = 4 bytes each char)
 SEPERATOR = "--"
 ERROR_GENERAL = -1
 
