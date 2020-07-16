@@ -11,7 +11,8 @@ public class AIDash : StateMachineBehaviour
     [Range(0.0f, 1.0f)]
     public float endDashTrigger = 0.9f;
     public float dashSpeedMulti = 2.0f;
-
+    public float playerStopTheshold = 1.0f;
+    
     float dashSpeed = 10.0f;
     bool dashing = false;
     bool lostPlayerTracking = false;
@@ -66,31 +67,40 @@ public class AIDash : StateMachineBehaviour
             return;
         }
 
+        movement.goToPosition(tracker.lastSeenPos);
+
         if (!dashing && ((stateInfo.normalizedTime % 1.0f) >= dashTrigger))
         {
             dashing = true;
-            movement.setOverride(AIMovement.OVERRIDE.FULL_OVERRIDE);
+            movement.setOverride(AIMovement.OVERRIDE.MOVE_OVERRIDE);
         }
         if (!lostPlayerTracking && ((stateInfo.normalizedTime % 1.0f) >= losePlayerTrigger))
         {
             lostPlayerTracking = true;
+            movement.setOverride(AIMovement.OVERRIDE.FULL_OVERRIDE);
         }
 
         //Dash forwards
-
-        //Get Dash Direction
-        if (!lostPlayerTracking) {
-            targetDir = (tracker.lastSeenPos - ai.transform.position).normalized;
-        }
-        else
+        if (dashing)
         {
-            targetDir = ((ai.transform.forward * 2.0f) - ai.transform.position).normalized;
+            //If we are close enought to the player stop moving
+            if (playerStopTheshold >= Vector3.Distance(ai.player.transform.position, ai.transform.position))
+            {
+                dashing = false;
+                return;
+            }
+
+            //Get Dash Direction
+            if (!lostPlayerTracking)
+            {
+                targetDir = (tracker.lastSeenPos - ai.transform.position).normalized;
+            }
+            
+            //Move in a direction that makes sense
+            ai.transform.position += targetDir * dashSpeed * Time.deltaTime;
+
+
         }
-
-        //Move in dir in relation to speed
-        //ai.transform.position += targetDir * dashSpeed * Time.deltaTime;
-        ai.transform.position += ai.transform.forward * Time.deltaTime;
-
 
         //Ends on animation over
         if ((stateInfo.normalizedTime % 1.0f) >= endDashTrigger)
