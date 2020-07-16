@@ -43181,6 +43181,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   informRange: 5
   type: 1
+  informObjects:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &8109513895668568798
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43272,11 +43275,13 @@ MonoBehaviour:
   forwardAnimationsTo: {fileID: 575316264522294907}
   startInSleepState: 0
   health: 300
+  staminaRegen: 2.5
   revealThreshold: 0.651
   selectedAttack: {fileID: 0}
   amountofModes: 1
   startHealth: 0
   revealAmount: 0
+  stamina: 0
   currentMode: 1
   animator: {fileID: 0}
   player: {fileID: 0}
@@ -43617,6 +43622,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackName: Whack
   damage: 5
+  statminaNeeded: 5
   damageOnlyOnce: 1
   bodyPartsUsedInAttack: 11
   mustFacePlayer: 1
@@ -43648,6 +43654,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackName: Heavy Attack
   damage: 20
+  statminaNeeded: 5
   damageOnlyOnce: 1
   bodyPartsUsedInAttack: 2
   mustFacePlayer: 1
@@ -43677,15 +43684,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 084cb613cb9443d4a8936dade09221ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackName: Untitled Attack
+  attackName: Dash
   damage: 5
+  statminaNeeded: 5
   damageOnlyOnce: 1
   bodyPartsUsedInAttack: 0
   mustFacePlayer: 1
   overrideTrackingVisionCone: 0
   facePlayerThreshold: 0.75
-  rangeForAttack: {x: 1, y: 10}
-  triggerName: Untitled Trigger
+  rangeForAttack: {x: 10, y: 90}
+  triggerName: Dash
   allowedModeOne: 1
   allowedModeTwo: 1
   allowedModeThree: 1
