@@ -6,6 +6,7 @@ public class AIForwardAnimator : StateMachineBehaviour
 {
 
     Animator otherAnimator;
+    AIObject ai;
 
     public void ResetTrigger(string trigger)
     {
@@ -34,9 +35,18 @@ public class AIForwardAnimator : StateMachineBehaviour
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        if (ai == null)
+        {
+            ai = animator.gameObject.GetComponent<AIObject>();
+        }
+        if (ai == null)
+        {
+            return;
+        }
+
         if (otherAnimator == null)
         {
-            otherAnimator = animator.gameObject.GetComponent<AIObject>().forwardAnimationsTo;
+            otherAnimator = ai.forwardAnimationsTo;
         }
     }
 
