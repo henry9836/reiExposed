@@ -34,7 +34,7 @@ public class AIObject : MonoBehaviour
     public float startHealth = 0.0f;
     [HideInInspector]
     public float revealAmount = 0.0f;
-    //[HideInInspector]
+    [HideInInspector]
     public float stamina;
     [HideInInspector]
     public int currentMode = 1;
