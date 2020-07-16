@@ -6,6 +6,7 @@ public class AIAttackContainer : MonoBehaviour
 {
     public string attackName = "Untitled Attack";
     public float damage = 5.0f;
+    public float statminaNeeded = 5.0f;
     public bool damageOnlyOnce = true;
     public AIBody.BodyParts bodyPartsUsedInAttack;
     public bool mustFacePlayer = true;
