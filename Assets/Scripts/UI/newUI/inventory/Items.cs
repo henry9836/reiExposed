@@ -40,14 +40,14 @@ public class Items : MonoBehaviour
     {
 
 
-        ////////////////////demo/////////////////////
-        //for (int i = 0; i < 52; i++)
-        //{
-        //    gaineditem(AllItems.PLUSHEALH);
-        //}
-        //removeitembiginvin(0);
-        //gaineditem(AllItems.PLUSSPEED);
-        //slotsref.itemchange();
+        //////////////////demo/////////////////////
+        for (int i = 0; i < 52; i++)
+        {
+            gaineditem(AllItems.PLUSHEALH);
+        }
+        removeitembiginvin(0);
+        gaineditem(AllItems.PLUSSPEED);
+        slotsref.itemchange();
 
     }
 
@@ -107,23 +107,28 @@ public class Items : MonoBehaviour
 
     public void removeitembiginvin(int biginvinpos)
     {
-        removeitem(biginvin[biginvinpos]);
+        removeitem(biginvin[biginvinpos], false);
     }
 
     public void removeitemequipped(int equippedpos)
     {
-        removeitem(equipped[equippedpos]);
+        removeitem(equipped[equippedpos], true);
     }
 
-    private void removeitem(singleItem toremove)
+    private void removeitem(singleItem toremove, bool useitem)
     {
+        if (useitem == true)
+        { 
+            //implment useagebehavior
+        }
+
         if (toremove.equipped == true)
         {
+
             for (int i = toremove.equippedpos; i < equipped.Count - 1; i++)
             {
                 equipped[i] = equipped[i + 1];
             }
-
             equipped.RemoveAt(equipped.Count - 1);
         }
 
@@ -135,7 +140,5 @@ public class Items : MonoBehaviour
 
         biginvin.RemoveAt(biginvin.Count - 1);
 
-
-        toremove = null;
     }
 }
