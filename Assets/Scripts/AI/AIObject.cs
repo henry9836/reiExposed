@@ -173,7 +173,7 @@ public class AIObject : MonoBehaviour
 
         //Safety Checks
         selectedAttack = null;
-        currentMode = 0;
+        currentMode = 1;
 
         //Disable hitboxes
         body.updateHitBox(AIBody.BodyParts.ALL, false);
