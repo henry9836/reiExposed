@@ -12,6 +12,7 @@ public class AIDash : StateMachineBehaviour
     public float endDashTrigger = 0.9f;
     public float dashSpeedMulti = 2.0f;
     public float playerStopTheshold = 1.0f;
+    public LayerMask obsctucles;
     
     float dashSpeed = 10.0f;
     bool dashing = false;
@@ -20,6 +21,7 @@ public class AIDash : StateMachineBehaviour
     AITracker tracker;
     AIMovement movement;
     AIForwardAnimator forwarder;
+    Transform transform;
     Vector3 targetDir;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
@@ -54,6 +56,7 @@ public class AIDash : StateMachineBehaviour
         lostPlayerTracking = false;
 
         dashSpeed = movement.moveSpeed * dashSpeedMulti;
+        transform = ai.transform;
 
         movement.stopMovement();
 
@@ -84,21 +87,40 @@ public class AIDash : StateMachineBehaviour
         if (dashing)
         {
             //If we are close enought to the player stop moving
-            if (playerStopTheshold >= Vector3.Distance(ai.player.transform.position, ai.transform.position))
+            if (playerStopTheshold >= Vector3.Distance(transform.position, ai.player.transform.position))
             {
                 dashing = false;
                 return;
             }
 
-            //Get Dash Direction
+            //Update Dash Direction
             if (!lostPlayerTracking)
             {
-                targetDir = (tracker.lastSeenPos - ai.transform.position).normalized;
+                //Get Direction
+                targetDir = (tracker.lastSeenPos - transform.position).normalized;
+                //Remove height
+                targetDir.y *= 0.0f;
             }
-            
-            //Move in a direction that makes sense
-            ai.transform.position += targetDir * dashSpeed * Time.deltaTime;
 
+
+            //Check for obsticles
+            Vector3 offset = targetDir * dashSpeed * Time.deltaTime;
+            float dashDistance = Vector3.Distance(transform.position, transform.position + offset);
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, targetDir, out hit, dashDistance, obsctucles))
+            {
+                //Move up until the rayhit point
+                Debug.Log($"AId {hit.collider.gameObject.name}:{hit.distance}");
+                transform.position += offset - (targetDir * hit.distance);
+                dashing = false;
+                return;
+            }
+            else
+            {
+                Debug.Log($"AId Dash");
+                //Move in a direction that makes sense
+                transform.position += offset;
+            }
 
         }
 
