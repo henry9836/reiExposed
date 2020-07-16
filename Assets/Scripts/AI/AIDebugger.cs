@@ -47,11 +47,11 @@ public class AIDebugger : MonoBehaviour
                 //Wander
                 Gizmos.color = Color.cyan;
                 Gizmos.DrawWireCube(movement.initalPosition, new Vector3(movement.wanderRange * 2.0f, 2.0f, movement.wanderRange * 2.0f));
-                if (!ai.animator.GetBool("CanSeePlayer") && !ai.animator.GetBool("LosingPlayer"))
-                {
-                    Gizmos.color = Color.red;
-                    Gizmos.DrawSphere(movement.lastUpdatedPos, 0.5f);
-                }
+                //if (!ai.animator.GetBool("CanSeePlayer") && !ai.animator.GetBool("LosingPlayer"))
+                //{
+                //    Gizmos.color = Color.red;
+                //    Gizmos.DrawSphere(movement.lastUpdatedPos, 0.5f);
+                //}
 
                 //Targetting
                 Gizmos.color = Color.yellow;

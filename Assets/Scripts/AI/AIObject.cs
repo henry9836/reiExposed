@@ -53,7 +53,7 @@ public class AIObject : MonoBehaviour
     }
 
     //Selects a random attack to use againest the player
-    public int selectAttack()
+    public void selectAttack()
     {
         float distance = Vector3.Distance(tracker.lastSeenPos, transform.position);
         validAttacks.Clear();
@@ -91,8 +91,6 @@ public class AIObject : MonoBehaviour
         {
             bindAttack(fallbackAttack);
         }
-
-        return 0;
     }
 
     public float QueryDamage()
