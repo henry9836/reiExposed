@@ -89,7 +89,7 @@ public class multipass
 
 public class packagetosend : MonoBehaviour
 {
-    const int BUFFERSIZE = 2048;
+    const int BUFFERSIZE = 8192; //4*2048 (UTF-8 = 4 bytes each char)
 
     public enum sendpackettypes
     {
