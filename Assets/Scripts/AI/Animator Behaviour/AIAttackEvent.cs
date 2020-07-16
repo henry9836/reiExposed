@@ -5,13 +5,7 @@ using UnityEngine;
 public class AIAttackEvent : StateMachineBehaviour
 {
     public Vector2 damageWindow;
-    public bool SFX;
-    public int SFXIndex = 0;
-    public bool SFXRandom;
-    public Vector2 SFXRandomRange = new Vector2(0, 1);
-    public AudioClip clip;
-
-    MultipleSoundObject soundObj;
+   
     AIForwardAnimator forwarder;
     AIObject ai;
     AIAttackContainer attack;
@@ -38,16 +32,6 @@ public class AIAttackEvent : StateMachineBehaviour
                 forwarder = animator.GetBehaviour<AIForwardAnimator>();
             }
         }
-        if (SFX)
-        {
-            if (soundObj == null)
-            {
-                if (ai.GetComponent<MultipleSoundObject>() != null)
-                {
-                    soundObj = ai.GetComponent<MultipleSoundObject>();
-                }
-            }
-        }
 
         if (forwarder != null)
         {
@@ -71,21 +55,6 @@ public class AIAttackEvent : StateMachineBehaviour
         //Turn on triggers
         if (damageWindow.y >= stateInfo.normalizedTime && stateInfo.normalizedTime > damageWindow.x && !armed)
         {
-            if (SFX && soundObj != null)
-            {
-                if (clip == null)
-                {
-                    if (SFXRandom)
-                    {
-                        SFXIndex = (int)Random.Range(SFXRandomRange.x, SFXRandomRange.y);
-                    }
-                    soundObj.Play(SFXIndex);
-                }
-                else
-                {
-                    soundObj.Play(clip);
-                }
-            }
             ai.body.updateHitBox(parts, true);
             armed = true;
         }

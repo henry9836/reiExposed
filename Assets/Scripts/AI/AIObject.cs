@@ -53,7 +53,7 @@ public class AIObject : MonoBehaviour
     }
 
     //Selects a random attack to use againest the player
-    public int selectAttack()
+    public void selectAttack()
     {
         float distance = Vector3.Distance(tracker.lastSeenPos, transform.position);
         validAttacks.Clear();
@@ -68,7 +68,7 @@ public class AIObject : MonoBehaviour
             if (attacks[i].allowedOnMode(currentMode))
             {
                 //We are within range for an attack
-                if (attacks[i].rangeForAttack.y <= distance)
+                if (attacks[i].rangeForAttack.y >= distance)
                 {
                     validAttacks.Add(i);
                 }
@@ -84,6 +84,7 @@ public class AIObject : MonoBehaviour
         //If validAttack is populated
         if (validAttacks.Count > 0)
         {
+            Debug.Log("Found Valid Attack");
             bindAttack(validAttacks[Random.Range(0, validAttacks.Count)]);
         }
         //Use fallback attack
@@ -91,8 +92,6 @@ public class AIObject : MonoBehaviour
         {
             bindAttack(fallbackAttack);
         }
-
-        return 0;
     }
 
     public float QueryDamage()
@@ -116,11 +115,11 @@ public class AIObject : MonoBehaviour
 
     public void bindAttack(int i)
     {
-        Debug.Log("Bound Attack");
 
         if (i < attacks.Count && i >= 0)
         {
             selectedAttack = attacks[i];
+            Debug.Log($"Bound Attack {attacks[i].triggerName}");
         }
     }
 
@@ -174,7 +173,7 @@ public class AIObject : MonoBehaviour
 
         //Safety Checks
         selectedAttack = null;
-        currentMode = 0;
+        currentMode = 1;
 
         //Disable hitboxes
         body.updateHitBox(AIBody.BodyParts.ALL, false);
@@ -206,7 +205,6 @@ public class AIObject : MonoBehaviour
         //Reveal Update
         if (vfx != null)
         {
-            //Debug.Log($"{revealAmount}<{revealThreshold}");
 
             revealAmount = 0.0f;
 

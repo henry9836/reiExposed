@@ -13,6 +13,9 @@ public class AIChase : StateMachineBehaviour
     AIAttackContainer attack;
     Transform player;
 
+    float repickAttackThreshold = 5.0f;
+    float wrongAttackChosenTimer = 0.0f;
+
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -59,6 +62,7 @@ public class AIChase : StateMachineBehaviour
         }
 
         attack = ai.getSelectedAttack();
+        wrongAttackChosenTimer = 0.0f;
 
     }
 
@@ -78,6 +82,16 @@ public class AIChase : StateMachineBehaviour
         if (ai == null)
         {
             return;
+        }
+
+        wrongAttackChosenTimer += Time.deltaTime;
+
+        if (wrongAttackChosenTimer >= repickAttackThreshold)
+        {
+            movement.stopMovement();
+            ai.selectAttack();
+            attack = ai.getSelectedAttack();
+            wrongAttackChosenTimer = 0.0f;
         }
 
         //If we are too far from the player to attack go to player
