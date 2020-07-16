@@ -67,7 +67,7 @@ public class AIMovement : MonoBehaviour
         }
         else if (path.status == NavMeshPathStatus.PathPartial || path.status == NavMeshPathStatus.PathInvalid)
         {
-            Debug.Log("Invalid Path!");
+            //Debug.Log("Invalid Path!");
             return false;
         }
 
