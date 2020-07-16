@@ -34,6 +34,7 @@ public class ThePhone : MonoBehaviour
         ROLL,
         AMAZON,
         PICZOOM,
+        INVENTORY,
     };
     public phonestates screen;
 
@@ -121,6 +122,11 @@ public class ThePhone : MonoBehaviour
                         picUnzoom();
                     }
                     break;
+                }
+            case phonestates.INVENTORY:
+                {
+                    break;
+                
                 }
             default:
                 {
