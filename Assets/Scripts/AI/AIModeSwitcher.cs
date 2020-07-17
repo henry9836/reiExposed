@@ -17,7 +17,7 @@ public class AIModeSwitcher : MonoBehaviour
 
     public bool switchMode(int newMode)
     {
-        if (newMode <= ai.amountofModes && newMode >= 0)
+        if (newMode <= ai.amountofModes && newMode > 0)
         {
             ai.currentMode = newMode;
         }

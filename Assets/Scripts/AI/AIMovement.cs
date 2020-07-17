@@ -67,7 +67,7 @@ public class AIMovement : MonoBehaviour
         }
         else if (path.status == NavMeshPathStatus.PathPartial || path.status == NavMeshPathStatus.PathInvalid)
         {
-            Debug.Log("Invalid Path!");
+            //Debug.Log("Invalid Path!");
             return false;
         }
 
@@ -79,7 +79,39 @@ public class AIMovement : MonoBehaviour
 
     public void setOverride(OVERRIDE newMode)
     {
-        overrideMode = newMode;
+        overrideMode = newMode; 
+        switch (overrideMode)
+        {
+            case OVERRIDE.NO_OVERRIDE:
+                {
+                    //agent.enabled = true;
+                    agent.isStopped = false;
+                    agent.speed = initalMoveSpeed;
+                    agent.angularSpeed = initalRotSpeed;
+                    break;
+                }
+            case OVERRIDE.ROT_OVERRIDE:
+                {
+                    agent.angularSpeed = 0.0f;
+                    break;
+                }
+            case OVERRIDE.MOVE_OVERRIDE:
+                {
+                    agent.speed = 0.0f;
+                    break;
+                }
+            case OVERRIDE.FULL_OVERRIDE:
+                {
+                    agent.isStopped = true;
+                    //agent.enabled = false;
+                    break;
+                }
+            default:
+                {
+                    Debug.LogWarning($"No behaviour setup for {overrideMode}");
+                    break;
+                }
+        }
     }
 
     public void stopMovement()
@@ -106,7 +138,5 @@ public class AIMovement : MonoBehaviour
             stopMovement();
         }
     }
-
-
 
 }

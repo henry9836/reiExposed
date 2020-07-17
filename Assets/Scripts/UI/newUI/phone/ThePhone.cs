@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using UnityEngine.UI;
-using System.ComponentModel;
 
 //public class photo
 public class ThePhone : MonoBehaviour
@@ -24,7 +23,11 @@ public class ThePhone : MonoBehaviour
     private Vector3 restorePos;
     private int restoreID;
 
-    
+    public int selected;
+    public int picselected;
+    public int itemselected;
+
+
 
     public enum phonestates 
     {
@@ -34,6 +37,7 @@ public class ThePhone : MonoBehaviour
         ROLL,
         AMAZON,
         PICZOOM,
+        INVENTORY,
     };
     public phonestates screen;
 
@@ -48,9 +52,7 @@ public class ThePhone : MonoBehaviour
         save = GameObject.Find("Save&Dronemanage").GetComponent<saveFile>();
         drone = GameObject.Find("Save&Dronemanage").GetComponent<plugindemo>();
 
-
         savephotoinit();
-
     }
 
     void Update()
@@ -59,7 +61,6 @@ public class ThePhone : MonoBehaviour
         {
             case phonestates.NONE:
                 {
-
                     if (Input.GetKeyDown(KeyCode.Tab))
                     {
                         openingephone(true);
@@ -69,17 +70,71 @@ public class ThePhone : MonoBehaviour
                 }
             case phonestates.HOME:
                 {
+                    float scroll = Input.GetAxis("Mouse ScrollWheel");
+                    if (scroll > 0.0f)
+                    {
+                        selected += 1;
+                        Debug.Log(selected);
+
+                    }
+                    else if (scroll < 0.0f)
+                    {
+                        selected -= 1;
+                        Debug.Log(selected);
+
+                    }
+
                     if (drone.candeliver == true)
                     {
-                        ThePhoneUI.transform.GetChild(2).GetChild(2).GetComponent<Button>().interactable = true;
+                        selected = Mathf.Clamp(selected, 0, 3);
+
                     }
                     else
                     {
-                        ThePhoneUI.transform.GetChild(2).GetChild(2).GetComponent<Button>().interactable = false;
+                        //grey out or somth8ihng
+                        selected = Mathf.Clamp(selected, 0, 2);
+
                     }
 
 
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        switch (selected)
+                        {
+                            case (0):
+                                {
+
+                                    inventoryopen();
+
+                                    break;
+                                }
+                            case (1):
+                                {
+                                    thecamera();
+                                    break;
+                                }
+                            case (2):
+                                {
+                                    cameraroll();
+                                    break;
+                                }
+                            case (3):
+                                {
+                                    amazon();
+                                    break;
+                                }
+                            default:
+                                {
+                                    break;
+                                }
+                        }
+                    }
+
                     if (Input.GetKeyDown(KeyCode.Tab))
+                    {
+                        openingephone(false);
+                    }
+                    else if (Input.GetMouseButtonDown(1))
                     {
                         openingephone(false);
                     }
@@ -94,21 +149,57 @@ public class ThePhone : MonoBehaviour
                     else if (Input.GetKeyDown(KeyCode.Tab))
                     {
                         BackToMenu();
+                        openingephone(false);
+                    }
+                    else if (Input.GetMouseButtonDown(1))
+                    {
+                        BackToMenu();
                     }
 
                     break;
                 }
             case phonestates.ROLL:
                 {
+                    float scroll = Input.GetAxis("Mouse ScrollWheel");
+                    if (scroll > 0.0f)
+                    {
+                        picselected += 1;
+                    }
+                    else if (scroll < 0.0f)
+                    {
+                        picselected -= 1;
+                    }
+
+                    picselected = Mathf.Clamp(picselected, 0, 9);
+
+                    Debug.Log(picselected);
+
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        picZoom(picselected);
+                    }
+
+
                     if (Input.GetKeyDown(KeyCode.Tab))
                     {
                         BackToMenu();
+                        openingephone(false);
+                    }
+                    else if (Input.GetMouseButtonDown(1))
+                    {
+                        BackToMenu();
+
                     }
                     break;
                 }
             case phonestates.AMAZON:
                 {
                     if (Input.GetKeyDown(KeyCode.Tab))
+                    {
+                        BackToMenu();
+                        openingephone(false);
+                    }
+                    else if (Input.GetMouseButtonDown(1))
                     {
                         BackToMenu();
                     }
@@ -118,9 +209,59 @@ public class ThePhone : MonoBehaviour
                 {
                     if (Input.GetKeyDown(KeyCode.Tab))
                     {
+                        BackToMenu();
+                        openingephone(false);
+                    }
+                    else if (Input.GetMouseButtonDown(1))
+                    {
                         picUnzoom();
                     }
                     break;
+                }
+            case phonestates.INVENTORY:
+                {
+
+                    float scroll = Input.GetAxis("Mouse ScrollWheel");
+                    if (scroll > 0.0f)
+                    {
+                        itemselected += 1;
+                        ThePhoneUI.transform.GetChild(5).gameObject.GetComponent<eqitems>().itemchange();
+                        Debug.Log(itemselected);
+
+
+                    }
+                    else if (scroll < 0.0f)
+                    {
+                        itemselected -= 1;
+                        ThePhoneUI.transform.GetChild(5).gameObject.GetComponent<eqitems>().itemchange();
+                        Debug.Log(itemselected);
+
+                    }
+                    itemselected = Mathf.Clamp(itemselected, 0, 7);
+
+
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        if (canvas.GetComponent<Items>().equipped.Count > itemselected)
+                        {
+                            canvas.GetComponent<Items>().removeitemequipped(itemselected);
+                            ThePhoneUI.transform.GetChild(5).gameObject.GetComponent<eqitems>().itemchange();
+                        }
+                    }
+
+                    if (Input.GetKeyDown(KeyCode.Tab))
+                    {
+                        BackToMenu();
+                        openingephone(false);
+                    }
+                    else if (Input.GetMouseButtonDown(1))
+                    {
+                        BackToMenu();
+                    }
+
+
+                    break;
+            
                 }
             default:
                 {
@@ -135,45 +276,21 @@ public class ThePhone : MonoBehaviour
         if (open == true)
         {
             ThePhoneUI.SetActive(true);
-            //rei.transform.GetChild(0).gameObject.SetActive(false);
-            //phonecam.SetActive(true);
-            //maincam.SetActive(false);
-            //rei.GetComponent<movementController>().enabled = false;
-            //rei.GetComponent<fistpersoncontroler>().enabled = true;
-            //rei.GetComponent<umbrella>().enabled = false;
-            //foreach (GameObject tmp in myths.mythObjects)
-            //{
-            //    if (tmp.GetComponent<EnemyController>().enabled) {
-            //        tmp.transform.GetChild(1).gameObject.SetActive(false);
-            //    }
-            //}
-            //rei.transform.GetChild(1).gameObject.SetActive(false);
-            //rei.GetComponent<Animator>().enabled = false;
+            ThePhoneUI.transform.GetChild(2).gameObject.SetActive(true);
+            ThePhoneUI.transform.GetChild(3).gameObject.SetActive(false);
+            ThePhoneUI.transform.GetChild(4).gameObject.SetActive(false);
+            ThePhoneUI.transform.GetChild(5).gameObject.SetActive(false);
+
+            selected = 0;
+            picselected = 0;
+            itemselected = 0;
+
             screen = phonestates.HOME;
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.Confined;
         }
         else
         {
             ThePhoneUI.SetActive(false);
-            //rei.transform.GetChild(0).gameObject.SetActive(true);
-            //phonecam.SetActive(false);
-            //maincam.SetActive(true);
-            //rei.GetComponent<movementController>().enabled = true;
-            //rei.GetComponent<fistpersoncontroler>().enabled = false;
-            //rei.GetComponent<umbrella>().enabled = true;
-            //foreach (GameObject tmp in myths.mythObjects)
-            //{
-            //    if (tmp.GetComponent<EnemyController>().enabled)
-            //    {
-            //       tmp.transform.GetChild(1).gameObject.SetActive(true);
-            //    }
-            //}
-            //rei.transform.GetChild(1).gameObject.SetActive(true);
-            //rei.GetComponent<Animator>().enabled = true;
             screen = phonestates.NONE;
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
         }
     }
 
@@ -202,8 +319,7 @@ public class ThePhone : MonoBehaviour
 
 
         ThePhoneUI.SetActive(false);
-        Cursor.visible = false;
-        //Cursor.lockState = CursorLockMode.Locked;
+
         camgrid.SetActive(true);
     }
 
@@ -227,6 +343,15 @@ public class ThePhone : MonoBehaviour
 
     }
 
+    public void inventoryopen()
+    {
+        screen = phonestates.INVENTORY;
+        ThePhoneUI.transform.GetChild(2).gameObject.SetActive(false);
+        ThePhoneUI.transform.GetChild(5).gameObject.SetActive(true);
+        ThePhoneUI.transform.GetChild(5).gameObject.GetComponent<eqitems>().itemchange();
+
+    }
+
     public void BackToMenu()
     {
         screen = phonestates.HOME;
@@ -237,6 +362,8 @@ public class ThePhone : MonoBehaviour
         ThePhoneUI.transform.GetChild(2).gameObject.SetActive(true);
         ThePhoneUI.transform.GetChild(3).gameObject.SetActive(false);
         ThePhoneUI.transform.GetChild(4).gameObject.SetActive(false);
+        ThePhoneUI.transform.GetChild(5).gameObject.SetActive(false);
+
 
         rei.transform.GetChild(0).gameObject.SetActive(true);
         phonecam.SetActive(false);
@@ -249,8 +376,6 @@ public class ThePhone : MonoBehaviour
 
         save.saveitem("MythTraces", currency.MythTraces);
 
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.Confined;
     }
 
     public void picZoom(int photo)

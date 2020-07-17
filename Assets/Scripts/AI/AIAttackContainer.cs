@@ -6,11 +6,12 @@ public class AIAttackContainer : MonoBehaviour
 {
     public string attackName = "Untitled Attack";
     public float damage = 5.0f;
+    public float statminaNeeded = 5.0f;
     public bool damageOnlyOnce = true;
     public AIBody.BodyParts bodyPartsUsedInAttack;
     public bool mustFacePlayer = true;
     public bool overrideTrackingVisionCone = false;
-    [Range(0.0f, 1.0f)]
+    [Range(-1.0f, 1.0f)]
     public float facePlayerThreshold = 0.75f;
     public Vector2 rangeForAttack = new Vector2(1.0f, 10.0f);
     public string triggerName = "Untitled Trigger";
@@ -78,12 +79,6 @@ public class AIAttackContainer : MonoBehaviour
 
         Debug.LogWarning($"Cannot check if allowed on mode {i} no logic exists");
 
-        return true;
-    }
-
-    public bool queryIfAllowed()
-    {
-        //////////////////
         return true;
     }
 
