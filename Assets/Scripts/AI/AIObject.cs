@@ -23,6 +23,7 @@ public class AIObject : MonoBehaviour
     public bool startInSleepState = false;
 
     public float health = 300.0f;
+    public float staminaRegen = 2.5f;
     [Range(0.0f, 1.0f)]
     public float revealThreshold = 0.15f;
     public AIAttackContainer selectedAttack;
@@ -33,6 +34,8 @@ public class AIObject : MonoBehaviour
     public float startHealth = 0.0f;
     [HideInInspector]
     public float revealAmount = 0.0f;
+    [HideInInspector]
+    public float stamina;
     [HideInInspector]
     public int currentMode = 1;
     [HideInInspector]
@@ -68,15 +71,23 @@ public class AIObject : MonoBehaviour
             if (attacks[i].allowedOnMode(currentMode))
             {
                 //We are within range for an attack
-                if (attacks[i].rangeForAttack.y <= distance)
+                if (attacks[i].rangeForAttack.y >= distance)
                 {
-                    validAttacks.Add(i);
+                    //If we have enough stamina for the attack
+                    if (attacks[i].statminaNeeded <= stamina)
+                    {
+                        validAttacks.Add(i);
+                    }
                 }
                 //record attack if it closer than the last closest attack
                 else if (distance - attacks[i].rangeForAttack.y < closestAttack)
-                {
-                    closestAttack = distance - attacks[i].rangeForAttack.y;
-                    fallbackAttack = i;
+                {   
+                    //If we have enough stamina for the attack
+                    if (attacks[i].statminaNeeded <= stamina)
+                    {
+                        closestAttack = distance - attacks[i].rangeForAttack.y;
+                        fallbackAttack = i;
+                    }
                 }
             }
         }
@@ -84,6 +95,7 @@ public class AIObject : MonoBehaviour
         //If validAttack is populated
         if (validAttacks.Count > 0)
         {
+            Debug.Log("Found Valid Attack");
             bindAttack(validAttacks[Random.Range(0, validAttacks.Count)]);
         }
         //Use fallback attack
@@ -114,11 +126,11 @@ public class AIObject : MonoBehaviour
 
     public void bindAttack(int i)
     {
-        Debug.Log("Bound Attack");
 
         if (i < attacks.Count && i >= 0)
         {
             selectedAttack = attacks[i];
+            Debug.Log($"Bound Attack {attacks[i].triggerName}");
         }
     }
 
@@ -172,7 +184,7 @@ public class AIObject : MonoBehaviour
 
         //Safety Checks
         selectedAttack = null;
-        currentMode = 0;
+        currentMode = 1;
 
         //Disable hitboxes
         body.updateHitBox(AIBody.BodyParts.ALL, false);
@@ -196,6 +208,9 @@ public class AIObject : MonoBehaviour
     private void FixedUpdate()
     {
 
+        stamina += staminaRegen * Time.deltaTime;
+
+
         if (initalVFXObjects == 0)
         {
             initalVFXObjects = vfx.bodysNoVFX.Count;
@@ -204,7 +219,6 @@ public class AIObject : MonoBehaviour
         //Reveal Update
         if (vfx != null)
         {
-            //Debug.Log($"{revealAmount}<{revealThreshold}");
 
             revealAmount = 0.0f;
 
