@@ -73,27 +73,67 @@ public class ThePhone : MonoBehaviour
                     float scroll = Input.GetAxis("Mouse ScrollWheel");
                     if (scroll > 0.0f)
                     {
-                        selected += 1;
-                        Debug.Log(selected);
+                        int prev = selected;
+                        selected -= 1;
 
+                        if (drone.candeliver == true)
+                        {
+                            selected = Mathf.Clamp(selected, 0, 3);
+                        }
+                        else
+                        {
+                            //grey out or somth8ihng
+                            selected = Mathf.Clamp(selected, 0, 2);
+                        }
+
+                        if (prev != selected)
+                        {
+                            if (ThePhoneUI.transform.GetChild(2).GetChild(prev).GetComponent<slotno>().shriking != true)
+                            {
+                                ThePhoneUI.transform.GetChild(2).GetChild(prev).GetComponent<slotno>().growing = false;
+                                ThePhoneUI.transform.GetChild(2).GetChild(prev).GetComponent<slotno>().shriking = true;
+                                StartCoroutine(ThePhoneUI.transform.GetChild(2).GetChild(prev).GetComponent<slotno>().toungrow());
+                            }
+
+                            if (ThePhoneUI.transform.GetChild(2).GetChild(selected).GetComponent<slotno>().growing != true)
+                            {
+                                ThePhoneUI.transform.GetChild(2).GetChild(selected).GetComponent<slotno>().growing = true;
+                                ThePhoneUI.transform.GetChild(2).GetChild(selected).GetComponent<slotno>().shriking = false;
+                                StartCoroutine(ThePhoneUI.transform.GetChild(2).GetChild(selected).GetComponent<slotno>().togrow());
+                            }
+                        }
                     }
                     else if (scroll < 0.0f)
                     {
-                        selected -= 1;
-                        Debug.Log(selected);
+                        int prev = selected;
 
-                    }
+                        selected += 1;
+                        if (drone.candeliver == true)
+                        {
+                            selected = Mathf.Clamp(selected, 0, 3);
+                        }
+                        else
+                        {
+                            //grey out or somth8ihng
+                            selected = Mathf.Clamp(selected, 0, 2);
+                        }
 
-                    if (drone.candeliver == true)
-                    {
-                        selected = Mathf.Clamp(selected, 0, 3);
+                        if (prev != selected)
+                        {
+                            if (ThePhoneUI.transform.GetChild(2).GetChild(prev).GetComponent<slotno>().shriking != true)
+                            {
+                                ThePhoneUI.transform.GetChild(2).GetChild(prev).GetComponent<slotno>().growing = false;
+                                ThePhoneUI.transform.GetChild(2).GetChild(prev).GetComponent<slotno>().shriking = true;
+                                StartCoroutine(ThePhoneUI.transform.GetChild(2).GetChild(prev).GetComponent<slotno>().toungrow());
+                            }
 
-                    }
-                    else
-                    {
-                        //grey out or somth8ihng
-                        selected = Mathf.Clamp(selected, 0, 2);
-
+                            if (ThePhoneUI.transform.GetChild(2).GetChild(selected).GetComponent<slotno>().growing != true)
+                            {
+                                ThePhoneUI.transform.GetChild(2).GetChild(selected).GetComponent<slotno>().growing = true;
+                                ThePhoneUI.transform.GetChild(2).GetChild(selected).GetComponent<slotno>().shriking = false;
+                                StartCoroutine(ThePhoneUI.transform.GetChild(2).GetChild(selected).GetComponent<slotno>().togrow());
+                            }
+                        }
                     }
 
 
@@ -103,9 +143,7 @@ public class ThePhone : MonoBehaviour
                         {
                             case (0):
                                 {
-
                                     inventoryopen();
-
                                     break;
                                 }
                             case (1):
@@ -163,11 +201,11 @@ public class ThePhone : MonoBehaviour
                     float scroll = Input.GetAxis("Mouse ScrollWheel");
                     if (scroll > 0.0f)
                     {
-                        picselected += 1;
+                        picselected -= 1;
                     }
                     else if (scroll < 0.0f)
                     {
-                        picselected -= 1;
+                        picselected += 1;
                     }
 
                     picselected = Mathf.Clamp(picselected, 0, 9);
@@ -285,10 +323,23 @@ public class ThePhone : MonoBehaviour
             picselected = 0;
             itemselected = 0;
 
+            ThePhoneUI.transform.GetChild(2).GetChild(selected).GetComponent<slotno>().growing = true;
+            ThePhoneUI.transform.GetChild(2).GetChild(selected).GetComponent<slotno>().shriking = false;
+            StartCoroutine(ThePhoneUI.transform.GetChild(2).GetChild(selected).GetComponent<slotno>().togrow());
+
             screen = phonestates.HOME;
         }
         else
         {
+            for (int i = 0; i < 4; i++)
+            {
+                ThePhoneUI.transform.GetChild(2).GetChild(i).GetComponent<slotno>().growing = false;
+                ThePhoneUI.transform.GetChild(2).GetChild(i).GetComponent<slotno>().shriking = true;
+                float smol = ThePhoneUI.transform.GetChild(2).GetChild(i).GetComponent<slotno>().smol;
+                ThePhoneUI.transform.GetChild(2).GetChild(i).transform.localScale = new Vector3(smol, smol, smol);
+            }
+
+
             ThePhoneUI.SetActive(false);
             screen = phonestates.NONE;
         }
@@ -592,7 +643,6 @@ public class ThePhone : MonoBehaviour
     public void loadPhotos()
     {
         int i = 0;
-
 
         for (; i < save.safeItem("imageCount", saveFile.types.INT).toint; i++)
         {
