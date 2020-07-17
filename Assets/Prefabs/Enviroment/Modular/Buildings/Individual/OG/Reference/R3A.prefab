@@ -42,6 +42,7 @@ GameObject:
   - component: {fileID: 7005361660023063675}
   - component: {fileID: 7989506923319509454}
   - component: {fileID: 2012492838806000292}
+  - component: {fileID: 2051245649035471020}
   m_Layer: 0
   m_Name: Cladding
   m_TagString: Untagged
@@ -110,6 +111,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &2051245649035471020
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2709701447707248648}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 6.011212, y: 3.0000002, z: 0.20132324}
+  m_Center: {x: 3.005606, y: 1.5000001, z: -0.10066162}
 --- !u!1 &4414067516412731728
 GameObject:
   m_ObjectHideFlags: 0
@@ -229,8 +243,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6936199487916865253}
-  - component: {fileID: 6975407812419723447}
   - component: {fileID: 8150691428986928607}
+  - component: {fileID: 2051245649035471018}
   m_Layer: 0
   m_Name: R3A
   m_TagString: Untagged
@@ -254,19 +268,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &6975407812419723447
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6204004769234748662}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 6.054528, y: 2.9829798, z: 0.26171058}
-  m_Center: {x: 2.9890642, y: 1.5103993, z: -0.120307}
 --- !u!205 &8150691428986928607
 LODGroup:
   m_ObjectHideFlags: 0
@@ -290,3 +291,16 @@ LODGroup:
     renderers:
     - renderer: {fileID: 231635814719716348}
   m_Enabled: 1
+--- !u!65 &2051245649035471018
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6204004769234748662}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 6.011212, y: 3.0000002, z: 0.20132324}
+  m_Center: {x: -3, y: 1.5000001, z: 0.1}
