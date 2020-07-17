@@ -4,6 +4,9 @@ using UnityEngine;
 using System.IO;
 using UnityEngine.UI;
 
+using UnityEngine.Networking;
+
+
 //public class photo
 public class ThePhone : MonoBehaviour
 {
@@ -202,15 +205,18 @@ public class ThePhone : MonoBehaviour
                     if (scroll > 0.0f)
                     {
                         picselected -= 1;
+                        Debug.Log(picselected);
+
                     }
                     else if (scroll < 0.0f)
                     {
                         picselected += 1;
+                        Debug.Log(picselected);
+
                     }
 
                     picselected = Mathf.Clamp(picselected, 0, 9);
 
-                    Debug.Log(picselected);
 
                     if (Input.GetMouseButtonDown(0))
                     {
@@ -597,14 +603,7 @@ public class ThePhone : MonoBehaviour
 
         List<GameObject> reenable = new List<GameObject>() { };
 
-        for (int i = 0; i < this.gameObject.transform.childCount; i++)
-        {
-            if (this.transform.GetChild(i).gameObject.activeSelf == true)
-            {
-                reenable.Add(this.transform.GetChild(i).gameObject);
-                this.transform.GetChild(i).gameObject.SetActive(false);
-            }
-        }
+
 
         string fn = Directory.GetCurrentDirectory();
         string foldername = fn + "\\" + "shhhhhSecretFolder";
@@ -614,13 +613,25 @@ public class ThePhone : MonoBehaviour
             Directory.CreateDirectory(foldername);
         }
 
-        yield return new WaitForSecondsRealtime(0.1f);
+        yield return null;
+
+
+        for (int i = 0; i < this.gameObject.transform.childCount; i++)
+        {
+            if (this.transform.GetChild(i).gameObject.activeSelf == true)
+            {
+                reenable.Add(this.transform.GetChild(i).gameObject);
+                this.transform.GetChild(i).gameObject.SetActive(false);
+            }
+        }
+
+        yield return new WaitForEndOfFrame();
 
         for (int i = 0; i < 10; i++)
         {
             if (!FileExists(foldername + "\\" + i.ToString() + ".png"))
             {
-                ScreenCapture.CaptureScreenshot(foldername + "\\" + i.ToString() + ".png");
+                ScreenCapture.CaptureScreenshot((foldername + "\\" + i.ToString() + ".png"));
                 i = 10;
             }
 
@@ -659,6 +670,9 @@ public class ThePhone : MonoBehaviour
 
     IEnumerator LoadScreenShot(int i)
     {
+
+
+
         string name = i.ToString() + ".png";
         string pathPrefix = @"file://";
         string foldername = "shhhhhSecretFolder";
@@ -680,14 +694,32 @@ public class ThePhone : MonoBehaviour
 
         string fullFilename = pathPrefix + path + filename2;
 
-        WWW www = new WWW(fullFilename);
-        Texture2D screenshot = new Texture2D(1920, 1080, TextureFormat.DXT1, false);
-        www.LoadImageIntoTexture(screenshot);
 
-        Image tmp = ThePhoneUI.transform.GetChild(3).GetChild(i).GetComponent<Image>();
-        tmp.sprite = Sprite.Create(www.texture, new Rect(0, 0, www.texture.width, www.texture.height), new Vector2(0, 0));
+        //WWW www = new WWW(fullFilename);
 
-        tmp.gameObject.GetComponent<Button>().enabled = true;
+        using (UnityWebRequest uwr = UnityWebRequestTexture.GetTexture(fullFilename))
+        {
+            yield return uwr.SendWebRequest();
+
+            if (uwr.isNetworkError || uwr.isHttpError)
+            {
+                Debug.Log(uwr.error);
+            }
+            else
+            {
+                // Get downloaded asset bundle
+                var texture = DownloadHandlerTexture.GetContent(uwr);
+                Image tmp = ThePhoneUI.transform.GetChild(3).GetChild(i).GetComponent<Image>();
+                tmp.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0, 0));
+
+                tmp.gameObject.GetComponent<Button>().enabled = true;
+
+            }
+        }
+
+        //Texture2D screenshot = new Texture2D(1920, 1080, TextureFormat.DXT1, false);
+        //www.LoadImageIntoTexture(screenshot);
+
 
         yield return null;
     }
