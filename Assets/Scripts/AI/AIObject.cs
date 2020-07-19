@@ -130,13 +130,11 @@ public class AIObject : MonoBehaviour
         if (i < attacks.Count && i >= 0)
         {
             selectedAttack = attacks[i];
-            Debug.Log($"Bound Attack {attacks[i].triggerName}");
         }
     }
 
     public void unbindAttack()
     {
-        Debug.Log("unbound Attack");
         selectedAttack = null;
     }
 
