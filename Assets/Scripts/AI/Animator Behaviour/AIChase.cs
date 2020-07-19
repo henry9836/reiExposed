@@ -84,6 +84,14 @@ public class AIChase : StateMachineBehaviour
             return;
         }
 
+        if (attack == null)
+        {
+            ai.selectAttack();
+            attack = ai.getSelectedAttack();
+            movement.goToPosition(player.position);
+            return;
+        }
+
         wrongAttackChosenTimer += Time.deltaTime;
 
         if (wrongAttackChosenTimer >= repickAttackThreshold)
@@ -121,6 +129,7 @@ public class AIChase : StateMachineBehaviour
                 {
                     //ATTACK
                     movement.stopMovement();
+                    ai.stamina -= attack.statminaNeeded;
                     animator.SetTrigger(attack.triggerName);
                     if (forwarder != null)
                     {
