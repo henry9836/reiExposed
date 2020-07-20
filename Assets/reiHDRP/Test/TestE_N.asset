@@ -68,7 +68,7 @@ MonoBehaviour:
     m_Value: 1
   colorMode:
     m_OverrideState: 0
-    m_Value: 1
+    m_Value: 0
   color:
     m_OverrideState: 0
     m_Value: {r: 0.5, g: 0.5, b: 0.5, a: 1}
@@ -100,30 +100,30 @@ MonoBehaviour:
     min: 0
   baseHeight:
     m_OverrideState: 1
-    m_Value: -100
+    m_Value: -4221.75
   maximumHeight:
     m_OverrideState: 1
     m_Value: 100
   albedo:
     m_OverrideState: 1
-    m_Value: {r: 0.52812386, g: 0.6326811, b: 0.8679245, a: 1}
+    m_Value: {r: 0.3539516, g: 0.50006956, b: 0.7735849, a: 1}
     hdr: 0
     showAlpha: 1
     showEyeDropper: 1
   meanFreePath:
     m_OverrideState: 1
-    m_Value: 3
+    m_Value: 173
     min: 1
   enableVolumetricFog:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 1
   anisotropy:
     m_OverrideState: 1
-    m_Value: -0.235
+    m_Value: -0.08
     min: -1
     max: 1
   globalLightProbeDimmer:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 1
     min: 0
     max: 1
@@ -157,6 +157,7 @@ MonoBehaviour:
   - {fileID: 4123576899841933594}
   - {fileID: 497545740210325902}
   - {fileID: 1470136087388295623}
+  - {fileID: 8138716657027115490}
   - {fileID: -8859155691197316457}
   - {fileID: 4020039327700061334}
 --- !u!114 &497545740210325902
@@ -174,12 +175,12 @@ MonoBehaviour:
   active: 1
   m_AdvancedMode: 0
   indirectSpecularIntensity:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 1
     min: 0
   indirectDiffuseIntensity:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0.5
     min: 0
 --- !u!114 &1470136087388295623
 MonoBehaviour:
@@ -204,22 +205,22 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 0
   exposure:
-    m_OverrideState: 1
-    m_Value: -10
+    m_OverrideState: 0
+    m_Value: 13.93
   multiplier:
     m_OverrideState: 0
     m_Value: 1
     min: 0
   upperHemisphereLuxValue:
     m_OverrideState: 0
-    m_Value: 0.043250903
+    m_Value: 0.017415067
     min: 0
   upperHemisphereLuxColor:
     m_OverrideState: 0
-    m_Value: {x: 0.5, y: 0.2705924, z: 0.22424749}
+    m_Value: {x: 0.09371709, y: 0.19990116, z: 0.5}
   desiredLuxValue:
     m_OverrideState: 0
-    m_Value: 20000
+    m_Value: 10
   updateMode:
     m_OverrideState: 0
     m_Value: 0
@@ -231,8 +232,8 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 0
   hdriSky:
-    m_OverrideState: 0
-    m_Value: {fileID: 0}
+    m_OverrideState: 1
+    m_Value: {fileID: 8900000, guid: 97259d0c0ea9f491692be825da27978a, type: 3}
   enableBackplate:
     m_OverrideState: 0
     m_Value: 0
@@ -463,3 +464,75 @@ MonoBehaviour:
   m_Resolution:
     m_OverrideState: 0
     m_Value: 2
+--- !u!114 &8138716657027115490
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d08ce26990eb1a4a9177b860541e702, type: 3}
+  m_Name: Exposure
+  m_EditorClassIdentifier: 
+  active: 1
+  m_AdvancedMode: 0
+  mode:
+    m_OverrideState: 1
+    m_Value: 0
+  meteringMode:
+    m_OverrideState: 0
+    m_Value: 2
+  luminanceSource:
+    m_OverrideState: 0
+    m_Value: 1
+  fixedExposure:
+    m_OverrideState: 1
+    m_Value: 60
+  compensation:
+    m_OverrideState: 0
+    m_Value: 0
+  limitMin:
+    m_OverrideState: 0
+    m_Value: -10
+  limitMax:
+    m_OverrideState: 0
+    m_Value: 20
+  curveMap:
+    m_OverrideState: 0
+    m_Value:
+      serializedVersion: 2
+      m_Curve:
+      - serializedVersion: 3
+        time: -10
+        value: -10
+        inSlope: 0
+        outSlope: 1
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 20
+        value: 20
+        inSlope: 1
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+  adaptationMode:
+    m_OverrideState: 0
+    m_Value: 1
+  adaptationSpeedDarkToLight:
+    m_OverrideState: 0
+    m_Value: 3
+    min: 0.001
+  adaptationSpeedLightToDark:
+    m_OverrideState: 0
+    m_Value: 1
+    min: 0.001
