@@ -39,7 +39,6 @@ public class AIFlameGeyser : StateMachineBehaviour
 
     float GetTime()
     {
-        Debug.Log($"{y - (step * amountFired)} Y: {y} step: {step} fired: {amountFired}");
         float t = y - (step * amountFired);
         if (t < minExplodeTime)
         {
@@ -51,14 +50,14 @@ public class AIFlameGeyser : StateMachineBehaviour
     //Flame Geyser Player
     bool AttackPlayer(Animator animator)
     {
-        //Check stamina costs
-        if (ai.stamina < ai.getSelectedAttack().statminaNeeded)
-        {
-            animator.SetBool("Attacking", false);
-            return false;
-        }
-        //Charge boss
-        ai.stamina -= ai.getSelectedAttack().statminaNeeded;
+        ////Check stamina costs
+        //if (ai.stamina < ai.getSelectedAttack().statminaNeeded)
+        //{
+        //    animator.SetBool("Attacking", false);
+        //    return false;
+        //}
+        ////Charge boss
+        //ai.stamina -= ai.getSelectedAttack().statminaNeeded;
 
         //Logic
         attacked = true;
