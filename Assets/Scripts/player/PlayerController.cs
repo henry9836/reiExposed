@@ -99,11 +99,24 @@ public class PlayerController : MonoBehaviour
     {
         if (dead == false)
         {
+            GameObject otherObject = other.gameObject;
             //Damage From Enemy and we are not blocking
-            if (other.gameObject.CompareTag("EnemyAttackSurface") && !umbrella.ISBLockjing)
+            if (otherObject.CompareTag("EnemyAttackSurface") && !umbrella.ISBLockjing)
             {
                 Debug.Log("I was hit and taking damage");
-                health -= other.gameObject.transform.root.GetComponent<AIObject>().QueryDamage();
+
+                if (otherObject.transform.root.GetComponent<AIObject>() != null)
+                {
+                    health -= otherObject.transform.root.GetComponent<AIObject>().QueryDamage();
+                }
+                else if (otherObject.GetComponent<GenericHitboxController>() != null)
+                {
+                    health -= otherObject.GetComponent<GenericHitboxController>().Damage();
+                }
+                else
+                {
+                    Debug.LogWarning($"Unknown Component Damage {otherObject.name}");
+                }
                 audio.PlayOneShot(hurtSounds[Random.Range(0, hurtSounds.Count)]);
             }
             else if (other.gameObject.CompareTag("EnemyAttackSurface") && umbrella.ISBLockjing)
