@@ -42998,6 +42998,7 @@ GameObject:
   - component: {fileID: 8109513895668568792}
   - component: {fileID: 473570507139629627}
   - component: {fileID: 5801858317880847811}
+  - component: {fileID: 5801858317880847812}
   m_Layer: 0
   m_Name: Reprisal Of Flame
   m_TagString: Boss
@@ -43123,7 +43124,7 @@ MonoBehaviour:
   seekWanderRange: 10
   visionObsctcles:
     serializedVersion: 2
-    m_Bits: 35639
+    m_Bits: 32768
 --- !u!195 &8109513895668568795
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -43277,7 +43278,7 @@ MonoBehaviour:
   forwardAnimationsTo: {fileID: 575316264522294907}
   startInSleepState: 0
   health: 300
-  staminaRegen: 1
+  staminaRegen: 3
   revealThreshold: 0.651
   selectedAttack: {fileID: 0}
   amountofModes: 1
@@ -43696,6 +43697,38 @@ MonoBehaviour:
   facePlayerThreshold: 0.75
   rangeForAttack: {x: 10, y: 90}
   triggerName: Dash
+  allowedModeOne: 1
+  allowedModeTwo: 1
+  allowedModeThree: 1
+  allowedModeFour: 1
+  allowedModeFive: 1
+  allowedModeSix: 1
+  allowedModeSeven: 1
+  allowedModeEight: 1
+  allowedModeNine: 1
+  allowedModeTen: 1
+--- !u!114 &5801858317880847812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8109513895668568770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 084cb613cb9443d4a8936dade09221ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackName: Flame Geyser
+  damage: 5
+  statminaNeeded: 5
+  damageOnlyOnce: 1
+  bodyPartsUsedInAttack: 12
+  mustFacePlayer: 0
+  overrideTrackingVisionCone: 1
+  facePlayerThreshold: -1
+  rangeForAttack: {x: 10, y: 50}
+  triggerName: FlameG
   allowedModeOne: 1
   allowedModeTwo: 1
   allowedModeThree: 1
