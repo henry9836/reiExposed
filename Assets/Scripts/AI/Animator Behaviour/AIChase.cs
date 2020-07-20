@@ -65,6 +65,7 @@ public class AIChase : StateMachineBehaviour
         attacked = false;
         attack = ai.getSelectedAttack();
         wrongAttackChosenTimer = 0.0f;
+        animator.SetBool("Attacking", false);
 
     }
 
@@ -108,6 +109,7 @@ public class AIChase : StateMachineBehaviour
         if (Vector3.Distance(ai.transform.position, player.position) > attack.rangeForAttack.y)
         {
             movement.goToPosition(getBestPositionForAttack());
+            animator.SetBool("Attacking", false);
         }
         //Too close to attack pick new attack!
         else if (Vector3.Distance(ai.transform.position, player.position) < attack.rangeForAttack.x)
@@ -116,6 +118,7 @@ public class AIChase : StateMachineBehaviour
             movement.stopMovement();
             ai.selectAttack();
             attack = ai.getSelectedAttack();
+            animator.SetBool("Attacking", false);
         }
         //Close enough to attack
         else
@@ -137,6 +140,7 @@ public class AIChase : StateMachineBehaviour
                         if (!attacked)
                         {
                             ai.stamina -= attack.statminaNeeded;
+                            animator.SetBool("Attacking", true);
                             attacked = true;
                         }
                         animator.SetTrigger(attack.triggerName);
