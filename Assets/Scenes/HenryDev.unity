@@ -1002,36 +1002,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7374786145257753429, guid: 665d9e6b8575af745bb88a0116e1de10,
-        type: 3}
-      propertyPath: m_SlopeLimit
-      value: 45
-      objectReference: {fileID: 0}
-    - target: {fileID: 7374786145257753429, guid: 665d9e6b8575af745bb88a0116e1de10,
-        type: 3}
-      propertyPath: m_Height
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7374786145257753429, guid: 665d9e6b8575af745bb88a0116e1de10,
-        type: 3}
-      propertyPath: m_Radius
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7374786145257753429, guid: 665d9e6b8575af745bb88a0116e1de10,
-        type: 3}
-      propertyPath: m_StepOffset
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 7374786145257753429, guid: 665d9e6b8575af745bb88a0116e1de10,
-        type: 3}
-      propertyPath: m_SkinWidth
-      value: 0.08
-      objectReference: {fileID: 0}
-    - target: {fileID: 7374786145257753429, guid: 665d9e6b8575af745bb88a0116e1de10,
-        type: 3}
-      propertyPath: m_Center.y
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 665d9e6b8575af745bb88a0116e1de10, type: 3}
 --- !u!1 &1320760327
@@ -1833,6 +1803,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Reprisal Of Flame
       objectReference: {fileID: 0}
+    - target: {fileID: 8109513895668568794, guid: 994d49ae87f46a441ae4af7dde8c1f46,
+        type: 3}
+      propertyPath: visionObsctcles.m_Bits
+      value: 32768
+      objectReference: {fileID: 0}
     - target: {fileID: 8109513895668568795, guid: 994d49ae87f46a441ae4af7dde8c1f46,
         type: 3}
       propertyPath: m_Enabled
@@ -1920,6 +1895,107 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 2309942583516053359}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5801858317880847812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5801858317880847789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 084cb613cb9443d4a8936dade09221ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackName: Flame Geyser
+  damage: 5
+  statminaNeeded: 5
+  damageOnlyOnce: 1
+  bodyPartsUsedInAttack: 12
+  mustFacePlayer: 0
+  overrideTrackingVisionCone: 1
+  facePlayerThreshold: -1
+  rangeForAttack: {x: 10, y: 50}
+  triggerName: FlameG
+  allowedModeOne: 1
+  allowedModeTwo: 1
+  allowedModeThree: 1
+  allowedModeFour: 1
+  allowedModeFive: 1
+  allowedModeSix: 1
+  allowedModeSeven: 1
+  allowedModeEight: 1
+  allowedModeNine: 1
+  allowedModeTen: 1
+--- !u!1001 &7457398972958839519
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1431352441451772043, guid: cffa88320eeecdc4daf32511153b6f86,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1431352441451772043, guid: cffa88320eeecdc4daf32511153b6f86,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1431352441451772043, guid: cffa88320eeecdc4daf32511153b6f86,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1431352441451772043, guid: cffa88320eeecdc4daf32511153b6f86,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1431352441451772043, guid: cffa88320eeecdc4daf32511153b6f86,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1431352441451772043, guid: cffa88320eeecdc4daf32511153b6f86,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1431352441451772043, guid: cffa88320eeecdc4daf32511153b6f86,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1431352441451772043, guid: cffa88320eeecdc4daf32511153b6f86,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 1431352441451772043, guid: cffa88320eeecdc4daf32511153b6f86,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1431352441451772043, guid: cffa88320eeecdc4daf32511153b6f86,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1431352441451772043, guid: cffa88320eeecdc4daf32511153b6f86,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5243513615632512970, guid: cffa88320eeecdc4daf32511153b6f86,
+        type: 3}
+      propertyPath: m_Name
+      value: Geyser
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: cffa88320eeecdc4daf32511153b6f86, type: 3}
 --- !u!137 &8696346440660591573 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 6386440214042844346, guid: 994d49ae87f46a441ae4af7dde8c1f46,
