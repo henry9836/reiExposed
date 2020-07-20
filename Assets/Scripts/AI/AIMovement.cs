@@ -29,6 +29,7 @@ public class AIMovement : MonoBehaviour
     private float initalMoveSpeed = 10.0f;
     private float initalRotSpeed = 10.0f;
     private NavMeshAgent agent;
+    private Animator animator;
 
     public Vector3 pickWanderPosition()
     {
@@ -62,7 +63,6 @@ public class AIMovement : MonoBehaviour
         bool result = agent.CalculatePath(pos, path);
         if (!result)
         {
-            Debug.Log("Invalid Path!");
             return false;
         }
         else if (path.status == NavMeshPathStatus.PathPartial || path.status == NavMeshPathStatus.PathInvalid)
@@ -129,6 +129,7 @@ public class AIMovement : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         agent.speed = moveSpeed;
         agent.angularSpeed = rotSpeed;
+        animator = GetComponent<AIObject>().animator;
     }
 
     private void FixedUpdate()
@@ -137,6 +138,10 @@ public class AIMovement : MonoBehaviour
         {
             stopMovement();
         }
+
+        //If not moving
+        //animator.SetBool("Idle", (agent.velocity.magnitude < 1.0f));
+
     }
 
 }

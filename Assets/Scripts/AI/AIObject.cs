@@ -95,7 +95,6 @@ public class AIObject : MonoBehaviour
         //If validAttack is populated
         if (validAttacks.Count > 0)
         {
-            Debug.Log("Found Valid Attack");
             bindAttack(validAttacks[Random.Range(0, validAttacks.Count)]);
         }
         //Use fallback attack
@@ -130,13 +129,11 @@ public class AIObject : MonoBehaviour
         if (i < attacks.Count && i >= 0)
         {
             selectedAttack = attacks[i];
-            Debug.Log($"Bound Attack {attacks[i].triggerName}");
         }
     }
 
     public void unbindAttack()
     {
-        Debug.Log("unbound Attack");
         selectedAttack = null;
     }
 

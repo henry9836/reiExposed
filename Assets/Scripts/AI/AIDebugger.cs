@@ -8,11 +8,21 @@ public class AIDebugger : MonoBehaviour
 {
 #if UNITY_EDITOR
     public bool debugMode = false;
+    public float spawnAbove = 1.0f;
+    public GameObject debugUI;
 
     AIBody body;
     AIMovement movement;
     AITracker tracker;
     AIObject ai;
+
+    private void Start()
+    {
+        if (debugMode)
+        {
+            Instantiate(debugUI, Vector3.up * spawnAbove, Quaternion.identity, transform);
+        }
+    }
 
     private void OnDrawGizmos()
     {
