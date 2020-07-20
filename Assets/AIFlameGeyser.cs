@@ -9,6 +9,7 @@ public class AIFlameGeyser : StateMachineBehaviour
     [Range(0.0f, 1.0f)]
     public float attackTrigger = 0.35f;
     [Range(0.05f, 0.5f)]
+    public float minExplodeTime = 0.2f;
     public float allowedTimeOverToAttack = 0.2f;
     public AIBody.BodyParts partsUsed = AIBody.BodyParts.LEFTLEG;
     public GameObject geyserPrefab;
@@ -39,14 +40,19 @@ public class AIFlameGeyser : StateMachineBehaviour
     float GetTime()
     {
         Debug.Log($"{y - (step * amountFired)} Y: {y} step: {step} fired: {amountFired}");
-        return y - (step * amountFired);
+        float t = y - (step * amountFired);
+        if (t < minExplodeTime)
+        {
+            return minExplodeTime;
+        }
+        return t;
     }
 
     //Flame Geyser Player
     bool AttackPlayer(Animator animator)
     {
         //Check stamina costs
-        if (ai.stamina >= ai.getSelectedAttack().statminaNeeded)
+        if (ai.stamina < ai.getSelectedAttack().statminaNeeded)
         {
             animator.SetBool("Attacking", false);
             return false;
