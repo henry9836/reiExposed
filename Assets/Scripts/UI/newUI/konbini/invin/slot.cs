@@ -16,14 +16,14 @@ public class slot : MonoBehaviour
 
     public List<GameObject> allslots = new List<GameObject> {};
 
-    private void Awake()
-    {
-        for (int i = 0; i < itemref.biginvinsize; i++)
-        {
-            allslots.Add(this.gameObject.transform.GetChild(i).gameObject);
-            this.gameObject.transform.GetChild(i).gameObject.GetComponent<slotno>().slotnumber = i;
-        }
-    }
+    //private void Awake()
+    //{
+    //    for (int i = 0; i < itemref.biginvinsize; i++)
+    //    {
+    //        allslots.Add(this.gameObject.transform.GetChild(i).gameObject);
+    //        this.gameObject.transform.GetChild(i).gameObject.GetComponent<slotno>().slotnumber = i;
+    //    }
+    //}
 
 
     public void itemchange()
@@ -33,7 +33,6 @@ public class slot : MonoBehaviour
 
         for (int i = 0; i < itemref.biginvinsize; i++)
         {
-            //Debug.Log((int)itemref.biginvin[i].itemtype);
 
             imagelayer = allslots[i];
             overlayLayer = allslots[i].transform.GetChild(0).gameObject;
@@ -43,7 +42,6 @@ public class slot : MonoBehaviour
                 singleItem tmp = itemref.biginvin[i];
                 item = itemref.images[(int)tmp.itemtype];
                 imagelayer.GetComponent<Image>().sprite = item;
-
 
                 if (tmp.equipped == true)
                 {
@@ -72,8 +70,6 @@ public class slot : MonoBehaviour
 
         try
         {
-
-
             if (itemref.biginvin[test2] != null)
             {
                 tmp = itemref.biginvin[test2];
