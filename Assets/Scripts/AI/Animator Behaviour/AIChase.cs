@@ -16,6 +16,8 @@ public class AIChase : StateMachineBehaviour
     float repickAttackThreshold = 5.0f;
     float wrongAttackChosenTimer = 0.0f;
 
+    bool attacked = false;
+
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -60,7 +62,7 @@ public class AIChase : StateMachineBehaviour
         {
             ai.selectAttack();
         }
-
+        attacked = false;
         attack = ai.getSelectedAttack();
         wrongAttackChosenTimer = 0.0f;
 
@@ -110,6 +112,7 @@ public class AIChase : StateMachineBehaviour
         //Too close to attack pick new attack!
         else if (Vector3.Distance(ai.transform.position, player.position) < attack.rangeForAttack.x)
         {
+            attacked = false;
             movement.stopMovement();
             ai.selectAttack();
             attack = ai.getSelectedAttack();
@@ -122,23 +125,30 @@ public class AIChase : StateMachineBehaviour
             //Can we see the player?
             if (tracker.canSeePlayer()) {
 
-                //Debug Statement :D
-                //Debug.Log($"{(attack.mustFacePlayer && tracker.isFacingPlayer() && !attack.overrideTrackingVisionCone)} || {!attack.mustFacePlayer} || {(attack.mustFacePlayer && tracker.isFacingPlayer(attack.facePlayerThreshold) && attack.overrideTrackingVisionCone)}");
-                //Do we need to face player to attack, if so do we use an override if so then compare to override other if we are using an overrride use default settings or if we don't care about facing the player
-                if ((attack.mustFacePlayer && tracker.isFacingPlayer() && !attack.overrideTrackingVisionCone) || !attack.mustFacePlayer || (attack.mustFacePlayer && tracker.isFacingPlayer(attack.facePlayerThreshold) && attack.overrideTrackingVisionCone))
-                {
-                    //ATTACK
-                    movement.stopMovement();
-                    ai.stamina -= attack.statminaNeeded;
-                    animator.SetTrigger(attack.triggerName);
-                    if (forwarder != null)
+                //If there is enough stamina
+                if (ai.stamina >= attack.statminaNeeded) {
+                    //Debug Statement :D
+                    //Debug.Log($"{(attack.mustFacePlayer && tracker.isFacingPlayer() && !attack.overrideTrackingVisionCone)} || {!attack.mustFacePlayer} || {(attack.mustFacePlayer && tracker.isFacingPlayer(attack.facePlayerThreshold) && attack.overrideTrackingVisionCone)}");
+                    //Do we need to face player to attack, if so do we use an override if so then compare to override other if we are using an overrride use default settings or if we don't care about facing the player
+                    if ((attack.mustFacePlayer && tracker.isFacingPlayer() && !attack.overrideTrackingVisionCone) || !attack.mustFacePlayer || (attack.mustFacePlayer && tracker.isFacingPlayer(attack.facePlayerThreshold) && attack.overrideTrackingVisionCone))
                     {
-                        forwarder.SetTrigger(attack.triggerName);
+                        //ATTACK
+                        movement.stopMovement();
+                        if (!attacked)
+                        {
+                            ai.stamina -= attack.statminaNeeded;
+                            attacked = true;
+                        }
+                        animator.SetTrigger(attack.triggerName);
+                        if (forwarder != null)
+                        {
+                            forwarder.SetTrigger(attack.triggerName);
+                        }
                     }
-                }
-                else
-                {
-                    movement.goToPosition(tracker.lastSeenPos);
+                    else
+                    {
+                        movement.goToPosition(tracker.lastSeenPos);
+                    }
                 }
             }
         }

@@ -62,7 +62,6 @@ public class AIMovement : MonoBehaviour
         bool result = agent.CalculatePath(pos, path);
         if (!result)
         {
-            Debug.Log("Invalid Path!");
             return false;
         }
         else if (path.status == NavMeshPathStatus.PathPartial || path.status == NavMeshPathStatus.PathInvalid)

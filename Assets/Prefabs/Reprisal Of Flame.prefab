@@ -43123,7 +43123,7 @@ MonoBehaviour:
   seekWanderRange: 10
   visionObsctcles:
     serializedVersion: 2
-    m_Bits: 32768
+    m_Bits: 35639
 --- !u!195 &8109513895668568795
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -43234,6 +43234,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugMode: 1
+  spawnAbove: 5
+  debugUI: {fileID: 627260628027668403, guid: d9cd73732df081141bb0702898d75add, type: 3}
 --- !u!95 &8109513895668568768
 Animator:
   serializedVersion: 3
@@ -43275,7 +43277,7 @@ MonoBehaviour:
   forwardAnimationsTo: {fileID: 575316264522294907}
   startInSleepState: 0
   health: 300
-  staminaRegen: 2.5
+  staminaRegen: 1
   revealThreshold: 0.651
   selectedAttack: {fileID: 0}
   amountofModes: 1
@@ -43628,7 +43630,7 @@ MonoBehaviour:
   mustFacePlayer: 1
   overrideTrackingVisionCone: 1
   facePlayerThreshold: 0.7
-  rangeForAttack: {x: 0.5, y: 2}
+  rangeForAttack: {x: 0, y: 5}
   triggerName: basicAttack
   allowedModeOne: 1
   allowedModeTwo: 1
@@ -43660,7 +43662,7 @@ MonoBehaviour:
   mustFacePlayer: 1
   overrideTrackingVisionCone: 1
   facePlayerThreshold: 0.7
-  rangeForAttack: {x: 0.5, y: 2}
+  rangeForAttack: {x: 0, y: 5}
   triggerName: heavyAttack
   allowedModeOne: 1
   allowedModeTwo: 1
@@ -43686,7 +43688,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackName: Dash
   damage: 5
-  statminaNeeded: 5
+  statminaNeeded: 10
   damageOnlyOnce: 1
   bodyPartsUsedInAttack: 0
   mustFacePlayer: 1
