@@ -32,30 +32,19 @@ public class ThePhone : MonoBehaviour
     public int picselected;
     public int itemselected;
 
-    [HideInInspector]
-    public bool encodingPending = false;
-    [HideInInspector]
-    public int it = 0;
+    //TODO swap based on screen
+    public Sprite BGnormal;
+    public Sprite BGkey;
+    public Sprite BGamazon;
+    public Sprite BGinventory;
 
-    //Hold all images that we have decoded
-    public List<PhotoLoader.ImageContainer> images = new List<PhotoLoader.ImageContainer>();
-    public List<textureContainer> loadedImages = new List<textureContainer>();
-
-    public class textureContainer
-    {
-        public Texture2D tex;
-        public Sprite sprite;
-        public int file = 0;
-    }
 
     public enum phonestates 
     {
         NONE,
         HOME,
         CAMERA,
-        ROLL,
         AMAZON,
-        PICZOOM,
         INVENTORY,
     };
     public phonestates screen;
@@ -69,27 +58,12 @@ public class ThePhone : MonoBehaviour
         myths = GameObject.FindGameObjectWithTag("GameManager").GetComponent<MythWorkerUnion>();
         save = GameObject.Find("Save&Dronemanage").GetComponent<saveFile>();
         drone = GameObject.Find("Save&Dronemanage").GetComponent<plugindemo>();
-
         savephotoinit();
     }
-    public IEnumerator test()
-    {
-        yield return new WaitForEndOfFrame();
-        ThePhoneUI.transform.GetChild(3).GetChild(it).GetComponent<RawImage>().texture = ScreenCapture.CaptureScreenshotAsTexture();
-    }
-    public IEnumerator testDelay()
-    {
-        encodingPending = true;
-        yield return new WaitForSeconds(0.5f);
-        it++;
-        encodingPending = false;
-    }
+
 
     void Update()
     {
-
-
-
         switch (screen)
         {
             case phonestates.NONE:
@@ -186,12 +160,12 @@ public class ThePhone : MonoBehaviour
                                 }
                             case (2):
                                 {
-                                    cameraroll();
+                                    amazon();
                                     break;
                                 }
                             case (3):
                                 {
-                                    amazon();
+                                    //key
                                     break;
                                 }
                             default:
@@ -215,7 +189,8 @@ public class ThePhone : MonoBehaviour
                 {
                     if (Input.GetMouseButtonDown(0))
                     {
-                        takepicture();
+
+                        checkPhotoValid();
                     }
                     else if (Input.GetKeyDown(KeyCode.Tab))
                     {
@@ -228,55 +203,7 @@ public class ThePhone : MonoBehaviour
                     }
 
                     break;
-                }
-            case phonestates.ROLL:
-                {
-                    if (!encodingPending)
-                    {
-                        StartCoroutine(test());
-                        StartCoroutine(testDelay());
-                    }
-
-                    //if (!encodingPending)
-                    //{
-                    //    StartCoroutine(ProcessImages());
-                    //    DisplayImages();
-                    //}
-                    float scroll = Input.GetAxis("Mouse ScrollWheel");
-                    if (scroll > 0.0f)
-                    {
-                        picselected -= 1;
-                        Debug.Log(picselected);
-
-                    }
-                    else if (scroll < 0.0f)
-                    {
-                        picselected += 1;
-                        Debug.Log(picselected);
-
-                    }
-
-                    picselected = Mathf.Clamp(picselected, 0, 9);
-
-
-                    if (Input.GetMouseButtonDown(0))
-                    {
-                        picZoom(picselected);
-                    }
-
-
-                    if (Input.GetKeyDown(KeyCode.Tab))
-                    {
-                        BackToMenu();
-                        openingephone(false);
-                    }
-                    else if (Input.GetMouseButtonDown(1))
-                    {
-                        BackToMenu();
-
-                    }
-                    break;
-                }
+                } 
             case phonestates.AMAZON:
                 {
                     if (Input.GetKeyDown(KeyCode.Tab))
@@ -287,19 +214,6 @@ public class ThePhone : MonoBehaviour
                     else if (Input.GetMouseButtonDown(1))
                     {
                         BackToMenu();
-                    }
-                    break;
-                }
-            case phonestates.PICZOOM:
-                {
-                    if (Input.GetKeyDown(KeyCode.Tab))
-                    {
-                        BackToMenu();
-                        openingephone(false);
-                    }
-                    else if (Input.GetMouseButtonDown(1))
-                    {
-                        picUnzoom();
                     }
                     break;
                 }
@@ -344,9 +258,7 @@ public class ThePhone : MonoBehaviour
                         BackToMenu();
                     }
 
-
                     break;
-            
                 }
             default:
                 {
@@ -392,15 +304,7 @@ public class ThePhone : MonoBehaviour
         }
     }
 
-    public void cameraroll()
-    {
-        ThePhoneUI.transform.GetChild(2).gameObject.SetActive(false);
-        ThePhoneUI.transform.GetChild(3).gameObject.SetActive(true);
 
-        loadPhotos();
-
-        screen = phonestates.ROLL;
-    }
 
     public void thecamera()
     {
@@ -476,45 +380,6 @@ public class ThePhone : MonoBehaviour
 
     }
 
-    public void picZoom(int photo)
-    {
-        screen = phonestates.PICZOOM;
-        restorePos = ThePhoneUI.transform.GetChild(3).GetChild(photo).transform.localPosition;
-        restorescale = ThePhoneUI.transform.GetChild(3).GetChild(photo).transform.localScale;
-        restoreID = photo; 
-        ThePhoneUI.transform.GetChild(3).GetChild(photo).transform.localScale = new Vector2(5, 5);
-        ThePhoneUI.transform.GetChild(3).GetChild(photo).transform.localPosition = new Vector3(0, 0, -3);
-        ThePhoneUI.transform.GetChild(3).GetChild(photo).GetComponent<Button>().enabled = false;
-
-        for (int i = 0; i < 10; i++)
-        {
-            if (i != photo)
-            {
-                ThePhoneUI.transform.GetChild(3).GetChild(i).gameObject.SetActive(false);
-            }
-        }
-        ThePhoneUI.transform.GetChild(3).GetChild(10).gameObject.SetActive(true);
-    }
-
-    public void picUnzoom()
-    {
-        screen = phonestates.ROLL;
-        ThePhoneUI.transform.GetChild(3).GetChild(restoreID).transform.localScale = restorescale;
-        ThePhoneUI.transform.GetChild(3).GetChild(restoreID).transform.localPosition = restorePos;
-        ThePhoneUI.transform.GetChild(3).GetChild(restoreID).GetComponent<Button>().enabled = true;
-
-
-        for (int i = 0; i < 10; i++)
-        {
-            ThePhoneUI.transform.GetChild(3).GetChild(i).gameObject.SetActive(true);
-        }
-
-        loadPhotos();
-
-        ThePhoneUI.transform.GetChild(3).GetChild(10).gameObject.SetActive(false);
-    }
-
-
     public void amazonshop(int item)
     {
         if (item == 0)
@@ -535,7 +400,7 @@ public class ThePhone : MonoBehaviour
         {
             ThePhoneUI.transform.GetChild(4).GetChild(1).GetComponent<Button>().interactable = true;
         }
-        ThePhoneUI.transform.GetChild(4).GetChild(0).GetComponent<Text>().text = "Mythtraces: " + currency.MythTraces;
+        ThePhoneUI.transform.GetChild(4).GetChild(0).GetComponent<Text>().text = "Yen: " + currency.MythTraces;
 
         BackToMenu();
 
@@ -550,7 +415,6 @@ public class ThePhone : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             ThePhoneUI.transform.GetChild(4).GetChild(i).GetComponent<Image>().color = new Color(0.3f, 0.3f, 0.3f);
-
         }
 
         for (int i = 0; i < 10; i++)
@@ -568,28 +432,7 @@ public class ThePhone : MonoBehaviour
         }
     }
 
-    public void takepicture()
-    {
-        if (save.safeItem("imageCount", saveFile.types.INT).toint < 10)
-        {
-            StartCoroutine(photo());
-        }
-    }
 
-    public void deletePhoto()
-    {
-        int tmp = 10;
-        for (int i = 0; i < 10; i++)
-        {
-            if (ThePhoneUI.transform.GetChild(3).GetChild(i).gameObject.activeSelf)
-            {
-                tmp = i;
-            }
-        }
-        savePhotosData(tmp, "del");
-
-        picUnzoom();
-    }
 
     public void checkPhotoValid()
     {
@@ -599,13 +442,13 @@ public class ThePhone : MonoBehaviour
         int imagecount = save.safeItem("imageCount", saveFile.types.INT).toint;
 
         List<GameObject> clue = new List<GameObject>() { };
-
         for (int i = 0; i < clues.Length; i++)
         {
             clue.Add(clues[i]);
         }
 
         List<string> saveddata = new List<string>() { };
+
         for (int i = 0; i < 10; i++)
         {
             string filename = ("state " + (i).ToString() + ".png");
@@ -637,202 +480,13 @@ public class ThePhone : MonoBehaviour
 
     }
 
-    public IEnumerator photo()
-    {
 
-        checkPhotoValid();
-
-        List<GameObject> reenable = new List<GameObject>() { };
-
-
-
-        string fn = Directory.GetCurrentDirectory();
-        string foldername = fn + "\\" + "shhhhhSecretFolder";
-
-        if (!Directory.Exists(foldername))
-        {
-            Directory.CreateDirectory(foldername);
-        }
-
-        yield return null;
-
-
-        for (int i = 0; i < this.gameObject.transform.childCount; i++)
-        {
-            if (this.transform.GetChild(i).gameObject.activeSelf == true)
-            {
-                reenable.Add(this.transform.GetChild(i).gameObject);
-                this.transform.GetChild(i).gameObject.SetActive(false);
-            }
-        }
-
-        yield return new WaitForEndOfFrame();
-
-        for (int i = 0; i < 10; i++)
-        {
-            if (!FileExists(foldername + "\\" + i.ToString() + ".png"))
-            {
-                ScreenCapture.CaptureScreenshot((foldername + "\\" + i.ToString() + ".png"));
-                i = 10;
-            }
-
-            yield return null;
-        }
-
-        for (int i = 0; i < reenable.Count; i++)
-        {
-            reenable[i].SetActive(true);
-        }
-
-        yield return null;
-    }
 
     public bool FileExists(string path)
     {
         return File.Exists(path);
     }
-
-    public void loadPhotos()
-    {
-        int i = 0;
-
-        for (; i < save.safeItem("imageCount", saveFile.types.INT).toint; i++)
-        {
-            //StartCoroutine(LoadScreenShot(i));
-            //var t = LoadScreenShotASync(i).Result;
-            images.Add(new PhotoLoader.ImageContainer());
-            images[images.Count - 1].file = i;
-            ThreadPool.QueueUserWorkItem(PhotoLoader.ThreadProc, images[images.Count - 1]);
-        }
-
-        for (; i < 10; i++)
-        {
-            //ThePhoneUI.transform.GetChild(3).GetChild(i).GetComponent<Image>().sprite = emptyPhotoSpot;
-            ThePhoneUI.transform.GetChild(3).GetChild(i).GetComponent<Button>().enabled = false;
-        }
-    }
-
-    IEnumerator ProcessImages()
-    {
-        encodingPending = true;
-        //Do we have images to process
-        if (images.Count > 0)
-        {
-            //If the threads are done with this file
-            if (!images[0].pending)
-            {
-                //Take the latest image off the stack
-                PhotoLoader.ImageContainer img = images[0];
-                int f = images[0].file;
-                images.RemoveAt(0);
-
-                //Load bytes into a texture
-                Texture2D tex = new Texture2D(1920, 1080, TextureFormat.DXT1, false);
-                yield return new WaitForEndOfFrame();
-                tex.LoadImage(img.imgBytes);
-                tex.Apply();
-                yield return new WaitForEndOfFrame();
-                //tex.LoadRawTextureData(img.imgBytes);
-                textureContainer texture = new textureContainer();
-                texture.tex = tex;
-                texture.file = f;
-                loadedImages.Add(texture);
-            }
-        }
-        encodingPending = false;
-        yield return new WaitForEndOfFrame();
-    }
-
-    IEnumerator DisplayScreenshots(int file, Texture2D tex)
-    {
-        //Load texture onto image
-        var thing = ThePhoneUI.transform.GetChild(3).GetChild(file).GetComponent<RawImage>();
-        Destroy(thing.texture);
-        thing.texture = tex;
-        yield return new WaitForEndOfFrame();
-    }
-
-    public void DisplayImages()
-        {
-        Debug.Log($"it would be cool to show off {loadedImages.Count} images");
-        //Do we have any textures to display
-        if (loadedImages.Count > 0)
-        {
-            //Take the latest texture off the stack
-            Texture2D tex = loadedImages[0].tex;
-            int file = loadedImages[0].file;
-            loadedImages.RemoveAt(0);
-
-            StartCoroutine(DisplayScreenshots(file, tex));
-        }
-    }
-
-    IEnumerator LoadScreenShot(int i)
-    {
-        string name = i.ToString() + ".png";
-        string pathPrefix = @"file://";
-        string foldername = "shhhhhSecretFolder";
-        string filename2 = @name;
-
-        string path = "";
-
-#if UNITY_STANDALONE_LINUX
-            path = Directory.GetCurrentDirectory() + "/" + foldername +"/";
-#endif
-
-#if UNITY_STANDALONE_WIN
-        path = Directory.GetCurrentDirectory() + "\\" + foldername + "\\";
-#endif
-
-#if UNITY_EDITOR
-        path = Directory.GetCurrentDirectory() + "\\" + foldername + "\\";
-#endif
-
-        string fullFilename = pathPrefix + path + filename2;
-
-
-        //OLD
-        WWW www = new WWW(fullFilename);
-        yield return www;
-        Texture2D screenshot = new Texture2D(1920, 1080, TextureFormat.DXT1, false);
-        www.LoadImageIntoTexture(screenshot);
-        yield return www;
-
-        Image tmp = ThePhoneUI.transform.GetChild(3).GetChild(i).GetComponent<Image>();
-        tmp.sprite = Sprite.Create(www.texture, new Rect(0, 0, www.texture.width, www.texture.height), new Vector2(0, 0));
-
-        tmp.gameObject.GetComponent<Button>().enabled = true;
-
-        //NEWER
-
-        ////WWW www = new WWW(fullFilename);
-
-        //using (UnityWebRequest uwr = UnityWebRequestTexture.GetTexture(fullFilename))
-        //{
-        //    yield return uwr.SendWebRequest();
-
-        //    if (uwr.isNetworkError || uwr.isHttpError)
-        //    {
-        //        Debug.Log(uwr.error);
-        //    }
-        //    else
-        //    {
-        //        // Get downloaded asset bundle
-        //        var texture = DownloadHandlerTexture.GetContent(uwr);
-        //        Image tmp = ThePhoneUI.transform.GetChild(3).GetChild(i).GetComponent<Image>();
-        //        tmp.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0, 0));
-
-        //        tmp.gameObject.GetComponent<Button>().enabled = true;
-
-        //    }
-        //}
-
-        ////Texture2D screenshot = new Texture2D(1920, 1080, TextureFormat.DXT1, false);
-        ////www.LoadImageIntoTexture(screenshot);
-
-
-        yield return null;
-    }
+    
 
     public void savephotoinit()
     {
