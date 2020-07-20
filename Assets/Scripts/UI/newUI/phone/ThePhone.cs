@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using UnityEngine.UI;
-
+using System.Threading.Tasks;
 using UnityEngine.Networking;
+using System.Threading;
+using System;
 
 
 //public class photo
@@ -30,7 +32,21 @@ public class ThePhone : MonoBehaviour
     public int picselected;
     public int itemselected;
 
+    [HideInInspector]
+    public bool encodingPending = false;
+    [HideInInspector]
+    public int it = 0;
 
+    //Hold all images that we have decoded
+    public List<PhotoLoader.ImageContainer> images = new List<PhotoLoader.ImageContainer>();
+    public List<textureContainer> loadedImages = new List<textureContainer>();
+
+    public class textureContainer
+    {
+        public Texture2D tex;
+        public Sprite sprite;
+        public int file = 0;
+    }
 
     public enum phonestates 
     {
@@ -51,15 +67,29 @@ public class ThePhone : MonoBehaviour
         canvas = this.gameObject;
         maincam = GameObject.Find("Main Camera");
         myths = GameObject.FindGameObjectWithTag("GameManager").GetComponent<MythWorkerUnion>();
-        StartCoroutine(LoadScreenShot(0));
         save = GameObject.Find("Save&Dronemanage").GetComponent<saveFile>();
         drone = GameObject.Find("Save&Dronemanage").GetComponent<plugindemo>();
 
         savephotoinit();
     }
+    public IEnumerator test()
+    {
+        yield return new WaitForEndOfFrame();
+        ThePhoneUI.transform.GetChild(3).GetChild(it).GetComponent<RawImage>().texture = ScreenCapture.CaptureScreenshotAsTexture();
+    }
+    public IEnumerator testDelay()
+    {
+        encodingPending = true;
+        yield return new WaitForSeconds(0.5f);
+        it++;
+        encodingPending = false;
+    }
 
     void Update()
     {
+
+
+
         switch (screen)
         {
             case phonestates.NONE:
@@ -201,6 +231,17 @@ public class ThePhone : MonoBehaviour
                 }
             case phonestates.ROLL:
                 {
+                    if (!encodingPending)
+                    {
+                        StartCoroutine(test());
+                        StartCoroutine(testDelay());
+                    }
+
+                    //if (!encodingPending)
+                    //{
+                    //    StartCoroutine(ProcessImages());
+                    //    DisplayImages();
+                    //}
                     float scroll = Input.GetAxis("Mouse ScrollWheel");
                     if (scroll > 0.0f)
                     {
@@ -288,7 +329,7 @@ public class ThePhone : MonoBehaviour
                     {
                         if (canvas.GetComponent<Items>().equipped.Count > itemselected)
                         {
-                            canvas.GetComponent<Items>().removeitemequipped(itemselected);
+                            canvas.GetComponent<Items>().removeitemequipped(itemselected, true);
                             ThePhoneUI.transform.GetChild(5).gameObject.GetComponent<eqitems>().itemchange();
                         }
                     }
@@ -657,22 +698,77 @@ public class ThePhone : MonoBehaviour
 
         for (; i < save.safeItem("imageCount", saveFile.types.INT).toint; i++)
         {
-            StartCoroutine(LoadScreenShot(i));
-
+            //StartCoroutine(LoadScreenShot(i));
+            //var t = LoadScreenShotASync(i).Result;
+            images.Add(new PhotoLoader.ImageContainer());
+            images[images.Count - 1].file = i;
+            ThreadPool.QueueUserWorkItem(PhotoLoader.ThreadProc, images[images.Count - 1]);
         }
 
         for (; i < 10; i++)
         {
-            ThePhoneUI.transform.GetChild(3).GetChild(i).GetComponent<Image>().sprite = emptyPhotoSpot;
+            //ThePhoneUI.transform.GetChild(3).GetChild(i).GetComponent<Image>().sprite = emptyPhotoSpot;
             ThePhoneUI.transform.GetChild(3).GetChild(i).GetComponent<Button>().enabled = false;
+        }
+    }
+
+    IEnumerator ProcessImages()
+    {
+        encodingPending = true;
+        //Do we have images to process
+        if (images.Count > 0)
+        {
+            //If the threads are done with this file
+            if (!images[0].pending)
+            {
+                //Take the latest image off the stack
+                PhotoLoader.ImageContainer img = images[0];
+                int f = images[0].file;
+                images.RemoveAt(0);
+
+                //Load bytes into a texture
+                Texture2D tex = new Texture2D(1920, 1080, TextureFormat.DXT1, false);
+                yield return new WaitForEndOfFrame();
+                tex.LoadImage(img.imgBytes);
+                tex.Apply();
+                yield return new WaitForEndOfFrame();
+                //tex.LoadRawTextureData(img.imgBytes);
+                textureContainer texture = new textureContainer();
+                texture.tex = tex;
+                texture.file = f;
+                loadedImages.Add(texture);
+            }
+        }
+        encodingPending = false;
+        yield return new WaitForEndOfFrame();
+    }
+
+    IEnumerator DisplayScreenshots(int file, Texture2D tex)
+    {
+        //Load texture onto image
+        var thing = ThePhoneUI.transform.GetChild(3).GetChild(file).GetComponent<RawImage>();
+        Destroy(thing.texture);
+        thing.texture = tex;
+        yield return new WaitForEndOfFrame();
+    }
+
+    public void DisplayImages()
+        {
+        Debug.Log($"it would be cool to show off {loadedImages.Count} images");
+        //Do we have any textures to display
+        if (loadedImages.Count > 0)
+        {
+            //Take the latest texture off the stack
+            Texture2D tex = loadedImages[0].tex;
+            int file = loadedImages[0].file;
+            loadedImages.RemoveAt(0);
+
+            StartCoroutine(DisplayScreenshots(file, tex));
         }
     }
 
     IEnumerator LoadScreenShot(int i)
     {
-
-
-
         string name = i.ToString() + ".png";
         string pathPrefix = @"file://";
         string foldername = "shhhhhSecretFolder";
@@ -695,30 +791,44 @@ public class ThePhone : MonoBehaviour
         string fullFilename = pathPrefix + path + filename2;
 
 
-        //WWW www = new WWW(fullFilename);
+        //OLD
+        WWW www = new WWW(fullFilename);
+        yield return www;
+        Texture2D screenshot = new Texture2D(1920, 1080, TextureFormat.DXT1, false);
+        www.LoadImageIntoTexture(screenshot);
+        yield return www;
 
-        using (UnityWebRequest uwr = UnityWebRequestTexture.GetTexture(fullFilename))
-        {
-            yield return uwr.SendWebRequest();
+        Image tmp = ThePhoneUI.transform.GetChild(3).GetChild(i).GetComponent<Image>();
+        tmp.sprite = Sprite.Create(www.texture, new Rect(0, 0, www.texture.width, www.texture.height), new Vector2(0, 0));
 
-            if (uwr.isNetworkError || uwr.isHttpError)
-            {
-                Debug.Log(uwr.error);
-            }
-            else
-            {
-                // Get downloaded asset bundle
-                var texture = DownloadHandlerTexture.GetContent(uwr);
-                Image tmp = ThePhoneUI.transform.GetChild(3).GetChild(i).GetComponent<Image>();
-                tmp.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0, 0));
+        tmp.gameObject.GetComponent<Button>().enabled = true;
 
-                tmp.gameObject.GetComponent<Button>().enabled = true;
+        //NEWER
 
-            }
-        }
+        ////WWW www = new WWW(fullFilename);
 
-        //Texture2D screenshot = new Texture2D(1920, 1080, TextureFormat.DXT1, false);
-        //www.LoadImageIntoTexture(screenshot);
+        //using (UnityWebRequest uwr = UnityWebRequestTexture.GetTexture(fullFilename))
+        //{
+        //    yield return uwr.SendWebRequest();
+
+        //    if (uwr.isNetworkError || uwr.isHttpError)
+        //    {
+        //        Debug.Log(uwr.error);
+        //    }
+        //    else
+        //    {
+        //        // Get downloaded asset bundle
+        //        var texture = DownloadHandlerTexture.GetContent(uwr);
+        //        Image tmp = ThePhoneUI.transform.GetChild(3).GetChild(i).GetComponent<Image>();
+        //        tmp.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0, 0));
+
+        //        tmp.gameObject.GetComponent<Button>().enabled = true;
+
+        //    }
+        //}
+
+        ////Texture2D screenshot = new Texture2D(1920, 1080, TextureFormat.DXT1, false);
+        ////www.LoadImageIntoTexture(screenshot);
 
 
         yield return null;
