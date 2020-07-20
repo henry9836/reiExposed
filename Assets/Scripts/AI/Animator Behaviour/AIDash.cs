@@ -110,14 +110,12 @@ public class AIDash : StateMachineBehaviour
             if (Physics.Raycast(transform.position, targetDir, out hit, dashDistance, obsctucles))
             {
                 //Move up until the rayhit point
-                Debug.Log($"AId {hit.collider.gameObject.name}:{hit.distance}");
                 transform.position += offset - (targetDir * hit.distance);
                 dashing = false;
                 return;
             }
             else
             {
-                Debug.Log($"AId Dash");
                 //Move in a direction that makes sense
                 transform.position += offset;
             }
