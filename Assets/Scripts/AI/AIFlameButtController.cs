@@ -27,7 +27,7 @@ public class AIFlameButtController : MonoBehaviour
         GameObject tmp = Instantiate(particlePrefab, sourcePos.position, Quaternion.identity);
         tmp.GetComponent<groupPartcle>().Play();
 
-        //StartCoroutine(killParticle(tmp));
+        StartCoroutine(killParticle(tmp));
 
         //If the player is in our hitbox hurt time
         if (playerInBox)

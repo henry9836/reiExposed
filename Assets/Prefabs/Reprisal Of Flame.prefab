@@ -42949,7 +42949,7 @@ SkinnedMeshRenderer:
   m_Quality: 0
   m_UpdateWhenOffscreen: 1
   m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: -6519240953540456020, guid: 8e709084c3475e347a5bfa16a0172b28, type: 3}
+  m_Mesh: {fileID: 8516655311178248995, guid: 8e709084c3475e347a5bfa16a0172b28, type: 3}
   m_Bones:
   - {fileID: 1584993514939362003}
   - {fileID: 1661812236803942525}
@@ -43030,6 +43030,7 @@ GameObject:
   - component: {fileID: 473570507139629627}
   - component: {fileID: 5801858317880847811}
   - component: {fileID: 5801858317880847812}
+  - component: {fileID: 8587140511859883473}
   m_Layer: 0
   m_Name: Reprisal Of Flame
   m_TagString: Boss
@@ -43771,6 +43772,35 @@ MonoBehaviour:
   allowedModeEight: 1
   allowedModeNine: 1
   allowedModeTen: 1
+--- !u!114 &8587140511859883473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8109513895668568770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e4d1996e20efaf4093e7b673ad11ab9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onDeath:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: GameOver
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onStart:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &8237263574527177581
 GameObject:
   m_ObjectHideFlags: 0
