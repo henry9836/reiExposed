@@ -14,41 +14,42 @@ public class slotno : MonoBehaviour
     public bool growing = false;
     public bool shriking = false;
 
-    public float speed = 2.0f;
+    public float speedgrow = 7.0f;
+    public float speedshrink = 7.0f;
 
 
 
     public IEnumerator togrow()
     {
-        for (; sizeoutta1 < 1.0f; sizeoutta1 += Time.deltaTime * speed)
+        for (; sizeoutta1 < 1.0f; sizeoutta1 += Time.deltaTime * speedgrow)
         {
-            this.gameObject.transform.localScale = Vector3.Lerp(new Vector3(smol, smol, smol), new Vector3(large, large, large), sizeoutta1);
             if (growing != true)
             {
                 yield break;
             }
+            this.gameObject.transform.localScale = Vector3.Lerp(new Vector3(smol, smol, smol), new Vector3(large, large, large), sizeoutta1);
             yield return null;
         }
         sizeoutta1 = 1.0f;
         this.gameObject.transform.localScale = new Vector3(large, large, large);
-
+        growing = false;
         yield return null;
     }
 
     public IEnumerator toungrow()
     {
-        for (; sizeoutta1 > 0.0f; sizeoutta1 -= Time.deltaTime * speed)
+        for (; sizeoutta1 > 0.0f; sizeoutta1 -= Time.deltaTime * speedshrink)
         {
-            this.gameObject.transform.localScale = Vector3.Lerp(new Vector3(smol, smol, smol), new Vector3(large, large, large), sizeoutta1);
             if (shriking != true)
             {
                 yield break;
             }
+            this.gameObject.transform.localScale = Vector3.Lerp(new Vector3(smol, smol, smol), new Vector3(large, large, large), sizeoutta1);
             yield return null;
         }
         sizeoutta1 = 0.0f;
         this.gameObject.transform.localScale = new Vector3(smol, smol, smol);
-
+        shriking = false;
         yield return null;
     }
 }
