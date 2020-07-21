@@ -204,9 +204,12 @@ public class AIObject : MonoBehaviour
 
     private void FixedUpdate()
     {
-
-        stamina += staminaRegen * Time.deltaTime;
-
+        //If we are not sleep
+        if (!animator.GetBool("Sleeping"))
+        {
+            //Increase stamina
+            stamina += staminaRegen * Time.deltaTime;
+        }
 
         if (initalVFXObjects == 0)
         {

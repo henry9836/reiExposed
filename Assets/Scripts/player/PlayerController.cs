@@ -95,6 +95,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void DealDamage(float dmg)
+    {
+        health -= dmg;
+        audio.PlayOneShot(hurtSounds[Random.Range(0, hurtSounds.Count)]);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (dead == false)
