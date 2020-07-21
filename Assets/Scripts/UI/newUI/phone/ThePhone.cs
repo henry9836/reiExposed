@@ -548,6 +548,11 @@ public class ThePhone : MonoBehaviour
 
         for (int i = 0; i < clue.Count; i++)
         {
+            //new screen% method
+            Camera.current.WorldToScreenPoint(clue[i].transform.position);       
+
+
+            //old in frame and distance
             //its in the camera frame
             if (clue[i].gameObject.GetComponent<Renderer>().isVisible)
             {
