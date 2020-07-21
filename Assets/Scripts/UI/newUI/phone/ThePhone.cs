@@ -12,6 +12,7 @@ using System;
 //public class photo
 public class ThePhone : MonoBehaviour
 {
+    //refrances
     public saveFile save;
     private plugindemo drone;
     public GameObject ThePhoneUI;
@@ -22,21 +23,28 @@ public class ThePhone : MonoBehaviour
     public GameObject camgrid;
     public Sprite emptyPhotoSpot;
 
+    //henry
     public MythWorkerUnion myths;
-
     private Vector2 restorescale;
     private Vector3 restorePos;
     private int restoreID;
 
+    //menu navigations
     public int selected;
     public int picselected;
     public int itemselected;
 
-    //TODO swap based on screen
+    //swap BG based on current screen
     public Sprite BGnormal;
     public Sprite BGkey;
     public Sprite BGamazon;
     public Sprite BGinventory;
+
+    //keyapp
+    List<bool> clueStates = new List<bool>() { };
+
+    public GameObject constantUI;
+
 
 
     public enum phonestates 
@@ -48,7 +56,6 @@ public class ThePhone : MonoBehaviour
         INVENTORY,
         KEY,
     };
-
 
     public phonestates screen;
 
@@ -189,9 +196,22 @@ public class ThePhone : MonoBehaviour
                 }
             case phonestates.CAMERA:
                 {
+                    float scroll = Input.GetAxis("Mouse ScrollWheel");
+                    float fov = phonecam.GetComponent<Camera>().fieldOfView;
+                    if (scroll > 0.0f)
+                    {
+                        fov += 1.0f;
+                    }
+                    else if (scroll < 0.0f)
+                    {
+                        fov -= 1.0f;
+                    }
+
+                    fov = Mathf.Clamp(fov, 2f, 100.0f);
+                    phonecam.GetComponent<Camera>().fieldOfView = fov;
+
                     if (Input.GetMouseButtonDown(0))
                     {
-
                         checkPhotoValid();
                     }
                     else if (Input.GetKeyDown(KeyCode.Tab))
@@ -306,6 +326,7 @@ public class ThePhone : MonoBehaviour
             ThePhoneUI.transform.GetChild(0).GetComponent<Image>().sprite = BGnormal;
 
             screen = phonestates.HOME;
+            constantUI.SetActive(false);
         }
         else
         {
@@ -317,7 +338,7 @@ public class ThePhone : MonoBehaviour
                 ThePhoneUI.transform.GetChild(2).GetChild(i).transform.localScale = new Vector3(smol, smol, smol);
             }
 
-
+            constantUI.SetActive(true);
             ThePhoneUI.SetActive(false);
             screen = phonestates.NONE;
         }
@@ -402,6 +423,7 @@ public class ThePhone : MonoBehaviour
         save.saveitem("MythTraces", currency.MythTraces);
 
         ThePhoneUI.transform.GetChild(0).GetComponent<Image>().sprite = BGnormal;
+        phonecam.GetComponent<Camera>().fieldOfView = 60.0f;
 
 
     }
@@ -491,17 +513,41 @@ public class ThePhone : MonoBehaviour
             }
         }
 
-
         if (cluename != "bad")
         {
-            save.saveitem(cluename + "clue", "yes");
+            save.saveitem(cluename + " clue", "yes");
         }
 
+
+        //ADD SFX here
     }
 
     public void keyopen()
     {
         ThePhoneUI.transform.GetChild(0).GetComponent<Image>().sprite = BGkey;
+
+        GameObject[] clues = GameObject.FindGameObjectsWithTag("Clue");
+        List<GameObject> clue = new List<GameObject>() { };
+
+        for (int i = 0; i < clues.Length; i++)
+        {
+            clue.Add(clues[i]);
+        }
+
+        for (int i = 0; i < clue.Count; i++)
+        {
+            string tmp = save.safeItem(clue[i].name + " clue", saveFile.types.STRING).tostring;
+            if (tmp == "yes")
+            {
+                clueStates.Add(true);
+            }
+            else
+            {
+                clueStates.Add(false);
+            }
+        }
+
+
     }
 
 }
