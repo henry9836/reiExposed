@@ -36,10 +36,8 @@ public class bosswall : MonoBehaviour
                 TU.bossroomtrigger();
 
                 onEnter.Invoke();
-                phoneMenuUI.transform.GetChild(0).GetComponent<Button>().interactable = false;
-                phoneMenuUI.transform.GetChild(1).GetComponent<Button>().interactable = false;
-                phoneMenuUI.transform.GetChild(2).GetComponent<Button>().interactable = false;
 
+                //disbale to pic me up drone thingy in boss room
             }
 
         }
