@@ -9,7 +9,8 @@ public class enemydrop : MonoBehaviour
     public float movespeed;
     public bool test = false;
     public GameObject censor;
-
+    public saveFile save;
+    public GameObject canvas;
     public GameObject dropmessage;
 
     public int messagesToShow = 0;
@@ -22,6 +23,8 @@ public class enemydrop : MonoBehaviour
     private void Start()
     {
         clientCencorship = censor.GetComponent<clientcencorship>();
+        save = GameObject.Find("Save&Dronemanage").GetComponent<saveFile>();
+        canvas = GameObject.FindGameObjectWithTag("MainCanvas");
     }
 
     private void Update()
@@ -63,6 +66,17 @@ public class enemydrop : MonoBehaviour
         UIpop.transform.GetChild(2).gameObject.GetComponent<Text>().text = packagetosend.enemieDrops[0].titem1.ToString();
         UIpop.transform.GetChild(3).gameObject.GetComponent<Text>().text = packagetosend.enemieDrops[0].titem2.ToString();
         UIpop.transform.GetChild(4).gameObject.GetComponent<Text>().text = packagetosend.enemieDrops[0].titem3.ToString();
+
+        currency.MythTraces = save.safeItem("MythTraces", saveFile.types.INT).toint;
+        currency.MythTraces += packagetosend.enemieDrops[0].tcurr;
+        save.saveitem("MythTraces", currency.MythTraces);
+
+        if (canvas.GetComponent<Items>().gaineditem((Items.AllItems)packagetosend.enemieDrops[0].titem1))
+        {
+            canvas.GetComponent<Items>().removeitembiginvin(canvas.GetComponent<Items>().biginvin.Count - 1, true);
+        }
+        canvas.GetComponent<Items>().gaineditem((Items.AllItems)packagetosend.enemieDrops[0].titem2);
+        canvas.GetComponent<Items>().gaineditem((Items.AllItems)packagetosend.enemieDrops[0].titem3);
 
         packagetosend.enemieDrops.RemoveAt(0);
 
