@@ -12,6 +12,7 @@ using System;
 //public class photo
 public class ThePhone : MonoBehaviour
 {
+    //refrances
     public saveFile save;
     private plugindemo drone;
     public GameObject ThePhoneUI;
@@ -22,21 +23,28 @@ public class ThePhone : MonoBehaviour
     public GameObject camgrid;
     public Sprite emptyPhotoSpot;
 
+    //henry
     public MythWorkerUnion myths;
-
     private Vector2 restorescale;
     private Vector3 restorePos;
     private int restoreID;
 
+    //menu navigations
     public int selected;
     public int picselected;
     public int itemselected;
 
-    //TODO swap based on screen
+    //swap BG based on current screen
     public Sprite BGnormal;
     public Sprite BGkey;
     public Sprite BGamazon;
     public Sprite BGinventory;
+
+    //keyapp
+    List<bool> clueStates = new List<bool>() { };
+
+    public GameObject constantUI;
+
 
 
     public enum phonestates 
@@ -46,7 +54,9 @@ public class ThePhone : MonoBehaviour
         CAMERA,
         AMAZON,
         INVENTORY,
+        KEY,
     };
+
     public phonestates screen;
 
     void Start()
@@ -58,7 +68,6 @@ public class ThePhone : MonoBehaviour
         myths = GameObject.FindGameObjectWithTag("GameManager").GetComponent<MythWorkerUnion>();
         save = GameObject.Find("Save&Dronemanage").GetComponent<saveFile>();
         drone = GameObject.Find("Save&Dronemanage").GetComponent<plugindemo>();
-        savephotoinit();
     }
 
 
@@ -160,12 +169,12 @@ public class ThePhone : MonoBehaviour
                                 }
                             case (2):
                                 {
-                                    amazon();
+                                    keyopen();
                                     break;
                                 }
                             case (3):
                                 {
-                                    //key
+                                    amazon();
                                     break;
                                 }
                             default:
@@ -187,9 +196,22 @@ public class ThePhone : MonoBehaviour
                 }
             case phonestates.CAMERA:
                 {
+                    float scroll = Input.GetAxis("Mouse ScrollWheel");
+                    float fov = phonecam.GetComponent<Camera>().fieldOfView;
+                    if (scroll > 0.0f)
+                    {
+                        fov -= 1.0f;
+                    }
+                    else if (scroll < 0.0f)
+                    {
+                        fov += 1.0f;
+                    }
+
+                    fov = Mathf.Clamp(fov, 2f, 100.0f);
+                    phonecam.GetComponent<Camera>().fieldOfView = fov;
+
                     if (Input.GetMouseButtonDown(0))
                     {
-
                         checkPhotoValid();
                     }
                     else if (Input.GetKeyDown(KeyCode.Tab))
@@ -260,6 +282,21 @@ public class ThePhone : MonoBehaviour
 
                     break;
                 }
+            case phonestates.KEY:
+                {
+
+                    if (Input.GetKeyDown(KeyCode.Tab))
+                    {
+                        BackToMenu();
+                        openingephone(false);
+                    }
+                    else if (Input.GetMouseButtonDown(1))
+                    {
+                        BackToMenu();
+                    }
+
+                    break;
+                }
             default:
                 {
                     Debug.LogError("how the fuck did you get here lol");
@@ -286,7 +323,10 @@ public class ThePhone : MonoBehaviour
             ThePhoneUI.transform.GetChild(2).GetChild(selected).GetComponent<slotno>().shriking = false;
             StartCoroutine(ThePhoneUI.transform.GetChild(2).GetChild(selected).GetComponent<slotno>().togrow());
 
+            ThePhoneUI.transform.GetChild(0).GetComponent<Image>().sprite = BGnormal;
+
             screen = phonestates.HOME;
+            //constantUI.SetActive(false);
         }
         else
         {
@@ -298,7 +338,7 @@ public class ThePhone : MonoBehaviour
                 ThePhoneUI.transform.GetChild(2).GetChild(i).transform.localScale = new Vector3(smol, smol, smol);
             }
 
-
+            //constantUI.SetActive(true);
             ThePhoneUI.SetActive(false);
             screen = phonestates.NONE;
         }
@@ -334,14 +374,16 @@ public class ThePhone : MonoBehaviour
 
         if (currency.MythTraces < 100)
         {
-            ThePhoneUI.transform.GetChild(4).GetChild(1).GetComponent<Button>().interactable = false;
+            //ThePhoneUI.transform.GetChild(4).GetChild(1).GetComponent<Button>().interactable = false;
         }
         else
         {
-            ThePhoneUI.transform.GetChild(4).GetChild(1).GetComponent<Button>().interactable = true;
+            //ThePhoneUI.transform.GetChild(4).GetChild(1).GetComponent<Button>().interactable = true;
         }
 
-        ThePhoneUI.transform.GetChild(4).GetChild(0).GetComponent<Text>().text = "Mythtraces: " + currency.MythTraces;
+        ThePhoneUI.transform.GetChild(4).GetChild(1).GetComponent<Text>().text = currency.MythTraces + "¥";
+        ThePhoneUI.transform.GetChild(0).GetComponent<Image>().sprite = BGamazon;
+
 
     }
 
@@ -351,6 +393,8 @@ public class ThePhone : MonoBehaviour
         ThePhoneUI.transform.GetChild(2).gameObject.SetActive(false);
         ThePhoneUI.transform.GetChild(5).gameObject.SetActive(true);
         ThePhoneUI.transform.GetChild(5).gameObject.GetComponent<eqitems>().itemchange();
+        ThePhoneUI.transform.GetChild(0).GetComponent<Image>().sprite = BGinventory;
+
 
     }
 
@@ -377,6 +421,10 @@ public class ThePhone : MonoBehaviour
         rei.GetComponent<Animator>().enabled = true;
 
         save.saveitem("MythTraces", currency.MythTraces);
+
+        ThePhoneUI.transform.GetChild(0).GetComponent<Image>().sprite = BGnormal;
+        phonecam.GetComponent<Camera>().fieldOfView = 60.0f;
+
 
     }
 
@@ -436,24 +484,13 @@ public class ThePhone : MonoBehaviour
 
     public void checkPhotoValid()
     {
+        string cluename = "bad";
+
         GameObject[] clues = GameObject.FindGameObjectsWithTag("Clue");
-
-        string nametoset = "bad";
-        int imagecount = save.safeItem("imageCount", saveFile.types.INT).toint;
-
         List<GameObject> clue = new List<GameObject>() { };
         for (int i = 0; i < clues.Length; i++)
         {
             clue.Add(clues[i]);
-        }
-
-        List<string> saveddata = new List<string>() { };
-
-        for (int i = 0; i < 10; i++)
-        {
-            string filename = ("state " + (i).ToString() + ".png");
-            string picof = save.safeItem(filename, saveFile.types.STRING).tostring;
-            saveddata.Add(picof);
         }
 
         float closes = 999.0f;
@@ -471,105 +508,50 @@ public class ThePhone : MonoBehaviour
                     {
                         closes = dis;
                     }
-                    nametoset = clue[i].name;
+                    cluename = clue[i].name;
                 }
             }
         }
 
-        savePhotosData(imagecount, nametoset); 
+        if (cluename != "bad")
+        {
+            save.saveitem(cluename + " clue", "yes");
+        }
+
+
+        //ADD SFX here
+    }
+
+    public void keyopen()
+    {
+        screen = phonestates.KEY;
+        ThePhoneUI.transform.GetChild(2).gameObject.SetActive(false);
+        ThePhoneUI.transform.GetChild(3).gameObject.SetActive(true);
+
+        ThePhoneUI.transform.GetChild(0).GetComponent<Image>().sprite = BGkey;
+
+        GameObject[] clues = GameObject.FindGameObjectsWithTag("Clue");
+        List<GameObject> clue = new List<GameObject>() { };
+
+        for (int i = 0; i < clues.Length; i++)
+        {
+            clue.Add(clues[i]);
+        }
+
+        for (int i = 0; i < clue.Count; i++)
+        {
+            string tmp = save.safeItem(clue[i].name + " clue", saveFile.types.STRING).tostring;
+            if (tmp == "yes")
+            {
+                clueStates.Add(true);
+            }
+            else
+            {
+                clueStates.Add(false);
+            }
+        }
+
 
     }
 
-
-
-    public bool FileExists(string path)
-    {
-        return File.Exists(path);
-    }
-    
-
-    public void savephotoinit()
-    {
-        int count = save.safeItem("imageCount", saveFile.types.INT).toint;
-        if (count == -999999)
-        {
-            count = 0;
-        }
-        save.saveitem("imageCount", count);
-
-        for (int i = 0; i < 10; i++)
-        {
-            string location = ("state " + i + ".png");
-            string photodata = save.safeItem(location, saveFile.types.STRING).tostring;
-
-            if (photodata == null)
-            {
-                photodata = "del";
-            }
-
-            save.saveitem("state " + i + ".png", photodata);
-        }
-    }
-
-    public void savePhotosData(int i, string state)
-    {
-        int count = save.safeItem("imageCount", saveFile.types.INT).toint;
-
-        string location = ("state " + i + ".png");
-        string tmp = save.safeItem(location, saveFile.types.STRING).tostring;
-
-
-        if (tmp == "del" || tmp == "")
-        {
-            if (state != "del")
-            {
-                if (i < 10)
-                {
-                    save.saveitem(location, state);
-                    save.saveitem("imageCount", count + 1);
-                }
-            }
-        }
-        else
-        {
-            if (state == "del")
-            {
-                save.saveitem(location, state);
-
-                if (i != (count))
-                {
-                    for (int j = 0; j < ((count) - i); j++)
-                    {
-                        //swap save file
-                        string x = "state " + (i + 0 + j).ToString() + ".png";
-                        string y = "state " + (i + 1 + j).ToString() + ".png";
-
-                        string xdata = save.safeItem(x, saveFile.types.STRING).tostring;
-                        string ydata = save.safeItem(y, saveFile.types.STRING).tostring;
-
-                        save.saveitem(x, ydata);
-                        save.saveitem(y, xdata);
-
-
-                        //swap images
-                        string foldername = Directory.GetCurrentDirectory() + "\\" + "shhhhhSecretFolder";
-                        string pre = foldername + "\\" + (i + 1 + j).ToString() + ".png";              
-                        string post = foldername + "\\" + (i + 0 + j ).ToString() + ".png";
-
-                        if (j == 0)
-                        {
-                            File.Delete(post);
-                        }
-
-                        if (FileExists(pre))
-                        {
-                            File.Move(pre, post);
-                        }
-                    }
-                }
-
-                save.saveitem("imageCount", count - 1);
-            }
-        }
-    }  
 }
