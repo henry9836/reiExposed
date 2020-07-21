@@ -200,11 +200,11 @@ public class ThePhone : MonoBehaviour
                     float fov = phonecam.GetComponent<Camera>().fieldOfView;
                     if (scroll > 0.0f)
                     {
-                        fov += 1.0f;
+                        fov -= 1.0f;
                     }
                     else if (scroll < 0.0f)
                     {
-                        fov -= 1.0f;
+                        fov += 1.0f;
                     }
 
                     fov = Mathf.Clamp(fov, 2f, 100.0f);
