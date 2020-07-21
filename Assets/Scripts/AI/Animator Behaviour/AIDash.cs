@@ -104,7 +104,7 @@ public class AIDash : StateMachineBehaviour
 
 
             //Check for obsticles
-            Vector3 offset = targetDir * dashSpeed * Time.deltaTime;
+           Vector3 offset = targetDir * dashSpeed * Time.deltaTime;
             float dashDistance = Vector3.Distance(transform.position, transform.position + offset);
             RaycastHit hit;
             if (Physics.Raycast(transform.position, targetDir, out hit, dashDistance, obsctucles))

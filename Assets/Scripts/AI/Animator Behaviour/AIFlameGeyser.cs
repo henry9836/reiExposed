@@ -59,6 +59,9 @@ public class AIFlameGeyser : StateMachineBehaviour
         ////Charge boss
         //ai.stamina -= ai.getSelectedAttack().statminaNeeded;
 
+        //Stop moving
+        movement.stopMovement();
+
         //Logic
         attacked = true;
         amountFired++;
