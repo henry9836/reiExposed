@@ -13,6 +13,7 @@ public class messagepickup : MonoBehaviour
         if (flag == false)
         {
             canvas = GameObject.FindGameObjectWithTag("MainCanvas").GetComponent<enemydrop>();
+            gameObject.transform.parent = null;
 
 
             canvas.processMessage();
@@ -34,10 +35,13 @@ public class messagepickup : MonoBehaviour
                     canvas.processMessage();
                     flag = true;
                 }
-                canvas.messagesToShow++;
-                Destroy(this.gameObject);
+
+
 
             }
+
+            canvas.messagesToShow++;
+            Destroy(this.gameObject);
 
         }
     }
