@@ -42998,6 +42998,7 @@ GameObject:
   - component: {fileID: 8109513895668568792}
   - component: {fileID: 473570507139629627}
   - component: {fileID: 5801858317880847811}
+  - component: {fileID: 5801858317880847812}
   m_Layer: 0
   m_Name: Reprisal Of Flame
   m_TagString: Boss
@@ -43181,6 +43182,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   informRange: 5
   type: 1
+  informObjects:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &8109513895668568798
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43231,6 +43235,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debugMode: 1
+  spawnAbove: 5
+  debugUI: {fileID: 627260628027668403, guid: d9cd73732df081141bb0702898d75add, type: 3}
 --- !u!95 &8109513895668568768
 Animator:
   serializedVersion: 3
@@ -43272,11 +43278,13 @@ MonoBehaviour:
   forwardAnimationsTo: {fileID: 575316264522294907}
   startInSleepState: 0
   health: 300
+  staminaRegen: 3
   revealThreshold: 0.651
   selectedAttack: {fileID: 0}
   amountofModes: 1
   startHealth: 0
   revealAmount: 0
+  stamina: 0
   currentMode: 1
   animator: {fileID: 0}
   player: {fileID: 0}
@@ -43617,12 +43625,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackName: Whack
   damage: 5
+  statminaNeeded: 5
   damageOnlyOnce: 1
   bodyPartsUsedInAttack: 11
   mustFacePlayer: 1
   overrideTrackingVisionCone: 1
   facePlayerThreshold: 0.7
-  rangeForAttack: {x: 0.5, y: 2}
+  rangeForAttack: {x: 0, y: 5}
   triggerName: basicAttack
   allowedModeOne: 1
   allowedModeTwo: 1
@@ -43648,12 +43657,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackName: Heavy Attack
   damage: 20
+  statminaNeeded: 5
   damageOnlyOnce: 1
   bodyPartsUsedInAttack: 2
   mustFacePlayer: 1
   overrideTrackingVisionCone: 1
   facePlayerThreshold: 0.7
-  rangeForAttack: {x: 0.5, y: 2}
+  rangeForAttack: {x: 0, y: 5}
   triggerName: heavyAttack
   allowedModeOne: 1
   allowedModeTwo: 1
@@ -43677,15 +43687,48 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 084cb613cb9443d4a8936dade09221ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackName: Untitled Attack
+  attackName: Dash
   damage: 5
+  statminaNeeded: 10
   damageOnlyOnce: 1
   bodyPartsUsedInAttack: 0
   mustFacePlayer: 1
   overrideTrackingVisionCone: 0
   facePlayerThreshold: 0.75
-  rangeForAttack: {x: 1, y: 10}
-  triggerName: Untitled Trigger
+  rangeForAttack: {x: 10, y: 90}
+  triggerName: Dash
+  allowedModeOne: 1
+  allowedModeTwo: 1
+  allowedModeThree: 1
+  allowedModeFour: 1
+  allowedModeFive: 1
+  allowedModeSix: 1
+  allowedModeSeven: 1
+  allowedModeEight: 1
+  allowedModeNine: 1
+  allowedModeTen: 1
+--- !u!114 &5801858317880847812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8109513895668568770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 084cb613cb9443d4a8936dade09221ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackName: Flame Geyser
+  damage: 5
+  statminaNeeded: 5
+  damageOnlyOnce: 1
+  bodyPartsUsedInAttack: 12
+  mustFacePlayer: 0
+  overrideTrackingVisionCone: 1
+  facePlayerThreshold: -1
+  rangeForAttack: {x: 10, y: 50}
+  triggerName: FlameG
   allowedModeOne: 1
   allowedModeTwo: 1
   allowedModeThree: 1
