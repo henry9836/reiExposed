@@ -31,7 +31,6 @@ public class ThePhone : MonoBehaviour
 
     //menu navigations
     public int selected;
-    public int picselected;
     public int itemselected;
 
     //swap BG based on current screen
@@ -86,10 +85,11 @@ public class ThePhone : MonoBehaviour
                 }
             case phonestates.HOME:
                 {
+                    int prev = selected;
+
                     float scroll = Input.GetAxis("Mouse ScrollWheel");
                     if (scroll > 0.0f)
                     {
-                        int prev = selected;
                         selected -= 1;
 
                         if (drone.candeliver == true)
@@ -101,29 +101,11 @@ public class ThePhone : MonoBehaviour
                             //grey out or somth8ihng
                             selected = Mathf.Clamp(selected, 0, 2);
                         }
-
-                        if (prev != selected)
-                        {
-                            if (ThePhoneUI.transform.GetChild(2).GetChild(prev).GetComponent<slotno>().shriking != true)
-                            {
-                                ThePhoneUI.transform.GetChild(2).GetChild(prev).GetComponent<slotno>().growing = false;
-                                ThePhoneUI.transform.GetChild(2).GetChild(prev).GetComponent<slotno>().shriking = true;
-                                StartCoroutine(ThePhoneUI.transform.GetChild(2).GetChild(prev).GetComponent<slotno>().toungrow());
-                            }
-
-                            if (ThePhoneUI.transform.GetChild(2).GetChild(selected).GetComponent<slotno>().growing != true)
-                            {
-                                ThePhoneUI.transform.GetChild(2).GetChild(selected).GetComponent<slotno>().growing = true;
-                                ThePhoneUI.transform.GetChild(2).GetChild(selected).GetComponent<slotno>().shriking = false;
-                                StartCoroutine(ThePhoneUI.transform.GetChild(2).GetChild(selected).GetComponent<slotno>().togrow());
-                            }
-                        }
                     }
                     else if (scroll < 0.0f)
                     {
-                        int prev = selected;
-
                         selected += 1;
+
                         if (drone.candeliver == true)
                         {
                             selected = Mathf.Clamp(selected, 0, 3);
@@ -133,22 +115,22 @@ public class ThePhone : MonoBehaviour
                             //grey out or somth8ihng
                             selected = Mathf.Clamp(selected, 0, 2);
                         }
+                    }
 
-                        if (prev != selected)
+                    if (prev != selected)
+                    {
+                        if (ThePhoneUI.transform.GetChild(2).GetChild(prev).GetComponent<slotno>().shriking != true)
                         {
-                            if (ThePhoneUI.transform.GetChild(2).GetChild(prev).GetComponent<slotno>().shriking != true)
-                            {
-                                ThePhoneUI.transform.GetChild(2).GetChild(prev).GetComponent<slotno>().growing = false;
-                                ThePhoneUI.transform.GetChild(2).GetChild(prev).GetComponent<slotno>().shriking = true;
-                                StartCoroutine(ThePhoneUI.transform.GetChild(2).GetChild(prev).GetComponent<slotno>().toungrow());
-                            }
+                            ThePhoneUI.transform.GetChild(2).GetChild(prev).GetComponent<slotno>().growing = false;
+                            ThePhoneUI.transform.GetChild(2).GetChild(prev).GetComponent<slotno>().shriking = true;
+                            StartCoroutine(ThePhoneUI.transform.GetChild(2).GetChild(prev).GetComponent<slotno>().toungrow());
+                        }
 
-                            if (ThePhoneUI.transform.GetChild(2).GetChild(selected).GetComponent<slotno>().growing != true)
-                            {
-                                ThePhoneUI.transform.GetChild(2).GetChild(selected).GetComponent<slotno>().growing = true;
-                                ThePhoneUI.transform.GetChild(2).GetChild(selected).GetComponent<slotno>().shriking = false;
-                                StartCoroutine(ThePhoneUI.transform.GetChild(2).GetChild(selected).GetComponent<slotno>().togrow());
-                            }
+                        if (ThePhoneUI.transform.GetChild(2).GetChild(selected).GetComponent<slotno>().growing != true)
+                        {
+                            ThePhoneUI.transform.GetChild(2).GetChild(selected).GetComponent<slotno>().growing = true;
+                            ThePhoneUI.transform.GetChild(2).GetChild(selected).GetComponent<slotno>().shriking = false;
+                            StartCoroutine(ThePhoneUI.transform.GetChild(2).GetChild(selected).GetComponent<slotno>().togrow());
                         }
                     }
 
@@ -241,11 +223,12 @@ public class ThePhone : MonoBehaviour
                 }
             case phonestates.INVENTORY:
                 {
+                    int prev = itemselected;
 
                     float scroll = Input.GetAxis("Mouse ScrollWheel");
                     if (scroll > 0.0f)
                     {
-                        itemselected += 1;
+                        itemselected -= 1;
                         ThePhoneUI.transform.GetChild(5).gameObject.GetComponent<eqitems>().itemchange();
                         Debug.Log(itemselected);
 
@@ -253,13 +236,33 @@ public class ThePhone : MonoBehaviour
                     }
                     else if (scroll < 0.0f)
                     {
-                        itemselected -= 1;
+                        itemselected += 1;
                         ThePhoneUI.transform.GetChild(5).gameObject.GetComponent<eqitems>().itemchange();
                         Debug.Log(itemselected);
 
                     }
                     itemselected = Mathf.Clamp(itemselected, 0, 7);
 
+
+                    if (prev != itemselected)
+                    {
+                        slotno oldgm = ThePhoneUI.transform.GetChild(5).GetChild(prev + 1).GetComponent<slotno>();
+                        slotno newgm = ThePhoneUI.transform.GetChild(5).GetChild(itemselected + 1).GetComponent<slotno>();
+
+                        if (oldgm.shriking != true)
+                        {
+                            oldgm.growing = false;
+                            oldgm.shriking = true;
+                            StartCoroutine(oldgm.toungrow());
+                        }
+                        
+                        if (newgm.growing != true)
+                        {
+                            newgm.growing = true;
+                            newgm.shriking = false;
+                            StartCoroutine(newgm.togrow());
+                        }
+                    }
 
                     if (Input.GetMouseButtonDown(0))
                     {
@@ -316,12 +319,15 @@ public class ThePhone : MonoBehaviour
             ThePhoneUI.transform.GetChild(5).gameObject.SetActive(false);
 
             selected = 0;
-            picselected = 0;
             itemselected = 0;
 
             ThePhoneUI.transform.GetChild(2).GetChild(selected).GetComponent<slotno>().growing = true;
             ThePhoneUI.transform.GetChild(2).GetChild(selected).GetComponent<slotno>().shriking = false;
             StartCoroutine(ThePhoneUI.transform.GetChild(2).GetChild(selected).GetComponent<slotno>().togrow());
+
+            ThePhoneUI.transform.GetChild(5).GetChild(itemselected + 1).GetComponent<slotno>().growing = true;
+            ThePhoneUI.transform.GetChild(5).GetChild(itemselected + 1).GetComponent<slotno>().shriking = false;
+            StartCoroutine(ThePhoneUI.transform.GetChild(5).GetChild(itemselected + 1).GetComponent<slotno>().togrow());
 
             ThePhoneUI.transform.GetChild(0).GetComponent<Image>().sprite = BGnormal;
 
