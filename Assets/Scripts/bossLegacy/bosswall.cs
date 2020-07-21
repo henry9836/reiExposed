@@ -29,9 +29,6 @@ public class bosswall : MonoBehaviour
             if (entered == false)
             {
                 ai.sleepOverride(false);
-                phoneMenuUI.transform.GetChild(0).GetComponent<Button>().interactable = false;
-                phoneMenuUI.transform.GetChild(1).GetComponent<Button>().interactable = false;
-                phoneMenuUI.transform.GetChild(2).GetComponent<Button>().interactable = false;
                 bossHPUI.SetActive(true);
                 entered = true;
 
@@ -40,6 +37,7 @@ public class bosswall : MonoBehaviour
 
                 onEnter.Invoke();
 
+                //disbale to pic me up drone thingy in boss room
             }
 
         }
