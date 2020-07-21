@@ -169,12 +169,12 @@ public class ThePhone : MonoBehaviour
                                 }
                             case (2):
                                 {
-                                    amazon();
+                                    keyopen();
                                     break;
                                 }
                             case (3):
                                 {
-                                    keyopen();
+                                    amazon();
                                     break;
                                 }
                             default:
@@ -326,7 +326,7 @@ public class ThePhone : MonoBehaviour
             ThePhoneUI.transform.GetChild(0).GetComponent<Image>().sprite = BGnormal;
 
             screen = phonestates.HOME;
-            constantUI.SetActive(false);
+            //constantUI.SetActive(false);
         }
         else
         {
@@ -338,7 +338,7 @@ public class ThePhone : MonoBehaviour
                 ThePhoneUI.transform.GetChild(2).GetChild(i).transform.localScale = new Vector3(smol, smol, smol);
             }
 
-            constantUI.SetActive(true);
+            //constantUI.SetActive(true);
             ThePhoneUI.SetActive(false);
             screen = phonestates.NONE;
         }
@@ -374,14 +374,14 @@ public class ThePhone : MonoBehaviour
 
         if (currency.MythTraces < 100)
         {
-            ThePhoneUI.transform.GetChild(4).GetChild(1).GetComponent<Button>().interactable = false;
+            //ThePhoneUI.transform.GetChild(4).GetChild(1).GetComponent<Button>().interactable = false;
         }
         else
         {
-            ThePhoneUI.transform.GetChild(4).GetChild(1).GetComponent<Button>().interactable = true;
+            //ThePhoneUI.transform.GetChild(4).GetChild(1).GetComponent<Button>().interactable = true;
         }
 
-        ThePhoneUI.transform.GetChild(4).GetChild(0).GetComponent<Text>().text = "Mythtraces: " + currency.MythTraces;
+        ThePhoneUI.transform.GetChild(4).GetChild(1).GetComponent<Text>().text = currency.MythTraces + "¥";
         ThePhoneUI.transform.GetChild(0).GetComponent<Image>().sprite = BGamazon;
 
 
@@ -524,6 +524,10 @@ public class ThePhone : MonoBehaviour
 
     public void keyopen()
     {
+        screen = phonestates.KEY;
+        ThePhoneUI.transform.GetChild(2).gameObject.SetActive(false);
+        ThePhoneUI.transform.GetChild(3).gameObject.SetActive(true);
+
         ThePhoneUI.transform.GetChild(0).GetComponent<Image>().sprite = BGkey;
 
         GameObject[] clues = GameObject.FindGameObjectsWithTag("Clue");
