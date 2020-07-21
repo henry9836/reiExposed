@@ -32,6 +32,8 @@ public class ThePhone : MonoBehaviour
     //menu navigations
     public int selected;
     public int itemselected;
+    public int amazonselected;
+
 
     //swap BG based on current screen
     public Sprite BGnormal;
@@ -119,18 +121,21 @@ public class ThePhone : MonoBehaviour
 
                     if (prev != selected)
                     {
-                        if (ThePhoneUI.transform.GetChild(2).GetChild(prev).GetComponent<slotno>().shriking != true)
+                        slotno oldslot = ThePhoneUI.transform.GetChild(2).GetChild(prev).GetComponent<slotno>();
+                        slotno newslot = ThePhoneUI.transform.GetChild(2).GetChild(selected).GetComponent<slotno>();
+
+                        if (oldslot.shriking != true)
                         {
-                            ThePhoneUI.transform.GetChild(2).GetChild(prev).GetComponent<slotno>().growing = false;
-                            ThePhoneUI.transform.GetChild(2).GetChild(prev).GetComponent<slotno>().shriking = true;
-                            StartCoroutine(ThePhoneUI.transform.GetChild(2).GetChild(prev).GetComponent<slotno>().toungrow());
+                            oldslot.growing = false;
+                            oldslot.shriking = true;
+                            StartCoroutine(oldslot.toungrow());
                         }
 
-                        if (ThePhoneUI.transform.GetChild(2).GetChild(selected).GetComponent<slotno>().growing != true)
+                        if (newslot.growing != true)
                         {
-                            ThePhoneUI.transform.GetChild(2).GetChild(selected).GetComponent<slotno>().growing = true;
-                            ThePhoneUI.transform.GetChild(2).GetChild(selected).GetComponent<slotno>().shriking = false;
-                            StartCoroutine(ThePhoneUI.transform.GetChild(2).GetChild(selected).GetComponent<slotno>().togrow());
+                            newslot.growing = true;
+                            newslot.shriking = false;
+                            StartCoroutine(newslot.togrow());
                         }
                     }
 
@@ -210,6 +215,46 @@ public class ThePhone : MonoBehaviour
                 } 
             case phonestates.AMAZON:
                 {
+                    int prev = amazonselected;
+
+                    float scroll = Input.GetAxis("Mouse ScrollWheel");
+                    if (scroll > 0.0f)
+                    {
+                        amazonselected -= 1;
+                        ThePhoneUI.transform.GetChild(5).gameObject.GetComponent<eqitems>().itemchange();
+                        Debug.Log(amazonselected);
+
+
+                    }
+                    else if (scroll < 0.0f)
+                    {
+                        amazonselected += 1;
+                        ThePhoneUI.transform.GetChild(5).gameObject.GetComponent<eqitems>().itemchange();
+                        Debug.Log(amazonselected);
+
+                    }
+                    amazonselected = Mathf.Clamp(amazonselected, 0, 2);
+
+
+                    if (prev != amazonselected)
+                    {
+                        slotno oldgm = ThePhoneUI.transform.GetChild(5).GetChild(prev + 1).GetComponent<slotno>();
+                        slotno newgm = ThePhoneUI.transform.GetChild(5).GetChild(amazonselected + 1).GetComponent<slotno>();
+
+                        if (oldgm.shriking != true)
+                        {
+                            oldgm.growing = false;
+                            oldgm.shriking = true;
+                            StartCoroutine(oldgm.toungrow());
+                        }
+
+                        if (newgm.growing != true)
+                        {
+                            newgm.growing = true;
+                            newgm.shriking = false;
+                            StartCoroutine(newgm.togrow());
+                        }
+                    }
                     if (Input.GetKeyDown(KeyCode.Tab))
                     {
                         BackToMenu();
