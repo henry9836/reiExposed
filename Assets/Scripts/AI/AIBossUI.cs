@@ -28,20 +28,14 @@ public class AIBossUI : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Debug.Log($"DEBUG S");
-        Debug.Log($"DEBUG 1 {lockedUI}");
-        Debug.Log($"DEBUG 2 {lockedUI.gameObject}");
-        Debug.Log($"DEBUG 3 {lockedUI.gameObject.activeInHierarchy}");
 
-        //Fix badness
-        if (!correctlySetup && (lockedUI.gameObject.activeInHierarchy))
-        {
-            lockedUI.enabled = true;
-            unlockUI.enabled = false;
-            correctlySetup = true;
-        }
-
-        Debug.Log(correctlySetup);
+        ////Fix badness
+        //if (!correctlySetup && (lockedUI.gameObject.activeInHierarchy))
+        //{
+        //    lockedUI.enabled = true;
+        //    unlockUI.enabled = false;
+        //    correctlySetup = true;
+        //}
 
         if (initalReveal == 0)
         {
