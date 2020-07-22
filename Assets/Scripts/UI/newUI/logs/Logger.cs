@@ -170,6 +170,8 @@ public class Logger : MonoBehaviour
         backdrop = GetComponent<Image>();
         backdropColor = backdrop.color;
 
+        hideMsgs();
+
         //Testing
         //for (int i = 0; i < 15; i++)
         //{
