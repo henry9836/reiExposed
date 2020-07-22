@@ -83,7 +83,7 @@ public class Logger : MonoBehaviour
 
             //Update Controller
             logScrollCtrl.updateInfo(logs[0].ui.GetComponent<RectTransform>(), logs[logs.Count - 1].ui.GetComponent<RectTransform>());
-        }
+        } 
     }
 
     void removeMessage(int ID)
