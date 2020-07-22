@@ -46,6 +46,7 @@ public class ThePhone : MonoBehaviour
 
     public GameObject constantUI;
 
+    public LayerMask ignoor;
 
 
     public enum phonestates 
@@ -539,31 +540,115 @@ public class ThePhone : MonoBehaviour
 
         GameObject[] clues = GameObject.FindGameObjectsWithTag("Clue");
         List<GameObject> clue = new List<GameObject>() { };
+        List<List<Vector2>> cluepos = new List<List<Vector2>>() { };
+
         for (int i = 0; i < clues.Length; i++)
         {
+            cluepos.Add(new List<Vector2>());
             clue.Add(clues[i]);
         }
 
-        float closes = 999.0f;
-
         for (int i = 0; i < clue.Count; i++)
         {
-            //new screen% method
-            Camera.current.WorldToScreenPoint(clue[i].transform.position);       
+            Vector3 sumTotal = Vector3.zero;
+            Vector3[] vertexMesh = { };
 
+            vertexMesh = clue[i].GetComponent<MeshFilter>().mesh.vertices;
+            var crc = clue[i].GetComponent<ClueReCentre>();
+            Vector3 offset = crc == null ? Vector3.zero : crc.offset;
 
-            //old in frame and distance
-            //its in the camera frame
-            if (clue[i].gameObject.GetComponent<Renderer>().isVisible)
+            for (int j = 0; j < vertexMesh.Length; j++)
             {
-                //10 meters or closer
-                float dis = Vector3.Distance(clue[i].transform.position, rei.transform.position);
-                if (dis < 10.0f && dis < closes) 
+                Vector3 worldPos = clue[i].transform.TransformPoint(0.5f * (offset + vertexMesh[j])); 
+                sumTotal += worldPos;
+                var viewportPos = phonecam.GetComponent<Camera>().WorldToViewportPoint(worldPos);
+                Debug.DrawLine(worldPos, phonecam.transform.position, Color.yellow, 10.0f);
+
+                if (testvertex(viewportPos, worldPos))
                 {
-                    if (dis < closes)
+                    cluepos[i].Add(viewportPos);
+                }
+            }
+            Vector3 averageWorldPos = sumTotal / vertexMesh.Length;
+            var averageViewportPos = phonecam.GetComponent<Camera>().WorldToViewportPoint(averageWorldPos);
+
+
+            if (testvertex(averageViewportPos, averageWorldPos))
+            {
+                cluepos[i].Add(averageViewportPos);
+            }
+
+
+            Debug.DrawLine(averageWorldPos, phonecam.transform.position, Color.yellow, 10.0f);
+
+
+
+            if (cluepos[i].Count > 2)
+            {
+                Vector2 lxly = new Vector2(0.0f, 0.0f);
+                Vector2 lxby = new Vector2(0.0f, 1.0f);
+                Vector2 bxly = new Vector2(1.0f, 0.0f);
+                Vector2 bxby = new Vector2(1.0f, 1.0f);
+
+                float lxlydis = 999.0f;
+                float lxbydis = 999.0f;
+                float bxlydis = 999.0f;
+                float bxbydis = 999.0f;
+
+                int lxlypos = -1;
+                int lxbypos = -1;
+                int bxlypos = -1;
+                int bxbypos = -1;
+
+                for (int k = 0; k < cluepos[i].Count; k++)
+                {
+                    Debug.DrawLine(cluepos[i][k], new Vector2(0.5f, 0.5f), Color.black, 5.0f);
+                    if (Vector2.Distance(cluepos[i][k], lxly) < lxlydis)
                     {
-                        closes = dis;
+                        lxlydis = Vector2.Distance(cluepos[i][k], lxly);
+                        lxlypos = k;
                     }
+                    if (Vector2.Distance(cluepos[i][k], lxby) < lxbydis)
+                    {
+                        lxbydis = Vector2.Distance(cluepos[i][k], lxby);
+                        lxbypos = k;
+                    }
+                    if (Vector2.Distance(cluepos[i][k], bxby) < bxbydis)
+                    {
+                        bxbydis = Vector2.Distance(cluepos[i][k], bxby);
+                        bxbypos = k;
+                    }
+                    if (Vector2.Distance(cluepos[i][k], bxly) < bxlydis)
+                    {
+                        bxlydis = Vector2.Distance(cluepos[i][k], bxly);
+                        bxlypos = k;
+                    }
+                }
+
+                Vector2 a = cluepos[i][lxlypos];
+                Vector2 b = cluepos[i][lxbypos];
+                Vector2 c = cluepos[i][bxbypos];
+                Vector2 d = cluepos[i][bxlypos];
+
+
+                Debug.DrawLine(a, b, Color.green, 10.0f);
+                Debug.DrawLine(b, c, Color.green, 10.0f);
+                Debug.DrawLine(c, d, Color.green, 10.0f);
+                Debug.DrawLine(d, a, Color.green, 10.0f);
+
+                Debug.DrawLine(a, lxly, Color.green, 10.0f);
+                Debug.DrawLine(b, lxby, Color.green, 10.0f);
+                Debug.DrawLine(c, bxby, Color.green, 10.0f);
+                Debug.DrawLine(d, bxly, Color.green, 10.0f);
+                
+                float objaera = Mathf.Abs((((a.x * b.y) - (a.y * b.x)) + ((b.x * c.y) - (b.y * c.x)) + ((c.x * d.y) - (c.y * d.x)) + ((d.x * a.y) - (d.y * a.x))) / 2.0f);
+                float screenaera = 1.0f;
+
+                float persenttaken = (objaera / screenaera) * 800.0f;
+                Debug.Log(persenttaken + "% taken up");
+
+                if (persenttaken > 5.0f)
+                {
                     cluename = clue[i].name;
                 }
             }
@@ -574,8 +659,45 @@ public class ThePhone : MonoBehaviour
             save.saveitem(cluename + " clue", "yes");
         }
 
-
         //ADD SFX here
+    }
+
+    public Vector3 RotatePointAroundPivot(Vector3 point, Vector3 pivot, Vector3 angles)
+    {
+        return Quaternion.Euler(angles) * (point - pivot) + pivot;
+    }
+
+    private bool testvertex(Vector3 viewportPos, Vector3 worldPos)
+    {
+        if (viewportPos.x > 0.0f && viewportPos.x < 1.0f)
+        {
+            if (viewportPos.y > 0.0f && viewportPos.y < 1.0f)
+            {
+                if (viewportPos.z > 0.0f)
+                {
+                    Vector3 fromPosition = phonecam.transform.position;
+                    Vector3 toPosition = worldPos;
+                    Vector3 direction = toPosition - fromPosition;
+                    float dis = Vector3.Distance(fromPosition, toPosition);
+
+                    RaycastHit hit;
+                    //Debug.DrawRay(fromPosition, direction, Color.white, 5.0f);
+                    if (Physics.Raycast(fromPosition, direction, out hit, dis, ignoor))
+                    {
+                        //Debug.Log(hit.collider.name);
+                        //Debug.DrawLine(hit.point, hit.point + (Vector3.up * 999), Color.cyan, 10.0f);
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+
     }
 
     public void keyopen()

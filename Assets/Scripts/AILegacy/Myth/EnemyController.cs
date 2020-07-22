@@ -372,7 +372,7 @@ public class EnemyController : MonoBehaviour
             }
         }
 
-        Debug.Log("Picked: " + currentAttack.name);
+        //Debug.Log("Picked: " + currentAttack.name);
         return currentAttack;
     }
 
