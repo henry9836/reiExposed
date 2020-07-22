@@ -30,20 +30,41 @@ public class Logger : MonoBehaviour
     public List<LogContainer> logs = new List<LogContainer>();
     public GameObject contrainerPrefab;
     public RectTransform messageAnchor;
+    public LogScrollController logScrollCtrl;
     public float spacing = 200.0f;
     public static int nextID = 1;
 
-    void removeMessage(int ID)
+    void reorderMsgs()
     {
+        List<LogContainer> reorderedLogs = new List<LogContainer>();
+
+        //Append all important logs
         for (int i = 0; i < logs.Count; i++)
         {
-            if (logs[i].ID == ID)
+            if (logs[i].important)
             {
-                Destroy(logs[i].ui);
+                reorderedLogs.Add(logs[i]);
+                //Remove from logs
                 logs.RemoveAt(i);
-                break;
             }
         }
+
+        //Add the rest onto the end of the list
+        for (int i = 0; i < logs.Count; i++)
+        {
+            reorderedLogs.Add(logs[i]);
+        }
+
+        logs.Clear();
+
+        //Move back onto logs
+        for (int i = 0; i < reorderedLogs.Count; i++)
+        {
+            logs.Add(reorderedLogs[i]);
+        }
+        //logs = reorderedLogs;
+        reorderedLogs.Clear();
+
 
         //Reorder UI
         for (int i = 0; i < logs.Count; i++)
@@ -57,6 +78,24 @@ public class Logger : MonoBehaviour
                 logs[i].ui.GetComponent<RectTransform>().localPosition = logs[i - 1].ui.GetComponent<RectTransform>().localPosition - (Vector3.up * spacing);
             }
         }
+
+        //Update Controller
+        logScrollCtrl.updateInfo(logs[0].ui.GetComponent<RectTransform>(), logs[logs.Count - 1].ui.GetComponent<RectTransform>());
+    }
+
+    void removeMessage(int ID)
+    {
+        for (int i = 0; i < logs.Count; i++)
+        {
+            if (logs[i].ID == ID)
+            {
+                Destroy(logs[i].ui);
+                logs.RemoveAt(i);
+                break;
+            }
+        }
+
+        reorderMsgs();
     }
 
 
@@ -74,8 +113,10 @@ public class Logger : MonoBehaviour
         }
         //Create a UI Element and parent to logger
         GameObject container = Instantiate(contrainerPrefab, Vector3.zero, Quaternion.identity, messageAnchor);
-        //Assign ID
+
+        //Assign ID and setup
         container.GetComponent<MessageInfo>().log = logs[logs.Count - 1];
+        container.GetComponent<MessageInfo>().setup();
 
         //Assign Obj Ref
         logs[logs.Count - 1].ui = container;
@@ -83,10 +124,17 @@ public class Logger : MonoBehaviour
         //Move position to make sense
         container.GetComponent<RectTransform>().localPosition = pos;
 
+        reorderMsgs();
     }
 
     private void Start()
     {
+
+        if (!logScrollCtrl)
+        {
+            logScrollCtrl = GetComponent<LogScrollController>();
+        }
+
         //Testing
         for (int i = 0; i < 15; i++)
         {
@@ -106,10 +154,6 @@ public class Logger : MonoBehaviour
             if (logs.Count > 0)
             {
                 removeMessage(logs[Random.Range(0, logs.Count)].ID);
-            }
-            else
-            {
-                break;
             }
         }
         

@@ -12,22 +12,19 @@ public class LogScrollController : MonoBehaviour
     public RectTransform clampTop;
     public RectTransform clampBottom;
 
-
     Vector3 mouseScroll;
-    int lastSeenChildCount = 0;
+
+    public void updateInfo(RectTransform t, RectTransform b)
+    {
+        topMsg = t;
+        bottomMsg = b;
+    }
 
     // Update is called once per frame
     void Update()
     {
         if (msgAnchor.childCount > 0)
         {
-            //Get latest list of rects if different
-            if (lastSeenChildCount != msgAnchor.childCount)
-            {
-                topMsg = msgAnchor.GetChild(0).GetComponent<RectTransform>();
-                bottomMsg = msgAnchor.GetChild(msgAnchor.childCount - 1).GetComponent<RectTransform>();
-                lastSeenChildCount = msgAnchor.childCount;
-            }
 
             mouseScroll = new Vector3(Input.mouseScrollDelta.x, Input.mouseScrollDelta.y, 0.0f);
 
