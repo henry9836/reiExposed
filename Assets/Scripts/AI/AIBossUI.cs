@@ -14,18 +14,29 @@ public class AIBossUI : MonoBehaviour
     VFXController vfx;
     float initalHealth = 100.0f;
     int initalReveal = 0;
+    bool correctlySetup = false;
 
     private void Start()
     {
         ai = GetComponent<AIObject>();
         vfx = GetComponent<VFXController>();
+        initalHealth = ai.startHealth;
         lockedUI.enabled = true;
         unlockUI.enabled = false;
-        initalHealth = ai.startHealth;
+        correctlySetup = true;
     }
 
     private void FixedUpdate()
     {
+
+        ////Fix badness
+        //if (!correctlySetup && (lockedUI.gameObject.activeInHierarchy))
+        //{
+        //    lockedUI.enabled = true;
+        //    unlockUI.enabled = false;
+        //    correctlySetup = true;
+        //}
+
         if (initalReveal == 0)
         {
             initalReveal = vfx.bodysNoVFX.Count;

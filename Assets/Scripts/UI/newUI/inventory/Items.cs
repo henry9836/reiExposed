@@ -40,18 +40,18 @@ public class Items : MonoBehaviour
     {
 
 
-        //////////////////demo/////////////////////
-        for (int i = 0; i < 52; i++)
-        {
-            gaineditem(AllItems.PLUSHEALH);
-        }
-        removeitembiginvin(0);
-        gaineditem(AllItems.PLUSSPEED);
-        slotsref.itemchange();
+        ////////////////////demo/////////////////////
+        //for (int i = 0; i < 52; i++)
+        //{
+        //    gaineditem(AllItems.PLUSHEALH);
+        //}
+        //removeitembiginvin(0, false);
+        //gaineditem(AllItems.PLUSSPEED);
+        //slotsref.itemchange();
 
     }
 
-    public void gaineditem(AllItems toadd)
+    public bool gaineditem(AllItems toadd)
     {
         singleItem tmp = new singleItem();
         tmp.itemtype = toadd;
@@ -74,7 +74,11 @@ public class Items : MonoBehaviour
                 tmp.equipped = false;
                 tmp.equippedpos = -1;
             }
+
+            return true;
         }
+
+        return false;
     }
 
     public void equipItem(int biginvinpos)
@@ -105,14 +109,14 @@ public class Items : MonoBehaviour
         tmp.equippedpos = -1;
     }
 
-    public void removeitembiginvin(int biginvinpos)
+    public void removeitembiginvin(int biginvinpos, bool useitem)
     {
-        removeitem(biginvin[biginvinpos], false);
+        removeitem(biginvin[biginvinpos], useitem);
     }
 
-    public void removeitemequipped(int equippedpos)
+    public void removeitemequipped(int equippedpos, bool useitem)
     {
-        removeitem(equipped[equippedpos], true);
+        removeitem(equipped[equippedpos], useitem);
     }
 
     private void removeitem(singleItem toremove, bool useitem)
