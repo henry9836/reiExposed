@@ -109,7 +109,7 @@ public class Logger : MonoBehaviour
         } 
     }
 
-    void removeMessage(int ID)
+    public void removeMessage(int ID)
     {
         for (int i = 0; i < logs.Count; i++)
         {
@@ -125,7 +125,7 @@ public class Logger : MonoBehaviour
     }
 
 
-    void AddNewMessage(LogContainer log)
+    public void AddNewMessage(LogContainer log)
     {
         logs.Add(log);
         //Get Postition to move to
@@ -163,14 +163,16 @@ public class Logger : MonoBehaviour
 
         initalMsgPos = messageAnchor.position;
 
-        //Testing
-        for (int i = 0; i < 15; i++)
-        {
-            AddNewMessage(new LogContainer(Random.Range(0, 9999).ToString(), false));
-            AddNewMessage(new LogContainer(Random.Range(0, 9999).ToString(), true));
-        }
+        AddNewMessage(new LogContainer(Random.Range(0, 9999).ToString(), true));
 
-        StartCoroutine(testDel());
+        //Testing
+        //for (int i = 0; i < 15; i++)
+        //{
+        //    AddNewMessage(new LogContainer(Random.Range(0, 9999).ToString(), false));
+        //    AddNewMessage(new LogContainer(Random.Range(0, 9999).ToString(), true));
+        //}
+
+        //StartCoroutine(testDel());
 
     }
 
