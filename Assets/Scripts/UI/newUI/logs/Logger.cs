@@ -54,7 +54,7 @@ public class Logger : MonoBehaviour
             }
             else
             {
-                logs[i].ui.GetComponent<RectTransform>().localPosition = messageAnchor.GetChild(i).GetComponent<RectTransform>().localPosition - (Vector3.up * spacing);
+                logs[i].ui.GetComponent<RectTransform>().localPosition = logs[i - 1].ui.GetComponent<RectTransform>().localPosition - (Vector3.up * spacing);
             }
         }
     }
