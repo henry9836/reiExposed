@@ -225,7 +225,7 @@ public class movementController : MonoBehaviour
         if (Input.GetButtonDown("Roll") && !rolling)
         {
             //Check stamina
-            if (staminaCostSprint <= pc.staminaAmount)
+            if (staminaCostRoll <= pc.staminaAmount)
             {
                 //Check if area is clear
                 tmpRollDistance = rollDistance;

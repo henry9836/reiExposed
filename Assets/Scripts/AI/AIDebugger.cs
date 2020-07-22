@@ -20,7 +20,7 @@ public class AIDebugger : MonoBehaviour
     {
         if (debugMode)
         {
-            Instantiate(debugUI, Vector3.up * spawnAbove, Quaternion.identity, transform);
+            Instantiate(debugUI, transform.position + (Vector3.up * spawnAbove), Quaternion.identity, transform);
         }
     }
 

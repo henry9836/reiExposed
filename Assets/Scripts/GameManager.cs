@@ -18,24 +18,12 @@ public class GameManager : MonoBehaviour
         boss = GameObject.FindGameObjectWithTag("Boss").GetComponent<AIObject>();
     }
 
-    private void FixedUpdate()
-    {
-        if (boss.health <= 0.0f)
-        {
-            if (once)
-            {
-                once = false;
-                GameOver();
-            }
-        }
-    }
-
     public void GameOver()
     {
         GameOverEvent.Invoke();
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.Confined;
-        //StartCoroutine(goToMainMenu());
+        //Cursor.visible = true;
+        //Cursor.lockState = CursorLockMode.Confined;
+        StartCoroutine(goToMainMenu());
     }
 
     IEnumerator goToMainMenu()
