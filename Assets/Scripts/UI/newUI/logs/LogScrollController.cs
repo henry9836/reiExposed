@@ -13,6 +13,7 @@ public class LogScrollController : MonoBehaviour
     public RectTransform clampBottom;
 
     Vector3 mouseScroll;
+    bool showingUI = false;
 
     public void updateInfo(RectTransform t, RectTransform b)
     {
@@ -27,6 +28,11 @@ public class LogScrollController : MonoBehaviour
         {
 
             mouseScroll = new Vector3(Input.mouseScrollDelta.x, Input.mouseScrollDelta.y, 0.0f);
+
+            if (mouseScroll.y > 0 && !showingUI)
+            {
+                showingUI = true;
+            }
 
             //Clamp Out Of Bounds
             //Going up
