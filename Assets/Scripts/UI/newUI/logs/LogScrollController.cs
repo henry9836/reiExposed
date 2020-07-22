@@ -12,8 +12,10 @@ public class LogScrollController : MonoBehaviour
     public RectTransform clampTop;
     public RectTransform clampBottom;
 
+    Logger logger;
     Vector3 mouseScroll;
     bool showingUI = false;
+    GameObject phoneUI;
 
     public void updateInfo(RectTransform t, RectTransform b)
     {
@@ -21,39 +23,62 @@ public class LogScrollController : MonoBehaviour
         bottomMsg = b;
     }
 
+    private void Start()
+    {
+        phoneUI = transform.root.GetComponent<ThePhone>().ThePhoneUI;
+        logger = GetComponent<Logger>();
+    }
+
     // Update is called once per frame
     void Update()
     {
-        if (msgAnchor.childCount > 0)
+
+        if (!phoneUI.activeInHierarchy)
         {
-
-            mouseScroll = new Vector3(Input.mouseScrollDelta.x, Input.mouseScrollDelta.y, 0.0f);
-
-            if (mouseScroll.y > 0 && !showingUI)
+            if (msgAnchor.childCount > 0)
             {
-                showingUI = true;
-            }
 
-            //Clamp Out Of Bounds
-            //Going up
-            if (bottomMsg.position.y >= clampTop.position.y)
-            {
-                if (mouseScroll.y > 0.0f)
+                mouseScroll = new Vector3(Input.mouseScrollDelta.x, Input.mouseScrollDelta.y, 0.0f);
+
+                if (mouseScroll.y > 0 && !showingUI)
                 {
-                    mouseScroll = Vector3.zero;
+                    showingUI = true;
+                    logger.showMsgs();
                 }
-            }
-            //Going down
-            else if (topMsg.position.y <= clampBottom.position.y)
-            {
-                if (mouseScroll.y < 0.0f)
+                else if (mouseScroll.y < 0 && showingUI && (topMsg.position.y <= clampBottom.position.y))
                 {
-                    mouseScroll = Vector3.zero;
+                    showingUI = false;
+                    logger.hideMsgs();
+                    return;
                 }
-            }
 
-            //Move Messages
-            msgAnchor.localPosition += mouseScroll * scrollSpeed * Time.deltaTime;
+                //Clamp Out Of Bounds
+                //Going up
+                if (bottomMsg.position.y >= clampTop.position.y)
+                {
+                    if (mouseScroll.y > 0.0f)
+                    {
+                        mouseScroll = Vector3.zero;
+                    }
+                }
+                //Going down
+                else if (topMsg.position.y <= clampBottom.position.y)
+                {
+                    if (mouseScroll.y < 0.0f)
+                    {
+                        mouseScroll = Vector3.zero;
+                    }
+                }
+
+                //Move Messages
+                msgAnchor.localPosition += mouseScroll * scrollSpeed * Time.deltaTime;
+            }
+        }
+        else
+        {
+            logger.hideMsgs();
+            logger.resetMsgs();
+            showingUI = false;
         }
     }
 }

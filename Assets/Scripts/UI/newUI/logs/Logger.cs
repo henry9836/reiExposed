@@ -34,6 +34,29 @@ public class Logger : MonoBehaviour
     public float spacing = 200.0f;
     public static int nextID = 1;
 
+    Vector3 initalMsgPos = Vector3.zero;
+
+    public void showMsgs()
+    {
+        for (int i = 0; i < logs.Count; i++)
+        {
+            logs[i].ui.GetComponent<MessageInfo>().showUI();
+        }
+    }
+
+    public void hideMsgs()
+    {
+        for (int i = 0; i < logs.Count; i++)
+        {
+            logs[i].ui.GetComponent<MessageInfo>().hideUI();
+        }
+    }
+
+    public void resetMsgs()
+    {
+        messageAnchor.position = initalMsgPos;
+    }
+
     void reorderMsgs()
     {
         if (logs.Count > 0)
@@ -137,6 +160,8 @@ public class Logger : MonoBehaviour
         {
             logScrollCtrl = GetComponent<LogScrollController>();
         }
+
+        initalMsgPos = messageAnchor.position;
 
         //Testing
         for (int i = 0; i < 15; i++)
