@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Logger : MonoBehaviour
 {
@@ -35,6 +36,8 @@ public class Logger : MonoBehaviour
     public static int nextID = 1;
 
     Vector3 initalMsgPos = Vector3.zero;
+    Image backdrop;
+    Color backdropColor;
 
     public void showMsgs()
     {
@@ -42,6 +45,7 @@ public class Logger : MonoBehaviour
         {
             logs[i].ui.GetComponent<MessageInfo>().showUI();
         }
+        backdrop.color = new Color(backdrop.color.r, backdrop.color.g, backdrop.color.b, backdropColor.a);
     }
 
     public void hideMsgs()
@@ -50,6 +54,7 @@ public class Logger : MonoBehaviour
         {
             logs[i].ui.GetComponent<MessageInfo>().hideUI();
         }
+        backdrop.color = new Color(backdrop.color.r, backdrop.color.g, backdrop.color.b, 0.0f);
     }
 
     public void resetMsgs()
@@ -162,8 +167,8 @@ public class Logger : MonoBehaviour
         }
 
         initalMsgPos = messageAnchor.position;
-
-        AddNewMessage(new LogContainer(Random.Range(0, 9999).ToString(), true));
+        backdrop = GetComponent<Image>();
+        backdropColor = backdrop.color;
 
         //Testing
         //for (int i = 0; i < 15; i++)
