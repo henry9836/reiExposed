@@ -36,51 +36,54 @@ public class Logger : MonoBehaviour
 
     void reorderMsgs()
     {
-        List<LogContainer> reorderedLogs = new List<LogContainer>();
-
-        //Append all important logs
-        for (int i = 0; i < logs.Count; i++)
+        if (logs.Count > 0)
         {
-            if (logs[i].important)
+            List<LogContainer> reorderedLogs = new List<LogContainer>();
+
+            //Append all important logs
+            for (int i = 0; i < logs.Count; i++)
+            {
+                if (logs[i].important)
+                {
+                    reorderedLogs.Add(logs[i]);
+                    //Remove from logs
+                    logs.RemoveAt(i);
+                }
+            }
+
+            //Add the rest onto the end of the list
+            for (int i = 0; i < logs.Count; i++)
             {
                 reorderedLogs.Add(logs[i]);
-                //Remove from logs
-                logs.RemoveAt(i);
             }
-        }
 
-        //Add the rest onto the end of the list
-        for (int i = 0; i < logs.Count; i++)
-        {
-            reorderedLogs.Add(logs[i]);
-        }
+            logs.Clear();
 
-        logs.Clear();
-
-        //Move back onto logs
-        for (int i = 0; i < reorderedLogs.Count; i++)
-        {
-            logs.Add(reorderedLogs[i]);
-        }
-        //logs = reorderedLogs;
-        reorderedLogs.Clear();
-
-
-        //Reorder UI
-        for (int i = 0; i < logs.Count; i++)
-        {
-            if (i == 0)
+            //Move back onto logs
+            for (int i = 0; i < reorderedLogs.Count; i++)
             {
-                logs[i].ui.GetComponent<RectTransform>().localPosition = -(Vector3.up * spacing);
+                logs.Add(reorderedLogs[i]);
             }
-            else
-            {
-                logs[i].ui.GetComponent<RectTransform>().localPosition = logs[i - 1].ui.GetComponent<RectTransform>().localPosition - (Vector3.up * spacing);
-            }
-        }
+            //logs = reorderedLogs;
+            reorderedLogs.Clear();
 
-        //Update Controller
-        logScrollCtrl.updateInfo(logs[0].ui.GetComponent<RectTransform>(), logs[logs.Count - 1].ui.GetComponent<RectTransform>());
+
+            //Reorder UI
+            for (int i = 0; i < logs.Count; i++)
+            {
+                if (i == 0)
+                {
+                    logs[i].ui.GetComponent<RectTransform>().localPosition = -(Vector3.up * spacing);
+                }
+                else
+                {
+                    logs[i].ui.GetComponent<RectTransform>().localPosition = logs[i - 1].ui.GetComponent<RectTransform>().localPosition - (Vector3.up * spacing);
+                }
+            }
+
+            //Update Controller
+            logScrollCtrl.updateInfo(logs[0].ui.GetComponent<RectTransform>(), logs[logs.Count - 1].ui.GetComponent<RectTransform>());
+        }
     }
 
     void removeMessage(int ID)
