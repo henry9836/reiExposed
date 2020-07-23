@@ -29,7 +29,7 @@ public class Logger : MonoBehaviour
     }
 
     public List<LogContainer> logs = new List<LogContainer>();
-    public GameObject contrainerPrefab;
+    public GameObject containerPrefab;
     public RectTransform messageAnchor;
     public LogScrollController logScrollCtrl;
     public float spacing = 200.0f;
@@ -143,7 +143,7 @@ public class Logger : MonoBehaviour
             pos = -(Vector3.up * spacing);
         }
         //Create a UI Element and parent to logger
-        GameObject container = Instantiate(contrainerPrefab, Vector3.zero, Quaternion.identity, messageAnchor);
+        GameObject container = Instantiate(containerPrefab, Vector3.zero, Quaternion.identity, messageAnchor);
 
         //Assign ID and setup
         container.GetComponent<MessageInfo>().log = logs[logs.Count - 1];
