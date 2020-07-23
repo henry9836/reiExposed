@@ -32,11 +32,10 @@ public class enemydrop : MonoBehaviour
         if (test == true)
         {
             test = false;
-            //enemyiskil();
         }
     }
 
-    private void FixedUpdate() //no
+    private void FixedUpdate() 
     {
         if (messagesToShow > 0) {
             if (!messageDisplayFlag)

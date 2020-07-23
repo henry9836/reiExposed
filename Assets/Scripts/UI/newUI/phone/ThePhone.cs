@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using UnityEngine.Networking;
 using System.Threading;
 using System;
+using System.Data.SqlTypes;
 
 
 //public class photo
@@ -45,8 +46,12 @@ public class ThePhone : MonoBehaviour
     List<bool> clueStates = new List<bool>() { };
 
     public GameObject constantUI;
-
     public LayerMask ignoor;
+
+    //camera
+    public float sec1timer = 0.0f;
+    public GameObject clueglow;
+    public GameObject camflash;
 
 
     public enum phonestates 
@@ -60,7 +65,7 @@ public class ThePhone : MonoBehaviour
     };
 
     public phonestates screen;
-
+ 
     void Start()
     {
         screen = phonestates.NONE;
@@ -198,9 +203,17 @@ public class ThePhone : MonoBehaviour
                     fov = Mathf.Clamp(fov, 2f, 100.0f);
                     phonecam.GetComponent<Camera>().fieldOfView = fov;
 
+                    sec1timer += Time.deltaTime;
+                    if (sec1timer > 1.0f)
+                    {
+                        sec1timer = 0.0f;
+                        checkPhotoValid(false);
+                    }
+
+
                     if (Input.GetMouseButtonDown(0))
                     {
-                        checkPhotoValid();
+                        checkPhotoValid(true);
                     }
                     else if (Input.GetKeyDown(KeyCode.Tab))
                     {
@@ -534,7 +547,7 @@ public class ThePhone : MonoBehaviour
 
 
 
-    public void checkPhotoValid()
+    public void checkPhotoValid(bool takingphoto)
     {
         string cluename = "bad";
 
@@ -647,19 +660,42 @@ public class ThePhone : MonoBehaviour
                 float persenttaken = (objaera / screenaera) * 800.0f;
                 Debug.Log(persenttaken + "% taken up");
 
-                if (persenttaken > 5.0f)
+                if (persenttaken > 2.0f)
                 {
                     cluename = clue[i].name;
+                    if (save.safeItem(cluename + " clue", saveFile.types.STRING).tostring == "yes")
+                    {
+                        Debug.Log("already taken");
+                        clueglow.SetActive(false);
+                    }
+                    else
+                    {
+                        clueglow.SetActive(true);
+                    }
+                }
+                else
+                {
+                    clueglow.SetActive(false);
                 }
             }
         }
 
-        if (cluename != "bad")
+        if (takingphoto == true)
         {
-            save.saveitem(cluename + " clue", "yes");
+            if (cluename != "bad")
+            {
+                save.saveitem(cluename + " clue", "yes");
+                //good phot
+            }
+            else
+            {
+                //bad phot
+            }
+
+            //any photo
         }
 
-        //ADD SFX here
+
     }
 
     public Vector3 RotatePointAroundPivot(Vector3 point, Vector3 pivot, Vector3 angles)
