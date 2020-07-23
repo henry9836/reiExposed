@@ -438,12 +438,10 @@ public class EnemyController : MonoBehaviour
         bool tmp = agent.CalculatePath(_target, path);
         if (!tmp)
         {
-            Debug.Log("Invalid Path!");
             return false;
         }
         else if (path.status == NavMeshPathStatus.PathPartial || path.status == NavMeshPathStatus.PathInvalid)
         {
-            Debug.Log("Invalid Path!");
             return false;
         }
 
