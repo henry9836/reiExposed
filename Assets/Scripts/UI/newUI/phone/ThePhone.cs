@@ -434,20 +434,10 @@ public class ThePhone : MonoBehaviour
         screen = phonestates.AMAZON;
         ThePhoneUI.transform.GetChild(2).gameObject.SetActive(false);
         ThePhoneUI.transform.GetChild(4).gameObject.SetActive(true);
-        currency.MythTraces = save.safeItem("MythTraces", saveFile.types.INT).toint;
+        currency.Yen = save.safeItem("MythTraces", saveFile.types.INT).toint;
 
-        if (currency.MythTraces < 100)
-        {
-            //ThePhoneUI.transform.GetChild(4).GetChild(1).GetComponent<Button>().interactable = false;
-        }
-        else
-        {
-            //ThePhoneUI.transform.GetChild(4).GetChild(1).GetComponent<Button>().interactable = true;
-        }
-
-        ThePhoneUI.transform.GetChild(4).GetChild(1).GetComponent<Text>().text = currency.MythTraces + "¥";
+        ThePhoneUI.transform.GetChild(4).GetChild(1).GetComponent<Text>().text = currency.Yen + "¥";
         ThePhoneUI.transform.GetChild(0).GetComponent<Image>().sprite = BGamazon;
-
 
     }
 
@@ -484,27 +474,28 @@ public class ThePhone : MonoBehaviour
         rei.transform.GetChild(1).gameObject.SetActive(true);
         rei.GetComponent<Animator>().enabled = true;
 
-        save.saveitem("MythTraces", currency.MythTraces);
+        save.saveitem("MythTraces", currency.Yen);
 
         ThePhoneUI.transform.GetChild(0).GetComponent<Image>().sprite = BGnormal;
         phonecam.GetComponent<Camera>().fieldOfView = 60.0f;
 
-
+        clueglow.GetComponent<flash>().fadeout = true;
+        clueglow.GetComponent<flash>().fadein = false;
     }
 
     public void amazonshop(int item)
     {
         if (item == 0)
         {
-            currency.MythTraces -= 100;
-            save.saveitem("MythTraces", currency.MythTraces);
+            currency.Yen -= 100;
+            save.saveitem("MythTraces", currency.Yen);
 
             drone.todrop = 0;
             drone.deliver();
            
         }
 
-        if (currency.MythTraces < 100)
+        if (currency.Yen < 100)
         {
             ThePhoneUI.transform.GetChild(4).GetChild(1).GetComponent<Button>().interactable = false;
         }
@@ -512,7 +503,7 @@ public class ThePhone : MonoBehaviour
         {
             ThePhoneUI.transform.GetChild(4).GetChild(1).GetComponent<Button>().interactable = true;
         }
-        ThePhoneUI.transform.GetChild(4).GetChild(0).GetComponent<Text>().text = "Yen: " + currency.MythTraces;
+        ThePhoneUI.transform.GetChild(4).GetChild(0).GetComponent<Text>().text = "Yen: " + currency.Yen;
 
         BackToMenu();
 
@@ -665,17 +656,25 @@ public class ThePhone : MonoBehaviour
                     if (save.safeItem(cluename + " clue", saveFile.types.STRING).tostring == "yes")
                     {
                         Debug.Log("already taken");
-                        clueglow.SetActive(false);
+                        clueglow.GetComponent<flash>().fadeout = true;
+                        clueglow.GetComponent<flash>().fadein = false;
                     }
                     else
                     {
-                        clueglow.SetActive(true);
+                        clueglow.GetComponent<flash>().fadeout = false;
+                        clueglow.GetComponent<flash>().fadein = true;
                     }
                 }
                 else
                 {
-                    clueglow.SetActive(false);
+                    clueglow.GetComponent<flash>().fadeout = true;
+                    clueglow.GetComponent<flash>().fadein = false;
                 }
+            }
+            else
+            {
+                clueglow.GetComponent<flash>().fadeout = true;
+                clueglow.GetComponent<flash>().fadein = false;
             }
         }
 

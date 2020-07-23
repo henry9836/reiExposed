@@ -60,8 +60,8 @@ public class enemydrop : MonoBehaviour
     {
         messageDisplayFlag = true;
         string msg = clientCencorship.getMessageAndRemove(0);
-        logger.AddNewMessage(new Logger.LogContainer(msg));
-        UIpop.transform.GetChild(0).gameObject.GetComponent<Text>().text = msg;
+        logger.AddNewMessage(new Logger.LogContainer(msg)); // henry
+        UIpop.transform.GetChild(0).gameObject.GetComponent<Text>().text = msg; //cencored
         //cencor3ed
         //UIpop.transform.GetChild(0).gameObject.GetComponent<Text>().text = packagetosend.enemieDrops[0].tmessage;
 
@@ -70,9 +70,9 @@ public class enemydrop : MonoBehaviour
         UIpop.transform.GetChild(3).gameObject.GetComponent<Text>().text = packagetosend.enemieDrops[0].titem2.ToString();
         UIpop.transform.GetChild(4).gameObject.GetComponent<Text>().text = packagetosend.enemieDrops[0].titem3.ToString();
 
-        currency.MythTraces = save.safeItem("MythTraces", saveFile.types.INT).toint;
-        currency.MythTraces += packagetosend.enemieDrops[0].tcurr;
-        save.saveitem("MythTraces", currency.MythTraces);
+        currency.Yen = save.safeItem("MythTraces", saveFile.types.INT).toint;
+        currency.Yen += packagetosend.enemieDrops[0].tcurr;
+        save.saveitem("MythTraces", currency.Yen);
 
         if (canvas.GetComponent<Items>().gaineditem((Items.AllItems)packagetosend.enemieDrops[0].titem1))
         {
