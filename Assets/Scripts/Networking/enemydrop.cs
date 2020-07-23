@@ -19,12 +19,14 @@ public class enemydrop : MonoBehaviour
     public bool messageDisplayFlag = false;
 
     private clientcencorship clientCencorship;
+    private Logger logger;
 
     private void Start()
     {
         clientCencorship = censor.GetComponent<clientcencorship>();
         save = GameObject.Find("Save&Dronemanage").GetComponent<saveFile>();
         canvas = GameObject.FindGameObjectWithTag("MainCanvas");
+        logger = canvas.transform.Find("MessageLog").GetComponent<Logger>();
     }
 
     private void Update()
@@ -57,7 +59,9 @@ public class enemydrop : MonoBehaviour
     public IEnumerator mess()
     {
         messageDisplayFlag = true;
-        UIpop.transform.GetChild(0).gameObject.GetComponent<Text>().text = clientCencorship.getMessageAndRemove(0);
+        string msg = clientCencorship.getMessageAndRemove(0);
+        logger.AddNewMessage(new Logger.LogContainer(msg));
+        UIpop.transform.GetChild(0).gameObject.GetComponent<Text>().text = msg;
         //cencor3ed
         //UIpop.transform.GetChild(0).gameObject.GetComponent<Text>().text = packagetosend.enemieDrops[0].tmessage;
 

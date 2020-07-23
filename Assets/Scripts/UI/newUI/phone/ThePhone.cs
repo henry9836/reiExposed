@@ -145,7 +145,6 @@ public class ThePhone : MonoBehaviour
                         }
                     }
 
-
                     if (Input.GetMouseButtonDown(0))
                     {
                         switch (selected)
