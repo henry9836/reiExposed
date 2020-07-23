@@ -18,6 +18,7 @@ public class messagepickup : MonoBehaviour
 
             canvas.processMessage();
             flag = true;
+
         }
 
     }
