@@ -81,12 +81,13 @@ public static class saveController
         saveContainer.Add(new entry(id, val));
     }
 
+
     /// <summary>
     /// Get a value from the save container
     /// </summary>
     public static string getVal(string id)
     {
-        //Find and change value
+        //Find and return value
         for (int i = 0; i < saveContainer.Count; i++)
         {
             if (saveContainer[i].identifier == id)
@@ -95,7 +96,8 @@ public static class saveController
             }
         }
 
-        return "";
+        //error
+        return "0";
     }
 
 
