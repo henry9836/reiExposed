@@ -234,25 +234,25 @@ public class ThePhone : MonoBehaviour
                     if (scroll > 0.0f)
                     {
                         amazonselected -= 1;
-                        ThePhoneUI.transform.GetChild(5).gameObject.GetComponent<eqitems>().itemchange();
-                        Debug.Log(amazonselected);
-
-
+                        //ThePhoneUI.transform.GetChild(5).gameObject.GetComponent<eqitems>().itemchange();
                     }
                     else if (scroll < 0.0f)
                     {
                         amazonselected += 1;
-                        ThePhoneUI.transform.GetChild(5).gameObject.GetComponent<eqitems>().itemchange();
-                        Debug.Log(amazonselected);
-
+                        //ThePhoneUI.transform.GetChild(5).gameObject.GetComponent<eqitems>().itemchange();
                     }
-                    amazonselected = Mathf.Clamp(amazonselected, 0, 2);
+                    amazonselected = Mathf.Clamp(amazonselected, 0, 1);
 
+
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        amazonshop(amazonselected);
+                    }
 
                     if (prev != amazonselected)
                     {
-                        slotno oldgm = ThePhoneUI.transform.GetChild(5).GetChild(prev + 1).GetComponent<slotno>();
-                        slotno newgm = ThePhoneUI.transform.GetChild(5).GetChild(amazonselected + 1).GetComponent<slotno>();
+                        slotno oldgm = ThePhoneUI.transform.GetChild(4).GetChild(prev).GetComponent<slotno>();
+                        slotno newgm = ThePhoneUI.transform.GetChild(4).GetChild(amazonselected).GetComponent<slotno>();
 
                         if (oldgm.shriking != true)
                         {
@@ -378,6 +378,7 @@ public class ThePhone : MonoBehaviour
 
             selected = 0;
             itemselected = 0;
+            amazonselected = 0;
 
             ThePhoneUI.transform.GetChild(2).GetChild(selected).GetComponent<slotno>().growing = true;
             ThePhoneUI.transform.GetChild(2).GetChild(selected).GetComponent<slotno>().shriking = false;
@@ -386,6 +387,10 @@ public class ThePhone : MonoBehaviour
             ThePhoneUI.transform.GetChild(5).GetChild(itemselected + 1).GetComponent<slotno>().growing = true;
             ThePhoneUI.transform.GetChild(5).GetChild(itemselected + 1).GetComponent<slotno>().shriking = false;
             StartCoroutine(ThePhoneUI.transform.GetChild(5).GetChild(itemselected + 1).GetComponent<slotno>().togrow());
+
+            ThePhoneUI.transform.GetChild(4).GetChild(amazonselected).GetComponent<slotno>().growing = true;
+            ThePhoneUI.transform.GetChild(4).GetChild(amazonselected).GetComponent<slotno>().shriking = false;
+            StartCoroutine(ThePhoneUI.transform.GetChild(4).GetChild(amazonselected).GetComponent<slotno>().togrow());
 
             ThePhoneUI.transform.GetChild(0).GetComponent<Image>().sprite = BGnormal;
 
@@ -436,7 +441,7 @@ public class ThePhone : MonoBehaviour
         ThePhoneUI.transform.GetChild(4).gameObject.SetActive(true);
         currency.Yen = save.safeItem("MythTraces", saveFile.types.INT).toint;
 
-        ThePhoneUI.transform.GetChild(4).GetChild(1).GetComponent<Text>().text = currency.Yen + "¥";
+        ThePhoneUI.transform.GetChild(4).GetChild(3).GetComponent<Text>().text = currency.Yen + "¥";
         ThePhoneUI.transform.GetChild(0).GetComponent<Image>().sprite = BGamazon;
 
     }
@@ -492,18 +497,27 @@ public class ThePhone : MonoBehaviour
 
             drone.todrop = 0;
             drone.deliver();
-           
+        }
+        else if (item == 1)
+        {
+            currency.Yen -= 100;
+            save.saveitem("MythTraces", currency.Yen);
+
+            drone.todrop = 999;
+            drone.deliver();
         }
 
         if (currency.Yen < 100)
         {
-            ThePhoneUI.transform.GetChild(4).GetChild(1).GetComponent<Button>().interactable = false;
+            //grey out or somthing
+            //ThePhoneUI.transform.GetChild(4).GetChild(1).GetComponent<Button>().interactable = false;
         }
         else
         {
-            ThePhoneUI.transform.GetChild(4).GetChild(1).GetComponent<Button>().interactable = true;
+            //grey out or somthing
+            //ThePhoneUI.transform.GetChild(4).GetChild(1).GetComponent<Button>().interactable = true;
         }
-        ThePhoneUI.transform.GetChild(4).GetChild(0).GetComponent<Text>().text = "Yen: " + currency.Yen;
+        ThePhoneUI.transform.GetChild(4).GetChild(3).GetComponent<Text>().text = currency.Yen + "¥";
 
         BackToMenu();
 
