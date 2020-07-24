@@ -248,6 +248,7 @@ public class ThePhone : MonoBehaviour
                     {
                         amazonshop(amazonselected);
                     }
+                    
 
                     if (prev != amazonselected)
                     {
@@ -345,7 +346,6 @@ public class ThePhone : MonoBehaviour
                 }
             case phonestates.KEY:
                 {
-
                     if (Input.GetKeyDown(KeyCode.Tab))
                     {
                         BackToMenu();
@@ -394,8 +394,12 @@ public class ThePhone : MonoBehaviour
 
             ThePhoneUI.transform.GetChild(0).GetComponent<Image>().sprite = BGnormal;
 
+
+            //rei.wak off
+            rei.GetComponent<umbrella>().phoneLock = true;
+
             screen = phonestates.HOME;
-            //constantUI.SetActive(false);
+            constantUI.SetActive(false);
         }
         else
         {
@@ -406,10 +410,14 @@ public class ThePhone : MonoBehaviour
                 float smol = ThePhoneUI.transform.GetChild(2).GetChild(i).GetComponent<slotno>().smol;
                 ThePhoneUI.transform.GetChild(2).GetChild(i).transform.localScale = new Vector3(smol, smol, smol);
             }
+            //rei.wak on
+            rei.GetComponent<umbrella>().phoneLock = false;
 
-            //constantUI.SetActive(true);
+
+            constantUI.SetActive(true);
             ThePhoneUI.SetActive(false);
             screen = phonestates.NONE;
+
         }
     }
 
@@ -769,13 +777,33 @@ public class ThePhone : MonoBehaviour
             string tmp = save.safeItem(clue[i].name + " clue", saveFile.types.STRING).tostring;
             if (tmp == "yes")
             {
+                Debug.Log(clue[i].name + " clue" + "    yesy");
+
                 clueStates.Add(true);
             }
             else
             {
+                Debug.Log(clue[i].name + " clue" + "    noy");
+
                 clueStates.Add(false);
             }
         }
+
+
+        for (int i = 0; i < clueStates.Count; i++)
+        {
+            if (clueStates[i] == true)
+            {
+                ThePhoneUI.transform.GetChild(3).GetChild(3).GetChild(i).GetComponent<Image>().color = new Color(0.0f, 1.0f, 0.0f, 1.0f);
+            }
+            else
+            {
+                ThePhoneUI.transform.GetChild(3).GetChild(3).GetChild(i).GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+
+            }
+        }
+
+        clueStates = new List<bool>() { };
 
 
     }
