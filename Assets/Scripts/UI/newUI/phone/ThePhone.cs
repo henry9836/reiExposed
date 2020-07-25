@@ -427,6 +427,9 @@ public class ThePhone : MonoBehaviour
     {
         screen = phonestates.CAMERA;
 
+        //phonecam.transform.localEulerAngles = rei.transform.GetChild(0).localEulerAngles;
+        //rei.transform.localEulerAngles = phonecam.transform.localEulerAngles - rei.transform.localEulerAngles;
+
         rei.transform.GetChild(0).gameObject.SetActive(false);
         phonecam.SetActive(true);
         maincam.SetActive(false);
