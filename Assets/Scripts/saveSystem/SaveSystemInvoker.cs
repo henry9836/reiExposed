@@ -14,13 +14,17 @@ public class SaveSystemInvoker : MonoBehaviour
         float two = SaveSystemController.getFloatValue("funny funny");
         one += 1.2f;
         float three = one * two;
+        bool b = SaveSystemController.getBoolValue("Bool");
+        b = !b;
+        int i = SaveSystemController.getIntValue("Int");
+        i++;
 
         //Update Info
         SaveSystemController.updateValue("hahahahah", one);
         SaveSystemController.updateValue("funny funny", two);
         SaveSystemController.updateValue("funny funny123", three);
-
-
+        SaveSystemController.updateValue("Bool", b);
+        SaveSystemController.updateValue("Int", i);
 
         //Save
         StartCoroutine(delayed());

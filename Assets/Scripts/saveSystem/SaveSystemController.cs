@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using UnityEngine;
 
 public static class SaveSystemController
@@ -36,79 +37,91 @@ public static class SaveSystemController
     //Loads data from savefile into saveInfomation
     public static void loadDataFromDisk(string filePath)
     {
-        if (File.Exists(filePath))
+        //Queue A Thread Task
+        ThreadPool.QueueUserWorkItem(loadDataFromDiskThread, filePath);
+
+    }
+
+    //Load Data Thread
+    static void loadDataFromDiskThread(System.Object stateInfo)
+    {
+        string filePath = stateInfo as string;
+
+        if (!File.Exists(filePath))
         {
-            //If not busy
-            if (!ioBusy)
+            return;
+        }
+
+        //Wait for file to avaible
+        while (ioBusy){}
+
+        //Set busy bit
+        ioBusy = true;
+
+        //Read all lines into array
+        string[] lines = File.ReadAllLines(filePath);
+
+        //Decode
+        for (int i = 0; i < lines.Length; i++)
+        {
+            //Is there a flag?
+            if (lines[i].Contains(IDFLAG))
             {
-                //Set busy bit
-                ioBusy = true;
-
-                //Read all lines into array
-                string[] lines = File.ReadAllLines(filePath);
-
-                //Decode
-                for (int i = 0; i < lines.Length; i++)
-                {
-                    //Is there a flag?
-                    if (lines[i].Contains(IDFLAG))
-                    {
-                        //Add id
-                        saveInfomation.Add(new entry(lines[i].Substring(IDFLAG.Length)));
-                    }
-                    else if (lines[i].Contains(VALFLAG))
-                    {
-                        //Set value of latest seen entry
-                        saveInfomation[saveInfomation.Count - 1].value = lines[i].Substring(VALFLAG.Length);
-                    }
-                    else
-                    {
-                        Debug.LogWarning($"Unknown Line {lines[i]}");
-                    }
-                }
-
-                //Unset busy bit
-                ioBusy = false;
+                //Add id
+                saveInfomation.Add(new entry(lines[i].Substring(IDFLAG.Length)));
+            }
+            else if (lines[i].Contains(VALFLAG))
+            {
+                //Set value of latest seen entry
+                saveInfomation[saveInfomation.Count - 1].value = lines[i].Substring(VALFLAG.Length);
             }
             else
             {
-                Debug.LogError("Cannot read file as it is busy");
+                Debug.LogWarning($"Unknown Line {lines[i]}");
             }
         }
+
+        //Unset busy bit
+        ioBusy = false;
     }
+
 
     //Saves current state of saveInfomation to save file
     public static void saveDataToDisk() { saveDataToDisk(saveFile); }
     //Saves current state of saveInfomation to save file
     public static void saveDataToDisk(string filePath)
     {
-        //If not busy
-        if (!ioBusy)
-        {
-            //Set busy bit
-            ioBusy = true;
-
-            //Create saveFile if it doesn't exist and Open for writing
-            StreamWriter writer = new StreamWriter(filePath, false);
-
-            //For each entry in our save infomation overwrite file
-            for (int i = 0; i < saveInfomation.Count; i++)
-            {
-                writer.WriteLine(IDFLAG + saveInfomation[i].id);
-                writer.WriteLine(VALFLAG + saveInfomation[i].value);
-            }
-
-            //Close writer
-            writer.Close();
-
-            //Unset busy bit
-            ioBusy = false;
-        }
-        else
-        {
-            Debug.LogError("Cannot read file as it is busy");
-        }
+        //Queue A Thread Task
+        ThreadPool.QueueUserWorkItem(saveDataFromDiskThread, filePath);
     }
+    //Save Data Thread
+    static void saveDataFromDiskThread(System.Object stateInfo)
+    {
+        string filePath = stateInfo as string;
+
+        //Wait for file to avaible
+        while (ioBusy) { }
+
+        //Set busy bit
+        ioBusy = true;
+
+        //Create saveFile if it doesn't exist and Open for writing
+        StreamWriter writer = new StreamWriter(filePath, false);
+
+        //For each entry in our save infomation overwrite file
+        for (int i = 0; i < saveInfomation.Count; i++)
+        {
+            writer.WriteLine(IDFLAG + saveInfomation[i].id);
+            writer.WriteLine(VALFLAG + saveInfomation[i].value);
+        }
+
+        //Close writer
+        writer.Close();
+
+        //Unset busy bit
+        ioBusy = false;
+    }
+
 
     //Update a value in our saveInfomation
     public static void updateValue(string _id, bool _newValue) { updateValue(_id, _newValue.ToString()); }
