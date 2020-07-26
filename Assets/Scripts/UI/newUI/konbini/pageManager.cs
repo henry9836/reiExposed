@@ -25,13 +25,6 @@ public class pageManager : MonoBehaviour
         selectedUI.GetComponent<RectTransform>().localPosition = positions[0] + canvaspos;
     }
 
-    public void convertPage()
-    {
-        upgradespage.SetActive(false);
-        convertpage.SetActive(true);
-        convertpage.GetComponent<convertDeals>().updateui();
-        selectedUI.GetComponent<RectTransform>().localPosition = positions[1] + canvaspos;
-    }
 
     //public void back()
     //{
