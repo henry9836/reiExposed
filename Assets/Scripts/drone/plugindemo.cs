@@ -13,8 +13,10 @@ public class plugindemo : MonoBehaviour
     public List<GameObject> destinaitons;
     public int currdestination;
     private GameObject rei;
+    public GameObject drone;
 
     public bool candeliver = false;
+    public bool holdRei = false;
 
 
     public int todrop = 0;
@@ -23,8 +25,16 @@ public class plugindemo : MonoBehaviour
         //set refrences and initlise
         iar = this.gameObject.GetComponent<iamryan>();
         iar.whenFin = whenfinished();
-        rei = GameObject.Find("PLAYER_rei");
+        rei = GameObject.FindGameObjectWithTag("Player");
         deliver();
+    }
+
+    void Update()
+    {
+        if (holdRei == true)
+        {
+            rei.transform.position = drone.transform.position;
+        }
     }
 
 
@@ -48,9 +58,18 @@ public class plugindemo : MonoBehaviour
         {
             if (destinaitons[currdestination] == rei)
             {
-                yield return new WaitForSeconds(0.25f);
-                iar.source.GetComponent<drone>().drop(todrop);
-                yield return new WaitForSeconds(1.0f);
+                if (todrop != 999)
+                {
+                    yield return new WaitForSeconds(0.25f);
+                    iar.source.GetComponent<drone>().drop(todrop);
+                    yield return new WaitForSeconds(1.0f);
+                }
+                else // pick me up mum
+                {
+                    yield return new WaitForSeconds(0.25f);
+                    holdRei = true;
+                }
+
 
                 currdestination = 1;
 
@@ -61,6 +80,7 @@ public class plugindemo : MonoBehaviour
         else
         {
             candeliver = true;
+            holdRei = false;
 
         }
 
