@@ -439,7 +439,8 @@ public class ThePhone : MonoBehaviour
         screen = phonestates.AMAZON;
         ThePhoneUI.transform.GetChild(2).gameObject.SetActive(false);
         ThePhoneUI.transform.GetChild(4).gameObject.SetActive(true);
-        currency.Yen = save.safeItem("MythTraces", saveFile.types.INT).toint;
+        //currency.Yen = save.safeItem("MythTraces", saveFile.types.INT).toint;
+        currency.Yen = SaveSystemController.getIntValue("MythTraces");
 
         ThePhoneUI.transform.GetChild(4).GetChild(3).GetComponent<Text>().text = currency.Yen + "¥";
         ThePhoneUI.transform.GetChild(0).GetComponent<Image>().sprite = BGamazon;
@@ -479,7 +480,8 @@ public class ThePhone : MonoBehaviour
         rei.transform.GetChild(1).gameObject.SetActive(true);
         rei.GetComponent<Animator>().enabled = true;
 
-        save.saveitem("MythTraces", currency.Yen);
+        //save.saveitem("MythTraces", currency.Yen);
+        SaveSystemController.updateValue("MythTraces", currency.Yen);
 
         ThePhoneUI.transform.GetChild(0).GetComponent<Image>().sprite = BGnormal;
         phonecam.GetComponent<Camera>().fieldOfView = 60.0f;
@@ -493,7 +495,8 @@ public class ThePhone : MonoBehaviour
         if (item == 0)
         {
             currency.Yen -= 100;
-            save.saveitem("MythTraces", currency.Yen);
+            //save.saveitem("MythTraces", currency.Yen);
+            SaveSystemController.updateValue("MythTraces", currency.Yen);
 
             drone.todrop = 0;
             drone.deliver();
@@ -501,7 +504,8 @@ public class ThePhone : MonoBehaviour
         else if (item == 1)
         {
             currency.Yen -= 100;
-            save.saveitem("MythTraces", currency.Yen);
+            //save.saveitem("MythTraces", currency.Yen);
+            SaveSystemController.updateValue("MythTraces", currency.Yen);
 
             drone.todrop = 999;
             drone.deliver();
@@ -537,7 +541,8 @@ public class ThePhone : MonoBehaviour
         for (int i = 0; i < 10; i++)
         {
             string filename = ("state " + (i).ToString() + ".png");
-            string picof = save.safeItem(filename, saveFile.types.STRING).tostring;
+            //string picof = save.safeItem(filename, saveFile.types.STRING).tostring;
+            string picof = SaveSystemController.getValue(filename);
 
             for (int j = 0; j < clues.Length; j++)
             {
@@ -667,7 +672,8 @@ public class ThePhone : MonoBehaviour
                 if (persenttaken > 2.0f)
                 {
                     cluename = clue[i].name;
-                    if (save.safeItem(cluename + " clue", saveFile.types.STRING).tostring == "yes")
+                    //if (save.safeItem(cluename + " clue", saveFile.types.STRING).tostring == "yes")
+                    if (SaveSystemController.getValue(cluename + " clue") == "yes")
                     {
                         Debug.Log("already taken");
                         clueglow.GetComponent<flash>().fadeout = true;
@@ -696,7 +702,8 @@ public class ThePhone : MonoBehaviour
         {
             if (cluename != "bad")
             {
-                save.saveitem(cluename + " clue", "yes");
+                //save.saveitem(cluename + " clue", "yes");
+                SaveSystemController.updateValue(cluename + " clue", "yes");
                 //good phot
             }
             else
@@ -766,7 +773,8 @@ public class ThePhone : MonoBehaviour
 
         for (int i = 0; i < clue.Count; i++)
         {
-            string tmp = save.safeItem(clue[i].name + " clue", saveFile.types.STRING).tostring;
+            //string tmp = save.safeItem(clue[i].name + " clue", saveFile.types.STRING).tostring;
+            string tmp = SaveSystemController.getValue(clue[i].name + " clue");
             if (tmp == "yes")
             {
                 clueStates.Add(true);
