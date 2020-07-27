@@ -53,6 +53,8 @@ public class ThePhone : MonoBehaviour
     public GameObject clueglow;
     public GameObject camflash;
 
+    //public GameObject uitest;
+
 
     public enum phonestates 
     {
@@ -75,6 +77,8 @@ public class ThePhone : MonoBehaviour
         myths = GameObject.FindGameObjectWithTag("GameManager").GetComponent<MythWorkerUnion>();
         save = GameObject.Find("Save&Dronemanage").GetComponent<saveFile>();
         drone = GameObject.Find("Save&Dronemanage").GetComponent<plugindemo>();
+
+        //StartCoroutine(testmove());
     }
 
 
@@ -812,5 +816,31 @@ public class ThePhone : MonoBehaviour
 
 
     }
+
+
+    //public IEnumerator testmove()
+    //{
+    //    Vector3 oldpos = new Vector3(-15.0f, 0.0f, 0.0f);
+    //    Vector3 newpos = new Vector3(0.0f, 0.0f, 0.0f);
+
+    //    float speed = 1.0f;
+
+    //    uitest.SetActive(true);
+    //    for (float i = 0.0f; i < 1.0f; i += Time.deltaTime * speed)
+    //    {
+    //        uitest.transform.position = Vector3.Lerp(oldpos, newpos, i);
+    //    }
+
+    //    yield return new WaitForSeconds(2.0f);
+
+    //    for (float i = 0.0f; i < 1.0f; i += Time.deltaTime * speed)
+    //    {
+    //        uitest.transform.position = Vector3.Lerp(newpos, oldpos, i);
+    //    }
+
+    //    uitest.SetActive(false);
+
+    //    yield return null;
+    //}
 
 }
