@@ -31,10 +31,13 @@ public class Items : MonoBehaviour
     public enum AllItems
     {
         NONE,
-        PLUSSPEED,
-        MINUSSPEED,
-        PLUSHEALH,
-        MINUSHEALTH,
+        BAD5HP,
+        GOOD5HP,
+        GOOD10HP,
+        DOUBLEDAMAGE,
+        DOUBLESTAMINAREGEN,
+        MOVESPEED1POINT5,
+        MOVESPEED0POINT75,
     };
 
     public List<singleItem> biginvin = new List<singleItem>();

@@ -6,8 +6,6 @@ using UnityEngine.VFX;
 
 public class umbrella : MonoBehaviour
 {
-    public saveFile save;
-
     public bool canfire = false;
     public float blockingStamina;
     public bool cooldown = false;
@@ -57,7 +55,6 @@ public class umbrella : MonoBehaviour
         umbrellaHitBox.enabled = false;
 
         movcont = GetComponent<movementController>();
-        save = GameObject.Find("Save&Dronemanage").GetComponent<saveFile>();
 
     }
 
@@ -209,7 +206,8 @@ public class umbrella : MonoBehaviour
         for (int i = 0; i < 10; i++)
         {
             string filename = ("state " + (i).ToString() + ".png");
-            string picof = save.safeItem(filename, saveFile.types.STRING).tostring;
+            //string picof = save.safeItem(filename, saveFile.types.STRING).tostring;
+            string picof = SaveSystemController.getValue(filename);
             if (picof != "del")
             {
                 saveddata.Add(picof);
