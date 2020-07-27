@@ -34,10 +34,61 @@ public class eqitems : MonoBehaviour
                 singleItem tmp = itemref.equipped[i];
                 item = itemref.images[(int)tmp.itemtype];
                 imagelayer.GetComponent<Image>().sprite = item;
+                switch (tmp.itemtype)
+                {
+                    case Items.AllItems.NONE:
+                        {
+                            imagelayer.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = "no item";
+                            break;
+                        }
+                    case Items.AllItems.BAD5HP:
+                        {
+                            imagelayer.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = "Debug Duck";
+                            break;
+                        }
+                    case Items.AllItems.GOOD5HP:
+                        {
+                            imagelayer.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = "Green Tea Can";
+                            break;
+                        }
+                    case Items.AllItems.GOOD10HP:
+                        {
+                            imagelayer.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = "Green Tea Bottle";
+                            break;
+                        }
+                    case Items.AllItems.DOUBLEDAMAGE:
+                        {
+                            imagelayer.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = "Protein Shake";
+                            break;
+                        }
+                    case Items.AllItems.DOUBLESTAMINAREGEN:
+                        {
+                            imagelayer.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = "Energy Drink";
+                            break;
+                        }
+                    case Items.AllItems.MOVESPEED1POINT5:
+                        {
+                            imagelayer.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = "Coffee";
+                            break;
+                        }
+                    case Items.AllItems.MOVESPEED0POINT75:
+                        {
+                            imagelayer.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = "Sake";
+                            break;
+                        }
+                    default:
+                        {
+                            Debug.Log("how");
+                            break;
+                        }
+                }
+
             }
             else
             {
                 imagelayer.GetComponent<Image>().sprite = null;
+                imagelayer.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = "";
+
             }
 
         }
