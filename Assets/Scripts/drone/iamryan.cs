@@ -4,8 +4,6 @@ using UnityEngine;
 using pathfind;
 using UnityEditor;
 
-[RequireComponent(typeof(saveFile))]
-
 public class iamryan : MonoBehaviour
 {
     //variables 
@@ -32,8 +30,6 @@ public class iamryan : MonoBehaviour
 
     public GameObject source;
     public GameObject destination;
-
-    public saveFile save;
 
 #if UNITY_EDITOR
 

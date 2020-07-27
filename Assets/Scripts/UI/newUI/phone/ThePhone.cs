@@ -14,7 +14,6 @@ using System.Data.SqlTypes;
 public class ThePhone : MonoBehaviour
 {
     //refrances
-    public saveFile save;
     private plugindemo drone;
     public GameObject ThePhoneUI;
     public GameObject rei;
@@ -75,7 +74,6 @@ public class ThePhone : MonoBehaviour
         canvas = this.gameObject;
         maincam = GameObject.Find("Main Camera");
         myths = GameObject.FindGameObjectWithTag("GameManager").GetComponent<MythWorkerUnion>();
-        save = GameObject.Find("Save&Dronemanage").GetComponent<saveFile>();
         drone = GameObject.Find("Save&Dronemanage").GetComponent<plugindemo>();
 
         //StartCoroutine(testmove());
