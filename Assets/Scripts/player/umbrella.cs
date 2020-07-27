@@ -6,8 +6,6 @@ using UnityEngine.VFX;
 
 public class umbrella : MonoBehaviour
 {
-    public saveFile save;
-
     public bool canfire = false;
     public float blockingStamina;
     public bool cooldown = false;
@@ -57,7 +55,6 @@ public class umbrella : MonoBehaviour
         umbrellaHitBox.enabled = false;
 
         movcont = GetComponent<movementController>();
-        save = GameObject.Find("Save&Dronemanage").GetComponent<saveFile>();
 
     }
 

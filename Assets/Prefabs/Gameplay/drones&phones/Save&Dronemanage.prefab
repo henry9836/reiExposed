@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8712637155122240279}
-  - component: {fileID: 8712637155122240278}
   - component: {fileID: 8712637155122240273}
   - component: {fileID: 8712637155122240272}
   m_Layer: 0
@@ -33,18 +32,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8712637155122240278
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8712637155122240275}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: beba4b6ba5096d7408e1a4da38c08809, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &8712637155122240273
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61,10 +48,10 @@ MonoBehaviour:
   movfinished: 0
   movfin1call: 0
   editwindow: {fileID: 0}
-  saveWindow: 1
+  saveWindow: 0
   source: {fileID: 0}
   destination: {fileID: 0}
-  save: {fileID: 8712637155122240278}
+  save: {fileID: 8712637155122240278, guid: 497d3223915dc474ca1f8f3164493332, type: 3}
 --- !u!114 &8712637155122240272
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81,5 +68,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 8712637155122240275}
   currdestination: 0
+  drone: {fileID: 0}
   candeliver: 0
+  holdRei: 0
   todrop: 0
