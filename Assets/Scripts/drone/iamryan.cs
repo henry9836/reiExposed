@@ -4,8 +4,6 @@ using UnityEngine;
 using pathfind;
 using UnityEditor;
 
-[RequireComponent(typeof(saveFile))]
-
 public class iamryan : MonoBehaviour
 {
     //variables 
@@ -32,8 +30,6 @@ public class iamryan : MonoBehaviour
 
     public GameObject source;
     public GameObject destination;
-
-    public saveFile save;
 
 #if UNITY_EDITOR
 
@@ -66,7 +62,8 @@ public class iamryan : MonoBehaviour
 
         //savedll();
 #endif
-        Path.themask = save.safeItem("themask", saveFile.types.INT).toint;
+        //Path.themask = save.safeItem("themask", saveFile.types.INT).toint;
+        Path.themask = SaveSystemController.getIntValue("themask");
 
     }
 
@@ -143,9 +140,13 @@ public class iamryan : MonoBehaviour
         {
             if ((source != null) && (destination != null))
             {
-                Path.smoothDisable = !System.Convert.ToBoolean(save.safeItem("groupEnabled", saveFile.types.STRING).tostring);
-                Path.directionmovespeed = save.safeItem("rateofAnglechange", saveFile.types.FLOAT).tofloat;
-                Path.movespeed = save.safeItem("movespeed", saveFile.types.FLOAT).tofloat;
+                //Path.smoothDisable = !System.Convert.ToBoolean(save.safeItem("groupEnabled", saveFile.types.STRING).tostring);
+                Path.smoothDisable = SaveSystemController.getBoolValue("groupEnabled");
+                //Path.directionmovespeed = save.safeItem("rateofAnglechange", saveFile.types.FLOAT).tofloat;
+                Path.directionmovespeed = SaveSystemController.getFloatValue("rateofAnglechange");
+                //Path.movespeed = save.safeItem("movespeed", saveFile.types.FLOAT).tofloat;
+                Path.movespeed = SaveSystemController.getFloatValue("movespeed");
+
                 Path.movement();
             }
             else
@@ -158,14 +159,18 @@ public class iamryan : MonoBehaviour
     //initilise all of the things to be used from the window, despite being called recalculate it is also used for the initial calculation aswell
     public void recalculate()
     {
-        Path.recalctimer = save.safeItem("recalcwhenidle", saveFile.types.FLOAT).tofloat;
+        //Path.recalctimer = save.safeItem("recalcwhenidle", saveFile.types.FLOAT).tofloat;
+        Path.recalctimer = SaveSystemController.getFloatValue("recalcwhenidle");
         Path.startphysical = source;
         Path.finishphysical = destination;
 
-        Path.stopnextto = System.Convert.ToBoolean(save.safeItem("stopnextto", saveFile.types.STRING).tostring);
-        Path.recalculateEachStep = System.Convert.ToBoolean(save.safeItem("recalc", saveFile.types.STRING).tostring);
+        //Path.stopnextto = System.Convert.ToBoolean(save.safeItem("stopnextto", saveFile.types.STRING).tostring);
+        Path.stopnextto = SaveSystemController.getBoolValue("stopnextto");
+        //Path.recalculateEachStep = System.Convert.ToBoolean(save.safeItem("recalc", saveFile.types.STRING).tostring);
+        Path.recalculateEachStep = SaveSystemController.getBoolValue("recalc");
 
-        if (System.Convert.ToBoolean(save.safeItem("groupEnabled2", saveFile.types.STRING).tostring) == false) //static bounds
+        //if (System.Convert.ToBoolean(save.safeItem("groupEnabled2", saveFile.types.STRING).tostring) == false) //static bounds
+        if ((SaveSystemController.getBoolValue("groupEnabled2")) == false) //static bounds
         {
             Path.BBbounds = getbounds();
         }
@@ -173,7 +178,8 @@ public class iamryan : MonoBehaviour
         {
             Vector3 middlepos = ((source.transform.position + destination.transform.position) / 2.0f);
             Vector3 extents = (destination.transform.position - source.transform.position);
-            float edgesize = save.safeItem("dynamicedgesize", saveFile.types.FLOAT).tofloat;
+            //float edgesize = save.safeItem("dynamicedgesize", saveFile.types.FLOAT).tofloat;
+            float edgesize = SaveSystemController.getFloatValue("dynamicedgesize");
             extents = new Vector3(Mathf.Abs(extents.x) + edgesize, Mathf.Abs(extents.y) + edgesize, Mathf.Abs(extents.z) + edgesize);
             Path.BBbounds = new Bounds(middlepos, extents);
 
@@ -185,7 +191,8 @@ public class iamryan : MonoBehaviour
 
         }
 
-        Path.detail = save.safeItem("deets", saveFile.types.FLOAT).tofloat;
+        //Path.detail = save.safeItem("deets", saveFile.types.FLOAT).tofloat;
+        Path.detail = SaveSystemController.getFloatValue("deets");
 
         Path.CalculatePath();
     }
@@ -195,79 +202,87 @@ public class iamryan : MonoBehaviour
 #if UNITY_EDITOR
 
     //draws gizmoes when in editor mode
-    //void OnDrawGizmos()
-    //{
-    //    //bounds
-    //    if (editwindow == null)
-    //    {
-    //        editwindow = (window)EditorWindow.GetWindow(typeof(window));
+    void OnDrawGizmos()
+    {
+        //    //bounds
+        //    if (editwindow == null)
+        //    {
+        //        editwindow = (window)EditorWindow.GetWindow(typeof(window));
 
-    //        editwindow.stign = save.safeItem("stign", saveFile.types.STRING).tostring;
-    //        editwindow.groupEnabled = System.Convert.ToBoolean(save.safeItem("groupEnabled", saveFile.types.STRING).tostring);
-    //        editwindow.groupEnabled2 = System.Convert.ToBoolean(save.safeItem("groupEnabled2", saveFile.types.STRING).tostring);
-    //        editwindow.movespeed = save.safeItem("movespeed", saveFile.types.FLOAT).tofloat;
-    //        editwindow.testbounds = getbounds();
-    //        editwindow.stopnextto = System.Convert.ToBoolean(save.safeItem("stopnextto", saveFile.types.STRING).tostring);
-    //        editwindow.recalc = System.Convert.ToBoolean(save.safeItem("recalc", saveFile.types.STRING).tostring);
-    //        editwindow.recalcwhenidle = save.safeItem("recalcwhenidle", saveFile.types.FLOAT).tofloat;
-    //        editwindow.deets = save.safeItem("deets", saveFile.types.FLOAT).tofloat;
-    //        editwindow.rateofAnglechange = save.safeItem("rateofAnglechange", saveFile.types.FLOAT).tofloat;
-    //        editwindow.dynamicedgesize = save.safeItem("dynamicedgesize", saveFile.types.FLOAT).tofloat;
-    //        editwindow.theMask.value = save.safeItem("themask", saveFile.types.INT).toint;
-    //    }
+        //        editwindow.stign = save.safeItem("stign", saveFile.types.STRING).tostring;
+        //        editwindow.groupEnabled = System.Convert.ToBoolean(save.safeItem("groupEnabled", saveFile.types.STRING).tostring);
+        //        editwindow.groupEnabled2 = System.Convert.ToBoolean(save.safeItem("groupEnabled2", saveFile.types.STRING).tostring);
+        //        editwindow.movespeed = save.safeItem("movespeed", saveFile.types.FLOAT).tofloat;
+        //        editwindow.testbounds = getbounds();
+        //        editwindow.stopnextto = System.Convert.ToBoolean(save.safeItem("stopnextto", saveFile.types.STRING).tostring);
+        //        editwindow.recalc = System.Convert.ToBoolean(save.safeItem("recalc", saveFile.types.STRING).tostring);
+        //        editwindow.recalcwhenidle = save.safeItem("recalcwhenidle", saveFile.types.FLOAT).tofloat;
+        //        editwindow.deets = save.safeItem("deets", saveFile.types.FLOAT).tofloat;
+        //        editwindow.rateofAnglechange = save.safeItem("rateofAnglechange", saveFile.types.FLOAT).tofloat;
+        //        editwindow.dynamicedgesize = save.safeItem("dynamicedgesize", saveFile.types.FLOAT).tofloat;
+        //        editwindow.theMask.value = save.safeItem("themask", saveFile.types.INT).toint;
+        //    }
 
-    //    Gizmos.DrawWireCube(editwindow.testbounds.center, editwindow.testbounds.extents);
+        //    Gizmos.DrawWireCube(editwindow.testbounds.center, editwindow.testbounds.extents);
 
-    //    //walkable nodes
-    //    for (int i = 0; i < Path.nodes.Count; i++)
-    //    {
-    //        if (Path.nodes[i].getwalkable())
-    //        {
-    //            Gizmos.color = Color.red;
-    //            Gizmos.DrawCube(Path.nodes[i].returnpos(), new Vector3((Path.detail / 8.0f), (Path.detail / 8.0f), (Path.detail / 8.0f)));
-    //        }
-    //    }
+        //    //walkable nodes
+        for (int i = 0; i < Path.nodes.Count; i++)
+        {
+            if (Path.nodes[i].getwalkable())
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawCube(Path.nodes[i].returnpos(), new Vector3((Path.detail / 8.0f), (Path.detail / 8.0f), (Path.detail / 8.0f)));
+            }
+        }
 
-    //    //path source is taking
-    //    for (int i = 0; i < Path.pathlist.Count; i++)
-    //    {
-    //        Gizmos.color = Color.blue;
-    //        Gizmos.DrawCube(Path.pathlist[i].returnpos(), new Vector3((Path.detail / 4.0f), (Path.detail / 4.0f), (Path.detail / 4.0f)));
-    //    }
-    //}
+        //    //path source is taking
+        for (int i = 0; i < Path.pathlist.Count; i++)
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawCube(Path.pathlist[i].returnpos(), new Vector3((Path.detail / 4.0f), (Path.detail / 4.0f), (Path.detail / 4.0f)));
+        }
+        //}
 
 
-    //public void savedll()
-    //{
-    //    save.saveitem("stign", editwindow.stign);
-    //    save.saveitem("groupEnabled", editwindow.groupEnabled.ToString());
-    //    save.saveitem("groupEnabled2", editwindow.groupEnabled2.ToString());
-    //    save.saveitem("movespeed", editwindow.movespeed);
-    //    save.saveitem("testbounds.center.x", editwindow.testbounds.center.x);
-    //    save.saveitem("testbounds.center.y", editwindow.testbounds.center.y);
-    //    save.saveitem("testbounds.center.z", editwindow.testbounds.center.z);
-    //    save.saveitem("testbounds.size.x", editwindow.testbounds.size.x);
-    //    save.saveitem("testbounds.size.y", editwindow.testbounds.size.y);
-    //    save.saveitem("testbounds.size.z", editwindow.testbounds.size.z);
-    //    save.saveitem("stopnextto", editwindow.stopnextto.ToString());
-    //    save.saveitem("recalc", editwindow.recalc.ToString());
-    //    save.saveitem("recalcwhenidle", editwindow.recalcwhenidle);
-    //    save.saveitem("deets", editwindow.deets);
-    //    save.saveitem("rateofAnglechange", editwindow.rateofAnglechange);
-    //    save.saveitem("dynamicedgesize", editwindow.dynamicedgesize);
-    //    save.saveitem("themask", editwindow.theMask.value);
-    //}
+        //public void savedll()
+        //{
+        //    save.saveitem("stign", editwindow.stign);
+        //    save.saveitem("groupEnabled", editwindow.groupEnabled.ToString());
+        //    save.saveitem("groupEnabled2", editwindow.groupEnabled2.ToString());
+        //    save.saveitem("movespeed", editwindow.movespeed);
+        //    save.saveitem("testbounds.center.x", editwindow.testbounds.center.x);
+        //    save.saveitem("testbounds.center.y", editwindow.testbounds.center.y);
+        //    save.saveitem("testbounds.center.z", editwindow.testbounds.center.z);
+        //    save.saveitem("testbounds.size.x", editwindow.testbounds.size.x);
+        //    save.saveitem("testbounds.size.y", editwindow.testbounds.size.y);
+        //    save.saveitem("testbounds.size.z", editwindow.testbounds.size.z);
+        //    save.saveitem("stopnextto", editwindow.stopnextto.ToString());
+        //    save.saveitem("recalc", editwindow.recalc.ToString());
+        //    save.saveitem("recalcwhenidle", editwindow.recalcwhenidle);
+        //    save.saveitem("deets", editwindow.deets);
+        //    save.saveitem("rateofAnglechange", editwindow.rateofAnglechange);
+        //    save.saveitem("dynamicedgesize", editwindow.dynamicedgesize);
+        //    save.saveitem("themask", editwindow.theMask.value);
+    }
 
 #endif
 
     public Bounds getbounds()
     {
-        float cx = save.safeItem("testbounds.center.x", saveFile.types.FLOAT).tofloat;
-        float cy = save.safeItem("testbounds.center.y", saveFile.types.FLOAT).tofloat;
-        float cz = save.safeItem("testbounds.center.z", saveFile.types.FLOAT).tofloat;
-        float sx = save.safeItem("testbounds.size.x", saveFile.types.FLOAT).tofloat / 2.0f;
-        float sy = save.safeItem("testbounds.size.y", saveFile.types.FLOAT).tofloat / 2.0f;
-        float sz = save.safeItem("testbounds.size.z", saveFile.types.FLOAT).tofloat / 2.0f;
+        //float cx = save.safeItem("testbounds.center.x", saveFile.types.FLOAT).tofloat;
+        //float cy = save.safeItem("testbounds.center.y", saveFile.types.FLOAT).tofloat;
+        //float cz = save.safeItem("testbounds.center.z", saveFile.types.FLOAT).tofloat;
+        //float sx = save.safeItem("testbounds.size.x", saveFile.types.FLOAT).tofloat / 2.0f;
+        //float sy = save.safeItem("testbounds.size.y", saveFile.types.FLOAT).tofloat / 2.0f;
+        //float sz = save.safeItem("testbounds.size.z", saveFile.types.FLOAT).tofloat / 2.0f;
+
+        float cx = SaveSystemController.getFloatValue("testbounds.center.x");
+        float cy = SaveSystemController.getFloatValue("testbounds.center.y");
+        float cz = SaveSystemController.getFloatValue("testbounds.center.z");
+        float sx = SaveSystemController.getFloatValue("testbounds.size.x") * 0.5f;
+        float sy = SaveSystemController.getFloatValue("testbounds.size.y") * 0.5f;
+        float sz = SaveSystemController.getFloatValue("testbounds.size.z") * 0.5f;
+
 
         Bounds thebounds = new Bounds(new Vector3(cx, cy, cz), new Vector3(sx, sy, sz));
 

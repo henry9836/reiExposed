@@ -19,15 +19,26 @@ public class Items : MonoBehaviour
     public slot slotsref;
 
 
-    public enum AllItems
-    { 
-        NONE,
-        PLUSSPEED,
-        MINUSSPEED,
-        PLUSHEALH,
-        MINUSHEALTH,
-    };
+    //public enum AllItems
+    //{ 
+    //    NONE,
+    //    PLUSSPEED,
+    //    MINUSSPEED,
+    //    PLUSHEALH,
+    //    MINUSHEALTH,
+    //};
 
+    public enum AllItems
+    {
+        NONE,
+        BAD5HP,
+        GOOD5HP,
+        GOOD10HP,
+        DOUBLEDAMAGE,
+        DOUBLESTAMINAREGEN,
+        MOVESPEED1POINT5,
+        MOVESPEED0POINT75,
+    };
 
     public List<singleItem> biginvin = new List<singleItem>();
     public List<singleItem> equipped = new List<singleItem>();
@@ -38,7 +49,6 @@ public class Items : MonoBehaviour
 
     void Start()
     {
-
 
         ////////////////////demo/////////////////////
         //for (int i = 0; i < 52; i++)

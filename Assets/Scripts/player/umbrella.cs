@@ -6,8 +6,6 @@ using UnityEngine.VFX;
 
 public class umbrella : MonoBehaviour
 {
-    public saveFile save;
-
     public bool canfire = false;
     public float blockingStamina;
     public bool cooldown = false;
@@ -41,6 +39,8 @@ public class umbrella : MonoBehaviour
     public bool inbossroom = false;
     public GameObject shotUI;
 
+    public bool phoneLock = false;
+
 
 
     void Start()
@@ -55,7 +55,6 @@ public class umbrella : MonoBehaviour
         umbrellaHitBox.enabled = false;
 
         movcont = GetComponent<movementController>();
-        save = GameObject.Find("Save&Dronemanage").GetComponent<saveFile>();
 
     }
 
@@ -63,7 +62,7 @@ public class umbrella : MonoBehaviour
     {
         latetest = false;
 
-        if (Input.GetMouseButtonDown(0) && !animator.GetBool("Blocking"))
+        if (Input.GetMouseButtonDown(0) && !animator.GetBool("Blocking") && !phoneLock)
         {
             if (playercontrol.staminaAmount >= playercontrol.staminaToAttack) 
             {
@@ -75,7 +74,7 @@ public class umbrella : MonoBehaviour
         VFX.GetComponent<VisualEffect>().SetFloat("timer", 0.0f);
 
 
-        if (cooldown == false)
+        if (cooldown == false && !phoneLock)
         {
             if (Input.GetAxis("Fire2") > 0.5f)
             {
@@ -207,7 +206,8 @@ public class umbrella : MonoBehaviour
         for (int i = 0; i < 10; i++)
         {
             string filename = ("state " + (i).ToString() + ".png");
-            string picof = save.safeItem(filename, saveFile.types.STRING).tostring;
+            //string picof = save.safeItem(filename, saveFile.types.STRING).tostring;
+            string picof = SaveSystemController.getValue(filename);
             if (picof != "del")
             {
                 saveddata.Add(picof);
