@@ -719,6 +719,7 @@ public class ThePhone : MonoBehaviour
             {
                 //save.saveitem(cluename + " clue", "yes");
                 SaveSystemController.updateValue(cluename + " clue", "yes");
+                SaveSystemController.saveDataToDisk();
                 //good phot
             }
             else
