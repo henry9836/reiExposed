@@ -41,6 +41,8 @@ public class umbrella : MonoBehaviour
     public bool inbossroom = false;
     public GameObject shotUI;
 
+    public bool phoneLock = false;
+
 
 
     void Start()
@@ -63,7 +65,7 @@ public class umbrella : MonoBehaviour
     {
         latetest = false;
 
-        if (Input.GetMouseButtonDown(0) && !animator.GetBool("Blocking"))
+        if (Input.GetMouseButtonDown(0) && !animator.GetBool("Blocking") && !phoneLock)
         {
             if (playercontrol.staminaAmount >= playercontrol.staminaToAttack) 
             {
@@ -75,7 +77,7 @@ public class umbrella : MonoBehaviour
         VFX.GetComponent<VisualEffect>().SetFloat("timer", 0.0f);
 
 
-        if (cooldown == false)
+        if (cooldown == false && !phoneLock)
         {
             if (Input.GetAxis("Fire2") > 0.5f)
             {

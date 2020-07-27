@@ -53,6 +53,8 @@ public class ThePhone : MonoBehaviour
     public GameObject clueglow;
     public GameObject camflash;
 
+    //public GameObject uitest;
+
 
     public enum phonestates 
     {
@@ -75,6 +77,8 @@ public class ThePhone : MonoBehaviour
         myths = GameObject.FindGameObjectWithTag("GameManager").GetComponent<MythWorkerUnion>();
         save = GameObject.Find("Save&Dronemanage").GetComponent<saveFile>();
         drone = GameObject.Find("Save&Dronemanage").GetComponent<plugindemo>();
+
+        //StartCoroutine(testmove());
     }
 
 
@@ -248,6 +252,7 @@ public class ThePhone : MonoBehaviour
                     {
                         amazonshop(amazonselected);
                     }
+                    
 
                     if (prev != amazonselected)
                     {
@@ -288,7 +293,6 @@ public class ThePhone : MonoBehaviour
                     {
                         itemselected -= 1;
                         ThePhoneUI.transform.GetChild(5).gameObject.GetComponent<eqitems>().itemchange();
-                        Debug.Log(itemselected);
 
 
                     }
@@ -296,7 +300,6 @@ public class ThePhone : MonoBehaviour
                     {
                         itemselected += 1;
                         ThePhoneUI.transform.GetChild(5).gameObject.GetComponent<eqitems>().itemchange();
-                        Debug.Log(itemselected);
 
                     }
                     itemselected = Mathf.Clamp(itemselected, 0, 7);
@@ -345,7 +348,6 @@ public class ThePhone : MonoBehaviour
                 }
             case phonestates.KEY:
                 {
-
                     if (Input.GetKeyDown(KeyCode.Tab))
                     {
                         BackToMenu();
@@ -394,8 +396,12 @@ public class ThePhone : MonoBehaviour
 
             ThePhoneUI.transform.GetChild(0).GetComponent<Image>().sprite = BGnormal;
 
+
+            //rei.wak off
+            rei.GetComponent<umbrella>().phoneLock = true;
+
             screen = phonestates.HOME;
-            //constantUI.SetActive(false);
+            constantUI.SetActive(false);
         }
         else
         {
@@ -406,10 +412,14 @@ public class ThePhone : MonoBehaviour
                 float smol = ThePhoneUI.transform.GetChild(2).GetChild(i).GetComponent<slotno>().smol;
                 ThePhoneUI.transform.GetChild(2).GetChild(i).transform.localScale = new Vector3(smol, smol, smol);
             }
+            //rei.wak on
+            rei.GetComponent<umbrella>().phoneLock = false;
 
-            //constantUI.SetActive(true);
+
+            constantUI.SetActive(true);
             ThePhoneUI.SetActive(false);
             screen = phonestates.NONE;
+
         }
     }
 
@@ -418,6 +428,19 @@ public class ThePhone : MonoBehaviour
     public void thecamera()
     {
         screen = phonestates.CAMERA;
+
+        //phonecam.transform.localRotation = rei.transform.GetChild(0).localRotation * rei.transform.localRotation;
+        //rei.transform.localRotation = rei.transform.GetChild(0).localRotation * rei.transform.localRotation;
+        //rei.transform.localEulerAngles = rei.transform.GetChild(0).localEulerAngles;
+
+        //rei.transform.Rotate(rei.transform.GetChild(0).localEulerAngles);
+
+        //Debug.Log($"ASBFEW {rei.transform.GetChild(0).eulerAngles}");
+        //rei.transform.rotation = rei.transform.GetChild(0).transform.rotation;
+        //Debug.Log($"ASBFEW After: {rei.transform.rotation.eulerAngles}");
+
+        rei.transform.LookAt(transform.position + rei.transform.GetChild(0).transform.forward);
+
 
         rei.transform.GetChild(0).gameObject.SetActive(false);
         phonecam.SetActive(true);
@@ -584,7 +607,6 @@ public class ThePhone : MonoBehaviour
                 Vector3 worldPos = clue[i].transform.TransformPoint(0.5f * (offset + vertexMesh[j])); 
                 sumTotal += worldPos;
                 var viewportPos = phonecam.GetComponent<Camera>().WorldToViewportPoint(worldPos);
-                Debug.DrawLine(worldPos, phonecam.transform.position, Color.yellow, 10.0f);
 
                 if (testvertex(viewportPos, worldPos))
                 {
@@ -599,10 +621,6 @@ public class ThePhone : MonoBehaviour
             {
                 cluepos[i].Add(averageViewportPos);
             }
-
-
-            Debug.DrawLine(averageWorldPos, phonecam.transform.position, Color.yellow, 10.0f);
-
 
 
             if (cluepos[i].Count > 2)
@@ -624,7 +642,6 @@ public class ThePhone : MonoBehaviour
 
                 for (int k = 0; k < cluepos[i].Count; k++)
                 {
-                    Debug.DrawLine(cluepos[i][k], new Vector2(0.5f, 0.5f), Color.black, 5.0f);
                     if (Vector2.Distance(cluepos[i][k], lxly) < lxlydis)
                     {
                         lxlydis = Vector2.Distance(cluepos[i][k], lxly);
@@ -653,21 +670,21 @@ public class ThePhone : MonoBehaviour
                 Vector2 d = cluepos[i][bxlypos];
 
 
-                Debug.DrawLine(a, b, Color.green, 10.0f);
-                Debug.DrawLine(b, c, Color.green, 10.0f);
-                Debug.DrawLine(c, d, Color.green, 10.0f);
-                Debug.DrawLine(d, a, Color.green, 10.0f);
+                //Debug.DrawLine(a, b, Color.green, 10.0f);
+                //Debug.DrawLine(b, c, Color.green, 10.0f);
+                //Debug.DrawLine(c, d, Color.green, 10.0f);
+                //Debug.DrawLine(d, a, Color.green, 10.0f);
 
-                Debug.DrawLine(a, lxly, Color.green, 10.0f);
-                Debug.DrawLine(b, lxby, Color.green, 10.0f);
-                Debug.DrawLine(c, bxby, Color.green, 10.0f);
-                Debug.DrawLine(d, bxly, Color.green, 10.0f);
+                //Debug.DrawLine(a, lxly, Color.green, 10.0f);
+                //Debug.DrawLine(b, lxby, Color.green, 10.0f);
+                //Debug.DrawLine(c, bxby, Color.green, 10.0f);
+                //Debug.DrawLine(d, bxly, Color.green, 10.0f);
                 
                 float objaera = Mathf.Abs((((a.x * b.y) - (a.y * b.x)) + ((b.x * c.y) - (b.y * c.x)) + ((c.x * d.y) - (c.y * d.x)) + ((d.x * a.y) - (d.y * a.x))) / 2.0f);
                 float screenaera = 1.0f;
 
                 float persenttaken = (objaera / screenaera) * 800.0f;
-                Debug.Log(persenttaken + "% taken up");
+                //Debug.Log(persenttaken + "% taken up");
 
                 if (persenttaken > 2.0f)
                 {
@@ -777,15 +794,61 @@ public class ThePhone : MonoBehaviour
             string tmp = SaveSystemController.getValue(clue[i].name + " clue");
             if (tmp == "yes")
             {
+                //Debug.Log(clue[i].name + " clue" + "    yesy");
+
                 clueStates.Add(true);
             }
             else
             {
+                //Debug.Log(clue[i].name + " clue" + "    noy");
+
                 clueStates.Add(false);
             }
         }
 
 
+        for (int i = 0; i < clueStates.Count; i++)
+        {
+            if (clueStates[i] == true)
+            {
+                ThePhoneUI.transform.GetChild(3).GetChild(3).GetChild(i).GetComponent<Image>().color = new Color(0.0f, 1.0f, 0.0f, 1.0f);
+            }
+            else
+            {
+                ThePhoneUI.transform.GetChild(3).GetChild(3).GetChild(i).GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+
+            }
+        }
+
+        clueStates = new List<bool>() { };
+
+
     }
+
+
+    //public IEnumerator testmove()
+    //{
+    //    Vector3 oldpos = new Vector3(-15.0f, 0.0f, 0.0f);
+    //    Vector3 newpos = new Vector3(0.0f, 0.0f, 0.0f);
+
+    //    float speed = 1.0f;
+
+    //    uitest.SetActive(true);
+    //    for (float i = 0.0f; i < 1.0f; i += Time.deltaTime * speed)
+    //    {
+    //        uitest.transform.position = Vector3.Lerp(oldpos, newpos, i);
+    //    }
+
+    //    yield return new WaitForSeconds(2.0f);
+
+    //    for (float i = 0.0f; i < 1.0f; i += Time.deltaTime * speed)
+    //    {
+    //        uitest.transform.position = Vector3.Lerp(newpos, oldpos, i);
+    //    }
+
+    //    uitest.SetActive(false);
+
+    //    yield return null;
+    //}
 
 }
