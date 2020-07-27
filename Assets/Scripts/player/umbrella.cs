@@ -209,7 +209,8 @@ public class umbrella : MonoBehaviour
         for (int i = 0; i < 10; i++)
         {
             string filename = ("state " + (i).ToString() + ".png");
-            string picof = save.safeItem(filename, saveFile.types.STRING).tostring;
+            //string picof = save.safeItem(filename, saveFile.types.STRING).tostring;
+            string picof = SaveSystemController.getValue(filename);
             if (picof != "del")
             {
                 saveddata.Add(picof);

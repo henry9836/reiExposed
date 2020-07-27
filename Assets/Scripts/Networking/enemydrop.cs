@@ -70,9 +70,11 @@ public class enemydrop : MonoBehaviour
         UIpop.transform.GetChild(3).gameObject.GetComponent<Text>().text = packagetosend.enemieDrops[0].titem2.ToString();
         UIpop.transform.GetChild(4).gameObject.GetComponent<Text>().text = packagetosend.enemieDrops[0].titem3.ToString();
 
-        currency.Yen = save.safeItem("MythTraces", saveFile.types.INT).toint;
+        //currency.Yen = save.safeItem("MythTraces", saveFile.types.INT).toint;
+        currency.Yen = SaveSystemController.getIntValue("MythTraces");
         currency.Yen += packagetosend.enemieDrops[0].tcurr;
-        save.saveitem("MythTraces", currency.Yen);
+        //save.saveitem("MythTraces", currency.Yen);
+        SaveSystemController.updateValue("MythTraces", currency.Yen);
 
         if (canvas.GetComponent<Items>().gaineditem((Items.AllItems)packagetosend.enemieDrops[0].titem1))
         {
