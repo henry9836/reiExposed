@@ -9,7 +9,6 @@ public class enemydrop : MonoBehaviour
     public float movespeed;
     public bool test = false;
     public GameObject censor;
-    public saveFile save;
     public GameObject canvas;
     public GameObject dropmessage;
 
@@ -24,7 +23,6 @@ public class enemydrop : MonoBehaviour
     private void Start()
     {
         clientCencorship = censor.GetComponent<clientcencorship>();
-        save = GameObject.Find("Save&Dronemanage").GetComponent<saveFile>();
         canvas = GameObject.FindGameObjectWithTag("MainCanvas");
         logger = canvas.transform.Find("MessageLog").GetComponent<Logger>();
     }
