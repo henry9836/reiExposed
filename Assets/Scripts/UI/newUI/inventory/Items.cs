@@ -40,8 +40,8 @@ public class Items : MonoBehaviour
         MOVESPEED0POINT75,
     };
 
-    public List<singleItem> biginvin = new List<singleItem>(50);
-    public List<singleItem> equipped = new List<singleItem>(8);
+    public List<singleItem> biginvin = new List<singleItem>() { null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null };
+    public List<singleItem> equipped = new List<singleItem>() { null, null, null, null, null, null, null, null};
 
     public int biginvinsize = 50;
     public int equpiiedsize = 8;
@@ -49,7 +49,9 @@ public class Items : MonoBehaviour
 
     void Start()
     {
-        loaditems();
+        Debug.Log(SaveSystemController.saveInfomation.Count);
+
+        StartCoroutine(loaditems());
         ////////////////////demo/////////////////////
         //for (int i = 0; i < 52; i++)
         //{
@@ -61,9 +63,14 @@ public class Items : MonoBehaviour
 
     }
 
-    public void loaditems()
-    {
-        for (int i = 0; i < SaveSystemController.saveInfomation.Count - 1; i++)
+    IEnumerator loaditems() {
+
+        while (!SaveSystemController.loadedValues)
+        {
+            yield return null;
+        }
+
+        for (int i = 0; i < SaveSystemController.saveInfomation.Count; i++)
         {
             //If is item
             if (SaveSystemController.saveInfomation[i].id.Contains("[ITEM]"))
@@ -75,14 +82,17 @@ public class Items : MonoBehaviour
 
                 string savid = SaveSystemController.saveInfomation[i].id; //7[ITEM]
                 string savevalue = SaveSystemController.saveInfomation[i].value; //12$0
+                string savevalue2 = savevalue; //12$0
 
                 singleItem tmp = new singleItem();
                 int positionID = savid.IndexOf("[");
-                int positionVAL = savid.IndexOf("$");
+                int positionVAL = savevalue.IndexOf("$");
+
 
                 tmp.itemtype = (AllItems)int.Parse(savid.Substring(0, positionID));
                 tmp.biginvinpos = int.Parse(savevalue.Substring(0, positionVAL));
-                tmp.equippedpos = int.Parse(savevalue.Substring(positionVAL, savevalue.Length - 1));
+
+                tmp.equippedpos = int.Parse(savevalue2.Substring(positionVAL + 1, (savevalue2.Length - positionVAL) - 1));
 
                 if (tmp.equippedpos != -1)
                 {
@@ -93,14 +103,10 @@ public class Items : MonoBehaviour
                 {
                     tmp.equipped = false;
                 }
+                Debug.Log(SaveSystemController.saveInfomation.Count);
 
                 biginvin[tmp.biginvinpos] = tmp;
-
-                //Logic for eqipped
-
             }
-
-
         }
 
         for (int i = 0; i < biginvin.Count - 1; i++)
@@ -119,7 +125,7 @@ public class Items : MonoBehaviour
             }
         }
 
-
+        yield return null;
     }
 
     public bool gaineditem(AllItems toadd)
@@ -132,8 +138,6 @@ public class Items : MonoBehaviour
             //can fit in big invin
             if (biginvin.Count < biginvinsize)
             {
-
-
                 tmp.biginvinpos = biginvin.Count;
                 biginvin.Add(tmp);
 
@@ -151,6 +155,7 @@ public class Items : MonoBehaviour
                 }
 
                 SaveSystemController.updateValue((int)toadd + "[ITEM]" , tmp.biginvinpos + "$" + tmp.equippedpos);
+                SaveSystemController.saveDataToDisk();
                 return true;
             }
         }
