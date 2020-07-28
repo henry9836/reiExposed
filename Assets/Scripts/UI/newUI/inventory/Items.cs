@@ -28,16 +28,33 @@ public class Items : MonoBehaviour
     //    MINUSHEALTH,
     //};
 
+
+    //BAD NAMING...
+    //public enum AllItems
+    //{
+    //    NONE,
+    //    DUCK,
+    //    GOOD5HP,
+    //    GOOD10HP,
+    //    DOUBLEDAMAGE,
+    //    DOUBLESTAMINAREGEN,
+    //    MOVESPEED1POINT5,
+    //    MOVESPEED0POINT75,
+    //    LOSE5HP,
+    //};
+
+
     public enum AllItems
     {
         NONE,
-        BAD5HP,
-        GOOD5HP,
-        GOOD10HP,
-        DOUBLEDAMAGE,
-        DOUBLESTAMINAREGEN,
-        MOVESPEED1POINT5,
-        MOVESPEED0POINT75,
+        HEALTHDEBUFF_SMALL,
+        HEALTHBUFF,
+        HEALTHBUFF_SMALL,
+        DAMAGEBUFF,
+        STAMINABUFF,
+        MOVEBUFF,
+        MOVEDEBUFF,
+        DUCK,
     };
 
     public List<singleItem> biginvin = new List<singleItem>();
