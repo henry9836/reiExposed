@@ -4,33 +4,40 @@ using UnityEngine;
 
 public class pageManager : MonoBehaviour
 {
-    public GameObject upgradespage;
-    public GameObject convertpage;
+    public GameObject shopPage;
+    public GameObject storagePage;
     public GameObject selectedUI;
     public List<Vector2> positions = new List<Vector2>() { };
     private Vector2 canvaspos = new Vector2 (0.0f, 0.0f);
     private GameObject canvas;
-    //private enterToTalk ETT;
+    private enterToTalk ETT;
 
     private void Start()
     {
         canvas = GameObject.Find("Canvas");
-        //ETT = GameObject.FindGameObjectWithTag("Shop").GetComponent<enterToTalk>();
+        ETT = GameObject.FindGameObjectWithTag("Shop").GetComponent<enterToTalk>();
     }
-
-    public void upgradesPage()
+    public void StorgePage()
     {
-        upgradespage.SetActive(true);
-        convertpage.SetActive(false);
+        shopPage.SetActive(false);
+        storagePage.SetActive(true);
         selectedUI.GetComponent<RectTransform>().localPosition = positions[0] + canvaspos;
     }
 
 
-    //public void back()
-    //{
-    //    GameObject.FindGameObjectWithTag("Shop").GetComponent<AddSaves>().saveCurincies();
-    //    ETT.ShopNowOpen(false);
-    //}
+    public void ShopPage()
+    {
+        shopPage.SetActive(true);
+        storagePage.SetActive(false);
+        selectedUI.GetComponent<RectTransform>().localPosition = positions[0] + canvaspos;
+    }
+
+
+    public void back()
+    {
+        //GameObject.FindGameObjectWithTag("Shop").GetComponent<AddSaves>().saveCurincies();
+        ETT.ShopNowOpen(false);
+    }
 
     public IEnumerator move()
     {

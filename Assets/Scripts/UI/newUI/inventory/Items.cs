@@ -69,9 +69,24 @@ public class Items : MonoBehaviour
             if (SaveSystemController.saveInfomation[i].id.Contains("[ITEM]")){
                 //Decode
 
+                singleItem tmp = new singleItem();
+                //tmp.itemtype = SaveSystemController.saveInfomation[i].id. bit before [item];
+                //tmp.biginvinpos = SaveSystemController.saveInfomation[i].value.
+                //tmp.equippedpos = SaveSystemController.saveInfomation[i].value.
+                //if (tmp.equippedpos != -1)
+                //{
+                //    tmp.equipped = true;
+
+                //}
+                //else
+                //{
+                //    tmp.equipped = false;
+
+                //}
+
                 //#{ID}#[ITEM]
                 //#{VAL}#12$0
-                
+
                 //Add to our list of items 0
 
                 //Logic for eqipped
@@ -108,7 +123,7 @@ public class Items : MonoBehaviour
                     tmp.equippedpos = -1;
                 }
 
-                SaveSystemController.updateValue((int)toadd + " [ITEM]", tmp.biginvinpos + "$" + tmp.equippedpos);
+                //SaveSystemController.updateValue((int)toadd + "[ITEM]", tmp.biginvinpos + "$" + tmp.equippedpos);
                 return true;
             }
         }
