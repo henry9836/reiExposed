@@ -189,8 +189,59 @@ public class Items : MonoBehaviour
     private void removeitem(singleItem toremove, bool useitem)
     {
         if (useitem == true)
-        { 
+        {
             //implment useagebehavior
+            switch (toremove.itemtype)
+            {
+                case AllItems.NONE:
+                    break;
+                case AllItems.HEALTHDEBUFF_SMALL:
+                    {
+                        //hurt a bit
+                        break;
+                    }
+                case AllItems.HEALTHBUFF:
+                    {
+                        //heal a lot
+                        break;
+                    }
+                case AllItems.HEALTHBUFF_SMALL:
+                    {
+                        //heal
+                        break;
+                    }
+                case AllItems.DAMAGEBUFF:
+                    {
+                        //Higher damage for time
+                        break;
+                    }
+                case AllItems.STAMINABUFF:
+                    {
+                        //Regen faster stamina for time
+                        break;
+                    }
+                case AllItems.MOVEBUFF:
+                    {
+                        //Faster movement for time
+                        break;
+                    }
+                case AllItems.MOVEDEBUFF:
+                    {
+                        //Slower movement for time
+                        break;
+                    }
+                case AllItems.DUCK:
+                    {
+                        //Random effect
+                        break;
+                    }
+                default:
+                    {
+                        Debug.LogWarning($"No effect behaviour set up for type: {toremove.itemtype.ToString()}");
+                        break;
+                    }
+            }
+
         }
 
         if (toremove.equipped == true)
