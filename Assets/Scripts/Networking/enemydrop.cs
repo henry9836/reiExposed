@@ -24,7 +24,7 @@ public class enemydrop : MonoBehaviour
     {
         clientCencorship = censor.GetComponent<clientcencorship>();
         canvas = GameObject.FindGameObjectWithTag("MainCanvas");
-        logger = canvas.transform.Find("MessageLog").GetComponent<Logger>();
+        logger = canvas.transform.Find("MessageLogContainer").GetChild(0).GetComponent<Logger>();
     }
 
     private void Update()
@@ -58,6 +58,7 @@ public class enemydrop : MonoBehaviour
     {
         messageDisplayFlag = true;
         string msg = clientCencorship.getMessageAndRemove(0);
+
         logger.AddNewMessage(new Logger.LogContainer(msg)); // henry
         UIpop.transform.GetChild(0).gameObject.GetComponent<Text>().text = msg; //cencored
         //cencor3ed
