@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
@@ -31,6 +32,7 @@ public static class SaveSystemController
 
     public static List<entry> saveInfomation = new List<entry>();
     public static bool ioBusy = false; //Used for telling user not to alt-f4
+    public static bool loadedValues = false;
 
     //Loads data from savefile into saveInfomation
     public static void loadDataFromDisk() { loadDataFromDisk(saveFile); } 
@@ -83,6 +85,7 @@ public static class SaveSystemController
 
         //Unset busy bit
         ioBusy = false;
+        loadedValues = true;
     }
 
 
@@ -113,6 +116,7 @@ public static class SaveSystemController
         {
             writer.WriteLine(IDFLAG + saveInfomation[i].id);
             writer.WriteLine(VALFLAG + saveInfomation[i].value);
+            writer.WriteLine("");
         }
 
         //Close writer
@@ -122,6 +126,19 @@ public static class SaveSystemController
         ioBusy = false;
     }
 
+
+    //Removed value from saveInfomation
+    public static void removeValue(string _id)
+    {
+        for (int i = 0; i < saveInfomation.Count; i++)
+        {
+            if (saveInfomation[i].id == _id)
+            {
+                saveInfomation.RemoveAt(i);
+                return;
+            }
+        }
+    }
 
     //Update a value in our saveInfomation
     public static void updateValue(string _id, bool _newValue) { updateValue(_id, _newValue.ToString()); }
@@ -133,6 +150,7 @@ public static class SaveSystemController
     //Update a value in our saveInfomation
     public static void updateValue(string _id, string _newValue)
     {
+        
         //Find value
         for (int i = 0; i < saveInfomation.Count; i++)
         {
@@ -142,6 +160,8 @@ public static class SaveSystemController
                 return;
             }
         }
+
+        //save information is an empty list to start with so eveything will be appended
 
         //Value was not found make a new entry
         saveInfomation.Add(new entry(_id, _newValue));
