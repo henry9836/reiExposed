@@ -40,8 +40,8 @@ public class Items : MonoBehaviour
         MOVESPEED0POINT75,
     };
 
-    public List<singleItem> biginvin = new List<singleItem>();
-    public List<singleItem> equipped = new List<singleItem>();
+    public List<singleItem> biginvin = new List<singleItem>(50);
+    public List<singleItem> equipped = new List<singleItem>(8);
 
     public int biginvinsize = 50;
     public int equpiiedsize = 8;
@@ -66,33 +66,60 @@ public class Items : MonoBehaviour
         for (int i = 0; i < SaveSystemController.saveInfomation.Count - 1; i++)
         {
             //If is item
-            if (SaveSystemController.saveInfomation[i].id.Contains("[ITEM]")){
+            if (SaveSystemController.saveInfomation[i].id.Contains("[ITEM]"))
+            {
+
                 //Decode
-
-                singleItem tmp = new singleItem();
-                //tmp.itemtype = SaveSystemController.saveInfomation[i].id. bit before [item];
-                //tmp.biginvinpos = SaveSystemController.saveInfomation[i].value.
-                //tmp.equippedpos = SaveSystemController.saveInfomation[i].value.
-                //if (tmp.equippedpos != -1)
-                //{
-                //    tmp.equipped = true;
-
-                //}
-                //else
-                //{
-                //    tmp.equipped = false;
-
-                //}
-
-                //#{ID}#[ITEM]
+                //#{ID}#7[ITEM]
                 //#{VAL}#12$0
 
-                //Add to our list of items 0
+                string savid = SaveSystemController.saveInfomation[i].id; //7[ITEM]
+                string savevalue = SaveSystemController.saveInfomation[i].value; //12$0
+
+                singleItem tmp = new singleItem();
+                int positionID = savid.IndexOf("[");
+                int positionVAL = savid.IndexOf("$");
+
+                tmp.itemtype = (AllItems)int.Parse(savid.Substring(0, positionID));
+                tmp.biginvinpos = int.Parse(savevalue.Substring(0, positionVAL));
+                tmp.equippedpos = int.Parse(savevalue.Substring(positionVAL, savevalue.Length - 1));
+
+                if (tmp.equippedpos != -1)
+                {
+                    tmp.equipped = true;
+                    equipped[tmp.equippedpos] = tmp;
+                }
+                else
+                {
+                    tmp.equipped = false;
+                }
+
+                biginvin[tmp.biginvinpos] = tmp;
 
                 //Logic for eqipped
 
             }
+
+
         }
+
+        for (int i = 0; i < biginvin.Count - 1; i++)
+        {
+            if (biginvin[i] == null)
+            {
+                biginvin.RemoveRange(i, (biginvin.Count - i));
+            }
+        }
+
+        for (int i = 0; i < equipped.Count - 1; i++)
+        {
+            if (equipped[i] == null)
+            {
+                equipped.RemoveRange(i, (equipped.Count - i));
+            }
+        }
+
+
     }
 
     public bool gaineditem(AllItems toadd)
@@ -123,7 +150,7 @@ public class Items : MonoBehaviour
                     tmp.equippedpos = -1;
                 }
 
-                //SaveSystemController.updateValue((int)toadd + "[ITEM]", tmp.biginvinpos + "$" + tmp.equippedpos);
+                SaveSystemController.updateValue((int)toadd + "[ITEM]" , tmp.biginvinpos + "$" + tmp.equippedpos);
                 return true;
             }
         }
@@ -172,7 +199,12 @@ public class Items : MonoBehaviour
     private void removeitem(singleItem toremove, bool useitem)
     {
         if (useitem == true)
-        { 
+        {
+            if (toremove.itemtype == AllItems.BAD5HP)
+            { 
+                //rei hp -5
+            }
+
             //implment useagebehavior
         }
 
