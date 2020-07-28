@@ -1,6 +1,7 @@
 ﻿using Steamworks.Ugc;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -40,7 +41,7 @@ public class Items : MonoBehaviour
         MOVESPEED0POINT75,
     };
 
-    public List<singleItem> biginvin = new List<singleItem>() { null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null };
+    public List<singleItem> biginvin = new List<singleItem>(50);
     public List<singleItem> equipped = new List<singleItem>() { null, null, null, null, null, null, null, null};
 
     public int biginvinsize = 50;
@@ -49,6 +50,11 @@ public class Items : MonoBehaviour
 
     void Start()
     {
+        for (int i = 0; i < 50; ++i)
+        {
+            biginvin.Add(null);
+        }
+
         Debug.Log(SaveSystemController.saveInfomation.Count);
 
         StartCoroutine(loaditems());
@@ -77,10 +83,10 @@ public class Items : MonoBehaviour
             {
 
                 //Decode
-                //#{ID}#7[ITEM]
+                //#{ID}#7[ITEM]49
                 //#{VAL}#12$0
 
-                string savid = SaveSystemController.saveInfomation[i].id; //7[ITEM]
+                string savid = SaveSystemController.saveInfomation[i].id; //7[ITEM]49
                 string savevalue = SaveSystemController.saveInfomation[i].value; //12$0
                 string savevalue2 = savevalue; //12$0
 
@@ -103,10 +109,16 @@ public class Items : MonoBehaviour
                 {
                     tmp.equipped = false;
                 }
-                Debug.Log(SaveSystemController.saveInfomation.Count);
 
                 biginvin[tmp.biginvinpos] = tmp;
             }
+        }
+
+        Debug.Log("before");
+
+        for (int i = 0; i < biginvin.Count; i++)
+        {
+            Debug.Log("slot " + i + " " + biginvin[i]);
         }
 
         for (int i = 0; i < biginvin.Count - 1; i++)
@@ -116,13 +128,27 @@ public class Items : MonoBehaviour
                 biginvin.RemoveRange(i, (biginvin.Count - i));
             }
         }
+        Debug.Log("after");
+
+        for (int i = 0; i < biginvin.Count; i++)
+        {
+            Debug.Log("slot " + i + " " + biginvin[i]);
+        }
 
         for (int i = 0; i < equipped.Count - 1; i++)
         {
             if (equipped[i] == null)
             {
                 equipped.RemoveRange(i, (equipped.Count - i));
+               
             }
+        }
+
+
+
+        for (int i = 0; i < equipped.Count; i++)
+        {
+            Debug.Log("slot " + i + " "+ equipped[i]);
         }
 
         yield return null;
@@ -154,7 +180,7 @@ public class Items : MonoBehaviour
                     tmp.equippedpos = -1;
                 }
 
-                SaveSystemController.updateValue((int)toadd + "[ITEM]" , tmp.biginvinpos + "$" + tmp.equippedpos);
+                SaveSystemController.updateValue((int)toadd + "[ITEM]" + tmp.biginvinpos, tmp.biginvinpos + "$" + tmp.equippedpos);
                 SaveSystemController.saveDataToDisk();
                 return true;
             }
@@ -230,6 +256,9 @@ public class Items : MonoBehaviour
         }
 
         biginvin.RemoveAt(biginvin.Count - 1);
+
+        SaveSystemController.removeValue((int)toremove.itemtype + "[ITEM]" + toremove.biginvinpos);
+        SaveSystemController.saveDataToDisk();
 
     }
 }

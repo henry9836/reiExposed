@@ -127,6 +127,19 @@ public static class SaveSystemController
     }
 
 
+    //Removed value from saveInfomation
+    public static void removeValue(string _id)
+    {
+        for (int i = 0; i < saveInfomation.Count; i++)
+        {
+            if (saveInfomation[i].id == _id)
+            {
+                saveInfomation.RemoveAt(i);
+                return;
+            }
+        }
+    }
+
     //Update a value in our saveInfomation
     public static void updateValue(string _id, bool _newValue) { updateValue(_id, _newValue.ToString()); }
     //Update a value in our saveInfomation
