@@ -34,6 +34,7 @@ public class Logger : MonoBehaviour
     public LogScrollController logScrollCtrl;
     public float spacing = 200.0f;
     public static int nextID = 1;
+    public GameObject hideUI;
 
     Vector3 initalMsgPos = Vector3.zero;
     Image backdrop;
@@ -46,6 +47,7 @@ public class Logger : MonoBehaviour
             logs[i].ui.GetComponent<MessageInfo>().showUI();
         }
         backdrop.color = new Color(backdrop.color.r, backdrop.color.g, backdrop.color.b, backdropColor.a);
+        hideUI.SetActive(true);
     }
 
     public void hideMsgs()
@@ -55,6 +57,7 @@ public class Logger : MonoBehaviour
             logs[i].ui.GetComponent<MessageInfo>().hideUI();
         }
         backdrop.color = new Color(backdrop.color.r, backdrop.color.g, backdrop.color.b, 0.0f);
+        hideUI.SetActive(false);
     }
 
     public void resetMsgs()
@@ -144,6 +147,9 @@ public class Logger : MonoBehaviour
         }
         //Create a UI Element and parent to logger
         GameObject container = Instantiate(containerPrefab, Vector3.zero, Quaternion.identity, messageAnchor);
+
+        //Resize for UI
+        container.GetComponent<RectTransform>().localScale *= 0.7f;
 
         //Assign ID and setup
         container.GetComponent<MessageInfo>().log = logs[logs.Count - 1];

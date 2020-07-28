@@ -19,15 +19,26 @@ public class Items : MonoBehaviour
     public slot slotsref;
 
 
-    public enum AllItems
-    { 
-        NONE,
-        PLUSSPEED,
-        MINUSSPEED,
-        PLUSHEALH,
-        MINUSHEALTH,
-    };
+    //public enum AllItems
+    //{ 
+    //    NONE,
+    //    PLUSSPEED,
+    //    MINUSSPEED,
+    //    PLUSHEALH,
+    //    MINUSHEALTH,
+    //};
 
+    public enum AllItems
+    {
+        NONE,
+        BAD5HP,
+        GOOD5HP,
+        GOOD10HP,
+        DOUBLEDAMAGE,
+        DOUBLESTAMINAREGEN,
+        MOVESPEED1POINT5,
+        MOVESPEED0POINT75,
+    };
 
     public List<singleItem> biginvin = new List<singleItem>();
     public List<singleItem> equipped = new List<singleItem>();
@@ -38,8 +49,7 @@ public class Items : MonoBehaviour
 
     void Start()
     {
-
-
+        loaditems();
         ////////////////////demo/////////////////////
         //for (int i = 0; i < 52; i++)
         //{
@@ -51,31 +61,71 @@ public class Items : MonoBehaviour
 
     }
 
+    public void loaditems()
+    {
+        for (int i = 0; i < SaveSystemController.saveInfomation.Count - 1; i++)
+        {
+            //If is item
+            if (SaveSystemController.saveInfomation[i].id.Contains("[ITEM]")){
+                //Decode
+
+                singleItem tmp = new singleItem();
+                //tmp.itemtype = SaveSystemController.saveInfomation[i].id. bit before [item];
+                //tmp.biginvinpos = SaveSystemController.saveInfomation[i].value.
+                //tmp.equippedpos = SaveSystemController.saveInfomation[i].value.
+                //if (tmp.equippedpos != -1)
+                //{
+                //    tmp.equipped = true;
+
+                //}
+                //else
+                //{
+                //    tmp.equipped = false;
+
+                //}
+
+                //#{ID}#[ITEM]
+                //#{VAL}#12$0
+
+                //Add to our list of items 0
+
+                //Logic for eqipped
+
+            }
+        }
+    }
+
     public bool gaineditem(AllItems toadd)
     {
         singleItem tmp = new singleItem();
         tmp.itemtype = toadd;
 
-        //can fit in big invin
-        if (biginvin.Count < biginvinsize)
+        if (toadd != AllItems.NONE)
         {
-            tmp.biginvinpos = biginvin.Count;
-            biginvin.Add(tmp);
-
-            //can aslo fit in equipped
-            if (equipped.Count < equpiiedsize)
+            //can fit in big invin
+            if (biginvin.Count < biginvinsize)
             {
-                tmp.equipped = true;
-                tmp.equippedpos = equipped.Count;
-                equipped.Add(tmp);
-            }
-            else
-            {
-                tmp.equipped = false;
-                tmp.equippedpos = -1;
-            }
 
-            return true;
+
+                tmp.biginvinpos = biginvin.Count;
+                biginvin.Add(tmp);
+
+                //can aslo fit in equipped
+                if (equipped.Count < equpiiedsize)
+                {
+                    tmp.equipped = true;
+                    tmp.equippedpos = equipped.Count;
+                    equipped.Add(tmp);
+                }
+                else
+                {
+                    tmp.equipped = false;
+                    tmp.equippedpos = -1;
+                }
+
+                //SaveSystemController.updateValue((int)toadd + "[ITEM]", tmp.biginvinpos + "$" + tmp.equippedpos);
+                return true;
+            }
         }
 
         return false;

@@ -14,7 +14,6 @@ using System.Data.SqlTypes;
 public class ThePhone : MonoBehaviour
 {
     //refrances
-    public saveFile save;
     private plugindemo drone;
     public GameObject ThePhoneUI;
     public GameObject rei;
@@ -53,6 +52,8 @@ public class ThePhone : MonoBehaviour
     public GameObject clueglow;
     public GameObject camflash;
 
+    //public GameObject uitest;
+
 
     public enum phonestates 
     {
@@ -73,8 +74,9 @@ public class ThePhone : MonoBehaviour
         canvas = this.gameObject;
         maincam = GameObject.Find("Main Camera");
         myths = GameObject.FindGameObjectWithTag("GameManager").GetComponent<MythWorkerUnion>();
-        save = GameObject.Find("Save&Dronemanage").GetComponent<saveFile>();
         drone = GameObject.Find("Save&Dronemanage").GetComponent<plugindemo>();
+
+        //StartCoroutine(testmove());
     }
 
 
@@ -248,6 +250,7 @@ public class ThePhone : MonoBehaviour
                     {
                         amazonshop(amazonselected);
                     }
+                    
 
                     if (prev != amazonselected)
                     {
@@ -288,7 +291,6 @@ public class ThePhone : MonoBehaviour
                     {
                         itemselected -= 1;
                         ThePhoneUI.transform.GetChild(5).gameObject.GetComponent<eqitems>().itemchange();
-                        Debug.Log(itemselected);
 
 
                     }
@@ -296,7 +298,6 @@ public class ThePhone : MonoBehaviour
                     {
                         itemselected += 1;
                         ThePhoneUI.transform.GetChild(5).gameObject.GetComponent<eqitems>().itemchange();
-                        Debug.Log(itemselected);
 
                     }
                     itemselected = Mathf.Clamp(itemselected, 0, 7);
@@ -345,7 +346,6 @@ public class ThePhone : MonoBehaviour
                 }
             case phonestates.KEY:
                 {
-
                     if (Input.GetKeyDown(KeyCode.Tab))
                     {
                         BackToMenu();
@@ -394,8 +394,12 @@ public class ThePhone : MonoBehaviour
 
             ThePhoneUI.transform.GetChild(0).GetComponent<Image>().sprite = BGnormal;
 
+
+            //rei.wak off
+            rei.GetComponent<umbrella>().phoneLock = true;
+
             screen = phonestates.HOME;
-            //constantUI.SetActive(false);
+            constantUI.SetActive(false);
         }
         else
         {
@@ -406,10 +410,14 @@ public class ThePhone : MonoBehaviour
                 float smol = ThePhoneUI.transform.GetChild(2).GetChild(i).GetComponent<slotno>().smol;
                 ThePhoneUI.transform.GetChild(2).GetChild(i).transform.localScale = new Vector3(smol, smol, smol);
             }
+            //rei.wak on
+            rei.GetComponent<umbrella>().phoneLock = false;
 
-            //constantUI.SetActive(true);
+
+            constantUI.SetActive(true);
             ThePhoneUI.SetActive(false);
             screen = phonestates.NONE;
+
         }
     }
 
@@ -418,6 +426,19 @@ public class ThePhone : MonoBehaviour
     public void thecamera()
     {
         screen = phonestates.CAMERA;
+
+        //phonecam.transform.localRotation = rei.transform.GetChild(0).localRotation * rei.transform.localRotation;
+        //rei.transform.localRotation = rei.transform.GetChild(0).localRotation * rei.transform.localRotation;
+        //rei.transform.localEulerAngles = rei.transform.GetChild(0).localEulerAngles;
+
+        //rei.transform.Rotate(rei.transform.GetChild(0).localEulerAngles);
+
+        //Debug.Log($"ASBFEW {rei.transform.GetChild(0).eulerAngles}");
+        //rei.transform.rotation = rei.transform.GetChild(0).transform.rotation;
+        //Debug.Log($"ASBFEW After: {rei.transform.rotation.eulerAngles}");
+
+        rei.transform.LookAt(transform.position + rei.transform.GetChild(0).transform.forward);
+
 
         rei.transform.GetChild(0).gameObject.SetActive(false);
         phonecam.SetActive(true);
@@ -439,7 +460,8 @@ public class ThePhone : MonoBehaviour
         screen = phonestates.AMAZON;
         ThePhoneUI.transform.GetChild(2).gameObject.SetActive(false);
         ThePhoneUI.transform.GetChild(4).gameObject.SetActive(true);
-        currency.Yen = save.safeItem("MythTraces", saveFile.types.INT).toint;
+        //currency.Yen = save.safeItem("MythTraces", saveFile.types.INT).toint;
+        currency.Yen = SaveSystemController.getIntValue("MythTraces");
 
         ThePhoneUI.transform.GetChild(4).GetChild(3).GetComponent<Text>().text = currency.Yen + "¥";
         ThePhoneUI.transform.GetChild(0).GetComponent<Image>().sprite = BGamazon;
@@ -479,7 +501,8 @@ public class ThePhone : MonoBehaviour
         rei.transform.GetChild(1).gameObject.SetActive(true);
         rei.GetComponent<Animator>().enabled = true;
 
-        save.saveitem("MythTraces", currency.Yen);
+        //save.saveitem("MythTraces", currency.Yen);
+        SaveSystemController.updateValue("MythTraces", currency.Yen);
 
         ThePhoneUI.transform.GetChild(0).GetComponent<Image>().sprite = BGnormal;
         phonecam.GetComponent<Camera>().fieldOfView = 60.0f;
@@ -493,7 +516,8 @@ public class ThePhone : MonoBehaviour
         if (item == 0)
         {
             currency.Yen -= 100;
-            save.saveitem("MythTraces", currency.Yen);
+            //save.saveitem("MythTraces", currency.Yen);
+            SaveSystemController.updateValue("MythTraces", currency.Yen);
 
             drone.todrop = 0;
             drone.deliver();
@@ -501,7 +525,8 @@ public class ThePhone : MonoBehaviour
         else if (item == 1)
         {
             currency.Yen -= 100;
-            save.saveitem("MythTraces", currency.Yen);
+            //save.saveitem("MythTraces", currency.Yen);
+            SaveSystemController.updateValue("MythTraces", currency.Yen);
 
             drone.todrop = 999;
             drone.deliver();
@@ -537,7 +562,8 @@ public class ThePhone : MonoBehaviour
         for (int i = 0; i < 10; i++)
         {
             string filename = ("state " + (i).ToString() + ".png");
-            string picof = save.safeItem(filename, saveFile.types.STRING).tostring;
+            //string picof = save.safeItem(filename, saveFile.types.STRING).tostring;
+            string picof = SaveSystemController.getValue(filename);
 
             for (int j = 0; j < clues.Length; j++)
             {
@@ -579,7 +605,6 @@ public class ThePhone : MonoBehaviour
                 Vector3 worldPos = clue[i].transform.TransformPoint(0.5f * (offset + vertexMesh[j])); 
                 sumTotal += worldPos;
                 var viewportPos = phonecam.GetComponent<Camera>().WorldToViewportPoint(worldPos);
-                Debug.DrawLine(worldPos, phonecam.transform.position, Color.yellow, 10.0f);
 
                 if (testvertex(viewportPos, worldPos))
                 {
@@ -594,10 +619,6 @@ public class ThePhone : MonoBehaviour
             {
                 cluepos[i].Add(averageViewportPos);
             }
-
-
-            Debug.DrawLine(averageWorldPos, phonecam.transform.position, Color.yellow, 10.0f);
-
 
 
             if (cluepos[i].Count > 2)
@@ -619,7 +640,6 @@ public class ThePhone : MonoBehaviour
 
                 for (int k = 0; k < cluepos[i].Count; k++)
                 {
-                    Debug.DrawLine(cluepos[i][k], new Vector2(0.5f, 0.5f), Color.black, 5.0f);
                     if (Vector2.Distance(cluepos[i][k], lxly) < lxlydis)
                     {
                         lxlydis = Vector2.Distance(cluepos[i][k], lxly);
@@ -648,26 +668,27 @@ public class ThePhone : MonoBehaviour
                 Vector2 d = cluepos[i][bxlypos];
 
 
-                Debug.DrawLine(a, b, Color.green, 10.0f);
-                Debug.DrawLine(b, c, Color.green, 10.0f);
-                Debug.DrawLine(c, d, Color.green, 10.0f);
-                Debug.DrawLine(d, a, Color.green, 10.0f);
+                //Debug.DrawLine(a, b, Color.green, 10.0f);
+                //Debug.DrawLine(b, c, Color.green, 10.0f);
+                //Debug.DrawLine(c, d, Color.green, 10.0f);
+                //Debug.DrawLine(d, a, Color.green, 10.0f);
 
-                Debug.DrawLine(a, lxly, Color.green, 10.0f);
-                Debug.DrawLine(b, lxby, Color.green, 10.0f);
-                Debug.DrawLine(c, bxby, Color.green, 10.0f);
-                Debug.DrawLine(d, bxly, Color.green, 10.0f);
+                //Debug.DrawLine(a, lxly, Color.green, 10.0f);
+                //Debug.DrawLine(b, lxby, Color.green, 10.0f);
+                //Debug.DrawLine(c, bxby, Color.green, 10.0f);
+                //Debug.DrawLine(d, bxly, Color.green, 10.0f);
                 
                 float objaera = Mathf.Abs((((a.x * b.y) - (a.y * b.x)) + ((b.x * c.y) - (b.y * c.x)) + ((c.x * d.y) - (c.y * d.x)) + ((d.x * a.y) - (d.y * a.x))) / 2.0f);
                 float screenaera = 1.0f;
 
                 float persenttaken = (objaera / screenaera) * 800.0f;
-                Debug.Log(persenttaken + "% taken up");
+                //Debug.Log(persenttaken + "% taken up");
 
                 if (persenttaken > 2.0f)
                 {
                     cluename = clue[i].name;
-                    if (save.safeItem(cluename + " clue", saveFile.types.STRING).tostring == "yes")
+                    //if (save.safeItem(cluename + " clue", saveFile.types.STRING).tostring == "yes")
+                    if (SaveSystemController.getValue(cluename + " clue") == "yes")
                     {
                         Debug.Log("already taken");
                         clueglow.GetComponent<flash>().fadeout = true;
@@ -675,8 +696,10 @@ public class ThePhone : MonoBehaviour
                     }
                     else
                     {
+                        Debug.Log("not already teakmn");
                         clueglow.GetComponent<flash>().fadeout = false;
                         clueglow.GetComponent<flash>().fadein = true;
+                        break;
                     }
                 }
                 else
@@ -696,7 +719,9 @@ public class ThePhone : MonoBehaviour
         {
             if (cluename != "bad")
             {
-                save.saveitem(cluename + " clue", "yes");
+                //save.saveitem(cluename + " clue", "yes");
+                SaveSystemController.updateValue(cluename + " clue", "yes");
+                SaveSystemController.saveDataToDisk();
                 //good phot
             }
             else
@@ -766,18 +791,65 @@ public class ThePhone : MonoBehaviour
 
         for (int i = 0; i < clue.Count; i++)
         {
-            string tmp = save.safeItem(clue[i].name + " clue", saveFile.types.STRING).tostring;
+            //string tmp = save.safeItem(clue[i].name + " clue", saveFile.types.STRING).tostring;
+            string tmp = SaveSystemController.getValue(clue[i].name + " clue");
             if (tmp == "yes")
             {
+                //Debug.Log(clue[i].name + " clue" + "    yesy");
+
                 clueStates.Add(true);
             }
             else
             {
+                //Debug.Log(clue[i].name + " clue" + "    noy");
+
                 clueStates.Add(false);
             }
         }
 
 
+        for (int i = 0; i < clueStates.Count; i++)
+        {
+            if (clueStates[i] == true)
+            {
+                ThePhoneUI.transform.GetChild(3).GetChild(3).GetChild(i).GetComponent<Image>().color = new Color(0.0f, 1.0f, 0.0f, 1.0f);
+            }
+            else
+            {
+                ThePhoneUI.transform.GetChild(3).GetChild(3).GetChild(i).GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+
+            }
+        }
+
+        clueStates = new List<bool>() { };
+
+
     }
+
+
+    //public IEnumerator testmove()
+    //{
+    //    Vector3 oldpos = new Vector3(-15.0f, 0.0f, 0.0f);
+    //    Vector3 newpos = new Vector3(0.0f, 0.0f, 0.0f);
+
+    //    float speed = 1.0f;
+
+    //    uitest.SetActive(true);
+    //    for (float i = 0.0f; i < 1.0f; i += Time.deltaTime * speed)
+    //    {
+    //        uitest.transform.position = Vector3.Lerp(oldpos, newpos, i);
+    //    }
+
+    //    yield return new WaitForSeconds(2.0f);
+
+    //    for (float i = 0.0f; i < 1.0f; i += Time.deltaTime * speed)
+    //    {
+    //        uitest.transform.position = Vector3.Lerp(newpos, oldpos, i);
+    //    }
+
+    //    uitest.SetActive(false);
+
+    //    yield return null;
+    //}
 
 }

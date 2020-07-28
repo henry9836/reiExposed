@@ -41,6 +41,8 @@ public class cameraControler : MonoBehaviour
     private float fov;
     private GameObject pausemenu;
 
+    public GameObject rei;
+
 
     private void Awake()
     {
@@ -50,6 +52,7 @@ public class cameraControler : MonoBehaviour
         mainCam = transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Camera>();
         pausemenu = GameObject.Find("pauseMenu");
         crosshair = GameObject.Find("crosshair");
+        rei = this.transform.root.gameObject;
     }
 
     void Update()
@@ -59,7 +62,7 @@ public class cameraControler : MonoBehaviour
         pitchValueAdj = Mathf.DeltaAngle(camPivot.transform.localRotation.eulerAngles.x, 360.0f - maxPitchUp) / -(maxPitchUp + maxPitchDown);
         zOffset = Mathf.Lerp(2.0f, maxDistance, distCurve.Evaluate(pitchValueAdj));
 
-        if ((Input.GetAxis("Fire2") > 0.5f) && (cooldownlock == false))
+        if ((Input.GetAxis("Fire2") > 0.5f) && (cooldownlock == false) && !rei.GetComponent<umbrella>().phoneLock)
         {
             if (FOVonce == true)
             {
