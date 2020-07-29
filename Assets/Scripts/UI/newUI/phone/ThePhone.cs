@@ -696,8 +696,10 @@ public class ThePhone : MonoBehaviour
                     }
                     else
                     {
+                        Debug.Log("not already teakmn");
                         clueglow.GetComponent<flash>().fadeout = false;
                         clueglow.GetComponent<flash>().fadein = true;
+                        break;
                     }
                 }
                 else
