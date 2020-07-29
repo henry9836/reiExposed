@@ -26,9 +26,9 @@ public class SliderTextHybridController : MonoBehaviour
     bool flagSlider;
 
     public cameraControler CC;
-    public float mouseSence;
-
     //read our current vals
+
+
     public void UpdateInfomation()
     {
 
@@ -82,6 +82,8 @@ public class SliderTextHybridController : MonoBehaviour
         {
             case TYPE.MOUSE:{
                 CC.mouseSensitivity = AdjusterInfo.calcSlider(slider.value);
+                SaveSystemController.updateValue("mouseSensitivity", slider.value);
+
                 break;
             }
             case TYPE.AUDIO:
@@ -90,9 +92,14 @@ public class SliderTextHybridController : MonoBehaviour
                 break;
             }
             case TYPE.NONE:
+            {
+                break;    
+            }
             default:
+            {
                 break;
-    }
+            }
+        }
 
         //Reset flags
         flagText = false;
