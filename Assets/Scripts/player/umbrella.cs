@@ -126,7 +126,7 @@ public class umbrella : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, Mathf.Infinity, ball))
         {
-            hit.point = new Vector3(hit.point.x, 0.0f, hit.point.z); // 0.0f should be playerhieght
+            hit.point = new Vector3(hit.point.x, movcont.charcterModel.transform.position.y, hit.point.z); //look forwards
             movcont.charcterModel.transform.LookAt(hit.point);
         }
 
