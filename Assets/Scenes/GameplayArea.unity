@@ -141,6 +141,12 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -3668450627716132438, guid: e682c87a00db4c34f89d8475a665cc93, type: 3}
+--- !u!1 &29584775 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6247396182118617026, guid: ada5bee6243ddf04e96e40a6209bf7fd,
+    type: 3}
+  m_PrefabInstance: {fileID: 7827297848574941723}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &108013187
 GameObject:
   m_ObjectHideFlags: 0
@@ -2183,6 +2189,32 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
+--- !u!1 &726810268 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8490964956396283144, guid: ada5bee6243ddf04e96e40a6209bf7fd,
+    type: 3}
+  m_PrefabInstance: {fileID: 7827297848574941723}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &730619145 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5034596088148230088, guid: ada5bee6243ddf04e96e40a6209bf7fd,
+    type: 3}
+  m_PrefabInstance: {fileID: 7827297848574941723}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &730619147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 730619145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acb5af03f62f87a4eb089546475a3722, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mousesencetext: {fileID: 29584775}
+  mousesenceslider: {fileID: 997028430}
 --- !u!1 &763095901
 GameObject:
   m_ObjectHideFlags: 0
@@ -2725,6 +2757,12 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -3668450627716132438, guid: e682c87a00db4c34f89d8475a665cc93, type: 3}
+--- !u!1 &997028430 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2428326405328774524, guid: ada5bee6243ddf04e96e40a6209bf7fd,
+    type: 3}
+  m_PrefabInstance: {fileID: 7827297848574941723}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1111717422
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4184,6 +4222,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 623cd429cea5ec94e89368d0e369fc9b,
         type: 3}
+    - target: {fileID: 1002104435, guid: ada5bee6243ddf04e96e40a6209bf7fd, type: 3}
+      propertyPath: mouseSence
+      value: 
+      objectReference: {fileID: 726810268}
     - target: {fileID: 1768846193, guid: ada5bee6243ddf04e96e40a6209bf7fd, type: 3}
       propertyPath: rei
       value: 
@@ -4210,6 +4252,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -106
+      objectReference: {fileID: 0}
+    - target: {fileID: 1480841565795851027, guid: ada5bee6243ddf04e96e40a6209bf7fd,
+        type: 3}
+      propertyPath: m_Text
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1651944391565429839, guid: ada5bee6243ddf04e96e40a6209bf7fd,
+        type: 3}
+      propertyPath: m_Value
+      value: 1.41
       objectReference: {fileID: 0}
     - target: {fileID: 5656177306950829377, guid: ada5bee6243ddf04e96e40a6209bf7fd,
         type: 3}
@@ -4327,7 +4379,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 50109332974236458, guid: ada5bee6243ddf04e96e40a6209bf7fd, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: ada5bee6243ddf04e96e40a6209bf7fd, type: 3}
 --- !u!114 &7827297848744755513 stripped
 MonoBehaviour:
