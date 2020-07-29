@@ -28,7 +28,7 @@ public class pauseMenu : MonoBehaviour
 
     private IEnumerator smokeblow;
 
-    public GameObject mouseSence;
+    public Settings sett;
 
 
     void Start()
@@ -42,6 +42,8 @@ public class pauseMenu : MonoBehaviour
         camMove = GameObject.Find("camParent");
 
         GameObject.FindGameObjectWithTag("Player").transform.GetChild(0).GetComponent<cameraControler>().mouseSensitivity = AdjusterInfo.calcSlider(SaveSystemController.getFloatValue("mouseSensitivity"));
+        sett.tocencor = SaveSystemController.getBoolValue("toCensor");
+
     }
 
     void Update()

@@ -12,6 +12,9 @@ public class Settings : MonoBehaviour
     public GameObject audiotext;
     public GameObject audioslider;
 
+    public GameObject cencortoggle;
+
+    public bool tocencor = false;
 
     void Start()
     {
@@ -20,6 +23,15 @@ public class Settings : MonoBehaviour
         mousesenceslider.GetComponent<Slider>().value = sence;
 
         AudioListener.volume = SaveSystemController.getFloatValue("volume");
+
+        Debug.Log(tocencor);
+
+        cencortoggle.GetComponent<Toggle>().isOn = tocencor;
     }
 
+    public void toggleCencorship(Toggle change)
+    {
+        tocencor = change.isOn;
+        SaveSystemController.updateValue("toCensor", tocencor);
+    }
 }
