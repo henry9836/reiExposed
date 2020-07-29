@@ -23,11 +23,10 @@ public class ClueController : MonoBehaviour
     int clueCollectedTwo = 0;
     int clueCollectedThree = 0;
 
-    //Reload clues from the save system
-    public void reloadClues()
-    {
-        //Empty list so that we do not dupe our elements
-        cluesCollected.Clear();
+
+
+    void Start()
+    {        
         for (int i = 0; i < SaveSystemController.saveInfomation.Count; i++)
         {
             //If element is a clue
@@ -41,11 +40,7 @@ public class ClueController : MonoBehaviour
                 }
             }
         }
-    }
 
-    private void Start()
-    {
-        reloadClues();
         StartCoroutine(clueCheckLoop());
     }
 

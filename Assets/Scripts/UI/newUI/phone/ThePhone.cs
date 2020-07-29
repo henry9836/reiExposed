@@ -693,14 +693,12 @@ public class ThePhone : MonoBehaviour
                     if (SaveSystemController.getValue(cluename + "[CLUE]") == "yes")
                     {
                         Debug.Log("already taken");
-                        cluePicTaken = true;
                         clueglow.GetComponent<flash>().fadeout = true;
                         clueglow.GetComponent<flash>().fadein = false;
                     }
                     else
                     {
                         Debug.Log("not already teakmn");
-                        cluePicTaken = true;
                         clueglow.GetComponent<flash>().fadeout = false;
                         clueglow.GetComponent<flash>().fadein = true;
                         break;
@@ -723,25 +721,13 @@ public class ThePhone : MonoBehaviour
         {
             if (cluename != "bad")
             {
-                //save.saveitem(cluename + "[CLUE]", "yes");
+                //good photo 
                 SaveSystemController.updateValue(cluename + "[CLUE]", "yes");
+                clueCtrl.cluesCollected.Add(cluename);
                 SaveSystemController.saveDataToDisk();
             }
-            else
-            {
-                //bad phot
-            }
-
             //any photo
         }
-
-        //If the picture taken was of a clue
-        if (cluePicTaken)
-        {
-            //Reload our clues from save system for our clue controller
-            clueCtrl.reloadClues();
-        }
-
     }
 
     public Vector3 RotatePointAroundPivot(Vector3 point, Vector3 pivot, Vector3 angles)
