@@ -32,7 +32,7 @@ public class AIFlameButtController : MonoBehaviour
         //If the player is in our hitbox hurt time
         if (playerInBox)
         {
-            playerCtrl.DealDamage(damage);
+            playerCtrl.EffectHeatlh(-damage);
         }
     }
     

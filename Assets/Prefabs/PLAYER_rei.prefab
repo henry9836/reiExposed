@@ -1978,9 +1978,9 @@ MonoBehaviour:
   feetCheckDistance: 0.1
   strafemode: 0
   gravity: 19.6131
-  respawnThreshold: -30
-  staminaCostSprint: 15
-  staminaCostRoll: 20
+  respawnThreshold: -150
+  staminaCostSprint: 80
+  staminaCostRoll: 50
   staminaCostJump: 0
   charcterModel: {fileID: 8615603181145196759}
   camParent: {fileID: 3339494445054939102}
@@ -2011,8 +2011,8 @@ MonoBehaviour:
   health: 100
   staminaAmount: 100
   staminaMaxAmount: 100
-  staminaRegenSpeed: 6
-  staminaToAttack: 5
+  staminaRegenSpeed: 30
+  staminaToAttack: 10
   umbreallaDmg: 5
   dead: 0
   maxcolor: {r: 1, g: 1, b: 1, a: 1}
@@ -2178,9 +2178,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f65a5a14f4dba7647a5e01663930a323, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  save: {fileID: 0}
   canfire: 0
-  blockingStamina: 10
+  blockingStamina: 50
   cooldown: 0
   cooldowntime: 2
   cooldowntimer: 0
@@ -2203,6 +2202,7 @@ MonoBehaviour:
   VFX: {fileID: 1093250023}
   inbossroom: 1
   shotUI: {fileID: 0}
+  phoneLock: 0
 --- !u!114 &1325763837
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3263,6 +3263,7 @@ MonoBehaviour:
   aimDistance: 3
   umbrella: {fileID: 4885559644254803688}
   crosshair: {fileID: 0}
+  rei: {fileID: 0}
 --- !u!1 &3339494445147069540
 GameObject:
   m_ObjectHideFlags: 0

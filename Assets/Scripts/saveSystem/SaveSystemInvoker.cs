@@ -4,10 +4,18 @@ using UnityEngine;
 
 public class SaveSystemInvoker : MonoBehaviour
 {
-    private void Start()
+    private void Awake()
     {
         //Load this first for things to work
         SaveSystemController.loadDataFromDisk();
+
+        /*
+         * 
+         * EXAMPLES BELOW ON HOW TO USE
+         * 
+         */
+
+        return;
 
         //Get Values
         float one = SaveSystemController.getFloatValue("hahahahah");
@@ -30,11 +38,13 @@ public class SaveSystemInvoker : MonoBehaviour
         StartCoroutine(delayed());
     }
 
+    //EXAMPLE ON HOW TO SAVE
+
     IEnumerator delayed()
     {
         yield return new WaitForSeconds(1.0f);
-        SaveSystemController.saveDataToDisk();
-        Debug.Log("File written to!");
+        //SaveSystemController.saveDataToDisk();
+        //Debug.Log("File written to!");
     }
 
 }
