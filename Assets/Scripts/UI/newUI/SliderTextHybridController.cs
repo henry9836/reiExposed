@@ -26,8 +26,6 @@ public class SliderTextHybridController : MonoBehaviour
     bool flagSlider;
 
     public cameraControler CC;
-    //read our current vals
-
 
     public void UpdateInfomation()
     {
@@ -55,7 +53,7 @@ public class SliderTextHybridController : MonoBehaviour
             flagSlider = true;
         }
 
-        Debug.Log($"STATES: {flagText}|{flagSlider} ||| {currText}:{previousText} :: {currSlider}:{previousSlider}");
+        //Debug.Log($"STATES: {flagText}|{flagSlider} ||| {currText}:{previousText} :: {currSlider}:{previousSlider}");
 
         previousText = currText;
         previousSlider = currSlider;
@@ -88,6 +86,8 @@ public class SliderTextHybridController : MonoBehaviour
             }
             case TYPE.AUDIO:
             {
+                //AudioListener.volume = SaveSystemController.getFloatValue("volume");
+                //SaveSystemController.updateValue("volume", 0.0f);
                 //Audio code here
                 break;
             }

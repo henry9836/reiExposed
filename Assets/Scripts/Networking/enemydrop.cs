@@ -20,6 +20,8 @@ public class enemydrop : MonoBehaviour
     private clientcencorship clientCencorship;
     private Logger logger;
 
+    public Settings tocencor;
+
     private void Start()
     {
         clientCencorship = censor.GetComponent<clientcencorship>();
@@ -51,7 +53,17 @@ public class enemydrop : MonoBehaviour
 
     public void processMessage()
     {
-        StartCoroutine(clientCencorship.watchYourProfanity(packagetosend.enemieDrops[0].tmessage));
+        if (tocencor.tocencor == true)
+        {
+            Debug.Log("censord");
+            StartCoroutine(clientCencorship.watchYourProfanity(packagetosend.enemieDrops[0].tmessage));
+        }
+        else
+        {
+            Debug.Log("notcensord");
+
+            clientCencorship.dontWatchYourProfanity(packagetosend.enemieDrops[0].tmessage);
+        }
     }
 
     public IEnumerator mess()
