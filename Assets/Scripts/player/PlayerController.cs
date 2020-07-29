@@ -126,6 +126,7 @@ public class PlayerController : MonoBehaviour
                 else if (otherObject.GetComponent<GenericHitboxController>() != null)
                 {
                     health -= otherObject.GetComponent<GenericHitboxController>().Damage();
+                    Debug.Log($"Took Damage {otherObject.GetComponent<GenericHitboxController>().Damage()}");
                 }
                 else
                 {
