@@ -9,7 +9,9 @@ public class Settings : MonoBehaviour
     public GameObject mousesencetext;
     public GameObject mousesenceslider;
 
-    private bool once = false;
+    public GameObject audiotext;
+    public GameObject audioslider;
+
 
     void Start()
     {
@@ -17,7 +19,7 @@ public class Settings : MonoBehaviour
         mousesencetext.GetComponent<InputField>().text = sence.ToString();
         mousesenceslider.GetComponent<Slider>().value = sence;
 
-
+        AudioListener.volume = SaveSystemController.getFloatValue("volume");
     }
 
 }
