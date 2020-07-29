@@ -10,7 +10,7 @@ public class GenericHitboxController : MonoBehaviour
     public float Damage()
     {
         float tmp = damage;
-        damage = 0.0f;
+        //damage = 0.0f;
         GetComponent<Collider>().enabled = false;
         return tmp;
     }
