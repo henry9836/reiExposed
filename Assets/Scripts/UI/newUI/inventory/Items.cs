@@ -56,6 +56,7 @@ public class Items : MonoBehaviour
         MOVEBUFF,
         MOVEDEBUFF,
         DUCK,
+        MOVEBUFF_SMALL,
     };
 
     public List<singleItem> biginvin = new List<singleItem>(50);
@@ -394,6 +395,12 @@ public class Items : MonoBehaviour
                     {
                         //Faster movement for time
                         StartCoroutine(ApplyTimedEffect(AllItems.MOVEBUFF, 0.15f, 15.0f));
+                        break;
+                    }
+                case AllItems.MOVEBUFF_SMALL:
+                    {
+                        //Faster movement for time
+                        StartCoroutine(ApplyTimedEffect(AllItems.MOVEBUFF, 0.15f, 7.0f));
                         break;
                     }
                 case AllItems.MOVEDEBUFF:
