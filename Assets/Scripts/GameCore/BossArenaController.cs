@@ -17,6 +17,15 @@ public class BossArenaController : MonoBehaviour
         {
             Debug.LogWarning("No boss set");
         }
+
+        for (int i = 0; i < room.Count; i++)
+        {
+            room[i].GetComponent<MeshRenderer>().enabled = false;
+            room[i].GetComponent<Collider>().enabled = false;
+            roomLvl2[i].GetComponent<MeshRenderer>().enabled = false;
+            roomLvl2[i].GetComponent<Collider>().enabled = false;
+        }
+
     }
 
     public void updateState(int cluesFound)
