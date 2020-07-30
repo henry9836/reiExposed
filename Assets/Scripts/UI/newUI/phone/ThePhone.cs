@@ -51,8 +51,10 @@ public class ThePhone : MonoBehaviour
     public float sec1timer = 0.0f;
     public GameObject clueglow;
     public GameObject camflash;
+    public bool camMode = false;
 
     //public GameObject uitest;
+    ClueController clueCtrl;
 
 
     public enum phonestates 
@@ -75,7 +77,7 @@ public class ThePhone : MonoBehaviour
         maincam = GameObject.Find("Main Camera");
         myths = GameObject.FindGameObjectWithTag("GameManager").GetComponent<MythWorkerUnion>();
         drone = GameObject.Find("Save&Dronemanage").GetComponent<plugindemo>();
-
+        clueCtrl = GameObject.FindGameObjectWithTag("GameManager").GetComponent<ClueController>();
         //StartCoroutine(testmove());
     }
 
@@ -190,6 +192,7 @@ public class ThePhone : MonoBehaviour
                 }
             case phonestates.CAMERA:
                 {
+                    camMode = true;
                     float scroll = Input.GetAxis("Mouse ScrollWheel");
                     float fov = phonecam.GetComponent<Camera>().fieldOfView;
                     if (scroll > 0.0f)
@@ -218,11 +221,13 @@ public class ThePhone : MonoBehaviour
                     }
                     else if (Input.GetKeyDown(KeyCode.Tab))
                     {
+                        camMode = false;
                         BackToMenu();
                         openingephone(false);
                     }
                     else if (Input.GetMouseButtonDown(1))
                     {
+                        camMode = false;
                         BackToMenu();
                     }
 
@@ -580,6 +585,7 @@ public class ThePhone : MonoBehaviour
     public void checkPhotoValid(bool takingphoto)
     {
         string cluename = "bad";
+        bool cluePicTaken = false;
 
         GameObject[] clues = GameObject.FindGameObjectsWithTag("Clue");
         List<GameObject> clue = new List<GameObject>() { };
@@ -687,8 +693,8 @@ public class ThePhone : MonoBehaviour
                 if (persenttaken > 2.0f)
                 {
                     cluename = clue[i].name;
-                    //if (save.safeItem(cluename + " clue", saveFile.types.STRING).tostring == "yes")
-                    if (SaveSystemController.getValue(cluename + " clue") == "yes")
+                    //if (save.safeItem(cluename + "[CLUE]", saveFile.types.STRING).tostring == "yes")
+                    if (SaveSystemController.getValue(cluename + "[CLUE]") == "yes")
                     {
                         Debug.Log("already taken");
                         clueglow.GetComponent<flash>().fadeout = true;
@@ -717,22 +723,17 @@ public class ThePhone : MonoBehaviour
 
         if (takingphoto == true)
         {
+
+
             if (cluename != "bad")
             {
-                //save.saveitem(cluename + " clue", "yes");
-                SaveSystemController.updateValue(cluename + " clue", "yes");
+                //good photo 
+                SaveSystemController.updateValue(cluename + "[CLUE]", "yes");
+                clueCtrl.cluesCollected.Add(cluename);
                 SaveSystemController.saveDataToDisk();
-                //good phot
             }
-            else
-            {
-                //bad phot
-            }
-
             //any photo
         }
-
-
     }
 
     public Vector3 RotatePointAroundPivot(Vector3 point, Vector3 pivot, Vector3 angles)
@@ -791,17 +792,17 @@ public class ThePhone : MonoBehaviour
 
         for (int i = 0; i < clue.Count; i++)
         {
-            //string tmp = save.safeItem(clue[i].name + " clue", saveFile.types.STRING).tostring;
-            string tmp = SaveSystemController.getValue(clue[i].name + " clue");
+            //string tmp = save.safeItem(clue[i].name + "[CLUE]", saveFile.types.STRING).tostring;
+            string tmp = SaveSystemController.getValue(clue[i].name + "[CLUE]");
             if (tmp == "yes")
             {
-                //Debug.Log(clue[i].name + " clue" + "    yesy");
+                //Debug.Log(clue[i].name + "[CLUE]" + "    yesy");
 
                 clueStates.Add(true);
             }
             else
             {
-                //Debug.Log(clue[i].name + " clue" + "    noy");
+                //Debug.Log(clue[i].name + "[CLUE]" + "    noy");
 
                 clueStates.Add(false);
             }
