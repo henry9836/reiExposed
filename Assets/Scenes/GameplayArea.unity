@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 32.73761, g: 40.556973, b: 53.679367, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -574,10 +574,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1601101144, guid: 5a30a0d94645c0641a73fd58224f0fcc, type: 3}
-      propertyPath: BossArenaControllerOne
+    - target: {fileID: 1601101145, guid: 5a30a0d94645c0641a73fd58224f0fcc, type: 3}
+      propertyPath: room.Array.data[0]
       value: 
-      objectReference: {fileID: 1601101145}
+      objectReference: {fileID: 1536479258}
+    - target: {fileID: 1601101145, guid: 5a30a0d94645c0641a73fd58224f0fcc, type: 3}
+      propertyPath: roomLvl2.Array.data[0]
+      value: 
+      objectReference: {fileID: 1933615901}
+    - target: {fileID: 1601101145, guid: 5a30a0d94645c0641a73fd58224f0fcc, type: 3}
+      propertyPath: boss
+      value: 
+      objectReference: {fileID: 1847212829}
     - target: {fileID: 773883908966235305, guid: 5a30a0d94645c0641a73fd58224f0fcc,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -632,11 +640,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 773883908966235305, guid: 5a30a0d94645c0641a73fd58224f0fcc,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6758719851260491791, guid: 5a30a0d94645c0641a73fd58224f0fcc,
         type: 3}
@@ -2503,7 +2506,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 225011280}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1601101139}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cda9afa643fefe34eaa1f8b61f9e32ce, type: 3}
@@ -3048,29 +3051,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!1 &1601101139 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6758719851260491791, guid: 5a30a0d94645c0641a73fd58224f0fcc,
+--- !u!114 &1601101141 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1601101144, guid: 5a30a0d94645c0641a73fd58224f0fcc,
     type: 3}
   m_PrefabInstance: {fileID: 225011280}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1601101145
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1601101139}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2dd64d2b4715b947b2276d4ed5fb8db, type: 3}
+  m_Script: {fileID: 11500000, guid: 1faf7a887564159478305cbce81d08a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  room:
-  - {fileID: 1536479258}
-  roomLvl2:
-  - {fileID: 1933615901}
-  boss: {fileID: 1847212829}
 --- !u!1 &1699116678 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 65834991244635034, guid: dd5f35268ad12c74b99a593587e1ee04,
@@ -3090,6 +3082,7 @@ GameObject:
   - component: {fileID: 1721624040}
   - component: {fileID: 1721624039}
   - component: {fileID: 1721624043}
+  - component: {fileID: 1721624044}
   m_Layer: 5
   m_Name: HintHint
   m_TagString: Untagged
@@ -3189,6 +3182,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2239380e5c167e44fad1a13a4fc638e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1721624044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1721624038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32cd4ebbc4a68924fabb13a139ddab82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clueCtrl: {fileID: 1601101141}
 --- !u!1001 &1808168114
 PrefabInstance:
   m_ObjectHideFlags: 0
