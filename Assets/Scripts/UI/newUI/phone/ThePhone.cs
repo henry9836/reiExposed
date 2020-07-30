@@ -51,6 +51,7 @@ public class ThePhone : MonoBehaviour
     public float sec1timer = 0.0f;
     public GameObject clueglow;
     public GameObject camflash;
+    public bool camMode = false;
 
     //public GameObject uitest;
     ClueController clueCtrl;
@@ -191,6 +192,7 @@ public class ThePhone : MonoBehaviour
                 }
             case phonestates.CAMERA:
                 {
+                    camMode = true;
                     float scroll = Input.GetAxis("Mouse ScrollWheel");
                     float fov = phonecam.GetComponent<Camera>().fieldOfView;
                     if (scroll > 0.0f)
@@ -219,11 +221,13 @@ public class ThePhone : MonoBehaviour
                     }
                     else if (Input.GetKeyDown(KeyCode.Tab))
                     {
+                        camMode = false;
                         BackToMenu();
                         openingephone(false);
                     }
                     else if (Input.GetMouseButtonDown(1))
                     {
+                        camMode = false;
                         BackToMenu();
                     }
 
@@ -719,6 +723,8 @@ public class ThePhone : MonoBehaviour
 
         if (takingphoto == true)
         {
+
+
             if (cluename != "bad")
             {
                 //good photo 

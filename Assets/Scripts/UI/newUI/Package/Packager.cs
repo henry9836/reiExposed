@@ -89,7 +89,7 @@ public class Packager : MonoBehaviour
             message.color = originalMessageColor;
         }
 
-        if (int.Parse(currency.text) < 10 && (int.Parse(currency.text) > SaveSystemController.getIntValue("MythTraces")))
+        if (int.Parse(currency.text) < 10 || (int.Parse(currency.text) > SaveSystemController.getIntValue("MythTraces")))
         {
             currency.color = Color.red;
         }
@@ -125,6 +125,9 @@ public class Packager : MonoBehaviour
         //Remove MythTraces
         SaveSystemController.updateValue("MythTraces", SaveSystemController.getIntValue("MythTraces") - int.Parse(currency.text));
         SaveSystemController.saveDataToDisk();
+
+        //Lock mouse
+        Cursor.lockState = CursorLockMode.Locked;
 
         //Close packager
         gameObject.SetActive(false);
