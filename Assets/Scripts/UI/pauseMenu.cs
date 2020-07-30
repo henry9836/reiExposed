@@ -31,7 +31,7 @@ public class pauseMenu : MonoBehaviour
     public Settings sett;
 
 
-    void Start()
+    void Start()  
     {
         smokeonscreen = new Vector3(0.0f, 0.0f, 0.0f);
         smoketopoff = new Vector3(0.0f, this.gameObject.GetComponent<RectTransform>().rect.height / 2.0f, 0.0f);
@@ -43,6 +43,8 @@ public class pauseMenu : MonoBehaviour
 
         GameObject.FindGameObjectWithTag("Player").transform.GetChild(0).GetComponent<cameraControler>().mouseSensitivity = AdjusterInfo.calcSlider(SaveSystemController.getFloatValue("mouseSensitivity"));
         sett.tocencor = SaveSystemController.getBoolValue("toCensor");
+        AudioListener.volume = AdjusterInfo.calcSlider(SaveSystemController.getFloatValue("volume")) / 10.0f;
+
 
     }
 

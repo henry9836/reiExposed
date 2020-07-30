@@ -78,7 +78,8 @@ public class SliderTextHybridController : MonoBehaviour
 
         switch (type)
         {
-            case TYPE.MOUSE:{
+            case TYPE.MOUSE:
+            {
                 CC.mouseSensitivity = AdjusterInfo.calcSlider(slider.value);
                 SaveSystemController.updateValue("mouseSensitivity", slider.value);
 
@@ -86,9 +87,9 @@ public class SliderTextHybridController : MonoBehaviour
             }
             case TYPE.AUDIO:
             {
-                //AudioListener.volume = SaveSystemController.getFloatValue("volume");
-                //SaveSystemController.updateValue("volume", 0.0f);
-                //Audio code here
+                AudioListener.volume = AdjusterInfo.calcSlider(slider.value) / 10.0f;
+                SaveSystemController.updateValue("volume", slider.value);
+
                 break;
             }
             case TYPE.NONE:
