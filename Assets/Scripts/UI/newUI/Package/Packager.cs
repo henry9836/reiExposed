@@ -80,7 +80,7 @@ public class Packager : MonoBehaviour
         attachmentThreeImage.sprite = items.images[(int)item3];
 
         //Give feedback on the bad ones
-        if (message.text.Length <= 0)
+        if (message.text.Length <= 0 || message.text.Length > 230)
         {
             message.color = Color.red;
         }
@@ -97,7 +97,7 @@ public class Packager : MonoBehaviour
             currency.color = originalCurrencyColor;
         }
 
-        if (message.text.Length > 0 && (int.Parse(currency.text) >= 10))
+        if ((message.text.Length > 0 && message.text.Length <= 230) && (int.Parse(currency.text) >= 10))
         {
             submitButton.interactable = true;
         }
@@ -119,6 +119,6 @@ public class Packager : MonoBehaviour
         sender.dditem3 = (int)item3;
 
         //Send package
-        //sender.send(1);
+        sender.send(1);
     }
 }
