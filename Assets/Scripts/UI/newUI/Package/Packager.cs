@@ -119,6 +119,11 @@ public class Packager : MonoBehaviour
         sender.dditem2 = (int)item2;
         sender.dditem3 = (int)item3;
 
+        //Remove Items
+        items.removeitemequipped(item1, false);
+        items.removeitemequipped(item2, false);
+        items.removeitemequipped(item3, false);
+
         //Send package
         sender.send(1);
 
