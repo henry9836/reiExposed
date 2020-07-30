@@ -88,7 +88,8 @@ public class Packager : MonoBehaviour
         {
             message.color = originalMessageColor;
         }
-        if (int.Parse(currency.text) < 10)
+
+        if (int.Parse(currency.text) < 10 && (int.Parse(currency.text) > SaveSystemController.getIntValue("MythTraces")))
         {
             currency.color = Color.red;
         }
@@ -97,7 +98,7 @@ public class Packager : MonoBehaviour
             currency.color = originalCurrencyColor;
         }
 
-        if ((message.text.Length > 0 && message.text.Length <= 230) && (int.Parse(currency.text) >= 10))
+        if ((message.text.Length > 0 && message.text.Length <= 230) && (int.Parse(currency.text) >= 10) && (int.Parse(currency.text) <= SaveSystemController.getIntValue("MythTraces")))
         {
             submitButton.interactable = true;
         }
@@ -120,5 +121,12 @@ public class Packager : MonoBehaviour
 
         //Send package
         sender.send(1);
+
+        //Remove MythTraces
+        SaveSystemController.updateValue("MythTraces", SaveSystemController.getIntValue("MythTraces") - int.Parse(currency.text));
+        SaveSystemController.saveDataToDisk();
+
+        //Close packager
+        gameObject.SetActive(false);
     }
 }

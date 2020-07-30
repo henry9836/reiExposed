@@ -189,10 +189,10 @@ public class packagetosend : MonoBehaviour
         multipass tmp = new multipass(package, port, IP, client, data, stream);
         ThreadPool.QueueUserWorkItem(ThreadProc, tmp);
 
-        if (tmp.ddpackettype == 1) {
-            StartCoroutine(returnToMainTmp());
-            TwitterInput.SetActive(false);
-        }
+        //if (tmp.ddpackettype == 1) {
+        //    StartCoroutine(returnToMainTmp());
+        //    TwitterInput.SetActive(false);
+        //}
     }
     
 
