@@ -5,8 +5,8 @@ using UnityEngine;
 public class BossArenaController : MonoBehaviour
 {
 
-    public List<GameObject> room;
-    public List<GameObject> roomLvl2;
+    public List<GameObject> room = new List<GameObject>();
+    public List<GameObject> roomLvl2 = new List<GameObject>();
     public AIObject boss;
 
     int latestClueLevel = 0;
