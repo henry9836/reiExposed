@@ -31,20 +31,24 @@ public class Packager : MonoBehaviour
     }
 
     //Attach an item
-    public void attach(Items.AllItems item)
+    public bool attach(Items.AllItems item)
     {
         if (item1 == Items.AllItems.NONE)
         {
             item1 = item;
+            return true;
         }
         else if (item2 == Items.AllItems.NONE)
         {
             item2 = item;
+            return true;
         }
         else if (item3 == Items.AllItems.NONE)
         {
             item3 = item;
+            return true;
         }
+        return false;
     }
 
     //Deattach an item
