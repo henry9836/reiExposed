@@ -155,7 +155,7 @@ public class ClueController : MonoBehaviour
             //way exit the while loop correctly
             if (bossOneCollected && bossTwoCollected && bossThreeCollected)
             {
-                break;
+                //break;
             }
 
             yield return null;
