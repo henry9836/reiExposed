@@ -95,10 +95,18 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void DealDamage(float dmg)
+    //Changes health value of player
+    public void EffectHeatlh(float amount)
     {
-        health -= dmg;
-        audio.PlayOneShot(hurtSounds[Random.Range(0, hurtSounds.Count)]);
+        health += amount;
+        if (amount < 0)
+        {
+            audio.PlayOneShot(hurtSounds[Random.Range(0, hurtSounds.Count)]);
+        }
+        else if (health > maxHealth)
+        {
+            health = maxHealth;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -118,6 +126,7 @@ public class PlayerController : MonoBehaviour
                 else if (otherObject.GetComponent<GenericHitboxController>() != null)
                 {
                     health -= otherObject.GetComponent<GenericHitboxController>().Damage();
+                    Debug.Log($"Took Damage {otherObject.GetComponent<GenericHitboxController>().Damage()}");
                 }
                 else
                 {
