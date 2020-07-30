@@ -5,10 +5,13 @@ using UnityEngine;
 public class ClueController : MonoBehaviour
 {
 
+    public BossArenaController BossArenaControllerOne;
+    public BossArenaController BossArenaControllerTwo;
+    public BossArenaController BossArenaControllerThree;
+
     public List<string> cluesNeededBossOne = new List<string>();
     public List<string> cluesNeededBossTwo = new List<string>();
     public List<string> cluesNeededBossThree = new List<string>();
-
 
     public List<string> cluesCollected = new List<string>();
 
@@ -23,14 +26,17 @@ public class ClueController : MonoBehaviour
     //Reload clues from the save system
     public void reloadClues()
     {
+        //Empty list so that we do not dupe our elements
         cluesCollected.Clear();
         for (int i = 0; i < SaveSystemController.saveInfomation.Count; i++)
         {
             //If element is a clue
             if (SaveSystemController.saveInfomation[i].id.Contains("[CLUE]"))
             {
+                //If element has a valid clue
                 if (SaveSystemController.saveInfomation[i].value.Contains("yes"))
                 {
+                    //Add to list
                     cluesCollected.Add(SaveSystemController.saveInfomation[i].id.Substring(0, SaveSystemController.saveInfomation[i].id.IndexOf("[CLUE]")));
                 }
             }
@@ -48,7 +54,7 @@ public class ClueController : MonoBehaviour
         while (true)
         {
             //Boss Clue One Group
-            if (!bossOneCollected)
+            if (!bossOneCollected && BossArenaControllerOne != null)
             {
                 //For each string in our clues group one
                 for (int j = 0; j < cluesNeededBossOne.Count; j++)
@@ -64,6 +70,9 @@ public class ClueController : MonoBehaviour
                         yield return null;
                     }
                 }
+
+                BossArenaControllerOne.updateState(clueCollectedOne);
+
                 //If we have enough clues collected then set bool
                 if (clueCollectedOne >= cluesNeededBossOne.Count)
                 {
@@ -77,7 +86,7 @@ public class ClueController : MonoBehaviour
             }
 
             //Boss Clue Two Group
-            if (!bossTwoCollected)
+            if (!bossTwoCollected && BossArenaControllerTwo != null)
             {
                 //For each string in our clues group one
                 for (int j = 0; j < cluesNeededBossTwo.Count; j++)
@@ -93,6 +102,9 @@ public class ClueController : MonoBehaviour
                         yield return null;
                     }
                 }
+
+                BossArenaControllerTwo.updateState(clueCollectedTwo);
+
                 //If we have enough clues collected then set bool
                 if (clueCollectedOne >= cluesNeededBossTwo.Count)
                 {
@@ -101,12 +113,13 @@ public class ClueController : MonoBehaviour
                 //Reset counter
                 else
                 {
+
                     clueCollectedTwo = 0;
                 }
             }
 
-            //Boss Clue Two Group
-            if (!bossThreeCollected)
+            //Boss Clue Three Group
+            if (!bossThreeCollected && BossArenaControllerThree != null)
             {
                 //For each string in our clues group one
                 for (int j = 0; j < cluesNeededBossThree.Count; j++)
@@ -122,6 +135,9 @@ public class ClueController : MonoBehaviour
                         yield return null;
                     }
                 }
+
+                BossArenaControllerThree.updateState(clueCollectedThree);
+
                 //If we have enough clues collected then set bool
                 if (clueCollectedThree >= cluesNeededBossThree.Count)
                 {
