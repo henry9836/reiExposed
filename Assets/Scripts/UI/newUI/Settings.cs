@@ -12,14 +12,24 @@ public class Settings : MonoBehaviour
     public GameObject audiotext;
     public GameObject audioslider;
 
+    public GameObject cencortoggle;
+
+    public bool tocencor = false;
 
     void Start()
     {
         float sence = SaveSystemController.getFloatValue("mouseSensitivity");
         mousesencetext.GetComponent<InputField>().text = sence.ToString();
         mousesenceslider.GetComponent<Slider>().value = sence;
-
-        AudioListener.volume = SaveSystemController.getFloatValue("volume");
+        cencortoggle.GetComponent<Toggle>().isOn = tocencor;
+        float vol = SaveSystemController.getFloatValue("volume");
+        audiotext.GetComponent<InputField>().text = vol.ToString();
+        audioslider.GetComponent<Slider>().value = vol;
     }
 
+    public void toggleCencorship(Toggle change)
+    {
+        tocencor = change.isOn;
+        SaveSystemController.updateValue("toCensor", tocencor);
+    }
 }
