@@ -232,6 +232,17 @@ public class Items : MonoBehaviour
         removeitem(biginvin[biginvinpos], useitem);
     }
 
+    public void removeitemequipped(AllItems item, bool useitem)
+    {
+        for (int i = 0; i < equipped.Count; i++)
+        {
+            if (equipped[i].itemtype == item)
+            {
+                removeitemequipped(i, useitem);
+                return;
+            }
+        }
+    }
     public void removeitemequipped(int equippedpos, bool useitem)
     {
         removeitem(equipped[equippedpos], useitem);
