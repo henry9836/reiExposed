@@ -307,7 +307,6 @@ public class ThePhone : MonoBehaviour
                     }
                     itemselected = Mathf.Clamp(itemselected, 0, 7);
 
-
                     if (prev != itemselected)
                     {
                         slotno oldgm = ThePhoneUI.transform.GetChild(5).GetChild(prev + 1).GetComponent<slotno>();
