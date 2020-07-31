@@ -12,10 +12,13 @@ public class LogScrollController : MonoBehaviour
     public RectTransform clampTop;
     public RectTransform clampBottom;
 
+    public List<GameObject> hideIfObjectIsActive = new List<GameObject>();
+
     Logger logger;
     Vector3 mouseScroll;
     bool showingUI = false;
-    GameObject phoneUI;
+    bool canBeShown = false;
+    
 
     public void updateInfo(RectTransform t, RectTransform b)
     {
@@ -25,15 +28,24 @@ public class LogScrollController : MonoBehaviour
 
     private void Start()
     {
-        phoneUI = transform.root.GetComponent<ThePhone>().ThePhoneUI;
         logger = GetComponent<Logger>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        canBeShown = true;
+        //Check if all objects are hidden
+        for (int i = 0; i < hideIfObjectIsActive.Count; i++)
+        {
+            if (hideIfObjectIsActive[i].activeInHierarchy)
+            {
+                canBeShown = false;
+                break;
+            }
+        }
 
-        if (!phoneUI.activeInHierarchy)
+        if (canBeShown)
         {
             if (msgAnchor.childCount > 0)
             {
