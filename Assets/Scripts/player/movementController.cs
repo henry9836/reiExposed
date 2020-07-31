@@ -26,9 +26,6 @@ public class movementController : MonoBehaviour
     public float staminaCostJump = 30.0f;
 
     [Header("Body Parts")]
-    //public Transform feet;
-    //public Transform rightFoot;
-    //public Transform leftFoot;
     public GameObject charcterModel;
     public GameObject camParent;
     public Transform rollCheckTransform;
@@ -48,22 +45,17 @@ public class movementController : MonoBehaviour
     private CharacterController ch;
     private Animator animator;
     private Vector3 moveDir = Vector3.zero;
-    private Vector3 moveDirCam = Vector3.zero;
-    private bool isOnGround = false;
-    private float dashThresholdCeiling = 0.5f;
-    private float dashTimer = 0.0f;
+    private Vector3 moveDirCam = Vector3.zero; 
     private Vector3 initalPosition;
-    private bool jumponce = false;
-    private Quaternion targetRot;
-    private bool previousState = true;
-    private bool currentState = true;
-    private bool rightFootGrounded = false;
-    private bool leftFootGrounded = false;
-    private bool centerFootGrounded = false;
-    private RaycastHit hit;
     private Vector3 beforeRollPosition;
     private Vector3 targetRollPosition;
+    private Quaternion targetRot;
+    private bool isOnGround = false;
     private bool rolling = false;
+    private bool sprinting = false;
+    private bool sprintLock = false;
+    [HideInInspector]
+    public bool attacking = false;
     private float rollTimer = 0.0f;
     private float tmpRollDistance = 0.0f;
 
@@ -78,64 +70,7 @@ public class movementController : MonoBehaviour
 
     private void FixedUpdate()
     {
-
-        //=========================
-        //Gravity/Landing Section
-        //=========================
-
-        ////Check for ground below each foot
-        //leftFootGrounded = (Physics.Raycast(leftFoot.position, Vector3.down, out hit, feetCheckDistance, groundLayer));
-        //if (leftFootGrounded)
-        //{
-        //    Debug.DrawLine(leftFoot.position, hit.point, Color.cyan);
-        //    leftFoot.position = hit.point;
-        //}
-        //else
-        //{
-        //    Debug.DrawLine(leftFoot.position, leftFoot.position + (Vector3.down * feetCheckDistance), Color.red);
-        //    leftFoot.position = leftFoot.position;
-        //}
-
-        //rightFootGrounded = (Physics.Raycast(rightFoot.position, Vector3.down, out hit, feetCheckDistance, groundLayer));
-
-        //if (rightFootGrounded)
-        //{
-        //    Debug.DrawLine(rightFoot.position, hit.point, Color.cyan);
-        //    rightFoot.position = hit.point;
-        //}
-        //else
-        //{
-        //    Debug.DrawLine(rightFoot.position, rightFoot.position + (Vector3.down * feetCheckDistance), Color.red);
-        //    rightFoot.position = rightFoot.position;
-        //}
-
-        ////Center foot is important as landing is controlled by character controller
-        //centerFootGrounded = (Physics.Raycast(feet.position, Vector3.down, out hit, feetCheckDistance, groundLayer));
-
-        //if (centerFootGrounded)
-        //{
-        //    Debug.DrawLine(feet.position, hit.point, Color.cyan);
-        //}
-        //else
-        //{
-        //    Debug.DrawLine(feet.position, feet.position + (Vector3.down * feetCheckDistance), Color.red);
-        //}
-
-        ////Set whether we are on the ground or not
-
-        //isOnGround = (rightFootGrounded || leftFootGrounded || centerFootGrounded);
-
         isOnGround = ch.isGrounded;
-
-
-        //if (isOnGround != previousState)
-        //{
-        //    if (isOnGround)
-        //    {
-        //        animator.SetTrigger("jumpLand");
-        //    }
-        //}
-        //previousState = isOnGround;
 
         //Fell out of map, reset pos
         if (transform.position.y < respawnThreshold)
@@ -147,6 +82,9 @@ public class movementController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Reset bools
+        sprinting = false;
+
         //Timers
         rollTimer += Time.unscaledDeltaTime;
 
@@ -191,8 +129,6 @@ public class movementController : MonoBehaviour
         {
             //Move half speed
             moveDir = new Vector3(0.0f, moveDir.y, 0.0f);
-            //moveDir += (camParent.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed))) * 0.5f;
-            //moveDir += (camParent.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed))) * 0.5f;
 
             moveDir += camParent.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed));
             moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed));
@@ -207,18 +143,6 @@ public class movementController : MonoBehaviour
         {
             moveDir = camParent.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed));
             moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed));
-
-            //Removed JUMP
-            //if (Input.GetButton("Jump") && pc.CheckStamina() >= staminaCostJump && !rolling)
-            //{
-
-            //    Debug.Log("Called");
-
-            //    animator.SetTrigger("jumpUp");
-
-            //    moveDir.y += jumpForce;
-            //    pc.ChangeStamina(-staminaCostJump);
-            //}
         }
 
         //Rolling Mechanic
@@ -272,15 +196,24 @@ public class movementController : MonoBehaviour
         }
 
         //Sprint
-        else if (Input.GetButton("Sprint") && isOnGround && !rolling)
+        else if (Input.GetButton("Sprint") && isOnGround && !rolling && !sprintLock)
         {
             if ((moveDir.x != 0) && (moveDir.z != 0))
             {
                 //move a little more
                 if (pc.CheckStamina() >= staminaCostSprint * Time.deltaTime)
                 {
+                    sprinting = true;
+
                     pc.ChangeStamina(-staminaCostSprint * Time.deltaTime);
                     moveDir += new Vector3(moveDir.x * sprintSpeedMultipler, 0.0f, moveDir.z * sprintSpeedMultipler);
+
+                    //If we have run out of stmina lock sprinting
+                    if(pc.CheckStamina() < (staminaCostSprint * Time.deltaTime))
+                    {
+                        sprintLock = true;
+                    }
+
                     //Animation
                     animator.SetBool("Running", true);
 
@@ -319,17 +252,19 @@ public class movementController : MonoBehaviour
             animator.SetBool("Sprinting", false);
         }
 
-        //Restrict movement with animation
-        if (animator.GetBool("Blocking"))
-        {
-            //moveDir = new Vector3(0.0f, moveDir.y, 0.0f);
-        }
-
         //Move
         if (!rolling)
         {
             ch.Move(moveDir * Time.deltaTime);
         }
 
+        //Stamina Block
+        pc.staminaBlock = (rolling || sprinting || attacking || sprintLock);
+
+        //Sprinting lock
+        if (sprintLock && !Input.GetButton("Sprint"))
+        {
+            sprintLock = false;
+        }
     }
 }
