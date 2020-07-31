@@ -465,9 +465,8 @@ public class ThePhone : MonoBehaviour
         ThePhoneUI.transform.GetChild(2).gameObject.SetActive(false);
         ThePhoneUI.transform.GetChild(4).gameObject.SetActive(true);
         //currency.Yen = save.safeItem("MythTraces", saveFile.types.INT).toint;
-        currency.Yen = SaveSystemController.getIntValue("MythTraces");
 
-        ThePhoneUI.transform.GetChild(4).GetChild(3).GetComponent<Text>().text = currency.Yen + "¥";
+        ThePhoneUI.transform.GetChild(4).GetChild(3).GetComponent<Text>().text = SaveSystemController.getIntValue("MythTraces") + "¥";
         ThePhoneUI.transform.GetChild(0).GetComponent<Image>().sprite = BGamazon;
 
     }
@@ -506,7 +505,6 @@ public class ThePhone : MonoBehaviour
         rei.GetComponent<Animator>().enabled = true;
 
         //save.saveitem("MythTraces", currency.Yen);
-        SaveSystemController.updateValue("MythTraces", currency.Yen);
 
         ThePhoneUI.transform.GetChild(0).GetComponent<Image>().sprite = BGnormal;
         phonecam.GetComponent<Camera>().fieldOfView = 60.0f;
@@ -517,27 +515,28 @@ public class ThePhone : MonoBehaviour
 
     public void amazonshop(int item)
     {
-        if (item == 0)
-        {
-            currency.Yen -= 100;
-            //save.saveitem("MythTraces", currency.Yen);
-            SaveSystemController.updateValue("MythTraces", currency.Yen);
 
-            drone.todrop = 0;
-            drone.deliver();
-        }
-        else if (item == 1)
+        if (SaveSystemController.getIntValue("MythTraces") >= 100)
         {
-            currency.Yen -= 100;
-            //save.saveitem("MythTraces", currency.Yen);
-            SaveSystemController.updateValue("MythTraces", currency.Yen);
 
-            drone.todrop = 999;
-            drone.deliver();
-        }
+            if (item == 0)
+            {
 
-        if (currency.Yen < 100)
-        {
+                //save.saveitem("MythTraces", currency.Yen);
+                SaveSystemController.updateValue("MythTraces", SaveSystemController.getIntValue("MythTraces") - 100);
+
+                drone.todrop = 0;
+                drone.deliver();
+            }
+            else if (item == 1)
+            {
+                //save.saveitem("MythTraces", currency.Yen);
+                SaveSystemController.updateValue("MythTraces", SaveSystemController.getIntValue("MythTraces") - 100);
+
+                drone.todrop = 999;
+                drone.deliver();
+            }
+
             //grey out or somthing
             //ThePhoneUI.transform.GetChild(4).GetChild(1).GetComponent<Button>().interactable = false;
         }
@@ -546,7 +545,11 @@ public class ThePhone : MonoBehaviour
             //grey out or somthing
             //ThePhoneUI.transform.GetChild(4).GetChild(1).GetComponent<Button>().interactable = true;
         }
-        ThePhoneUI.transform.GetChild(4).GetChild(3).GetComponent<Text>().text = currency.Yen + "¥";
+
+
+
+
+        ThePhoneUI.transform.GetChild(4).GetChild(3).GetComponent<Text>().text = SaveSystemController.getIntValue("MythTraces") + "¥";
 
         BackToMenu();
 
