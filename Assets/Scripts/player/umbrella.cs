@@ -64,8 +64,9 @@ public class umbrella : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0) && !animator.GetBool("Blocking") && !phoneLock)
         {
-            if (playercontrol.staminaAmount >= playercontrol.staminaToAttack) 
+            if (playercontrol.staminaAmount >= playercontrol.staminaToAttack)
             {
+                movcont.attacking = true;
                 playercontrol.ChangeStamina(-playercontrol.staminaToAttack);
                 animator.SetTrigger("Attack");
             }
@@ -101,6 +102,7 @@ public class umbrella : MonoBehaviour
 
                 //animator.ResetTrigger("Block");
                 animator.SetBool("Blocking", false);
+                movcont.attacking = false;
             }
         }
         else
@@ -108,6 +110,7 @@ public class umbrella : MonoBehaviour
             shotUI.SetActive(false);
 
             animator.SetBool("Blocking", false);
+            movcont.attacking = false;
             cooldowntimer += Time.deltaTime;
             if (cooldowntimer > cooldowntime)
             {
@@ -121,6 +124,7 @@ public class umbrella : MonoBehaviour
 
     void blocking()
     {
+        movcont.attacking = true;
         movcont.strafemode = true;
 
         RaycastHit hit;
@@ -139,6 +143,7 @@ public class umbrella : MonoBehaviour
 
     void firemode()
     {
+        movcont.attacking = true;
         latetest = true;
         VFX.GetComponent<VisualEffect>().SetFloat("timer", 1.0f);
 

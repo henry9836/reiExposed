@@ -31,6 +31,15 @@ public class shopmanager : MonoBehaviour
         descDisp.text = description[item];
         cost.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = costs[item].ToString() + "¥";
         todisp.sprite = canvasitems.images[item];
+
+        if (costs[item] > SaveSystemController.getIntValue("MythTraces"))
+        {
+            cost.transform.GetChild(0).GetComponent<Button>().interactable = false;
+        }
+        else
+        {
+            cost.transform.GetChild(0).GetComponent<Button>().interactable = true;
+        }
     }
 
     public void buyitem()
@@ -38,5 +47,14 @@ public class shopmanager : MonoBehaviour
         int curr = SaveSystemController.getIntValue("MythTraces") - costs[selected];
         SaveSystemController.updateValue("MythTraces", curr);
         canvasitems.gaineditem((Items.AllItems)selected);
+
+        if (costs[selected] > SaveSystemController.getIntValue("MythTraces"))
+        {
+            cost.transform.GetChild(0).GetComponent<Button>().interactable = false;
+        }
+        else
+        {
+            cost.transform.GetChild(0).GetComponent<Button>().interactable = true;
+        }
     }
 }
