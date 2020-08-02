@@ -65,6 +65,11 @@ public class clientcencorship : MonoBehaviour
         }
     }
 
+    public void dontWatchYourProfanity(string toadd)
+    {
+        messages.Add(toadd);
+    }
+
     public IEnumerator watchYourProfanity(string dump)
     {
         //Wait for another IEnumator

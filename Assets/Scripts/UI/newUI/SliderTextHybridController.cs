@@ -26,8 +26,6 @@ public class SliderTextHybridController : MonoBehaviour
     bool flagSlider;
 
     public cameraControler CC;
-    //read our current vals
-
 
     public void UpdateInfomation()
     {
@@ -55,7 +53,7 @@ public class SliderTextHybridController : MonoBehaviour
             flagSlider = true;
         }
 
-        Debug.Log($"STATES: {flagText}|{flagSlider} ||| {currText}:{previousText} :: {currSlider}:{previousSlider}");
+        //Debug.Log($"STATES: {flagText}|{flagSlider} ||| {currText}:{previousText} :: {currSlider}:{previousSlider}");
 
         previousText = currText;
         previousSlider = currSlider;
@@ -80,7 +78,8 @@ public class SliderTextHybridController : MonoBehaviour
 
         switch (type)
         {
-            case TYPE.MOUSE:{
+            case TYPE.MOUSE:
+            {
                 CC.mouseSensitivity = AdjusterInfo.calcSlider(slider.value);
                 SaveSystemController.updateValue("mouseSensitivity", slider.value);
 
@@ -88,7 +87,9 @@ public class SliderTextHybridController : MonoBehaviour
             }
             case TYPE.AUDIO:
             {
-                //Audio code here
+                AudioListener.volume = AdjusterInfo.calcSlider(slider.value) / 10.0f;
+                SaveSystemController.updateValue("volume", slider.value);
+
                 break;
             }
             case TYPE.NONE:

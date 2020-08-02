@@ -81,10 +81,11 @@ public class eqitems : MonoBehaviour
                             imagelayer.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = "Sea Urchin";
                             break;
                         }
-                    /*
-                                HEALTHDEBUFF_SMALL,
-                     */
-
+                    case Items.AllItems.MOVEBUFF_SMALL:
+                        {
+                            imagelayer.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = "Small Coffee";
+                            break;
+                        }
                     default:
                         {
                             //USE PROPER DEBUGGING FFS not Debug.Log("how");
@@ -102,10 +103,6 @@ public class eqitems : MonoBehaviour
             }
 
         }
-
-        Debug.Log(itemref.equipped.Count);
-
     }
-
 
 }

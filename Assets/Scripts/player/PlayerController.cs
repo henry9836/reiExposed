@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviour
     public float staminaMaxAmount = 100.0f;
     public float staminaRegenSpeed = 1.0f;
     public float staminaToAttack = 5.0f;
+    [HideInInspector]
+    public bool staminaBlock = false;
 
     [Header("Combat")]
     public float umbreallaDmg = 5.0f;
@@ -83,15 +85,17 @@ public class PlayerController : MonoBehaviour
     {
         uiupdate();
 
-        if (staminaAmount < staminaMaxAmount)
-        {
-            staminaAmount += staminaRegenSpeed * Time.deltaTime;
-
-            if (staminaAmount > staminaMaxAmount)
+        if (!staminaBlock) {
+            if (staminaAmount < staminaMaxAmount)
             {
-                staminaAmount = staminaMaxAmount;
-            }
+                staminaAmount += staminaRegenSpeed * Time.deltaTime;
 
+                if (staminaAmount > staminaMaxAmount)
+                {
+                    staminaAmount = staminaMaxAmount;
+                }
+
+            }
         }
     }
 

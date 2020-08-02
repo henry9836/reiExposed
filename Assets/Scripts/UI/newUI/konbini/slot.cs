@@ -25,7 +25,6 @@ public class slot : MonoBehaviour
     //    }
     //}
 
-
     public void itemchange()
     {
         Cursor.visible = true;
@@ -42,6 +41,8 @@ public class slot : MonoBehaviour
                 singleItem tmp = itemref.biginvin[i];
                 item = itemref.images[(int)tmp.itemtype];
                 imagelayer.GetComponent<Image>().sprite = item;
+                overlayLayer.GetComponent<Image>().sprite = equippedoverlay;
+
 
                 if (tmp.equipped == true)
                 {

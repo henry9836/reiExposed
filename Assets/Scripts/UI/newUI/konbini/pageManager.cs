@@ -21,7 +21,7 @@ public class pageManager : MonoBehaviour
     {
         shopPage.SetActive(false);
         storagePage.SetActive(true);
-        selectedUI.GetComponent<RectTransform>().localPosition = positions[0] + canvaspos;
+        selectedUI.GetComponent<RectTransform>().localPosition = positions[1] + canvaspos;
     }
 
 
@@ -35,7 +35,6 @@ public class pageManager : MonoBehaviour
 
     public void back()
     {
-        //GameObject.FindGameObjectWithTag("Shop").GetComponent<AddSaves>().saveCurincies();
         ETT.ShopNowOpen(false);
     }
 
