@@ -41,44 +41,55 @@ public class eqitems : MonoBehaviour
                             imagelayer.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = "no item";
                             break;
                         }
-                    case Items.AllItems.BAD5HP:
+                    case Items.AllItems.DUCK:
                         {
                             imagelayer.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = "Debug Duck";
                             break;
                         }
-                    case Items.AllItems.GOOD5HP:
+                    case Items.AllItems.HEALTHBUFF_SMALL:
                         {
                             imagelayer.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = "Green Tea Can";
                             break;
                         }
-                    case Items.AllItems.GOOD10HP:
+                    case Items.AllItems.HEALTHBUFF:
                         {
                             imagelayer.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = "Green Tea Bottle";
                             break;
                         }
-                    case Items.AllItems.DOUBLEDAMAGE:
+                    case Items.AllItems.DAMAGEBUFF:
                         {
                             imagelayer.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = "Protein Shake";
                             break;
                         }
-                    case Items.AllItems.DOUBLESTAMINAREGEN:
+                    case Items.AllItems.STAMINABUFF:
                         {
                             imagelayer.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = "Energy Drink";
                             break;
                         }
-                    case Items.AllItems.MOVESPEED1POINT5:
+                    case Items.AllItems.MOVEBUFF:
                         {
                             imagelayer.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = "Coffee";
                             break;
                         }
-                    case Items.AllItems.MOVESPEED0POINT75:
+                    case Items.AllItems.MOVEDEBUFF:
                         {
                             imagelayer.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = "Sake";
                             break;
                         }
+                    case Items.AllItems.HEALTHDEBUFF_SMALL:
+                        {
+                            imagelayer.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = "Sea Urchin";
+                            break;
+                        }
+                    case Items.AllItems.MOVEBUFF_SMALL:
+                        {
+                            imagelayer.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = "Small Coffee";
+                            break;
+                        }
                     default:
                         {
-                            Debug.Log("how");
+                            //USE PROPER DEBUGGING FFS not Debug.Log("how");
+                            Debug.LogWarning($"{tmp.itemtype} does not have logic set up");
                             break;
                         }
                 }
@@ -92,10 +103,6 @@ public class eqitems : MonoBehaviour
             }
 
         }
-
-        Debug.Log(itemref.equipped.Count);
-
     }
-
 
 }

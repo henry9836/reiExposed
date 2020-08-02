@@ -7,7 +7,8 @@ using UnityEditor;
 public class iamryan : MonoBehaviour
 {
     //variables 
-    private bool reclaculatepath = false;
+    [HideInInspector]
+    public bool reclaculatepath = false;
     [HideInInspector]
     public bool movment = false;
     [HideInInspector]

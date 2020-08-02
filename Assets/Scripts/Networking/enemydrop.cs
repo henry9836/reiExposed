@@ -20,6 +20,8 @@ public class enemydrop : MonoBehaviour
     private clientcencorship clientCencorship;
     private Logger logger;
 
+    public Settings tocencor;
+
     private void Start()
     {
         clientCencorship = censor.GetComponent<clientcencorship>();
@@ -51,7 +53,17 @@ public class enemydrop : MonoBehaviour
 
     public void processMessage()
     {
-        StartCoroutine(clientCencorship.watchYourProfanity(packagetosend.enemieDrops[0].tmessage));
+        if (tocencor.tocencor == true)
+        {
+            Debug.Log("censord");
+            StartCoroutine(clientCencorship.watchYourProfanity(packagetosend.enemieDrops[0].tmessage));
+        }
+        else
+        {
+            Debug.Log("notcensord");
+
+            clientCencorship.dontWatchYourProfanity(packagetosend.enemieDrops[0].tmessage);
+        }
     }
 
     public IEnumerator mess()
@@ -70,10 +82,10 @@ public class enemydrop : MonoBehaviour
         UIpop.transform.GetChild(4).gameObject.GetComponent<Text>().text = packagetosend.enemieDrops[0].titem3.ToString();
 
         //currency.Yen = save.safeItem("MythTraces", saveFile.types.INT).toint;
-        currency.Yen = SaveSystemController.getIntValue("MythTraces");
-        currency.Yen += packagetosend.enemieDrops[0].tcurr;
+        //currency.Yen = SaveSystemController.getIntValue("MythTraces");
+        SaveSystemController.updateValue("MythTraces", packagetosend.enemieDrops[0].tcurr + SaveSystemController.getIntValue("MythTraces")); 
         //save.saveitem("MythTraces", currency.Yen);
-        SaveSystemController.updateValue("MythTraces", currency.Yen);
+        //SaveSystemController.updateValue("MythTraces", currency.Yen);
 
         if (canvas.GetComponent<Items>().gaineditem((Items.AllItems)packagetosend.enemieDrops[0].titem1))
         {

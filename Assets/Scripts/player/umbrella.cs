@@ -64,8 +64,9 @@ public class umbrella : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0) && !animator.GetBool("Blocking") && !phoneLock)
         {
-            if (playercontrol.staminaAmount >= playercontrol.staminaToAttack) 
+            if (playercontrol.staminaAmount >= playercontrol.staminaToAttack)
             {
+                movcont.attacking = true;
                 playercontrol.ChangeStamina(-playercontrol.staminaToAttack);
                 animator.SetTrigger("Attack");
             }
@@ -101,6 +102,7 @@ public class umbrella : MonoBehaviour
 
                 //animator.ResetTrigger("Block");
                 animator.SetBool("Blocking", false);
+                movcont.attacking = false;
             }
         }
         else
@@ -108,6 +110,7 @@ public class umbrella : MonoBehaviour
             shotUI.SetActive(false);
 
             animator.SetBool("Blocking", false);
+            movcont.attacking = false;
             cooldowntimer += Time.deltaTime;
             if (cooldowntimer > cooldowntime)
             {
@@ -121,12 +124,13 @@ public class umbrella : MonoBehaviour
 
     void blocking()
     {
+        movcont.attacking = true;
         movcont.strafemode = true;
 
         RaycastHit hit;
         if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, Mathf.Infinity, ball))
         {
-            hit.point = new Vector3(hit.point.x, 0.0f, hit.point.z); // 0.0f should be playerhieght
+            hit.point = new Vector3(hit.point.x, movcont.charcterModel.transform.position.y, hit.point.z); //look forwards
             movcont.charcterModel.transform.LookAt(hit.point);
         }
 
@@ -139,6 +143,7 @@ public class umbrella : MonoBehaviour
 
     void firemode()
     {
+        movcont.attacking = true;
         latetest = true;
         VFX.GetComponent<VisualEffect>().SetFloat("timer", 1.0f);
 

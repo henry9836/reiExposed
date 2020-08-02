@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviour
     public float staminaMaxAmount = 100.0f;
     public float staminaRegenSpeed = 1.0f;
     public float staminaToAttack = 5.0f;
+    [HideInInspector]
+    public bool staminaBlock = false;
 
     [Header("Combat")]
     public float umbreallaDmg = 5.0f;
@@ -83,22 +85,32 @@ public class PlayerController : MonoBehaviour
     {
         uiupdate();
 
-        if (staminaAmount < staminaMaxAmount)
-        {
-            staminaAmount += staminaRegenSpeed * Time.deltaTime;
-
-            if (staminaAmount > staminaMaxAmount)
+        if (!staminaBlock) {
+            if (staminaAmount < staminaMaxAmount)
             {
-                staminaAmount = staminaMaxAmount;
-            }
+                staminaAmount += staminaRegenSpeed * Time.deltaTime;
 
+                if (staminaAmount > staminaMaxAmount)
+                {
+                    staminaAmount = staminaMaxAmount;
+                }
+
+            }
         }
     }
 
-    public void DealDamage(float dmg)
+    //Changes health value of player
+    public void EffectHeatlh(float amount)
     {
-        health -= dmg;
-        audio.PlayOneShot(hurtSounds[Random.Range(0, hurtSounds.Count)]);
+        health += amount;
+        if (amount < 0)
+        {
+            audio.PlayOneShot(hurtSounds[Random.Range(0, hurtSounds.Count)]);
+        }
+        else if (health > maxHealth)
+        {
+            health = maxHealth;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -118,6 +130,7 @@ public class PlayerController : MonoBehaviour
                 else if (otherObject.GetComponent<GenericHitboxController>() != null)
                 {
                     health -= otherObject.GetComponent<GenericHitboxController>().Damage();
+                    Debug.Log($"Took Damage {otherObject.GetComponent<GenericHitboxController>().Damage()}");
                 }
                 else
                 {
