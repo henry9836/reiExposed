@@ -70,6 +70,13 @@ public class Packager : MonoBehaviour
 
     private void FixedUpdate()
     {
+
+        if (Cursor.lockState != CursorLockMode.Confined)
+        {
+            //Confine mouse
+            Cursor.lockState = CursorLockMode.Confined;
+        }
+
         //Show current attachments
         attachmentOneImage.enabled = !(item1 == Items.AllItems.NONE);
         attachmentTwoImage.enabled = !(item2 == Items.AllItems.NONE);
