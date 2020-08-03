@@ -27,8 +27,6 @@ public class enemydrop : MonoBehaviour
         clientCencorship = censor.GetComponent<clientcencorship>();
         canvas = GameObject.FindGameObjectWithTag("MainCanvas");
         logger = canvas.transform.Find("MessageLogContainer").GetChild(0).GetComponent<Logger>();
-
-        coolMessage();
     }
 
     private void FixedUpdate() 

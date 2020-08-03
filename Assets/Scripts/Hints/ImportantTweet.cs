@@ -14,12 +14,12 @@ public class ImportantTweet : MonoBehaviour
     public Items.AllItems item3 = Items.AllItems.NONE;
     public bool hintImportant = true;
 
-    private float currency = 100.0f;
+    private int currency = 100;
 
     private void Start()
     {
 
-        currency = Random.Range(100.0f, 300.0f);
+        currency = Random.Range(100, 300);
 
         if (!logger)
         {
@@ -33,7 +33,7 @@ public class ImportantTweet : MonoBehaviour
 
     public void triggerTweet()
     {
-        dropControl
+        dropControl.manualMessage(hint, currency, (int)item1, (int)item2, (int)item3);
         logger.AddNewMessage(new Logger.LogContainer(hint, hintImportant));
     }
 
