@@ -24,6 +24,7 @@ public class Packager : MonoBehaviour
 
     private void Start()
     {
+        Cursor.visible = true;
         originalMessageColor = message.color;
         originalCurrencyColor = currency.color;
         submitButton.interactable = false;
@@ -71,9 +72,10 @@ public class Packager : MonoBehaviour
     private void FixedUpdate()
     {
 
-        if (Cursor.lockState != CursorLockMode.Confined)
+        if (Cursor.lockState != CursorLockMode.Confined || !Cursor.visible)
         {
             //Confine mouse
+            Cursor.visible = true;
             Cursor.lockState = CursorLockMode.Confined;
         }
 
@@ -142,6 +144,7 @@ public class Packager : MonoBehaviour
 
         //Lock mouse
         Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
 
         //Close packager
         gameObject.SetActive(false);
