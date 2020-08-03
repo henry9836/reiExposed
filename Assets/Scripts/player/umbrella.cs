@@ -41,7 +41,7 @@ public class umbrella : MonoBehaviour
 
     public bool phoneLock = false;
 
-
+    public float bulletSpread = 0.1f;
 
     void Start()
     {
