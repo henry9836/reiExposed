@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class NonstaticCrosshair : MonoBehaviour
+public class nonstaticCrosshair : MonoBehaviour
 {
     private float bulletspread;
     public RectTransform xplus;
@@ -14,7 +14,7 @@ public class NonstaticCrosshair : MonoBehaviour
 
     void Update()
     {
-        bulletspread = GameObject.Find("player").gameObject.transform.GetChild(0).GetComponent<umbrella>().bulletSpread;
+        bulletspread = GameObject.FindGameObjectWithTag("Player").GetComponent<umbrella>().bulletSpread;
         applyPos(bulletspread);
     }
 

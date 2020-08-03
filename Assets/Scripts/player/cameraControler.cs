@@ -106,7 +106,7 @@ public class cameraControler : MonoBehaviour
             zOffsetColl = -(Mathf.Clamp(zOffset, 1.0f, hitDistance));
 
         }
-        crosshair.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, ADStimer);
+        crosshair.transform.GetChild(0).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, ADStimer);
         camRoot.transform.localPosition = new Vector3(Mathf.Lerp(0.0f, 0.4f, ADStimer), 0.0f, zOffsetColl);
         //=============================
         // REMOVED

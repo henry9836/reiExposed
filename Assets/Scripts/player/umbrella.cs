@@ -33,15 +33,22 @@ public class umbrella : MonoBehaviour
     private bool latetest = false;
 
     private int shottoload = -999;
-    private float Shotdamage = 0.0f;
-    private List<string> saveddata = new List<string>() { };
+    public float Shotdamage = 15.0f;
 
     public bool inbossroom = false;
     public GameObject shotUI;
 
     public bool phoneLock = false;
 
+    //shotty
     public float bulletSpread = 0.1f;
+    public float MaxRange = 15.0f;
+    public float MaxDamage = 25.0f;
+    public float pellets = 8.0f;
+    public GameObject xinsButthole;
+
+
+
 
     void Start()
     {
@@ -150,21 +157,8 @@ public class umbrella : MonoBehaviour
         if (inbossroom == true)
         {
             shotUI.SetActive(true);
+            shotUI.transform.GetChild(0).GetComponent<Text>().text = "E to take photo";
 
-            if (Shotdamage == 0 && shottoload + 1 <= 0)
-            {
-                shotUI.transform.GetChild(0).GetComponent<Text>().text = "No Shots Remaining";
-            }
-            else if (Shotdamage == 0)
-            {
-                shotUI.transform.GetChild(0).GetComponent<Text>().text = "Press Q To Load Picture";
-            }
-            else
-            {
-                shotUI.transform.GetChild(0).GetComponent<Text>().text = "Loaded, Click To Shoot";
-            }
-
-            shotUI.transform.GetChild(1).GetComponent<Text>().text = "Pictures left to load: " + (shottoload + 1).ToString();
 
             if (Input.GetAxis("Fire1") > 0.5f)
             {
@@ -193,75 +187,101 @@ public class umbrella : MonoBehaviour
 
                 }
             }
-            else if (Input.GetKeyDown(KeyCode.Q))
-            {
-                if (shottoload >= 0)
-                {
-                    if (Shotdamage == 0)
-                    {
-                        loadshot();
-                    }
-                }
-            }
         }
-    }
-
-    public void bossroomtrigger()
-    {
-        for (int i = 0; i < 10; i++)
-        {
-            string filename = ("state " + (i).ToString() + ".png");
-            //string picof = save.safeItem(filename, saveFile.types.STRING).tostring;
-            string picof = SaveSystemController.getValue(filename);
-            if (picof != "del")
-            {
-                saveddata.Add(picof);
-            }
-        }
-        shottoload = saveddata.Count - 1;
-        inbossroom = true;
-    }
-
-    private void loadshot()
-    {
-        bool pass = true;
-
-        for (int j = 0; j < shottoload; j++)
-        {
-            if (saveddata[j] == saveddata[shottoload])
-            {
-                pass = false;
-            }
-
-            if (saveddata[shottoload] == "bad")
-            {
-                pass = false;
-            }
-        }
-
-        if (pass == true)
-        {
-            Shotdamage = 100;
-        }
-        else
-        {
-            Shotdamage = -50;
-        }
-
-        shottoload -= 1;
     }
 
     void bang()
     {
-        RaycastHit hit;
+        //RaycastHit hit;
+        //if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, Mathf.Infinity, enemy))
+        //{
+        //    dodamage(hit, Shotdamage);
+        //}
 
-        if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, Mathf.Infinity, enemy))
+        Transform brella = this.transform.GetChild(1).GetChild(6);
+        var cameraThingTransform = cam.transform.parent.parent.transform;
+        for (int j = 0; j < pellets; j++)
         {
-            dodamage(hit.point, Shotdamage);
-           
+            RaycastHit[] Hits;
+
+            float yrand = Random.Range(bulletSpread, -bulletSpread);
+            float xrand = Random.Range(Mathf.Sqrt(Mathf.Pow(bulletSpread, 2) - Mathf.Pow(yrand, 2)), -Mathf.Sqrt(Mathf.Pow(bulletSpread, 2) - Mathf.Pow(yrand, 2)));
+            Vector3 vec3dir = new Vector3(xrand, yrand, 1);
+
+            Debug.Log(cam.transform.parent.parent.transform.rotation.eulerAngles.x + cam.transform.parent.parent.transform.name);
+
+
+            // ELIJAH
+            float angleDegFromCentreOutwards = Random.Range(0, 30);
+            float rollAngleDeg = Random.Range(0, 360);
+            Quaternion fromCentreOutwards = Quaternion.Euler(angleDegFromCentreOutwards, 0, 0); // this one pointing straight or downwards
+            Quaternion rollQuat = Quaternion.Euler(0, 0, rollAngleDeg);
+            Quaternion combined = rollQuat * fromCentreOutwards; // first change pitch, then change roll around forwards axis
+            Vector3 alongUmbrellaLocal = combined * Vector3.forward;
+            float cameraPitch = cameraThingTransform.localEulerAngles.x;
+            Vector3 localDirection = Quaternion.Euler(cameraPitch, 0, 0) * alongUmbrellaLocal;
+            Quaternion correction = Quaternion.Euler(0, -90, 0);
+            Vector3 worldDirection = brella.TransformDirection(correction * localDirection);
+            Debug.DrawRay(brella.position, worldDirection * 5.0f, Color.magenta, 1.0f);
+            // END ELIJAH
+
+            Hits = Physics.RaycastAll(brella.transform.position, Quaternion.AngleAxis(cam.transform.parent.parent.transform.rotation.eulerAngles.x, Vector3.forward) *  Quaternion.AngleAxis(-90, Vector3.up) * brella.transform.TransformDirection(vec3dir), MaxRange);
+
+            for (int k = 0; k < Hits.Length; k++)
+            {
+                Debug.DrawLine(brella.transform.position, Hits[k].point, Color.white, 10.0f);
+            }
+
+            for (int i = 0; i < Hits.Length; i++)
+            {
+                RaycastHit Hit = Hits[i];
+                var go = Hit.collider.gameObject;
+                if (go.CompareTag("Myth") || go.CompareTag("Boss"))
+                {
+                    GameObject enemy = Hit.collider.gameObject;
+                    Vector3 hitposition = Hit.point + (Hit.normal * 0.4f);
+
+                    float dist = Vector3.Distance(this.gameObject.transform.position, Hit.point);
+                    float falloff = Mathf.Clamp(1.5f * Mathf.Cos(Mathf.Pow(dist / MaxRange, 0.3f) * (Mathf.PI / 2)), 0.0f, 1.0f);
+                    float damage = falloff * (MaxDamage / pellets);
+
+                    if (Hit.collider.GetComponent<AIObject>())
+                    {
+                        GameObject tmp = GameObject.Instantiate(damagedText, Hit.point, Quaternion.identity);
+                        tmp.transform.SetParent(Hit.collider.gameObject.transform, true);
+                        tmp.transform.GetChild(0).GetComponent<Text>().text = "-" + damage.ToString("F0");
+                        Hit.collider.GetComponent<AIObject>().health -= damage;
+
+                        Debug.Log("attackign for " + damage);
+                    }
+                    else if (Hit.collider.GetComponent<EnemyController>())
+                    {
+                        GameObject tmp = GameObject.Instantiate(damagedText, Hit.point, Quaternion.identity);
+                        tmp.transform.SetParent(Hit.collider.gameObject.transform, true);
+                        tmp.transform.GetChild(0).GetComponent<Text>().text = "-" + damage.ToString("F0");
+                        Hit.collider.GetComponent<EnemyController>().ChangeHealth(-damage);
+
+                        Debug.Log("attackign for " + damage);
+                    }
+                }
+                Debug.Log("bang");
+
+                if (Hit.collider.gameObject.layer == 0) //ground and wall
+                {
+                    Debug.Log("hole");
+
+                    Quaternion hitRotation = Quaternion.FromToRotation(Vector3.forward, Hit.normal);
+                    Vector3 hitposition = Hit.point + (Hit.normal * 0.01f);
+
+                    GameObject hole = Instantiate(xinsButthole, hitposition, hitRotation);
+                }
+            }
         }
 
-        Shotdamage = 0.0f;
+
+
+
+
         movcont.strafemode = false;
         cooldown = true;
     }
@@ -271,24 +291,6 @@ public class umbrella : MonoBehaviour
         umbrellaHitBox.enabled = toggle;
     }
 
-    void dodamage(Vector3 pos, float attackingfor)
-    {
-        //COMMENTED OUT FOR MIGRATION NEEDS TO BE REBUILT FOR DIFFERENT ENEMYTYPES
-
-        //float damage = boss.GetComponent<BossController>().IBeanShot(attackingfor);
-
-        //GameObject text = Instantiate(damagedText, pos, Quaternion.identity);
-        //text.transform.GetChild(0).GetComponent<Text>().text = null;
-        //text.transform.GetChild(0).GetComponent<Text>().text = Mathf.RoundToInt(damage).ToString();
-        //text.transform.LookAt(cam.transform.position);
-        //text.transform.Rotate(new Vector3(0, 180, 0));
-
-        GameObject tmp = GameObject.Instantiate(damagedText, pos, Quaternion.identity);
-        tmp.transform.GetChild(0).GetComponent<Text>().text = attackingfor.ToString();
-        boss.GetComponent<ReprisialOfFlameController>().health -= attackingfor;
-
-        Debug.Log("attackign for " + attackingfor);
-    }
 
     void LateUpdate()
     {
@@ -297,7 +299,6 @@ public class umbrella : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, Mathf.Infinity, ball))
             {
-                
                 umbeaalBone.transform.LookAt(hit.point);
                 umbeaalBone.transform.Rotate(new Vector3(0.0f, 90.0f, 0.0f));
                 Debug.DrawLine(hit.point, cam.transform.position);
