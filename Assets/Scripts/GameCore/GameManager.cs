@@ -21,9 +21,7 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         GameOverEvent.Invoke();
-        //Cursor.visible = true;
-        //Cursor.lockState = CursorLockMode.Confined;
-        StartCoroutine(goToMainMenu());
+        //StartCoroutine(goToMainMenu());
     }
 
     IEnumerator goToMainMenu()

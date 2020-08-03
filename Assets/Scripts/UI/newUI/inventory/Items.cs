@@ -56,6 +56,7 @@ public class Items : MonoBehaviour
         MOVEBUFF,
         MOVEDEBUFF,
         DUCK,
+        MOVEBUFF_SMALL,
     };
 
     public List<singleItem> biginvin = new List<singleItem>(50);
@@ -200,30 +201,62 @@ public class Items : MonoBehaviour
 
     public void equipItem(int biginvinpos)
     {
+        //tmp is equal to a copy of biginvin[biginvinpos]
         singleItem tmp = biginvin[biginvinpos];
 
+        //If we have a free slot
         if ((equipped.Count < equpiiedsize) && (tmp.equipped == false))
         {
-            tmp.equippedpos = equipped.Count;
-            tmp.equipped = true;
-            equipped.Add(tmp);
-        }
+            //set equipped pos
+            biginvin[biginvinpos].equippedpos = equipped.Count;
+            //Redudent
+            //tmp.equippedpos = equipped.Count;
+            biginvin[biginvinpos].equipped = true;
+            //Redudent
+            //tmp.equipped = true;
+            //equipped.Add(tmp);
+            equipped.Add(biginvin[biginvinpos]);
 
+            SaveSystemController.updateValue((int)biginvin[biginvinpos].itemtype + "[ITEM]" + biginvin[biginvinpos].biginvinpos, biginvin[biginvinpos].biginvinpos + "$" + biginvin[biginvinpos].equippedpos);
+            //SaveSystemController.updateValue((int)tmp.itemtype + "[ITEM]" + tmp.biginvinpos, tmp.biginvinpos + "$" + tmp.equippedpos);
+
+            SaveSystemController.saveDataToDisk();
+        }
     }
 
     public void upequipItem(int biginvinpos)
     {
-        singleItem tmp = biginvin[biginvinpos];
+        //singleItem tmp = biginvin[biginvinpos];
 
-        for (int i = tmp.equippedpos; i < equipped.Count - 1; i++)
+        //for (int i = tmp.equippedpos; i < equipped.Count - 1; i++)
+        for (int i = biginvin[biginvinpos].equippedpos; i < equipped.Count - 1; i++)
         {
+            //biginvin[equipped[i].biginvinpos] = biginvin[equipped[i + 1].biginvinpos];
             equipped[i] = equipped[i + 1];
-
         }
+        //biginvin.RemoveAt(biginvin.Count - 1);
         equipped.RemoveAt(equipped.Count - 1);
+        biginvin[biginvinpos].equipped = false;
+        biginvin[biginvinpos].equippedpos = -1;
 
-        tmp.equipped = false;
-        tmp.equippedpos = -1;
+        for (int i = 0; i < SaveSystemController.saveInfomation.Count; i++)
+        {
+            if (SaveSystemController.saveInfomation[i].id.Contains("[ITEM]"))
+            {
+                if (!SaveSystemController.saveInfomation[i].value.Contains("-1"))
+                {
+                    SaveSystemController.removeValue(SaveSystemController.saveInfomation[i].id);
+                    i--;
+                }
+            }
+        }
+
+        for (int i = 0; i < equipped.Count; i++)
+        {
+            SaveSystemController.updateValue((int)equipped[i].itemtype + "[ITEM]" + equipped[i].biginvinpos, equipped[i].biginvinpos + "$" + i);
+        }
+
+        SaveSystemController.saveDataToDisk();
     }
 
     public void removeitembiginvin(int biginvinpos, bool useitem)
@@ -231,6 +264,17 @@ public class Items : MonoBehaviour
         removeitem(biginvin[biginvinpos], useitem);
     }
 
+    public void removeitemequipped(AllItems item, bool useitem)
+    {
+        for (int i = 0; i < equipped.Count; i++)
+        {
+            if (equipped[i].itemtype == item)
+            {
+                removeitemequipped(i, useitem);
+                return;
+            }
+        }
+    }
     public void removeitemequipped(int equippedpos, bool useitem)
     {
         removeitem(equipped[equippedpos], useitem);
@@ -396,6 +440,12 @@ public class Items : MonoBehaviour
                         StartCoroutine(ApplyTimedEffect(AllItems.MOVEBUFF, 0.15f, 15.0f));
                         break;
                     }
+                case AllItems.MOVEBUFF_SMALL:
+                    {
+                        //Faster movement for time
+                        StartCoroutine(ApplyTimedEffect(AllItems.MOVEBUFF, 0.15f, 7.0f));
+                        break;
+                    }
                 case AllItems.MOVEDEBUFF:
                     {
                         //Slower movement for time
@@ -428,8 +478,10 @@ public class Items : MonoBehaviour
 
             for (int i = toremove.equippedpos; i < equipped.Count - 1; i++)
             {
+                //biginvin[equipped[i].biginvinpos].equipped = biginvin[equipped[i + 1].biginvinpos].equipped;
+                //biginvin[equipped[i].biginvinpos].equippedpos--;
                 equipped[i] = equipped[i + 1];
-                //equipped[i].equippedpos--;
+                equipped[i].equippedpos--;
                 //equipped[i].biginvinpos--;
             }
             equipped.RemoveAt(equipped.Count - 1);
@@ -439,16 +491,20 @@ public class Items : MonoBehaviour
         for (int i = toremove.biginvinpos; i < biginvin.Count - 1; i++)
         {
             biginvin[i] = biginvin[i + 1];
-            //Check for error val
-            if (biginvin[i].equippedpos > -1)
-            {
-                biginvin[i].equippedpos--;
-                biginvin[i].biginvinpos--;
-            }
+            //biginvin[i].equippedpos--;
+            biginvin[i].biginvinpos--;
+            ////Check for error val
+            //if (biginvin[i].equippedpos > -1)
+            //{
+            //    equipped[biginvin[i].equippedpos].equippedpos--;
+            //    biginvin[i].equippedpos--;
+            //    biginvin[i].biginvinpos--;
+            //}
 
         }
 
         biginvin.RemoveAt(biginvin.Count - 1);
+
 
 
         for (int i = 0; i < SaveSystemController.saveInfomation.Count; i++)
@@ -467,5 +523,20 @@ public class Items : MonoBehaviour
 
         SaveSystemController.saveDataToDisk();
 
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown((KeyCode.O)))
+        {
+            for (int i = 0; i < biginvin.Count; i++)
+            {
+                Debug.Log("i:" + i + " big.biginvinpos:" + biginvin[i].biginvinpos + " big.equpinvinpos;" + biginvin[i].equippedpos + " big.itemtype:" + biginvin[i].itemtype);
+            }
+            for (int i = 0; i < equipped.Count; i++)
+            {
+                Debug.Log("i:" + i + " equipped.biginvinpos:" + equipped[i].biginvinpos + " equipped.equpinvinpos;" + equipped[i].equippedpos + " equipped.itemtype:" + equipped[i].itemtype);
+            }
+        }
     }
 }

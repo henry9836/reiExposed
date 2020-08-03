@@ -10,6 +10,7 @@ public class enterToTalk : MonoBehaviour
 
     public GameObject konbiniUI;
     public GameObject rei;
+    public GameObject biginvinstorage;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -18,6 +19,7 @@ public class enterToTalk : MonoBehaviour
             UIelement.gameObject.SetActive(true);
             standing = true;
             GetComponent<AudioSource>().Play();
+            biginvinstorage.GetComponent<slot>().itemchange();
         }
     }
 
