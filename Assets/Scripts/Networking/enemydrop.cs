@@ -43,9 +43,9 @@ public class enemydrop : MonoBehaviour
         }
     }
 
-    public void manualMessage(string message, int curr, int item1, int item2, int item3)
+    public void manualMessage(string message, int curr, int item1, int item2, int item3, bool important)
     {
-        datadump tmp = new datadump(2, "steamid", message, curr, item1, item2, item3);
+        datadump tmp = new datadump(2, important.ToString(), message, curr, item1, item2, item3);
         packagetosend.enemieDrops.Add(tmp);
         clientcencorship.messages.Add(tmp.tmessage);
         messagesToShow++;
@@ -70,7 +70,12 @@ public class enemydrop : MonoBehaviour
         messageDisplayFlag = true;
         string msg = clientCencorship.getMessageAndRemove(0);
 
-        logger.AddNewMessage(new Logger.LogContainer(msg)); // henry
+        if (!bool.Parse(packagetosend.enemieDrops[0].tID))
+        {
+            logger.AddNewMessage(new Logger.LogContainer(msg)); // henry
+        }
+
+
         UIpop.transform.GetChild(0).gameObject.GetComponent<Text>().text = msg;
         UIpop.transform.GetChild(1).gameObject.GetComponent<Text>().text = packagetosend.enemieDrops[0].tcurr.ToString();
         UIpop.transform.GetChild(2).gameObject.GetComponent<Text>().text = packagetosend.enemieDrops[0].titem1.ToString();
