@@ -22,6 +22,10 @@ public class BossArenaController : MonoBehaviour
         {
             room[i].GetComponent<MeshRenderer>().enabled = false;
             room[i].GetComponent<Collider>().enabled = false;
+        }
+
+        for (int i = 0; i < roomLvl2.Count; i++)
+        {
             roomLvl2[i].GetComponent<MeshRenderer>().enabled = false;
             roomLvl2[i].GetComponent<Collider>().enabled = false;
         }
