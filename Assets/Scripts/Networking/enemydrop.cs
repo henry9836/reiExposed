@@ -75,6 +75,10 @@ public class enemydrop : MonoBehaviour
         {
             logger.AddNewMessage(new Logger.LogContainer(msg)); // henry
         }
+        else
+        {
+            logger.AddNewMessage(new Logger.LogContainer(msg, true)); // henry
+        }
 
 
         UIpop.transform.GetChild(0).gameObject.GetComponent<Text>().text = msg;
