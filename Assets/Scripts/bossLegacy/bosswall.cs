@@ -33,7 +33,6 @@ public class bosswall : MonoBehaviour
                 entered = true;
 
                 this.GetComponent<BoxCollider>().enabled = true;
-                TU.bossroomtrigger();
 
                 onEnter.Invoke();
 
