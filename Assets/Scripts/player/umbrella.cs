@@ -69,6 +69,7 @@ public class umbrella : MonoBehaviour
     {
         latetest = false;
 
+        //if attack button whiel not blocking hit
         if (Input.GetMouseButtonDown(0) && !animator.GetBool("Blocking") && !phoneLock)
         {
             if (playercontrol.staminaAmount >= playercontrol.staminaToAttack)
@@ -81,9 +82,10 @@ public class umbrella : MonoBehaviour
 
         VFX.GetComponent<VisualEffect>().SetFloat("timer", 0.0f);
 
-
+        //for blocking / aiming down sight
         if (cooldown == false && !phoneLock)
         {
+            //shoot
             if (Input.GetAxis("Fire2") > 0.5f)
             {
                 if (playercontrol.staminaAmount > blockingStamina * Time.deltaTime)
@@ -129,6 +131,7 @@ public class umbrella : MonoBehaviour
 
     }
 
+    //currently blocking
     void blocking()
     {
         movcont.attacking = true;
@@ -148,6 +151,7 @@ public class umbrella : MonoBehaviour
         }
     }
 
+    //aiming down sight
     void firemode()
     {
         movcont.attacking = true;
@@ -159,13 +163,13 @@ public class umbrella : MonoBehaviour
             shotUI.SetActive(true);
             shotUI.transform.GetChild(0).GetComponent<Text>().text = "E to take photo";
 
-
-            if (Input.GetAxis("Fire1") > 0.5f)
+           
+            if (Input.GetAxis("Fire1") > 0.5f) // shoot
             {
                 animator.SetTrigger("Shoot");
                 bang();
             }
-            else if (Input.GetKeyDown(KeyCode.E))
+            else if (Input.GetKeyDown(KeyCode.E)) // take photo, may move later
             {
 
                 cooldown = true;
@@ -190,53 +194,52 @@ public class umbrella : MonoBehaviour
         }
     }
 
+    //shoot
     void bang()
     {
-        //RaycastHit hit;
-        //if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, Mathf.Infinity, enemy))
-        //{
-        //    dodamage(hit, Shotdamage);
-        //}
-
         Transform brella = this.transform.GetChild(1).GetChild(6);
         var cameraThingTransform = cam.transform.parent.parent.transform;
         for (int j = 0; j < pellets; j++)
         {
             RaycastHit[] Hits;
 
+            //ranodm rotations
             float yrand = Random.Range(bulletSpread, -bulletSpread);
             float xrand = Random.Range(Mathf.Sqrt(Mathf.Pow(bulletSpread, 2) - Mathf.Pow(yrand, 2)), -Mathf.Sqrt(Mathf.Pow(bulletSpread, 2) - Mathf.Pow(yrand, 2)));
             Vector3 vec3dir = new Vector3(xrand, yrand, 1);
 
-
-
-
+            //adjust rotations
             Vector3 localDirection = Quaternion.Euler(cameraThingTransform.localEulerAngles.x, 0, 0) *  vec3dir;
             Quaternion correction = Quaternion.Euler(0, -90, 0);
             Vector3 worldDirection = brella.TransformDirection(correction * localDirection);
 
 
-
+            //raycast eveything (allows wallbangs)
             Hits = Physics.RaycastAll(brella.transform.position, worldDirection, MaxRange);
 
+            //debug
             for (int k = 0; k < Hits.Length; k++)
             {
                 Debug.DrawLine(brella.transform.position, Hits[k].point, Color.white, 10.0f);
             }
 
+            //for all hits
             for (int i = 0; i < Hits.Length; i++)
             {
                 RaycastHit Hit = Hits[i];
                 var go = Hit.collider.gameObject;
                 if (go.CompareTag("Myth") || go.CompareTag("Boss"))
                 {
+                    //angle for bullethole
                     GameObject enemy = Hit.collider.gameObject;
                     Vector3 hitposition = Hit.point + (Hit.normal * 0.4f);
 
+                    //damage calculation
                     float dist = Vector3.Distance(this.gameObject.transform.position, Hit.point);
                     float falloff = Mathf.Clamp(1.5f * Mathf.Cos(Mathf.Pow(dist / MaxRange, 0.3f) * (Mathf.PI / 2)), 0.0f, 1.0f);
                     float damage = falloff * (MaxDamage / pellets);
 
+                    //apply damage
                     if (Hit.collider.GetComponent<AIObject>())
                     {
                         GameObject tmp = GameObject.Instantiate(damagedText, Hit.point, Quaternion.identity);
@@ -258,6 +261,7 @@ public class umbrella : MonoBehaviour
                 }
                 Debug.Log("bang");
 
+                //spawn bullet hole
                 if (Hit.collider.gameObject.layer == 0) //ground and wall
                 {
                     Debug.Log("hole");
@@ -271,12 +275,10 @@ public class umbrella : MonoBehaviour
         }
 
 
-
-
-
         movcont.strafemode = false;
         cooldown = true;
     }
+
 
     public void Hitbox(bool toggle)
     {
@@ -286,6 +288,7 @@ public class umbrella : MonoBehaviour
 
     void LateUpdate()
     {
+        //make umbrella look in the corerect direction
         if (latetest == true)
         {
             RaycastHit hit;

@@ -84,10 +84,12 @@ public class ThePhone : MonoBehaviour
 
     void Update()
     {
+        //do stuff based on what menu you are in
         switch (screen)
         {
-            case phonestates.NONE:
+            case phonestates.NONE: // when phone is not open
                 {
+
                     if (Input.GetKeyDown(KeyCode.Tab))
                     {
                         openingephone(true);
@@ -95,10 +97,10 @@ public class ThePhone : MonoBehaviour
 
                     break;
                 }
-            case phonestates.HOME:
+            case phonestates.HOME: // from main menu
                 {
-                    int prev = selected;
-
+                    //scroling menu
+                    int prev = selected;                   
                     float scroll = Input.GetAxis("Mouse ScrollWheel");
                     if (scroll > 0.0f)
                     {
@@ -128,7 +130,7 @@ public class ThePhone : MonoBehaviour
                             selected = Mathf.Clamp(selected, 0, 2);
                         }
                     }
-
+                    //scroling UI selected
                     if (prev != selected)
                     {
                         slotno oldslot = ThePhoneUI.transform.GetChild(2).GetChild(prev).GetComponent<slotno>();
@@ -149,9 +151,10 @@ public class ThePhone : MonoBehaviour
                         }
                     }
 
+                    //click to use what thing is selected
                     if (Input.GetMouseButtonDown(0))
                     {
-                        switch (selected)
+                        switch (selected) // based on what item is used
                         {
                             case (0):
                                 {
@@ -180,11 +183,12 @@ public class ThePhone : MonoBehaviour
                         }
                     }
 
+                    //tab fully exists the phone
                     if (Input.GetKeyDown(KeyCode.Tab))
                     {
                         openingephone(false);
                     }
-                    else if (Input.GetMouseButtonDown(1))
+                    else if (Input.GetMouseButtonDown(1)) // RMB goes back 1 or in this case closes it aswell
                     {
                         openingephone(false);
                     }
@@ -192,6 +196,7 @@ public class ThePhone : MonoBehaviour
                 }
             case phonestates.CAMERA:
                 {
+                    //zoom
                     camMode = true;
                     float scroll = Input.GetAxis("Mouse ScrollWheel");
                     float fov = phonecam.GetComponent<Camera>().fieldOfView;
@@ -214,18 +219,18 @@ public class ThePhone : MonoBehaviour
                         checkPhotoValid(false);
                     }
 
-
+                    //take photo
                     if (Input.GetMouseButtonDown(0))
                     {
                         checkPhotoValid(true);
                     }
-                    else if (Input.GetKeyDown(KeyCode.Tab))
+                    else if (Input.GetKeyDown(KeyCode.Tab)) // close phone
                     {
                         camMode = false;
                         BackToMenu();
                         openingephone(false);
                     }
-                    else if (Input.GetMouseButtonDown(1))
+                    else if (Input.GetMouseButtonDown(1))//back to menu
                     {
                         camMode = false;
                         BackToMenu();
@@ -235,6 +240,7 @@ public class ThePhone : MonoBehaviour
                 } 
             case phonestates.AMAZON:
                 {
+                    //scroll
                     int prev = amazonselected;
 
                     float scroll = Input.GetAxis("Mouse ScrollWheel");
@@ -250,13 +256,13 @@ public class ThePhone : MonoBehaviour
                     }
                     amazonselected = Mathf.Clamp(amazonselected, 0, 1);
 
-
+                    //perchance item
                     if (Input.GetMouseButtonDown(0))
                     {
                         amazonshop(amazonselected);
                     }
                     
-
+                    //feedback for scroolling
                     if (prev != amazonselected)
                     {
                         slotno oldgm = ThePhoneUI.transform.GetChild(4).GetChild(prev).GetComponent<slotno>();
@@ -276,12 +282,12 @@ public class ThePhone : MonoBehaviour
                             StartCoroutine(newgm.togrow());
                         }
                     }
-                    if (Input.GetKeyDown(KeyCode.Tab))
+                    if (Input.GetKeyDown(KeyCode.Tab)) //close phone
                     {
                         BackToMenu();
                         openingephone(false);
                     }
-                    else if (Input.GetMouseButtonDown(1))
+                    else if (Input.GetMouseButtonDown(1)) //back to menu
                     {
                         BackToMenu();
                     }
@@ -289,6 +295,7 @@ public class ThePhone : MonoBehaviour
                 }
             case phonestates.INVENTORY:
                 {
+                    //scroll
                     int prev = itemselected;
 
                     float scroll = Input.GetAxis("Mouse ScrollWheel");
@@ -327,6 +334,7 @@ public class ThePhone : MonoBehaviour
                         }
                     }
 
+                    //use item
                     if (Input.GetMouseButtonDown(0))
                     {
                         if (canvas.GetComponent<Items>().equipped.Count > itemselected)
@@ -336,26 +344,27 @@ public class ThePhone : MonoBehaviour
                         }
                     }
 
+                    //close
                     if (Input.GetKeyDown(KeyCode.Tab))
                     {
                         BackToMenu();
                         openingephone(false);
                     }
-                    else if (Input.GetMouseButtonDown(1))
+                    else if (Input.GetMouseButtonDown(1))//back
                     {
                         BackToMenu();
                     }
 
                     break;
                 }
-            case phonestates.KEY:
+            case phonestates.KEY: // key page
                 {
-                    if (Input.GetKeyDown(KeyCode.Tab))
+                    if (Input.GetKeyDown(KeyCode.Tab)) // close
                     {
                         BackToMenu();
                         openingephone(false);
                     }
-                    else if (Input.GetMouseButtonDown(1))
+                    else if (Input.GetMouseButtonDown(1)) // back
                     {
                         BackToMenu();
                     }
@@ -364,22 +373,27 @@ public class ThePhone : MonoBehaviour
                 }
             default:
                 {
-                    Debug.LogError("how the fuck did you get here lol");
+                    Debug.LogError("how did you get here lol");
                     break;
                 }
         }
     }
 
+    //openth phone
     public void openingephone(bool open)
     {
+        //open
         if (open == true)
         {
+            //set objects
             ThePhoneUI.SetActive(true);
             ThePhoneUI.transform.GetChild(2).gameObject.SetActive(true);
             ThePhoneUI.transform.GetChild(3).gameObject.SetActive(false);
             ThePhoneUI.transform.GetChild(4).gameObject.SetActive(false);
             ThePhoneUI.transform.GetChild(5).gameObject.SetActive(false);
 
+
+            //sets seleted objects and adjusts UI
             selected = 0;
             itemselected = 0;
             amazonselected = 0;
@@ -399,14 +413,15 @@ public class ThePhone : MonoBehaviour
             ThePhoneUI.transform.GetChild(0).GetComponent<Image>().sprite = BGnormal;
 
 
-            //rei.wak off
+            //rei cant wak 
             rei.GetComponent<umbrella>().phoneLock = true;
 
             screen = phonestates.HOME;
             constantUI.SetActive(false);
         }
-        else
+        else // close
         {
+            //close eveythign UI
             for (int i = 0; i < 4; i++)
             {
                 ThePhoneUI.transform.GetChild(2).GetChild(i).GetComponent<slotno>().growing = false;
@@ -414,7 +429,7 @@ public class ThePhone : MonoBehaviour
                 float smol = ThePhoneUI.transform.GetChild(2).GetChild(i).GetComponent<slotno>().smol;
                 ThePhoneUI.transform.GetChild(2).GetChild(i).transform.localScale = new Vector3(smol, smol, smol);
             }
-            //rei.wak on
+            //rei can wak
             rei.GetComponent<umbrella>().phoneLock = false;
 
 
@@ -426,10 +441,11 @@ public class ThePhone : MonoBehaviour
     }
 
 
-
+    //when the camera is opened
     public void thecamera()
     {
         screen = phonestates.CAMERA;
+        //trying to fix whacky camera rotation===== TODO
 
         //phonecam.transform.localRotation = rei.transform.GetChild(0).localRotation * rei.transform.localRotation;
         //rei.transform.localRotation = rei.transform.GetChild(0).localRotation * rei.transform.localRotation;
@@ -443,7 +459,7 @@ public class ThePhone : MonoBehaviour
 
         rei.transform.LookAt(transform.position + rei.transform.GetChild(0).transform.forward);
 
-
+        //enables and disables stuff
         rei.transform.GetChild(0).gameObject.SetActive(false);
         phonecam.SetActive(true);
         maincam.SetActive(false);
@@ -459,8 +475,10 @@ public class ThePhone : MonoBehaviour
         camgrid.SetActive(true);
     }
 
+    //openiing amazon app
     public void amazon()
     {
+        //set atacve and deactiove
         screen = phonestates.AMAZON;
         ThePhoneUI.transform.GetChild(2).gameObject.SetActive(false);
         ThePhoneUI.transform.GetChild(4).gameObject.SetActive(true);
@@ -471,8 +489,10 @@ public class ThePhone : MonoBehaviour
 
     }
 
+    //open invemntory
     public void inventoryopen()
     {
+        //set stuff active and deactivce
         screen = phonestates.INVENTORY;
         ThePhoneUI.transform.GetChild(2).gameObject.SetActive(false);
         ThePhoneUI.transform.GetChild(5).gameObject.SetActive(true);
@@ -482,8 +502,10 @@ public class ThePhone : MonoBehaviour
 
     }
 
+    //returns to the main menu from anywhere so needs to be robust
     public void BackToMenu()
     {
+        //disbale and enable UI stuff
         screen = phonestates.HOME;
 
         ThePhoneUI.SetActive(true);
@@ -513,12 +535,13 @@ public class ThePhone : MonoBehaviour
         clueglow.GetComponent<flash>().fadein = false;
     }
 
+    //buy item
     public void amazonshop(int item)
     {
-
+        //mroe then enough to buy
         if (SaveSystemController.getIntValue("MythTraces") >= 100)
         {
-
+            //buy HPpack
             if (item == 0)
             {
 
@@ -528,7 +551,7 @@ public class ThePhone : MonoBehaviour
                 drone.todrop = 0;
                 drone.deliver();
             }
-            else if (item == 1)
+            else if (item == 1) // buy uber drone
             {
                 //save.saveitem("MythTraces", currency.Yen);
                 SaveSystemController.updateValue("MythTraces", SaveSystemController.getIntValue("MythTraces") - 100);
@@ -556,34 +579,7 @@ public class ThePhone : MonoBehaviour
 
     }
 
-    //check all phots for clues
-    public void updateclues()
-    {
-        GameObject[] clues = GameObject.FindGameObjectsWithTag("Clue");
-
-        for (int i = 0; i < 3; i++)
-        {
-            ThePhoneUI.transform.GetChild(4).GetChild(i).GetComponent<Image>().color = new Color(0.3f, 0.3f, 0.3f);
-        }
-
-        for (int i = 0; i < 10; i++)
-        {
-            string filename = ("state " + (i).ToString() + ".png");
-            //string picof = save.safeItem(filename, saveFile.types.STRING).tostring;
-            string picof = SaveSystemController.getValue(filename);
-
-            for (int j = 0; j < clues.Length; j++)
-            {
-                if (clues[j].gameObject.name == picof)
-                {
-                    ThePhoneUI.transform.GetChild(4).GetChild(j).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f);
-                }
-            }
-        }
-    }
-
-
-
+    //checks if photo is valid
     public void checkPhotoValid(bool takingphoto)
     {
         string cluename = "bad";
@@ -593,12 +589,14 @@ public class ThePhone : MonoBehaviour
         List<GameObject> clue = new List<GameObject>() { };
         List<List<Vector2>> cluepos = new List<List<Vector2>>() { };
 
+        //grab all clues to manage them
         for (int i = 0; i < clues.Length; i++)
         {
             cluepos.Add(new List<Vector2>());
             clue.Add(clues[i]);
         }
 
+        //find all clues
         for (int i = 0; i < clue.Count; i++)
         {
             Vector3 sumTotal = Vector3.zero;
@@ -628,13 +626,14 @@ public class ThePhone : MonoBehaviour
                 cluepos[i].Add(averageViewportPos);
             }
 
-
+            //more the 2 vertexts visable
             if (cluepos[i].Count > 2)
             {
-                Vector2 lxly = new Vector2(0.0f, 0.0f);
-                Vector2 lxby = new Vector2(0.0f, 1.0f);
-                Vector2 bxly = new Vector2(1.0f, 0.0f);
-                Vector2 bxby = new Vector2(1.0f, 1.0f);
+                //create loos square the:
+                Vector2 lxly = new Vector2(0.0f, 0.0f); //low low point
+                Vector2 lxby = new Vector2(0.0f, 1.0f); //low big
+                Vector2 bxly = new Vector2(1.0f, 0.0f); // big low
+                Vector2 bxby = new Vector2(1.0f, 1.0f); //big big
 
                 float lxlydis = 999.0f;
                 float lxbydis = 999.0f;
@@ -645,6 +644,8 @@ public class ThePhone : MonoBehaviour
                 int lxbypos = -1;
                 int bxlypos = -1;
                 int bxbypos = -1;
+
+                //finds the points on the vertext closest to the points
 
                 for (int k = 0; k < cluepos[i].Count; k++)
                 {
@@ -686,23 +687,23 @@ public class ThePhone : MonoBehaviour
                 //Debug.DrawLine(c, bxby, Color.green, 10.0f);
                 //Debug.DrawLine(d, bxly, Color.green, 10.0f);
                 
+                //calc the aera of the square
                 float objaera = Mathf.Abs((((a.x * b.y) - (a.y * b.x)) + ((b.x * c.y) - (b.y * c.x)) + ((c.x * d.y) - (c.y * d.x)) + ((d.x * a.y) - (d.y * a.x))) / 2.0f);
                 float screenaera = 1.0f;
 
+                //get the persent of the screen taken up
                 float persenttaken = (objaera / screenaera) * 800.0f;
-                //Debug.Log(persenttaken + "% taken up");
-
+                //more then 2%
                 if (persenttaken > 2.0f)
                 {
                     cluename = clue[i].name;
-                    //if (save.safeItem(cluename + "[CLUE]", saveFile.types.STRING).tostring == "yes")
-                    if (SaveSystemController.getValue(cluename + "[CLUE]") == "yes")
+                    if (SaveSystemController.getValue(cluename + "[CLUE]") == "yes") //already taken
                     {
                         Debug.Log("already taken");
                         clueglow.GetComponent<flash>().fadeout = true;
                         clueglow.GetComponent<flash>().fadein = false;
                     }
-                    else
+                    else // new photo
                     {
                         Debug.Log("not already teakmn");
                         clueglow.GetComponent<flash>().fadeout = false;
@@ -725,24 +726,18 @@ public class ThePhone : MonoBehaviour
 
         if (takingphoto == true)
         {
-
-
             if (cluename != "bad")
             {
-                //good photo 
+                //good photo add to save and stuff
                 SaveSystemController.updateValue(cluename + "[CLUE]", "yes");
                 clueCtrl.cluesCollected.Add(cluename);
                 SaveSystemController.saveDataToDisk();
             }
-            //any photo
+            //any photo 
         }
     }
 
-    public Vector3 RotatePointAroundPivot(Vector3 point, Vector3 pivot, Vector3 angles)
-    {
-        return Quaternion.Euler(angles) * (point - pivot) + pivot;
-    }
-
+    //test if vertex is in viewpornt and can be seen unobstruted
     private bool testvertex(Vector3 viewportPos, Vector3 worldPos)
     {
         if (viewportPos.x > 0.0f && viewportPos.x < 1.0f)
@@ -776,8 +771,10 @@ public class ThePhone : MonoBehaviour
 
     }
 
+    //if key app is opened
     public void keyopen()
     {
+        //enable and disabe stuff
         screen = phonestates.KEY;
         ThePhoneUI.transform.GetChild(2).gameObject.SetActive(false);
         ThePhoneUI.transform.GetChild(3).gameObject.SetActive(true);
@@ -791,6 +788,8 @@ public class ThePhone : MonoBehaviour
         {
             clue.Add(clues[i]);
         }
+
+        //set clues to true or flase based on if the phot has been taken of them
 
         for (int i = 0; i < clue.Count; i++)
         {
@@ -810,7 +809,7 @@ public class ThePhone : MonoBehaviour
             }
         }
 
-
+        //UI feedback for results of above
         for (int i = 0; i < clueStates.Count; i++)
         {
             if (clueStates[i] == true)
@@ -828,31 +827,4 @@ public class ThePhone : MonoBehaviour
 
 
     }
-
-
-    //public IEnumerator testmove()
-    //{
-    //    Vector3 oldpos = new Vector3(-15.0f, 0.0f, 0.0f);
-    //    Vector3 newpos = new Vector3(0.0f, 0.0f, 0.0f);
-
-    //    float speed = 1.0f;
-
-    //    uitest.SetActive(true);
-    //    for (float i = 0.0f; i < 1.0f; i += Time.deltaTime * speed)
-    //    {
-    //        uitest.transform.position = Vector3.Lerp(oldpos, newpos, i);
-    //    }
-
-    //    yield return new WaitForSeconds(2.0f);
-
-    //    for (float i = 0.0f; i < 1.0f; i += Time.deltaTime * speed)
-    //    {
-    //        uitest.transform.position = Vector3.Lerp(newpos, oldpos, i);
-    //    }
-
-    //    uitest.SetActive(false);
-
-    //    yield return null;
-    //}
-
 }
