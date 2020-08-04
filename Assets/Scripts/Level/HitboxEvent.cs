@@ -2,20 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-
-public class TriggerArea : MonoBehaviour
+public class HitboxEvent : MonoBehaviour
 {
-    public UnityEvent triggerEvent;
+
+    public UnityEvent OnEnter;
+    public bool destoryOnEnter = true;
 
     private void OnTriggerEnter(Collider other)
     {
-
-        if (other.CompareTag("Player"))
+        OnEnter.Invoke();
+        if (destoryOnEnter)
         {
-            triggerEvent.Invoke();
             Destroy(gameObject);
         }
     }
-
 
 }
