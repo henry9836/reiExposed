@@ -589,7 +589,7 @@ public class ThePhone : MonoBehaviour
         List<GameObject> clue = new List<GameObject>() { };
         List<List<Vector2>> cluepos = new List<List<Vector2>>() { };
 
-        //grab all clues
+        //grab all clues to manage them
         for (int i = 0; i < clues.Length; i++)
         {
             cluepos.Add(new List<Vector2>());
