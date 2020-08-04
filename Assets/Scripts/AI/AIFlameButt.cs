@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class AIFlameButt : StateMachineBehaviour
 {
-    [Range(0.0f, 1.0f)]
-    public float attackTrigger = 0.35f;
+    public float timeToTrigger = 0.35f;
 
     AIObject ai;
     AITracker tracker;
@@ -15,9 +14,14 @@ public class AIFlameButt : StateMachineBehaviour
     AIFlameButtController butt;
     bool attacked = false;
 
+    //Time for the animation to loop in seconds
+    float timeToLoop = 1.0f;
+    float progress = 0.0f;
+
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        //Initalisation
         if (ai == null)
         {
             ai = animator.gameObject.GetComponent<AIObject>();
@@ -33,17 +37,27 @@ public class AIFlameButt : StateMachineBehaviour
         movement.stopMovement();
         movement.setOverride(AIMovement.OVERRIDE.FULL_OVERRIDE);
 
+        timeToLoop = stateInfo.length;
         attacked = false;
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (!attacked && ((stateInfo.normalizedTime % 1.0f) >= attackTrigger)){
-            attacked = true;
+        //Get progress
+        progress += Time.unscaledDeltaTime;
+
+        //If we have not attacked and our timer is beyond the threshold
+        if (!attacked && (progress >= timeToTrigger))
+        {
             butt.flameItUp();
-            animator.ResetTrigger("FlameButt");
-            animator.SetBool("Attacking", false);
+            attacked = true;
+        }
+        //Reached end of loop reset and prepare for next attack
+        else if (attacked && progress >= timeToLoop)
+        {
+            attacked = false;
+            progress = 0.0f;
         }
     }
 
