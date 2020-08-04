@@ -41,9 +41,6 @@ public class ThePhone : MonoBehaviour
     public Sprite BGamazon;
     public Sprite BGinventory;
 
-    //keyapp
-    List<bool> clueStates = new List<bool>() { };
-
     public GameObject constantUI;
     public LayerMask ignoor;
 
@@ -783,6 +780,8 @@ public class ThePhone : MonoBehaviour
 
         GameObject[] clues = GameObject.FindGameObjectsWithTag("Clue");
         List<GameObject> clue = new List<GameObject>() { };
+        List<bool> clueStates = new List<bool>() { };
+
 
         for (int i = 0; i < clues.Length; i++)
         {
@@ -809,11 +808,15 @@ public class ThePhone : MonoBehaviour
             }
         }
 
+        int truecount = 0;
+
         //UI feedback for results of above
+        Debug.Log(clueStates.Count);
         for (int i = 0; i < clueStates.Count; i++)
         {
             if (clueStates[i] == true)
             {
+                truecount++;
                 ThePhoneUI.transform.GetChild(3).GetChild(3).GetChild(0).GetChild(i).GetComponent<Image>().color = new Color(0.0f, 1.0f, 0.0f, 1.0f);
             }
             else
@@ -823,8 +826,9 @@ public class ThePhone : MonoBehaviour
             }
         }
 
-        clueStates = new List<bool>() { };
-
+        string insert = truecount.ToString() + "/3";
+        ThePhoneUI.transform.GetChild(3).GetChild(4).GetChild(2).GetComponent<Text>().text = insert;
+        ThePhoneUI.transform.GetChild(3).GetChild(4).GetChild(1).GetComponent<Image>().fillAmount = (float)truecount / 3.0f;
 
     }
 }
