@@ -208,22 +208,9 @@ public class umbrella : MonoBehaviour
             float xrand = Random.Range(Mathf.Sqrt(Mathf.Pow(bulletSpread, 2) - Mathf.Pow(yrand, 2)), -Mathf.Sqrt(Mathf.Pow(bulletSpread, 2) - Mathf.Pow(yrand, 2)));
             Vector3 vec3dir = new Vector3(xrand, yrand, 1);
 
-            // ELIJAH
-            //float angleDegFromCentreOutwards = Random.Range(0, 10);
-            //float rollAngleDeg = Random.Range(0, 360);
-            //Quaternion fromCentreOutwards = Quaternion.Euler(angleDegFromCentreOutwards, 0, 0); // this one pointing straight or downwards
-            //Quaternion rollQuat = Quaternion.Euler(0, 0, rollAngleDeg);
-            //Quaternion combined = rollQuat * fromCentreOutwards; // first change pitch, then change roll around forwards axis
-            //Vector3 alongUmbrellaLocal = combined * Vector3.forward;
-            //float cameraPitch = cameraThingTransform.localEulerAngles.x;
-            //Vector3 localDirection = Quaternion.Euler(cameraPitch, 0, 0) * alongUmbrellaLocal;
-            //Quaternion correction = Quaternion.Euler(0, -90, 0);
-            //Vector3 worldDirection = brella.TransformDirection(correction * localDirection);
-            //Debug.DrawRay(brella.position, worldDirection * 5.0f, Color.magenta, 1.0f);
-            // ELIJAH END
 
-            //Quaternion fromCentreOutwards = Quaternion.Euler(xrand, yrand, 0); // this one pointing straight or downwards
-            //Vector3 alongUmbrellaLocal = vec3dir + Vector3.forward;
+
+
             Vector3 localDirection = Quaternion.Euler(cameraThingTransform.localEulerAngles.x, 0, 0) *  vec3dir;
             Quaternion correction = Quaternion.Euler(0, -90, 0);
             Vector3 worldDirection = brella.TransformDirection(correction * localDirection);
