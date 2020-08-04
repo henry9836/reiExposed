@@ -210,7 +210,7 @@ public class ThePhone : MonoBehaviour
                     phonecam.GetComponent<Camera>().fieldOfView = fov;
 
                     sec1timer += Time.deltaTime;
-                    if (sec1timer > 1.0f)
+                    if (sec1timer > 0.1f)
                     {
                         sec1timer = 0.0f;
                         checkPhotoValid(false);
@@ -530,6 +530,9 @@ public class ThePhone : MonoBehaviour
 
         clueglow.GetComponent<flash>().fadeout = true;
         clueglow.GetComponent<flash>().fadein = false;
+
+        clueglow.transform.GetChild(0).GetComponent<Text>().text = "";
+
     }
 
     //buy item
@@ -605,7 +608,7 @@ public class ThePhone : MonoBehaviour
 
             for (int j = 0; j < vertexMesh.Length; j++)
             {
-                Vector3 worldPos = clue[i].transform.TransformPoint(0.5f * (offset + vertexMesh[j])); 
+                Vector3 worldPos = clue[i].transform.TransformPoint(0.5f * (offset + vertexMesh[j]));
                 sumTotal += worldPos;
                 var viewportPos = phonecam.GetComponent<Camera>().WorldToViewportPoint(worldPos);
 
@@ -623,99 +626,112 @@ public class ThePhone : MonoBehaviour
                 cluepos[i].Add(averageViewportPos);
             }
 
+
+
             //more the 2 vertexts visable
             if (cluepos[i].Count > 2)
             {
-                //create loos square the:
-                Vector2 lxly = new Vector2(0.0f, 0.0f); //low low point
-                Vector2 lxby = new Vector2(0.0f, 1.0f); //low big
-                Vector2 bxly = new Vector2(1.0f, 0.0f); // big low
-                Vector2 bxby = new Vector2(1.0f, 1.0f); //big big
-
-                float lxlydis = 999.0f;
-                float lxbydis = 999.0f;
-                float bxlydis = 999.0f;
-                float bxbydis = 999.0f;
-
-                int lxlypos = -1;
-                int lxbypos = -1;
-                int bxlypos = -1;
-                int bxbypos = -1;
-
-                //finds the points on the vertext closest to the points
-
-                for (int k = 0; k < cluepos[i].Count; k++)
+                cluename = clue[i].name;
+                if (SaveSystemController.getValue(cluename + "[CLUE]") == "yes") //already taken
                 {
-                    if (Vector2.Distance(cluepos[i][k], lxly) < lxlydis)
-                    {
-                        lxlydis = Vector2.Distance(cluepos[i][k], lxly);
-                        lxlypos = k;
-                    }
-                    if (Vector2.Distance(cluepos[i][k], lxby) < lxbydis)
-                    {
-                        lxbydis = Vector2.Distance(cluepos[i][k], lxby);
-                        lxbypos = k;
-                    }
-                    if (Vector2.Distance(cluepos[i][k], bxby) < bxbydis)
-                    {
-                        bxbydis = Vector2.Distance(cluepos[i][k], bxby);
-                        bxbypos = k;
-                    }
-                    if (Vector2.Distance(cluepos[i][k], bxly) < bxlydis)
-                    {
-                        bxlydis = Vector2.Distance(cluepos[i][k], bxly);
-                        bxlypos = k;
-                    }
+                    clueglow.transform.GetChild(0).GetComponent<Text>().text = "clue already photgraphed";
+
+                    Debug.Log("already taken");
+                    clueglow.GetComponent<flash>().fadeout = true;
+                    clueglow.GetComponent<flash>().fadein = false;
+                    break;
+
                 }
-
-                Vector2 a = cluepos[i][lxlypos];
-                Vector2 b = cluepos[i][lxbypos];
-                Vector2 c = cluepos[i][bxbypos];
-                Vector2 d = cluepos[i][bxlypos];
-
-
-                //Debug.DrawLine(a, b, Color.green, 10.0f);
-                //Debug.DrawLine(b, c, Color.green, 10.0f);
-                //Debug.DrawLine(c, d, Color.green, 10.0f);
-                //Debug.DrawLine(d, a, Color.green, 10.0f);
-
-                //Debug.DrawLine(a, lxly, Color.green, 10.0f);
-                //Debug.DrawLine(b, lxby, Color.green, 10.0f);
-                //Debug.DrawLine(c, bxby, Color.green, 10.0f);
-                //Debug.DrawLine(d, bxly, Color.green, 10.0f);
-                
-                //calc the aera of the square
-                float objaera = Mathf.Abs((((a.x * b.y) - (a.y * b.x)) + ((b.x * c.y) - (b.y * c.x)) + ((c.x * d.y) - (c.y * d.x)) + ((d.x * a.y) - (d.y * a.x))) / 2.0f);
-                float screenaera = 1.0f;
-
-                //get the persent of the screen taken up
-                float persenttaken = (objaera / screenaera) * 800.0f;
-                //more then 2%
-                if (persenttaken > 2.0f)
+                else
                 {
-                    cluename = clue[i].name;
-                    if (SaveSystemController.getValue(cluename + "[CLUE]") == "yes") //already taken
+                    //create loos square the:
+                    Vector2 lxly = new Vector2(0.0f, 0.0f); //low low point
+                    Vector2 lxby = new Vector2(0.0f, 1.0f); //low big
+                    Vector2 bxly = new Vector2(1.0f, 0.0f); // big low
+                    Vector2 bxby = new Vector2(1.0f, 1.0f); //big big
+
+                    float lxlydis = 999.0f;
+                    float lxbydis = 999.0f;
+                    float bxlydis = 999.0f;
+                    float bxbydis = 999.0f;
+
+                    int lxlypos = -1;
+                    int lxbypos = -1;
+                    int bxlypos = -1;
+                    int bxbypos = -1;
+
+                    //finds the points on the vertext closest to the points
+
+                    for (int k = 0; k < cluepos[i].Count; k++)
                     {
-                        Debug.Log("already taken");
-                        clueglow.GetComponent<flash>().fadeout = true;
-                        clueglow.GetComponent<flash>().fadein = false;
+                        if (Vector2.Distance(cluepos[i][k], lxly) < lxlydis)
+                        {
+                            lxlydis = Vector2.Distance(cluepos[i][k], lxly);
+                            lxlypos = k;
+                        }
+                        if (Vector2.Distance(cluepos[i][k], lxby) < lxbydis)
+                        {
+                            lxbydis = Vector2.Distance(cluepos[i][k], lxby);
+                            lxbypos = k;
+                        }
+                        if (Vector2.Distance(cluepos[i][k], bxby) < bxbydis)
+                        {
+                            bxbydis = Vector2.Distance(cluepos[i][k], bxby);
+                            bxbypos = k;
+                        }
+                        if (Vector2.Distance(cluepos[i][k], bxly) < bxlydis)
+                        {
+                            bxlydis = Vector2.Distance(cluepos[i][k], bxly);
+                            bxlypos = k;
+                        }
                     }
-                    else // new photo
+
+                    Vector2 a = cluepos[i][lxlypos];
+                    Vector2 b = cluepos[i][lxbypos];
+                    Vector2 c = cluepos[i][bxbypos];
+                    Vector2 d = cluepos[i][bxlypos];
+
+
+                    //Debug.DrawLine(a, b, Color.green, 10.0f);
+                    //Debug.DrawLine(b, c, Color.green, 10.0f);
+                    //Debug.DrawLine(c, d, Color.green, 10.0f);
+                    //Debug.DrawLine(d, a, Color.green, 10.0f);
+
+                    //Debug.DrawLine(a, lxly, Color.green, 10.0f);
+                    //Debug.DrawLine(b, lxby, Color.green, 10.0f);
+                    //Debug.DrawLine(c, bxby, Color.green, 10.0f);
+                    //Debug.DrawLine(d, bxly, Color.green, 10.0f);
+
+                    //calc the aera of the square
+                    float objaera = Mathf.Abs((((a.x * b.y) - (a.y * b.x)) + ((b.x * c.y) - (b.y * c.x)) + ((c.x * d.y) - (c.y * d.x)) + ((d.x * a.y) - (d.y * a.x))) / 2.0f);
+                    float screenaera = 1.0f;
+
+                    //get the persent of the screen taken up
+                    float persenttaken = (objaera / screenaera) * 800.0f;
+
+                    //more then 2%
+                    if (persenttaken > 2.0f)
                     {
+                        clueglow.transform.GetChild(0).GetComponent<Text>().text = "clue visible";
+
                         Debug.Log("not already teakmn");
                         clueglow.GetComponent<flash>().fadeout = false;
                         clueglow.GetComponent<flash>().fadein = true;
                         break;
                     }
-                }
-                else
-                {
-                    clueglow.GetComponent<flash>().fadeout = true;
-                    clueglow.GetComponent<flash>().fadein = false;
+                    else
+                    {
+                        clueglow.transform.GetChild(0).GetComponent<Text>().text = "clue partially visible";
+
+                        clueglow.GetComponent<flash>().fadeout = true;
+                        clueglow.GetComponent<flash>().fadein = false;
+                    }
                 }
             }
             else
             {
+                clueglow.transform.GetChild(0).GetComponent<Text>().text = "clue not visible";
+
                 clueglow.GetComponent<flash>().fadeout = true;
                 clueglow.GetComponent<flash>().fadein = false;
             }
