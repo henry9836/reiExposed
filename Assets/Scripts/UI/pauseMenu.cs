@@ -13,6 +13,7 @@ public class pauseMenu : MonoBehaviour
 
     public List<GameObject> pauseitems = new List<GameObject>() { };
     public List<GameObject> settingsItem = new List<GameObject>() { };
+    public List<GameObject> doNotPauseIfPresent = new List<GameObject>();
 
     private Vector3 canvaspos;
     public GameObject smoke1;
@@ -48,17 +49,36 @@ public class pauseMenu : MonoBehaviour
 
     }
 
+    //Restricts pausing of the game
+    bool canPause()
+    {
+        for (int i = 0; i < doNotPauseIfPresent.Count; i++)
+        {
+            if (doNotPauseIfPresent[i].activeInHierarchy)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
     void Update()
     {
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.P))
         {
-            pause();
+            if (canPause())
+            {
+                pause();
+            }
         }
 #else
         if (Input.GetButtonDown("Pause"))
-        {
-            pause();
+        {   
+            if (canPause())
+            {
+                pause();
+            }
         }
 #endif
     }
