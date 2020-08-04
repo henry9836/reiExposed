@@ -815,11 +815,11 @@ public class ThePhone : MonoBehaviour
         {
             if (clueStates[i] == true)
             {
-                ThePhoneUI.transform.GetChild(3).GetChild(3).GetChild(i).GetComponent<Image>().color = new Color(0.0f, 1.0f, 0.0f, 1.0f);
+                ThePhoneUI.transform.GetChild(3).GetChild(3).GetChild(0).GetChild(i).GetComponent<Image>().color = new Color(0.0f, 1.0f, 0.0f, 1.0f);
             }
             else
             {
-                ThePhoneUI.transform.GetChild(3).GetChild(3).GetChild(i).GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+                ThePhoneUI.transform.GetChild(3).GetChild(3).GetChild(0).GetChild(i).GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
 
             }
         }
