@@ -101,8 +101,9 @@ public class ghostEffect : MonoBehaviour
     {
         ghostpersent = 1.0f - ((float)deactivatedghostbody.Count / (float)ghostbody.Count);
         UIghost.GetComponent<Image>().fillAmount = ghostpersent;
-        //UIHP.GetComponent<Image>().fillAmount = (this.gameObject.transform.GetComponent<BossController>().health / this.gameObject.transform.GetComponent<BossController>().maxHealth);
-        UIHP.GetComponent<Image>().fillAmount = (this.gameObject.transform.GetComponent<ReprisialOfFlameController>().health / this.gameObject.transform.GetComponent<ReprisialOfFlameController>().startHealth);
+
+        //Removed
+        //UIHP.GetComponent<Image>().fillAmount = (this.gameObject.transform.GetComponent<ReprisialOfFlameController>().health / this.gameObject.transform.GetComponent<ReprisialOfFlameController>().startHealth);
 
 
 
