@@ -69,8 +69,9 @@ public class enemydrop : MonoBehaviour
     {
         messageDisplayFlag = true;
         string msg = clientCencorship.getMessageAndRemove(0);
-
-        if (!bool.Parse(packagetosend.enemieDrops[0].tID))
+        bool tryattempt;
+        bool.TryParse(packagetosend.enemieDrops[0].tID, out tryattempt);
+        if (tryattempt)
         {
             logger.AddNewMessage(new Logger.LogContainer(msg)); // henry
         }
