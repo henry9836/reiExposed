@@ -442,26 +442,12 @@ public class ThePhone : MonoBehaviour
     public void thecamera()
     {
         screen = phonestates.CAMERA;
-        //trying to fix whacky camera rotation===== TODO
-
-        //phonecam.transform.localRotation = rei.transform.GetChild(0).localRotation * rei.transform.localRotation;
-        //rei.transform.localRotation = rei.transform.GetChild(0).localRotation * rei.transform.localRotation;
-        //rei.transform.localEulerAngles = rei.transform.GetChild(0).localEulerAngles;
-
-        //rei.transform.Rotate(rei.transform.GetChild(0).localEulerAngles);
-
-        //Debug.Log($"ASBFEW {rei.transform.GetChild(0).eulerAngles}");
-        //rei.transform.rotation = rei.transform.GetChild(0).transform.rotation;
-        //Debug.Log($"ASBFEW After: {rei.transform.rotation.eulerAngles}");
-
-        rei.transform.LookAt(transform.position + rei.transform.GetChild(0).transform.forward);
-
+        
         //enables and disables stuff
         rei.transform.GetChild(0).gameObject.SetActive(false);
         phonecam.SetActive(true);
         maincam.SetActive(false);
         rei.GetComponent<movementController>().enabled = false;
-        rei.GetComponent<fistpersoncontroler>().enabled = true;
         rei.GetComponent<umbrella>().enabled = false;
         rei.transform.GetChild(1).gameObject.SetActive(false);
         rei.GetComponent<Animator>().enabled = false;
@@ -470,6 +456,16 @@ public class ThePhone : MonoBehaviour
         ThePhoneUI.SetActive(false);
 
         camgrid.SetActive(true);
+
+        Debug.Log(rei.transform.GetChild(0).rotation.eulerAngles.y);
+        float test = rei.transform.GetChild(0).rotation.eulerAngles.y;
+        Quaternion facing = Quaternion.Euler(0, test, 0);
+
+        rei.transform.rotation = facing;
+        rei.GetComponent<fistpersoncontroler>().enabled = true;
+        rei.GetComponent<fistpersoncontroler>().SetPitch(0);
+        rei.GetComponent<fistpersoncontroler>().SetYaw(test);
+
     }
 
     //openiing amazon app
@@ -533,6 +529,11 @@ public class ThePhone : MonoBehaviour
 
         clueglow.transform.GetChild(0).GetComponent<Text>().text = "";
 
+        float test = rei.transform.GetChild(0).rotation.eulerAngles.y;
+        Quaternion facing = Quaternion.Euler(0, test, 0);
+
+        rei.transform.GetChild(0).rotation = Quaternion.Euler(0, rei.GetComponent<fistpersoncontroler>().yaw, 0);
+        rei.transform.GetChild(0).GetChild(0).rotation = Quaternion.identity;
     }
 
     //buy item
