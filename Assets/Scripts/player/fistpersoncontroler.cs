@@ -10,8 +10,9 @@ public class fistpersoncontroler : MonoBehaviour
     public float speed;
     public GameObject THECAM;
 
-    private float pitch = 0;
-    private float yaw = 0;
+    //do not write use designated functions
+    public float pitch = 0;
+    public float yaw = 0;
     public void SetPitch(float newPitch)
     {
         pitch = Mathf.Clamp(newPitch, -89.99f, 89.99f);
