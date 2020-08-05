@@ -29,14 +29,6 @@ public class enemydrop : MonoBehaviour
         logger = canvas.transform.Find("MessageLogContainer").GetChild(0).GetComponent<Logger>();
     }
 
-    private void Update()
-    {
-        if (test == true)
-        {
-            test = false;
-        }
-    }
-
     private void FixedUpdate() 
     {
         if (messagesToShow > 0) {
@@ -51,6 +43,14 @@ public class enemydrop : MonoBehaviour
         }
     }
 
+    public void manualMessage(string message, int curr, int item1, int item2, int item3, bool important)
+    {
+        datadump tmp = new datadump(2, important.ToString(), message, curr, item1, item2, item3);
+        packagetosend.enemieDrops.Insert(0, tmp);
+        clientcencorship.messages.Insert(0, message);
+        messagesToShow++;
+    }
+
     public void processMessage()
     {
         if (tocencor.tocencor == true)
@@ -61,7 +61,6 @@ public class enemydrop : MonoBehaviour
         else
         {
             Debug.Log("notcensord");
-
             clientCencorship.dontWatchYourProfanity(packagetosend.enemieDrops[0].tmessage);
         }
     }
@@ -70,22 +69,25 @@ public class enemydrop : MonoBehaviour
     {
         messageDisplayFlag = true;
         string msg = clientCencorship.getMessageAndRemove(0);
+        bool tryattempt;
+        bool.TryParse(packagetosend.enemieDrops[0].tID, out tryattempt);
+        if (tryattempt)
+        {
+            logger.AddNewMessage(new Logger.LogContainer(msg, true)); // henry
+        }
+        else
+        {
+            logger.AddNewMessage(new Logger.LogContainer(msg)); // henry
+        }
 
-        logger.AddNewMessage(new Logger.LogContainer(msg)); // henry
-        UIpop.transform.GetChild(0).gameObject.GetComponent<Text>().text = msg; //cencored
-        //cencor3ed
-        //UIpop.transform.GetChild(0).gameObject.GetComponent<Text>().text = packagetosend.enemieDrops[0].tmessage;
 
+        UIpop.transform.GetChild(0).gameObject.GetComponent<Text>().text = msg;
         UIpop.transform.GetChild(1).gameObject.GetComponent<Text>().text = packagetosend.enemieDrops[0].tcurr.ToString();
         UIpop.transform.GetChild(2).gameObject.GetComponent<Text>().text = packagetosend.enemieDrops[0].titem1.ToString();
         UIpop.transform.GetChild(3).gameObject.GetComponent<Text>().text = packagetosend.enemieDrops[0].titem2.ToString();
         UIpop.transform.GetChild(4).gameObject.GetComponent<Text>().text = packagetosend.enemieDrops[0].titem3.ToString();
 
-        //currency.Yen = save.safeItem("MythTraces", saveFile.types.INT).toint;
-        //currency.Yen = SaveSystemController.getIntValue("MythTraces");
         SaveSystemController.updateValue("MythTraces", packagetosend.enemieDrops[0].tcurr + SaveSystemController.getIntValue("MythTraces")); 
-        //save.saveitem("MythTraces", currency.Yen);
-        //SaveSystemController.updateValue("MythTraces", currency.Yen);
 
         if (canvas.GetComponent<Items>().gaineditem((Items.AllItems)packagetosend.enemieDrops[0].titem1))
         {

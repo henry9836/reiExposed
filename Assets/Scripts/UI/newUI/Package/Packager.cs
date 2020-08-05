@@ -18,12 +18,27 @@ public class Packager : MonoBehaviour
     public Items.AllItems item2 = Items.AllItems.NONE;
     public Items.AllItems item3 = Items.AllItems.NONE;
 
+    //SQLi filter, it is also serverside
+    private string[] blacklist = {"'",
+                                "\"",
+                                "--",
+                                "#",
+                                "/*",
+                                "*/",
+                                "/*!",
+                                ";",
+                                "UNION",
+                                "EXEC",
+                                "0x",
+                                "\\" };
+
     Items items;
     Color originalMessageColor;
     Color originalCurrencyColor;
 
     private void Start()
     {
+        Cursor.visible = true;
         originalMessageColor = message.color;
         originalCurrencyColor = currency.color;
         submitButton.interactable = false;
@@ -70,6 +85,14 @@ public class Packager : MonoBehaviour
 
     private void FixedUpdate()
     {
+
+        if (Cursor.lockState != CursorLockMode.Confined || !Cursor.visible)
+        {
+            //Confine mouse
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.Confined;
+        }
+
         //Show current attachments
         attachmentOneImage.enabled = !(item1 == Items.AllItems.NONE);
         attachmentTwoImage.enabled = !(item2 == Items.AllItems.NONE);
@@ -88,25 +111,50 @@ public class Packager : MonoBehaviour
         {
             message.color = originalMessageColor;
         }
-        int userInputCurrency = 0;
-        if (int.TryParse(currency.text, out userInputCurrency)){
-            if (userInputCurrency < 0 || userInputCurrency > SaveSystemController.getIntValue("MythTraces"))
+
+        //Check for SQLi
+        bool blacklisted = false;
+        for (int i = 0; i < blacklist.Length; i++)
+        {
+            if (message.text.Contains(blacklist[i]))
             {
-                currency.color = Color.red;
-            }
-            else
-            {
-                currency.color = originalCurrencyColor;
+                blacklisted = true;
+                break;
             }
         }
 
-        if ((message.text.Length > 0 && message.text.Length <= 230) && (int.Parse(currency.text) >= 10) && (int.Parse(currency.text) <= SaveSystemController.getIntValue("MythTraces")))
+        //If passed SQLi checks
+        if (!blacklisted)
         {
-            submitButton.interactable = true;
+            //Check for valid input currenecy
+            int userInputCurrency = 0;
+            if (int.TryParse(currency.text, out userInputCurrency))
+            {
+                if (userInputCurrency < 0 || userInputCurrency > SaveSystemController.getIntValue("MythTraces"))
+                {
+                    currency.color = Color.red;
+                    return;
+                }
+                else
+                {
+                    currency.color = originalCurrencyColor;
+                }
+            }
+
+            if ((message.text.Length > 0 && message.text.Length <= 230) && (int.Parse(currency.text) >= 0) && (int.Parse(currency.text) <= SaveSystemController.getIntValue("MythTraces")))
+            {
+                submitButton.interactable = true;
+            }
+            else
+            {
+                submitButton.interactable = false;
+            }
         }
+        //Has a blacklisted character
         else
         {
             submitButton.interactable = false;
+            message.color = Color.red;
         }
     }
 
@@ -135,6 +183,7 @@ public class Packager : MonoBehaviour
 
         //Lock mouse
         Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
 
         //Close packager
         gameObject.SetActive(false);

@@ -37,13 +37,14 @@ public class enterToTalk : MonoBehaviour
     {
         if (standing == true)
         {
-            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter)) // press eneter to acess shop
             {
                 ShopNowOpen(true);
             }
         }
     }
 
+    //do stuff when enter / leave
     public void ShopNowOpen(bool isOpen)
     {
         if (isOpen == true)
