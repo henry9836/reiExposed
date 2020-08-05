@@ -4,11 +4,24 @@ using UnityEngine;
 
 public class fistpersoncontroler : MonoBehaviour
 {
-    public float mouseSpeed = 1.0f;
+    public float mouseSpeed = 10.0f;
     private Vector3 rotation;
     public CharacterController CC;
     public float speed;
     public GameObject THECAM;
+
+    private float pitch = 0;
+    private float yaw = 0;
+    public void SetPitch(float newPitch)
+    {
+        pitch = Mathf.Clamp(newPitch, -89.99f, 89.99f);
+        THECAM.transform.localEulerAngles = new Vector3(pitch, 0, 0);
+    }
+    public void SetYaw(float newYaw)
+    {
+        yaw = Mathf.Repeat(newYaw, 360);
+        transform.localEulerAngles = new Vector3(0, yaw, 0);
+    }
 
     void Update()
     {
@@ -29,14 +42,7 @@ public class fistpersoncontroler : MonoBehaviour
             CC.Move((hoz + vrt + fall).normalized * Time.deltaTime * speed);
         }
 
-
-        rotation.y += Input.GetAxis("Mouse X");
-        rotation.x += -Input.GetAxis("Mouse Y");
-
-        rotation.x = Mathf.Clamp(rotation.x, -89.0f, 89.0f);
-
-        THECAM.transform.eulerAngles = new Vector2(rotation.x, THECAM.transform.eulerAngles.y) * mouseSpeed;
-
-        transform.eulerAngles = new Vector2(0.0f, rotation.y) * mouseSpeed;
+        SetPitch(pitch + -Input.GetAxis("Mouse Y") * mouseSpeed * Time.deltaTime);
+        SetYaw(yaw + Input.GetAxis("Mouse X") * mouseSpeed * Time.deltaTime);
     }
 }
