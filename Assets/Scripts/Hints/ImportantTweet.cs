@@ -71,4 +71,14 @@ public class ImportantTweet : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Player")
+        {
+            GetComponent<BoxCollider>().enabled = false;
+            triggerTweet();
+            Destroy(gameObject);
+        }
+    }
+
 }
