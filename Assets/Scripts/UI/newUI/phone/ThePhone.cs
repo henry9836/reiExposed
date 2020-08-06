@@ -53,6 +53,8 @@ public class ThePhone : MonoBehaviour
     //public GameObject uitest;
     ClueController clueCtrl;
 
+    public bool inbossroom;
+    public GameObject boss;
 
     public enum phonestates 
     {
@@ -86,12 +88,13 @@ public class ThePhone : MonoBehaviour
         {
             case phonestates.NONE: // when phone is not open
                 {
-
-                    if (Input.GetKeyDown(KeyCode.Tab))
+                    if (!this.transform.GetChild(7).gameObject.activeSelf && !this.transform.GetChild(2).GetComponent<pauseMenu>().paused)
                     {
-                        openingephone(true);
+                        if (Input.GetKeyDown(KeyCode.Tab))
+                        {
+                            openingephone(true);
+                        }
                     }
-
                     break;
                 }
             case phonestates.HOME: // from main menu
@@ -181,7 +184,7 @@ public class ThePhone : MonoBehaviour
                     }
 
                     //tab fully exists the phone
-                    if (Input.GetKeyDown(KeyCode.Tab))
+                    if (Input.GetKeyDown(KeyCode.Tab) || Input.GetButtonDown("Pause"))
                     {
                         openingephone(false);
                     }
@@ -209,40 +212,102 @@ public class ThePhone : MonoBehaviour
                     fov = Mathf.Clamp(fov, 2f, 100.0f);
                     phonecam.GetComponent<Camera>().fieldOfView = fov;
 
-                    sec1timer += Time.deltaTime;
-                    if (sec1timer > 0.1f)
+
+                    if (!inbossroom)
                     {
-                        sec1timer = 0.0f;
-                        checkPhotoValid(false);
+                        sec1timer += Time.deltaTime;
+                        if (sec1timer > 0.1f)
+                        {
+                            sec1timer = 0.0f;
+                            checkPhotoValid(false);
+                        }
+
+                        //take photo
+                        if (Input.GetMouseButtonDown(0))
+                        {
+                            checkPhotoValid(true);
+                        }
+                        else if (Input.GetKeyDown(KeyCode.Tab) || Input.GetButtonDown("Pause")) // close phone
+                        {
+                            float test = rei.transform.GetChild(0).rotation.eulerAngles.y;
+                            Quaternion facing = Quaternion.Euler(0, test, 0);
+
+                            rei.transform.GetChild(0).rotation = Quaternion.Euler(0, rei.GetComponent<fistpersoncontroler>().yaw, 0);
+                            rei.transform.GetChild(0).GetChild(0).rotation = Quaternion.identity;
+                            camMode = false;
+                            BackToMenu();
+
+                            openingephone(false);
+                        }
+                        else if (Input.GetMouseButtonDown(1))//back to menu
+                        {
+                            float test = rei.transform.GetChild(0).rotation.eulerAngles.y;
+                            Quaternion facing = Quaternion.Euler(0, test, 0);
+
+                            rei.transform.GetChild(0).rotation = Quaternion.Euler(0, rei.GetComponent<fistpersoncontroler>().yaw, 0);
+                            rei.transform.GetChild(0).GetChild(0).rotation = Quaternion.identity;
+                            camMode = false;
+                            BackToMenu();
+                        }
+                    }
+                    else
+                    {
+                        clueglow.transform.GetChild(0).GetComponent<Text>().text = "take photo of the boss";
+
+
+                        //take photo
+                        if (Input.GetMouseButtonDown(0))
+                        {
+                            VFXController vfx = boss.GetComponent<VFXController>();
+                            for (int i = 0; i < boss.GetComponent<VFXController>().bodysNoVFX.Count; i++)
+                            {
+                                if (vfx.bodysNoVFX[i].GetComponent<BossRevealSurfaceController>())
+                                {
+                                    if (vfx.bodysNoVFX[i].GetComponent<BossRevealSurfaceController>().isPlayerLookingAtMe())
+                                    {
+                                        vfx.bodysNoVFX[i].GetComponent<BossRevealSurfaceController>().EnableSurface();
+                                        vfx.bodysNoVFX.RemoveAt(i);
+                                    }
+                                }
+                                else
+                                {
+                                    vfx.bodysNoVFX.RemoveAt(i);
+                                }
+
+                            }
+
+
+
+                        }
+                        else if (Input.GetKeyDown(KeyCode.Tab) || Input.GetButtonDown("Pause")) // close phone
+                        {
+                            float test = rei.transform.GetChild(0).rotation.eulerAngles.y;
+                            Quaternion facing = Quaternion.Euler(0, test, 0);
+
+                            rei.transform.GetChild(0).rotation = Quaternion.Euler(0, rei.GetComponent<fistpersoncontroler>().yaw, 0);
+                            rei.transform.GetChild(0).GetChild(0).rotation = Quaternion.identity;
+                            camMode = false;
+                            BackToMenu();
+
+                            openingephone(false);
+                        }
+                        else if (Input.GetMouseButtonDown(1))//back to menu
+                        {
+                            float test = rei.transform.GetChild(0).rotation.eulerAngles.y;
+                            Quaternion facing = Quaternion.Euler(0, test, 0);
+
+                            rei.transform.GetChild(0).rotation = Quaternion.Euler(0, rei.GetComponent<fistpersoncontroler>().yaw, 0);
+                            rei.transform.GetChild(0).GetChild(0).rotation = Quaternion.identity;
+                            camMode = false;
+                            BackToMenu();
+                        }
+
                     }
 
-                    //take photo
-                    if (Input.GetMouseButtonDown(0))
-                    {
-                        checkPhotoValid(true);
-                    }
-                    else if (Input.GetKeyDown(KeyCode.Tab)) // close phone
-                    {
-                        float test = rei.transform.GetChild(0).rotation.eulerAngles.y;
-                        Quaternion facing = Quaternion.Euler(0, test, 0);
 
-                        rei.transform.GetChild(0).rotation = Quaternion.Euler(0, rei.GetComponent<fistpersoncontroler>().yaw, 0);
-                        rei.transform.GetChild(0).GetChild(0).rotation = Quaternion.identity;
-                        camMode = false;
-                        BackToMenu();
+ 
 
-                        openingephone(false);
-                    }
-                    else if (Input.GetMouseButtonDown(1))//back to menu
-                    {
-                        float test = rei.transform.GetChild(0).rotation.eulerAngles.y;
-                        Quaternion facing = Quaternion.Euler(0, test, 0);
 
-                        rei.transform.GetChild(0).rotation = Quaternion.Euler(0, rei.GetComponent<fistpersoncontroler>().yaw, 0);
-                        rei.transform.GetChild(0).GetChild(0).rotation = Quaternion.identity;
-                        camMode = false;
-                        BackToMenu();
-                    }
 
                     break;
                 } 
@@ -290,7 +355,7 @@ public class ThePhone : MonoBehaviour
                             StartCoroutine(newgm.togrow());
                         }
                     }
-                    if (Input.GetKeyDown(KeyCode.Tab)) //close phone
+                    if (Input.GetKeyDown(KeyCode.Tab) || Input.GetButtonDown("Pause")) //close phone
                     {
                         BackToMenu();
                         openingephone(false);
@@ -353,7 +418,7 @@ public class ThePhone : MonoBehaviour
                     }
 
                     //close
-                    if (Input.GetKeyDown(KeyCode.Tab))
+                    if (Input.GetKeyDown(KeyCode.Tab) || Input.GetButtonDown("Pause"))
                     {
                         BackToMenu();
                         openingephone(false);
@@ -367,7 +432,7 @@ public class ThePhone : MonoBehaviour
                 }
             case phonestates.KEY: // key page
                 {
-                    if (Input.GetKeyDown(KeyCode.Tab)) // close
+                    if (Input.GetKeyDown(KeyCode.Tab) || Input.GetButtonDown("Pause")) // close
                     {
                         BackToMenu();
                         openingephone(false);
@@ -853,5 +918,10 @@ public class ThePhone : MonoBehaviour
         ThePhoneUI.transform.GetChild(3).GetChild(4).GetChild(2).GetComponent<Text>().text = insert;
         ThePhoneUI.transform.GetChild(3).GetChild(4).GetChild(1).GetComponent<Image>().fillAmount = (float)truecount / 3.0f;
 
+    }
+
+    public void enterbossroom(bool enter)
+    {
+        inbossroom = enter;
     }
 }

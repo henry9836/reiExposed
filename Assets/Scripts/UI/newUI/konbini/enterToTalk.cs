@@ -51,9 +51,10 @@ public class enterToTalk : MonoBehaviour
         {
             konbiniUI.SetActive(true);
             rei.GetComponent<CharacterController>().enabled = false;
-
+            biginvinstorage.transform.root.GetChild(8).gameObject.SetActive(false);
             Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = true;
+            biginvinstorage.transform.root.GetComponent<ThePhone>().constantUI.SetActive(false);
         }
         else
         {
@@ -61,6 +62,8 @@ public class enterToTalk : MonoBehaviour
             rei.GetComponent<CharacterController>().enabled = true;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+            biginvinstorage.transform.root.GetComponent<ThePhone>().constantUI.SetActive(true);
+
         }
 
 

@@ -32,10 +32,6 @@ public class umbrella : MonoBehaviour
 
     private bool latetest = false;
 
-    private int shottoload = -999;
-    public float Shotdamage = 15.0f;
-
-    public bool inbossroom = false;
     public GameObject shotUI;
 
     public bool phoneLock = false;
@@ -158,39 +154,14 @@ public class umbrella : MonoBehaviour
         latetest = true;
         VFX.GetComponent<VisualEffect>().SetFloat("timer", 1.0f);
 
-        if (inbossroom == true)
+        //shotUI.SetActive(true);
+        //shotUI.transform.GetChild(0).GetComponent<Text>().text = "E to take photo";
+
+        
+        if (Input.GetAxis("Fire1") > 0.5f) // shoot
         {
-            shotUI.SetActive(true);
-            shotUI.transform.GetChild(0).GetComponent<Text>().text = "E to take photo";
-
-           
-            if (Input.GetAxis("Fire1") > 0.5f) // shoot
-            {
-                animator.SetTrigger("Shoot");
-                bang();
-            }
-            else if (Input.GetKeyDown(KeyCode.E)) // take photo, may move later
-            {
-
-                cooldown = true;
-                VFXController vfx = boss.GetComponent<VFXController>();
-                for (int i = 0; i < boss.GetComponent<VFXController>().bodysNoVFX.Count; i++)
-                {
-                    if (vfx.bodysNoVFX[i].GetComponent<BossRevealSurfaceController>())
-                    {
-                        if (vfx.bodysNoVFX[i].GetComponent<BossRevealSurfaceController>().isPlayerLookingAtMe())
-                        {
-                            vfx.bodysNoVFX[i].GetComponent<BossRevealSurfaceController>().EnableSurface();
-                            vfx.bodysNoVFX.RemoveAt(i);
-                        }
-                    }
-                    else
-                    {
-                        vfx.bodysNoVFX.RemoveAt(i);
-                    }
-
-                }
-            }
+            animator.SetTrigger("Shoot");
+            bang();
         }
     }
 
@@ -248,6 +219,7 @@ public class umbrella : MonoBehaviour
                         Hit.collider.GetComponent<AIObject>().health -= damage;
 
                         Debug.Log("attackign for " + damage);
+                        break;
                     }
                     else if (Hit.collider.GetComponent<EnemyController>())
                     {
@@ -257,18 +229,16 @@ public class umbrella : MonoBehaviour
                         Hit.collider.GetComponent<EnemyController>().ChangeHealth(-damage);
 
                         Debug.Log("attackign for " + damage);
+                        break;
+
                     }
                 }
-                Debug.Log("bang");
 
                 //spawn bullet hole
                 if (Hit.collider.gameObject.layer == 0) //ground and wall
                 {
-                    Debug.Log("hole");
-
                     Quaternion hitRotation = Quaternion.FromToRotation(Vector3.forward, Hit.normal);
                     Vector3 hitposition = Hit.point + (Hit.normal * 0.01f);
-
                     GameObject hole = Instantiate(xinsButthole, hitposition, hitRotation);
                 }
             }

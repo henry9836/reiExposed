@@ -6,9 +6,7 @@ public class powerup : MonoBehaviour
 {
     public enum powerupType
     {
-        HEALTH,
-        STAMINA,
-        
+        HEALTH,        
     };
 
     public powerupType type;
@@ -23,17 +21,8 @@ public class powerup : MonoBehaviour
 
             if (type == powerupType.HEALTH)
             {
-                float healthToAdd = Mathf.Clamp(50.0f, 0.0f, pc.maxHealth - pc.health);
-
-                pc.health += healthToAdd;
-
+                pc.health = pc.maxHealth;
             }
-            else if (type == powerupType.STAMINA)
-            {
-
-            }
-
-
 
             Destroy(this.gameObject);
         }

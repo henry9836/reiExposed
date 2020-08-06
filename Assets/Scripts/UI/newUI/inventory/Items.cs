@@ -347,12 +347,17 @@ public class Items : MonoBehaviour
                     //Calc
                     float before = player.umbreallaDmg;
                     float result = before * percentToChange;
+
+                    float beforegun = player.transform.GetComponent<umbrella>().MaxDamage;
+                    float resultgun = beforegun * percentToChange;
                     //Apply
                     player.umbreallaDmg += result;
+                    player.transform.GetComponent<umbrella>().MaxDamage += resultgun;
                     //Wait
                     yield return new WaitForSeconds(amountOfTimeToApply);
                     //Unapply
                     player.umbreallaDmg -= result;
+                    player.transform.GetComponent<umbrella>().MaxDamage -= resultgun;
                     Debug.Log("🦆 Removed Damage");
                     break;
                 }
