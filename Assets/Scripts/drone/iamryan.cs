@@ -38,8 +38,6 @@ public class iamryan : MonoBehaviour
     {
         //editwindow = (window)EditorWindow.GetWindow(typeof(window));
 
-
-
         //editwindow.stign = save.safeItem("stign", saveFile.types.STRING).tostring;
         //editwindow.groupEnabled = System.Convert.ToBoolean(save.safeItem("groupEnabled", saveFile.types.STRING).tostring);
         //editwindow.groupEnabled2 = System.Convert.ToBoolean(save.safeItem("groupEnabled2", saveFile.types.STRING).tostring);
