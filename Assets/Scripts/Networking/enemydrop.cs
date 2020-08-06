@@ -44,20 +44,19 @@ public class enemydrop : MonoBehaviour
         //Init Popup Message
         UIpop.SetActive(true);
 
-        currencyText = UIpop.transform.GetChild(0).GetChild(0).GetComponent<Text>();
-        messageText = UIpop.transform.GetChild(0).GetChild(1).GetComponent<Text>();
+        Debug.Log(UIpop.gameObject.name);
+        Debug.Log(UIpop.transform.GetChild(0).gameObject.name);
+        Debug.Log(UIpop.transform.GetChild(0).GetChild(0).gameObject.name);
+        Debug.Log(UIpop.transform.GetChild(0).GetChild(0).GetComponent<Text>());
+
+        messageText = UIpop.transform.GetChild(0).GetChild(0).GetComponent<Text>();
+        currencyText = UIpop.transform.GetChild(0).GetChild(1).GetComponent<Text>();
         itemOneImg = UIpop.transform.GetChild(0).GetChild(2).GetComponent<Image>();
         itemTwoImg = UIpop.transform.GetChild(0).GetChild(3).GetComponent<Image>();
         itemThreeImg = UIpop.transform.GetChild(0).GetChild(4).GetComponent<Image>();
         itemOneTitle = itemOneImg.transform.GetChild(0).GetComponent<Text>();
         itemTwoTitle = itemTwoImg.transform.GetChild(0).GetComponent<Text>();
         itemThreeTitle = itemThreeImg.transform.GetChild(0).GetComponent<Text>();
-
-        //Populate items list
-        for (int i = 0; i < GetComponent<Items>().images.Count; i++)
-        {
-            sprites.Add(GetComponent<Items>().images[i]);
-        }
 
         //Make images invisible
         itemOneImg.gameObject.SetActive(false);
@@ -132,8 +131,6 @@ public class enemydrop : MonoBehaviour
         currencyText.text = packagetosend.enemieDrops[0].tcurr.ToString();
 
         //Make images visible if we have an item and assign title
-
-
 
         if ((packagetosend.enemieDrops[0].titem1 != 0))
         {
