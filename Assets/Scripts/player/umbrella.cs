@@ -42,6 +42,7 @@ public class umbrella : MonoBehaviour
     public float MaxDamage = 25.0f;
     public float pellets = 8.0f;
     public GameObject xinsButthole;
+    public GameObject crosshair;
 
 
 
@@ -96,7 +97,10 @@ public class umbrella : MonoBehaviour
                 {
                     movcont.strafemode = false;
                     shotUI.SetActive(false);
-
+                    crosshair.transform.GetChild(0).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+                    crosshair.transform.GetChild(1).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+                    crosshair.transform.GetChild(2).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+                    crosshair.transform.GetChild(3).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
                     cooldown = true;
                 }
             }
@@ -104,7 +108,10 @@ public class umbrella : MonoBehaviour
             {
                 movcont.strafemode = false;
                 shotUI.SetActive(false);
-
+                crosshair.transform.GetChild(0).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+                crosshair.transform.GetChild(1).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+                crosshair.transform.GetChild(2).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+                crosshair.transform.GetChild(3).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
                 //animator.ResetTrigger("Block");
                 animator.SetBool("Blocking", false);
                 movcont.attacking = false;
@@ -113,7 +120,10 @@ public class umbrella : MonoBehaviour
         else
         {
             shotUI.SetActive(false);
-
+            crosshair.transform.GetChild(0).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+            crosshair.transform.GetChild(1).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+            crosshair.transform.GetChild(2).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+            crosshair.transform.GetChild(3).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
             animator.SetBool("Blocking", false);
             movcont.attacking = false;
             cooldowntimer += Time.deltaTime;
@@ -145,6 +155,22 @@ public class umbrella : MonoBehaviour
             animator.SetTrigger("Block");
             animator.SetBool("Blocking", true);
         }
+
+        if (canfire == true)
+        {
+            crosshair.transform.GetChild(0).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            crosshair.transform.GetChild(1).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            crosshair.transform.GetChild(2).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            crosshair.transform.GetChild(3).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        }
+        else
+        {
+            crosshair.transform.GetChild(0).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+            crosshair.transform.GetChild(1).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+            crosshair.transform.GetChild(2).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+            crosshair.transform.GetChild(3).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+        }
+
     }
 
     //aiming down sight
@@ -152,13 +178,13 @@ public class umbrella : MonoBehaviour
     {
         movcont.attacking = true;
         latetest = true;
-        VFX.GetComponent<VisualEffect>().SetFloat("timer", 1.0f);
+        //VFX.GetComponent<VisualEffect>().SetFloat("timer", 1.0f);
 
         //shotUI.SetActive(true);
         //shotUI.transform.GetChild(0).GetComponent<Text>().text = "E to take photo";
 
         
-        if (Input.GetAxis("Fire1") > 0.5f) // shoot
+        if (Input.GetAxis("Fire1") > 0.5f && canfire == true) // shoot
         {
             animator.SetTrigger("Shoot");
             bang();
