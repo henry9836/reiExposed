@@ -16,15 +16,6 @@ public class slot : MonoBehaviour
 
     public List<GameObject> allslots = new List<GameObject> {};
 
-    //private void Awake()
-    //{
-    //    for (int i = 0; i < itemref.biginvinsize; i++)
-    //    {
-    //        allslots.Add(this.gameObject.transform.GetChild(i).gameObject);
-    //        this.gameObject.transform.GetChild(i).gameObject.GetComponent<slotno>().slotnumber = i;
-    //    }
-    //}
-
     public void itemchange()
     {
 
@@ -91,6 +82,46 @@ public class slot : MonoBehaviour
             else
             {
                 itemref.equipItem(test2);
+            }
+
+            itemchange();
+        }
+
+
+    }
+
+
+
+    public void onclickphone(Object self)
+    {
+        GameObject test = (GameObject)self;
+        int test2 = test.gameObject.GetComponent<slotno>().slotnumber;
+        singleItem tmp = null;
+
+        try
+        {
+            if (itemref.equipped[test2] != null)
+            {
+                tmp = itemref.equipped[test2];
+            }
+
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogWarning(e.Message);
+        }
+
+        if (tmp != null)
+        {
+            item = itemref.images[(int)tmp.itemtype];
+
+            if (tmp.equipped == true)
+            {
+                itemref.upequipItem(tmp.biginvinpos);
+            }
+            else
+            {
+                itemref.equipItem(tmp.biginvinpos);
             }
 
             itemchange();
