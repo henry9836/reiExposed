@@ -44,7 +44,8 @@ public class movementController : MonoBehaviour
     private PlayerController pc;
     private CharacterController ch;
     private Animator animator;
-    private Vector3 moveDir = Vector3.zero;
+    [HideInInspector]
+    public Vector3 moveDir = Vector3.zero;
     private Vector3 moveDirCam = Vector3.zero; 
     private Vector3 initalPosition;
     private Vector3 beforeRollPosition;

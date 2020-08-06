@@ -17,6 +17,7 @@ public class AIFlameButtController : MonoBehaviour
     bool flamed = false;
     bool playerInBox = false;
 
+
     //Triggered by animator
     public void flameItUp()
     {
@@ -64,6 +65,7 @@ public class AIFlameButtController : MonoBehaviour
         if (other.tag == "Player")
         {
             animator.SetBool("Attacking", false);
+            animator.ResetTrigger("FlameButt");
             flamed = false;
             playerInBox = false;
         }

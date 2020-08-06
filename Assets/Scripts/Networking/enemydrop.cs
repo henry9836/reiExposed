@@ -46,8 +46,8 @@ public class enemydrop : MonoBehaviour
     public void manualMessage(string message, int curr, int item1, int item2, int item3, bool important)
     {
         datadump tmp = new datadump(2, important.ToString(), message, curr, item1, item2, item3);
-        packagetosend.enemieDrops.Add(tmp);
-        clientcencorship.messages.Add(tmp.tmessage);
+        packagetosend.enemieDrops.Insert(0, tmp);
+        clientcencorship.messages.Insert(0, message);
         messagesToShow++;
     }
 
@@ -73,11 +73,11 @@ public class enemydrop : MonoBehaviour
         bool.TryParse(packagetosend.enemieDrops[0].tID, out tryattempt);
         if (tryattempt)
         {
-            logger.AddNewMessage(new Logger.LogContainer(msg)); // henry
+            logger.AddNewMessage(new Logger.LogContainer(msg, true)); // henry
         }
         else
         {
-            logger.AddNewMessage(new Logger.LogContainer(msg, true)); // henry
+            logger.AddNewMessage(new Logger.LogContainer(msg)); // henry
         }
 
 

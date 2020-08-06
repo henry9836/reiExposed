@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(AIAttackContainer))]
 [RequireComponent(typeof(AIModeSwitcher))]
@@ -21,6 +22,7 @@ public class AIObject : MonoBehaviour
     public PlayerController playerCtrl;
     public Animator forwardAnimationsTo;
     public bool startInSleepState = false;
+    public GameObject damagedText;
 
     public float health = 300.0f;
     public float staminaRegen = 2.5f;
@@ -280,12 +282,23 @@ public class AIObject : MonoBehaviour
                 {
                     health -= playerCtrl.umbreallaDmg;
 
+                    GameObject tmp = GameObject.Instantiate(damagedText, other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position), Quaternion.identity);
+                    tmp.transform.SetParent(this.transform, true);
+                    tmp.transform.GetChild(0).GetComponent<Text>().text = "-" + playerCtrl.umbreallaDmg.ToString("F0");
+
                 }
                 else
                 {
+                    float diff = health - revealAmount;
+                    GameObject tmp = GameObject.Instantiate(damagedText, other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position), Quaternion.identity);
+                    tmp.transform.SetParent(this.transform, true);
+                    tmp.transform.GetChild(0).GetComponent<Text>().text = "-" + diff.ToString("F0");
+
                     health = revealAmount;
 
                 }
+
+
 
             }
         }
