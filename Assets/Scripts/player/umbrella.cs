@@ -158,6 +158,16 @@ public class umbrella : MonoBehaviour
 
         if (canfire == true)
         {
+            if ((Mathf.Abs(this.GetComponent<movementController>().moveDir.z) + Mathf.Abs(this.GetComponent<movementController>().moveDir.x)) > 1.0f)
+            {
+                bulletSpread = 0.165f;
+            }
+            else
+            {
+                bulletSpread = 0.08f;
+            }
+
+
             crosshair.transform.GetChild(0).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
             crosshair.transform.GetChild(1).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
             crosshair.transform.GetChild(2).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
