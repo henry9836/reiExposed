@@ -51,6 +51,7 @@ public class enterToTalk : MonoBehaviour
         {
             konbiniUI.SetActive(true);
             rei.GetComponent<CharacterController>().enabled = false;
+
             Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = true;
         }

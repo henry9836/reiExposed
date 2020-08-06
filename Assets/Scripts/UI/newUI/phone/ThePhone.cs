@@ -223,12 +223,23 @@ public class ThePhone : MonoBehaviour
                     }
                     else if (Input.GetKeyDown(KeyCode.Tab)) // close phone
                     {
+                        float test = rei.transform.GetChild(0).rotation.eulerAngles.y;
+                        Quaternion facing = Quaternion.Euler(0, test, 0);
+
+                        rei.transform.GetChild(0).rotation = Quaternion.Euler(0, rei.GetComponent<fistpersoncontroler>().yaw, 0);
+                        rei.transform.GetChild(0).GetChild(0).rotation = Quaternion.identity;
                         camMode = false;
                         BackToMenu();
+
                         openingephone(false);
                     }
                     else if (Input.GetMouseButtonDown(1))//back to menu
                     {
+                        float test = rei.transform.GetChild(0).rotation.eulerAngles.y;
+                        Quaternion facing = Quaternion.Euler(0, test, 0);
+
+                        rei.transform.GetChild(0).rotation = Quaternion.Euler(0, rei.GetComponent<fistpersoncontroler>().yaw, 0);
+                        rei.transform.GetChild(0).GetChild(0).rotation = Quaternion.identity;
                         camMode = false;
                         BackToMenu();
                     }
@@ -529,11 +540,6 @@ public class ThePhone : MonoBehaviour
 
         clueglow.transform.GetChild(0).GetComponent<Text>().text = "";
 
-        float test = rei.transform.GetChild(0).rotation.eulerAngles.y;
-        Quaternion facing = Quaternion.Euler(0, test, 0);
-
-        rei.transform.GetChild(0).rotation = Quaternion.Euler(0, rei.GetComponent<fistpersoncontroler>().yaw, 0);
-        rei.transform.GetChild(0).GetChild(0).rotation = Quaternion.identity;
     }
 
     //buy item
