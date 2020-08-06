@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 3.0812476, g: 6.2708173, b: 14.307414, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3649,10 +3649,6 @@ PrefabInstance:
       propertyPath: shotUI
       value: 
       objectReference: {fileID: 1922246021029110868}
-    - target: {fileID: 2081805776, guid: 665d9e6b8575af745bb88a0116e1de10, type: 3}
-      propertyPath: MaxDamage
-      value: 80
-      objectReference: {fileID: 0}
     - target: {fileID: 1943698811393534155, guid: 665d9e6b8575af745bb88a0116e1de10,
         type: 3}
       propertyPath: m_Name
@@ -3663,11 +3659,6 @@ PrefabInstance:
       propertyPath: damaged
       value: 
       objectReference: {fileID: 4616006318293536552}
-    - target: {fileID: 3144247446528475113, guid: 665d9e6b8575af745bb88a0116e1de10,
-        type: 3}
-      propertyPath: umbreallaDmg
-      value: 34
-      objectReference: {fileID: 0}
     - target: {fileID: 5121230018133350252, guid: 665d9e6b8575af745bb88a0116e1de10,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4413,20 +4404,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8109513895668568769, guid: 994d49ae87f46a441ae4af7dde8c1f46,
-        type: 3}
-      propertyPath: health
-      value: 10000
-      objectReference: {fileID: 0}
     - target: {fileID: 8109513895668568770, guid: 994d49ae87f46a441ae4af7dde8c1f46,
         type: 3}
       propertyPath: m_Name
       value: Reprisal Of Flame
-      objectReference: {fileID: 0}
-    - target: {fileID: 8587140511859883473, guid: 994d49ae87f46a441ae4af7dde8c1f46,
-        type: 3}
-      propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.size
-      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8587140511859883473, guid: 994d49ae87f46a441ae4af7dde8c1f46,
         type: 3}
@@ -4435,34 +4416,14 @@ PrefabInstance:
       objectReference: {fileID: 532655769}
     - target: {fileID: 8587140511859883473, guid: 994d49ae87f46a441ae4af7dde8c1f46,
         type: 3}
-      propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8587140511859883473, guid: 994d49ae87f46a441ae4af7dde8c1f46,
-        type: 3}
-      propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8587140511859883473, guid: 994d49ae87f46a441ae4af7dde8c1f46,
-        type: 3}
       propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
       objectReference: {fileID: 800928086}
     - target: {fileID: 8587140511859883473, guid: 994d49ae87f46a441ae4af7dde8c1f46,
         type: 3}
-      propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
-      value: GameOver
-      objectReference: {fileID: 0}
-    - target: {fileID: 8587140511859883473, guid: 994d49ae87f46a441ae4af7dde8c1f46,
-        type: 3}
-      propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 8587140511859883473, guid: 994d49ae87f46a441ae4af7dde8c1f46,
-        type: 3}
-      propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: StartCalm
-      objectReference: {fileID: 0}
+      propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.data[3].m_Target
+      value: 
+      objectReference: {fileID: 160894799}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 994d49ae87f46a441ae4af7dde8c1f46, type: 3}
 --- !u!1 &2090097218 stripped
@@ -4531,6 +4492,17 @@ MonoBehaviour:
       - m_Target: {fileID: 532655769}
         m_MethodName: StartBattle
         m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 160894799}
+        m_MethodName: enterbossroom
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -5220,6 +5192,10 @@ PrefabInstance:
       propertyPath: phonecam
       value: 
       objectReference: {fileID: 1812644324}
+    - target: {fileID: 1768846193, guid: ada5bee6243ddf04e96e40a6209bf7fd, type: 3}
+      propertyPath: boss
+      value: 
+      objectReference: {fileID: 1847212817}
     - target: {fileID: 1797394021, guid: ada5bee6243ddf04e96e40a6209bf7fd, type: 3}
       propertyPath: m_Material
       value: 

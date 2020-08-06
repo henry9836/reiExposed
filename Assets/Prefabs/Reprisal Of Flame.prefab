@@ -43409,7 +43409,9 @@ MonoBehaviour:
   playerCtrl: {fileID: 0}
   forwardAnimationsTo: {fileID: 575316264522294907}
   startInSleepState: 1
-  health: 300
+  damagedText: {fileID: 7401280080073061358, guid: febedf0338a1da8438f0280ae306b1d0,
+    type: 3}
+  health: 5000
   staminaRegen: 3
   revealThreshold: 0.651
   selectedAttack: {fileID: 0}
@@ -43914,8 +43916,30 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 0}
+        m_MethodName: StartCalm
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
         m_MethodName: GameOver
         m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_MethodName: enterbossroom
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
