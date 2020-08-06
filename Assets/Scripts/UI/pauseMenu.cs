@@ -45,8 +45,6 @@ public class pauseMenu : MonoBehaviour
         GameObject.FindGameObjectWithTag("Player").transform.GetChild(0).GetComponent<cameraControler>().mouseSensitivity = AdjusterInfo.calcSlider(SaveSystemController.getFloatValue("mouseSensitivity"));
         sett.tocencor = SaveSystemController.getBoolValue("toCensor");
         AudioListener.volume = AdjusterInfo.calcSlider(SaveSystemController.getFloatValue("volume")) / 10.0f;
-
-
     }
 
     //Restricts pausing of the game
