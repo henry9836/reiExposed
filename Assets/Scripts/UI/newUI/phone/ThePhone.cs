@@ -86,12 +86,13 @@ public class ThePhone : MonoBehaviour
         {
             case phonestates.NONE: // when phone is not open
                 {
-
-                    if (Input.GetKeyDown(KeyCode.Tab))
+                    if (!this.transform.GetChild(7).gameObject.activeSelf && !this.transform.GetChild(2).GetComponent<pauseMenu>().paused)
                     {
-                        openingephone(true);
+                        if (Input.GetKeyDown(KeyCode.Tab))
+                        {
+                            openingephone(true);
+                        }
                     }
-
                     break;
                 }
             case phonestates.HOME: // from main menu
@@ -181,7 +182,7 @@ public class ThePhone : MonoBehaviour
                     }
 
                     //tab fully exists the phone
-                    if (Input.GetKeyDown(KeyCode.Tab))
+                    if (Input.GetKeyDown(KeyCode.Tab) || Input.GetButtonDown("Pause"))
                     {
                         openingephone(false);
                     }
@@ -221,7 +222,7 @@ public class ThePhone : MonoBehaviour
                     {
                         checkPhotoValid(true);
                     }
-                    else if (Input.GetKeyDown(KeyCode.Tab)) // close phone
+                    else if (Input.GetKeyDown(KeyCode.Tab) || Input.GetButtonDown("Pause")) // close phone
                     {
                         float test = rei.transform.GetChild(0).rotation.eulerAngles.y;
                         Quaternion facing = Quaternion.Euler(0, test, 0);
@@ -290,7 +291,7 @@ public class ThePhone : MonoBehaviour
                             StartCoroutine(newgm.togrow());
                         }
                     }
-                    if (Input.GetKeyDown(KeyCode.Tab)) //close phone
+                    if (Input.GetKeyDown(KeyCode.Tab) || Input.GetButtonDown("Pause")) //close phone
                     {
                         BackToMenu();
                         openingephone(false);
@@ -353,7 +354,7 @@ public class ThePhone : MonoBehaviour
                     }
 
                     //close
-                    if (Input.GetKeyDown(KeyCode.Tab))
+                    if (Input.GetKeyDown(KeyCode.Tab) || Input.GetButtonDown("Pause"))
                     {
                         BackToMenu();
                         openingephone(false);
@@ -367,7 +368,7 @@ public class ThePhone : MonoBehaviour
                 }
             case phonestates.KEY: // key page
                 {
-                    if (Input.GetKeyDown(KeyCode.Tab)) // close
+                    if (Input.GetKeyDown(KeyCode.Tab) || Input.GetButtonDown("Pause")) // close
                     {
                         BackToMenu();
                         openingephone(false);

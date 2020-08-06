@@ -33,6 +33,14 @@ public class pageManager : MonoBehaviour
         selectedUI.GetComponent<RectTransform>().localPosition = positions[0] + canvaspos;
     }
 
+    void Update()
+    {
+        if (Input.GetButtonDown("Pause"))
+        {
+            ETT.ShopNowOpen(false);
+
+        }
+    }
 
     public void back()
     {
