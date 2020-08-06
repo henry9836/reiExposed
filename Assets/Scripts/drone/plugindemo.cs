@@ -34,7 +34,12 @@ public class plugindemo : MonoBehaviour
         {
             Debug.Log("holding");
             //rei.transform.parent = drone.transform;
+            rei.GetComponent<movementController>().enabled = false;
             rei.transform.position = drone.transform.position;
+        }
+        else
+        {
+            rei.GetComponent<movementController>().enabled = true;
         }
 
 
