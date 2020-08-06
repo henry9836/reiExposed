@@ -19,6 +19,7 @@ public class pageManager : MonoBehaviour
     }
     public void StorgePage()
     {
+        storagePage.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<slot>().itemchange();
         shopPage.SetActive(false);
         storagePage.SetActive(true);
         selectedUI.GetComponent<RectTransform>().localPosition = positions[1] + canvaspos;
@@ -36,12 +37,5 @@ public class pageManager : MonoBehaviour
     public void back()
     {
         ETT.ShopNowOpen(false);
-    }
-
-    public IEnumerator move()
-    {
- 
-
-        yield return null;
     }
 }
