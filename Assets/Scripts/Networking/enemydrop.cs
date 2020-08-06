@@ -34,6 +34,7 @@ public class enemydrop : MonoBehaviour
     Text itemThreeTitle;
     Text messageText;
     Text currencyText;
+    AudioSource notificationSource;
 
     private void Start()
     {
@@ -57,6 +58,7 @@ public class enemydrop : MonoBehaviour
         itemOneTitle = itemOneImg.transform.GetChild(0).GetComponent<Text>();
         itemTwoTitle = itemTwoImg.transform.GetChild(0).GetComponent<Text>();
         itemThreeTitle = itemThreeImg.transform.GetChild(0).GetComponent<Text>();
+        notificationSource = UIpop.GetComponent<AudioSource>();
 
         //Make images invisible
         itemOneImg.gameObject.SetActive(false);
@@ -128,7 +130,7 @@ public class enemydrop : MonoBehaviour
         //Update and show popup
         UIpop.SetActive(true);
         messageText.text = msg;
-        currencyText.text = packagetosend.enemieDrops[0].tcurr.ToString();
+        currencyText.text = packagetosend.enemieDrops[0].tcurr.ToString() + "￥";
 
         //Make images visible if we have an item and assign title
 
@@ -150,6 +152,8 @@ public class enemydrop : MonoBehaviour
             itemThreeImg.sprite = sprites[packagetosend.enemieDrops[0].titem3];
             itemThreeTitle.text = titles[packagetosend.enemieDrops[0].titem3];
         }
+
+        notificationSource.Play();
 
         //Save new infomation to save system
         SaveSystemController.updateValue("MythTraces", packagetosend.enemieDrops[0].tcurr + SaveSystemController.getIntValue("MythTraces")); 
