@@ -37,21 +37,24 @@ public class enterToTalk : MonoBehaviour
     {
         if (standing == true)
         {
-            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+            if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter)) // press eneter to acess shop
             {
                 ShopNowOpen(true);
             }
         }
     }
 
+    //do stuff when enter / leave
     public void ShopNowOpen(bool isOpen)
     {
         if (isOpen == true)
         {
             konbiniUI.SetActive(true);
             rei.GetComponent<CharacterController>().enabled = false;
+            biginvinstorage.transform.root.GetChild(8).gameObject.SetActive(false);
             Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = true;
+            biginvinstorage.transform.root.GetComponent<ThePhone>().constantUI.SetActive(false);
         }
         else
         {
@@ -59,6 +62,8 @@ public class enterToTalk : MonoBehaviour
             rei.GetComponent<CharacterController>().enabled = true;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+            biginvinstorage.transform.root.GetComponent<ThePhone>().constantUI.SetActive(true);
+
         }
 
 

@@ -27,8 +27,7 @@ public class slot : MonoBehaviour
 
     public void itemchange()
     {
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.Confined;
+
 
         for (int i = 0; i < itemref.biginvinsize; i++)
         {

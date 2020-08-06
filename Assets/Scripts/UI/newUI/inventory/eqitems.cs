@@ -103,6 +103,10 @@ public class eqitems : MonoBehaviour
             }
 
         }
+
+        string insert = itemref.equipped.Count.ToString() + "/8";
+        this.transform.GetChild(9).GetComponent<Text>().text = insert;
+        this.transform.GetChild(0).GetChild(4).GetComponent<Image>().fillAmount = (float)itemref.equipped.Count / 8.0f;
     }
 
 }
