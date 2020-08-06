@@ -32,9 +32,6 @@ public class umbrella : MonoBehaviour
 
     private bool latetest = false;
 
-    private int shottoload = -999;
-    public float Shotdamage = 15.0f;
-
     public bool inbossroom = false;
     public GameObject shotUI;
 
@@ -248,6 +245,7 @@ public class umbrella : MonoBehaviour
                         Hit.collider.GetComponent<AIObject>().health -= damage;
 
                         Debug.Log("attackign for " + damage);
+                        break;
                     }
                     else if (Hit.collider.GetComponent<EnemyController>())
                     {
@@ -257,6 +255,8 @@ public class umbrella : MonoBehaviour
                         Hit.collider.GetComponent<EnemyController>().ChangeHealth(-damage);
 
                         Debug.Log("attackign for " + damage);
+                        break;
+
                     }
                 }
                 Debug.Log("bang");
