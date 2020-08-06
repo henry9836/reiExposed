@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 4.622112, g: 9.406302, b: 21.458145, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -890,6 +890,11 @@ PrefabInstance:
       propertyPath: drone
       value: 
       objectReference: {fileID: 1699116678}
+    - target: {fileID: 8712637155122240272, guid: 497d3223915dc474ca1f8f3164493332,
+        type: 3}
+      propertyPath: rei
+      value: 
+      objectReference: {fileID: 557751157}
     - target: {fileID: 8712637155122240273, guid: 497d3223915dc474ca1f8f3164493332,
         type: 3}
       propertyPath: editwindow
@@ -918,17 +923,17 @@ PrefabInstance:
     - target: {fileID: 8712637155122240279, guid: 497d3223915dc474ca1f8f3164493332,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -112.600006
+      value: -111.23
       objectReference: {fileID: 0}
     - target: {fileID: 8712637155122240279, guid: 497d3223915dc474ca1f8f3164493332,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 43.833023
+      value: 43.3
       objectReference: {fileID: 0}
     - target: {fileID: 8712637155122240279, guid: 497d3223915dc474ca1f8f3164493332,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 100.350006
+      value: 91.72
       objectReference: {fileID: 0}
     - target: {fileID: 8712637155122240279, guid: 497d3223915dc474ca1f8f3164493332,
         type: 3}
@@ -1001,8 +1006,8 @@ Transform:
   m_Children:
   - {fileID: 69367061}
   - {fileID: 742041001}
-  - {fileID: 914982076}
   - {fileID: 1592234084}
+  - {fileID: 914982076}
   - {fileID: 268666216}
   - {fileID: 1118732726}
   - {fileID: 1034869308}
@@ -3182,17 +3187,17 @@ PrefabInstance:
     - target: {fileID: 3941420756096489865, guid: dd5f35268ad12c74b99a593587e1ee04,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -112.600006
+      value: -111.23
       objectReference: {fileID: 0}
     - target: {fileID: 3941420756096489865, guid: dd5f35268ad12c74b99a593587e1ee04,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 43.833023
+      value: 43.3
       objectReference: {fileID: 0}
     - target: {fileID: 3941420756096489865, guid: dd5f35268ad12c74b99a593587e1ee04,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 100.350006
+      value: 91.72
       objectReference: {fileID: 0}
     - target: {fileID: 3941420756096489865, guid: dd5f35268ad12c74b99a593587e1ee04,
         type: 3}
@@ -3233,21 +3238,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3941420756096489865, guid: dd5f35268ad12c74b99a593587e1ee04,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.01
-      objectReference: {fileID: 0}
-    - target: {fileID: 3941420756096489865, guid: dd5f35268ad12c74b99a593587e1ee04,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.01
-      objectReference: {fileID: 0}
-    - target: {fileID: 3941420756096489865, guid: dd5f35268ad12c74b99a593587e1ee04,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.01
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dd5f35268ad12c74b99a593587e1ee04, type: 3}
@@ -4623,6 +4613,25 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 5487908235480343557}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1586691694 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5893392880682906771, guid: d8ef9ca7654d06a4eb67d09e18556cd0,
+    type: 3}
+  m_PrefabInstance: {fileID: 5487908235480343557}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &1586691695
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1586691694}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 8.858927, y: 1.1142246, z: 7.9811625}
+  m_Center: {x: 0.0000076293945, y: 0.5571161, z: 0}
 --- !u!1001 &1592234083
 PrefabInstance:
   m_ObjectHideFlags: 0
