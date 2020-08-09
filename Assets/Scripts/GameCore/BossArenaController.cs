@@ -26,8 +26,7 @@ public class BossArenaController : MonoBehaviour
 
         for (int i = 0; i < roomLvl2.Count; i++)
         {
-            roomLvl2[i].GetComponent<MeshRenderer>().enabled = false;
-            roomLvl2[i].GetComponent<Collider>().enabled = false;
+            roomLvl2[i].SetActive(false);
         }
 
     }
@@ -50,8 +49,7 @@ public class BossArenaController : MonoBehaviour
             {
                 for (int i = 0; i < roomLvl2.Count; i++)
                 {
-                    roomLvl2[i].GetComponent<MeshRenderer>().enabled = true;
-                    roomLvl2[i].GetComponent<Collider>().enabled = true;
+                    roomLvl2[i].SetActive(true);
                 }
             }
             //Level three
