@@ -53,28 +53,32 @@ public class AIMovement : MonoBehaviour
     //Go to a new position
     public bool goToPosition(Vector3 pos)
     {
-        Debug.DrawLine(pos, pos + Vector3.up * 1000.0f, Color.red, 5.0f);
+        //If we our movement is not overwritten
+        if (!agent.isStopped && (overrideMode == OVERRIDE.NO_OVERRIDE || overrideMode == OVERRIDE.ROT_OVERRIDE || overrideMode == OVERRIDE.MOVE_OVERRIDE)) {
+            Debug.DrawLine(pos, pos + Vector3.up * 1000.0f, Color.red, 5.0f);
 
-        //Stop movement
-        stopMovement();
+            //Stop movement
+            stopMovement();
 
-        //Create a path
-        NavMeshPath path = new NavMeshPath();
-        bool result = agent.CalculatePath(pos, path);
-        if (!result)
-        {
-            return false;
+            //Create a path
+            NavMeshPath path = new NavMeshPath();
+            bool result = agent.CalculatePath(pos, path);
+            if (!result)
+            {
+                return false;
+            }
+            else if (path.status == NavMeshPathStatus.PathPartial || path.status == NavMeshPathStatus.PathInvalid)
+            {
+                //Debug.Log("Invalid Path!");
+                return false;
+            }
+
+            //Go to Destination
+            agent.SetPath(path);
+            lastUpdatedPos = pos;
+            return true;
         }
-        else if (path.status == NavMeshPathStatus.PathPartial || path.status == NavMeshPathStatus.PathInvalid)
-        {
-            //Debug.Log("Invalid Path!");
-            return false;
-        }
-
-        //Go to Destination
-        agent.SetPath(path);
-        lastUpdatedPos = pos;
-        return true;
+        return false;
     }
 
     public void setOverride(OVERRIDE newMode)
@@ -84,7 +88,6 @@ public class AIMovement : MonoBehaviour
         {
             case OVERRIDE.NO_OVERRIDE:
                 {
-                    //agent.enabled = true;
                     agent.isStopped = false;
                     agent.speed = initalMoveSpeed;
                     agent.angularSpeed = initalRotSpeed;
@@ -103,7 +106,7 @@ public class AIMovement : MonoBehaviour
             case OVERRIDE.FULL_OVERRIDE:
                 {
                     agent.isStopped = true;
-                    //agent.enabled = false;
+                    agent.ResetPath();
                     break;
                 }
             default:
@@ -134,9 +137,15 @@ public class AIMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!goToPosition(lastUpdatedPos))
+        //If we have a new position
+        if (lastUpdatedPos != agent.destination)
         {
-            stopMovement();
+            //Move towards our last updatedPos
+            if (!goToPosition(lastUpdatedPos))
+            {
+                //Something went wrong abort
+                stopMovement();
+            }
         }
 
         //If not moving
