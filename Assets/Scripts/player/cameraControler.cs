@@ -35,7 +35,6 @@ public class cameraControler : MonoBehaviour
     private float oldfov;
     private bool FOVonce = true;
     public GameObject umbrella;
-    public GameObject crosshair;
 
     private bool cooldownlock;
     private float fov;
@@ -51,7 +50,6 @@ public class cameraControler : MonoBehaviour
         camRoot = transform.GetChild(0).GetChild(0).gameObject;
         mainCam = transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Camera>();
         pausemenu = GameObject.Find("pauseMenu");
-        crosshair = GameObject.Find("crosshair");
         rei = this.transform.root.gameObject;
     }
 
@@ -106,10 +104,7 @@ public class cameraControler : MonoBehaviour
             zOffsetColl = -(Mathf.Clamp(zOffset, 1.0f, hitDistance));
 
         }
-        crosshair.transform.GetChild(0).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, ADStimer);
-        crosshair.transform.GetChild(1).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, ADStimer);
-        crosshair.transform.GetChild(2).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, ADStimer);
-        crosshair.transform.GetChild(3).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, ADStimer);
+
 
         camRoot.transform.localPosition = new Vector3(Mathf.Lerp(0.0f, 0.4f, ADStimer), 0.0f, zOffsetColl);
 

@@ -32,10 +32,6 @@ public class umbrella : MonoBehaviour
 
     private bool latetest = false;
 
-    private int shottoload = -999;
-    public float Shotdamage = 15.0f;
-
-    public bool inbossroom = false;
     public GameObject shotUI;
 
     public bool phoneLock = false;
@@ -46,6 +42,7 @@ public class umbrella : MonoBehaviour
     public float MaxDamage = 25.0f;
     public float pellets = 8.0f;
     public GameObject xinsButthole;
+    public GameObject crosshair;
 
 
 
@@ -69,6 +66,7 @@ public class umbrella : MonoBehaviour
     {
         latetest = false;
 
+        //if attack button whiel not blocking hit
         if (Input.GetMouseButtonDown(0) && !animator.GetBool("Blocking") && !phoneLock)
         {
             if (playercontrol.staminaAmount >= playercontrol.staminaToAttack)
@@ -81,9 +79,10 @@ public class umbrella : MonoBehaviour
 
         VFX.GetComponent<VisualEffect>().SetFloat("timer", 0.0f);
 
-
+        //for blocking / aiming down sight
         if (cooldown == false && !phoneLock)
         {
+            //shoot
             if (Input.GetAxis("Fire2") > 0.5f)
             {
                 if (playercontrol.staminaAmount > blockingStamina * Time.deltaTime)
@@ -98,7 +97,10 @@ public class umbrella : MonoBehaviour
                 {
                     movcont.strafemode = false;
                     shotUI.SetActive(false);
-
+                    crosshair.transform.GetChild(0).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+                    crosshair.transform.GetChild(1).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+                    crosshair.transform.GetChild(2).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+                    crosshair.transform.GetChild(3).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
                     cooldown = true;
                 }
             }
@@ -106,7 +108,10 @@ public class umbrella : MonoBehaviour
             {
                 movcont.strafemode = false;
                 shotUI.SetActive(false);
-
+                crosshair.transform.GetChild(0).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+                crosshair.transform.GetChild(1).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+                crosshair.transform.GetChild(2).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+                crosshair.transform.GetChild(3).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
                 //animator.ResetTrigger("Block");
                 animator.SetBool("Blocking", false);
                 movcont.attacking = false;
@@ -115,7 +120,10 @@ public class umbrella : MonoBehaviour
         else
         {
             shotUI.SetActive(false);
-
+            crosshair.transform.GetChild(0).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+            crosshair.transform.GetChild(1).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+            crosshair.transform.GetChild(2).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+            crosshair.transform.GetChild(3).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
             animator.SetBool("Blocking", false);
             movcont.attacking = false;
             cooldowntimer += Time.deltaTime;
@@ -129,6 +137,7 @@ public class umbrella : MonoBehaviour
 
     }
 
+    //currently blocking
     void blocking()
     {
         movcont.attacking = true;
@@ -146,97 +155,98 @@ public class umbrella : MonoBehaviour
             animator.SetTrigger("Block");
             animator.SetBool("Blocking", true);
         }
+
+        if (canfire == true)
+        {
+            if ((Mathf.Abs(this.GetComponent<movementController>().moveDir.z) + Mathf.Abs(this.GetComponent<movementController>().moveDir.x)) > 1.0f)
+            {
+                bulletSpread = 0.165f;
+            }
+            else
+            {
+                bulletSpread = 0.08f;
+            }
+
+
+            crosshair.transform.GetChild(0).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            crosshair.transform.GetChild(1).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            crosshair.transform.GetChild(2).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            crosshair.transform.GetChild(3).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        }
+        else
+        {
+            crosshair.transform.GetChild(0).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+            crosshair.transform.GetChild(1).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+            crosshair.transform.GetChild(2).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+            crosshair.transform.GetChild(3).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
+        }
+
     }
 
+    //aiming down sight
     void firemode()
     {
         movcont.attacking = true;
         latetest = true;
-        VFX.GetComponent<VisualEffect>().SetFloat("timer", 1.0f);
+        //VFX.GetComponent<VisualEffect>().SetFloat("timer", 1.0f);
 
-        if (inbossroom == true)
+        //shotUI.SetActive(true);
+        //shotUI.transform.GetChild(0).GetComponent<Text>().text = "E to take photo";
+
+        
+        if (Input.GetAxis("Fire1") > 0.5f && canfire == true) // shoot
         {
-            shotUI.SetActive(true);
-            shotUI.transform.GetChild(0).GetComponent<Text>().text = "E to take photo";
-
-
-            if (Input.GetAxis("Fire1") > 0.5f)
-            {
-                animator.SetTrigger("Shoot");
-                bang();
-            }
-            else if (Input.GetKeyDown(KeyCode.E))
-            {
-
-                cooldown = true;
-                VFXController vfx = boss.GetComponent<VFXController>();
-                for (int i = 0; i < boss.GetComponent<VFXController>().bodysNoVFX.Count; i++)
-                {
-                    if (vfx.bodysNoVFX[i].GetComponent<BossRevealSurfaceController>())
-                    {
-                        if (vfx.bodysNoVFX[i].GetComponent<BossRevealSurfaceController>().isPlayerLookingAtMe())
-                        {
-                            vfx.bodysNoVFX[i].GetComponent<BossRevealSurfaceController>().EnableSurface();
-                            vfx.bodysNoVFX.RemoveAt(i);
-                        }
-                    }
-                    else
-                    {
-                        vfx.bodysNoVFX.RemoveAt(i);
-                    }
-
-                }
-            }
+            animator.SetTrigger("Shoot");
+            bang();
         }
     }
 
+    //shoot
     void bang()
     {
-        //RaycastHit hit;
-        //if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, Mathf.Infinity, enemy))
-        //{
-        //    dodamage(hit, Shotdamage);
-        //}
-
         Transform brella = this.transform.GetChild(1).GetChild(6);
         var cameraThingTransform = cam.transform.parent.parent.transform;
         for (int j = 0; j < pellets; j++)
         {
             RaycastHit[] Hits;
 
+            //ranodm rotations
             float yrand = Random.Range(bulletSpread, -bulletSpread);
             float xrand = Random.Range(Mathf.Sqrt(Mathf.Pow(bulletSpread, 2) - Mathf.Pow(yrand, 2)), -Mathf.Sqrt(Mathf.Pow(bulletSpread, 2) - Mathf.Pow(yrand, 2)));
             Vector3 vec3dir = new Vector3(xrand, yrand, 1);
 
-
-
-
+            //adjust rotations
             Vector3 localDirection = Quaternion.Euler(cameraThingTransform.localEulerAngles.x, 0, 0) *  vec3dir;
             Quaternion correction = Quaternion.Euler(0, -90, 0);
             Vector3 worldDirection = brella.TransformDirection(correction * localDirection);
 
 
-
+            //raycast eveything (allows wallbangs)
             Hits = Physics.RaycastAll(brella.transform.position, worldDirection, MaxRange);
 
+            //debug
             for (int k = 0; k < Hits.Length; k++)
             {
                 Debug.DrawLine(brella.transform.position, Hits[k].point, Color.white, 10.0f);
             }
 
+            //for all hits
             for (int i = 0; i < Hits.Length; i++)
             {
                 RaycastHit Hit = Hits[i];
                 var go = Hit.collider.gameObject;
                 if (go.CompareTag("Myth") || go.CompareTag("Boss"))
                 {
+                    //angle for bullethole
                     GameObject enemy = Hit.collider.gameObject;
                     Vector3 hitposition = Hit.point + (Hit.normal * 0.4f);
 
+                    //damage calculation
                     float dist = Vector3.Distance(this.gameObject.transform.position, Hit.point);
                     float falloff = Mathf.Clamp(1.5f * Mathf.Cos(Mathf.Pow(dist / MaxRange, 0.3f) * (Mathf.PI / 2)), 0.0f, 1.0f);
                     float damage = falloff * (MaxDamage / pellets);
 
+                    //apply damage
                     if (Hit.collider.GetComponent<AIObject>())
                     {
                         GameObject tmp = GameObject.Instantiate(damagedText, Hit.point, Quaternion.identity);
@@ -245,6 +255,7 @@ public class umbrella : MonoBehaviour
                         Hit.collider.GetComponent<AIObject>().health -= damage;
 
                         Debug.Log("attackign for " + damage);
+                        break;
                     }
                     else if (Hit.collider.GetComponent<EnemyController>())
                     {
@@ -254,29 +265,26 @@ public class umbrella : MonoBehaviour
                         Hit.collider.GetComponent<EnemyController>().ChangeHealth(-damage);
 
                         Debug.Log("attackign for " + damage);
+                        break;
+
                     }
                 }
-                Debug.Log("bang");
 
+                //spawn bullet hole
                 if (Hit.collider.gameObject.layer == 0) //ground and wall
                 {
-                    Debug.Log("hole");
-
                     Quaternion hitRotation = Quaternion.FromToRotation(Vector3.forward, Hit.normal);
                     Vector3 hitposition = Hit.point + (Hit.normal * 0.01f);
-
                     GameObject hole = Instantiate(xinsButthole, hitposition, hitRotation);
                 }
             }
         }
 
 
-
-
-
         movcont.strafemode = false;
         cooldown = true;
     }
+
 
     public void Hitbox(bool toggle)
     {
@@ -286,6 +294,7 @@ public class umbrella : MonoBehaviour
 
     void LateUpdate()
     {
+        //make umbrella look in the corerect direction
         if (latetest == true)
         {
             RaycastHit hit;

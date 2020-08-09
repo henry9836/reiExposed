@@ -6,6 +6,7 @@ using UnityEngine.AI;
 using UnityEngine.Events;
 using UnityEngine.PlayerLoop;
 using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public class EnemyController : MonoBehaviour
 {
@@ -105,6 +106,10 @@ public class EnemyController : MonoBehaviour
     public bool debugMode;
     public string currentMode = "PENDING";
 
+    [Header("Vaughan prefab refrence")]
+    public GameObject damagedText;
+
+
     //Hidden Values
     [HideInInspector]
     public float startHealth;
@@ -149,6 +154,7 @@ public class EnemyController : MonoBehaviour
     private float blockSubtractTimer = 0.0f;
     private float maxHealth;
     private NavMeshPath path;
+
 
     public void kys()
     {
@@ -727,6 +733,10 @@ public class EnemyController : MonoBehaviour
                     //Get Hurt
                     health -= pc.umbreallaDmg;
                     onHurt.Invoke();
+
+                    GameObject tmp = GameObject.Instantiate(damagedText, other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position), Quaternion.identity);
+                    tmp.transform.SetParent(this.transform, true);
+                    tmp.transform.GetChild(0).GetComponent<Text>().text = "-" + pc.umbreallaDmg.ToString("F0");
                 }
 
                 if (!animator.GetBool("AttackMode"))

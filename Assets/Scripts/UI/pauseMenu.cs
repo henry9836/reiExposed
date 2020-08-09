@@ -13,6 +13,7 @@ public class pauseMenu : MonoBehaviour
 
     public List<GameObject> pauseitems = new List<GameObject>() { };
     public List<GameObject> settingsItem = new List<GameObject>() { };
+    public List<GameObject> doNotPauseIfPresent = new List<GameObject>();
 
     private Vector3 canvaspos;
     public GameObject smoke1;
@@ -44,8 +45,19 @@ public class pauseMenu : MonoBehaviour
         GameObject.FindGameObjectWithTag("Player").transform.GetChild(0).GetComponent<cameraControler>().mouseSensitivity = AdjusterInfo.calcSlider(SaveSystemController.getFloatValue("mouseSensitivity"));
         sett.tocencor = SaveSystemController.getBoolValue("toCensor");
         AudioListener.volume = AdjusterInfo.calcSlider(SaveSystemController.getFloatValue("volume")) / 10.0f;
+    }
 
-
+    //Restricts pausing of the game
+    bool canPause()
+    {
+        for (int i = 0; i < doNotPauseIfPresent.Count; i++)
+        {
+            if (doNotPauseIfPresent[i].activeInHierarchy)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     void Update()
@@ -53,12 +65,18 @@ public class pauseMenu : MonoBehaviour
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.P))
         {
-            pause();
+            if (canPause())
+            {
+                pause();
+            }
         }
 #else
         if (Input.GetButtonDown("Pause"))
-        {
-            pause();
+        {   
+            if (canPause())
+            {
+                pause();
+            }
         }
 #endif
     }

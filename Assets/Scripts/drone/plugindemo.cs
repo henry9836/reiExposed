@@ -12,7 +12,7 @@ public class plugindemo : MonoBehaviour
     //destinations
     public List<GameObject> destinaitons;
     public int currdestination;
-    private GameObject rei;
+    public GameObject rei;
     public GameObject drone;
 
     public bool candeliver = false;
@@ -25,16 +25,23 @@ public class plugindemo : MonoBehaviour
         //set refrences and initlise
         iar = this.gameObject.GetComponent<iamryan>();
         iar.whenFin = whenfinished();
-        rei = GameObject.FindGameObjectWithTag("Player");
         deliver();
     }
 
-    void Update()
+    void LateUpdate()
     {
         if (holdRei == true)
         {
+            Debug.Log("holding");
+            //rei.transform.parent = drone.transform;
+            rei.GetComponent<movementController>().enabled = false;
             rei.transform.position = drone.transform.position;
         }
+        else
+        {
+            rei.GetComponent<movementController>().enabled = true;
+        }
+
 
         if (candeliver == false)
         {

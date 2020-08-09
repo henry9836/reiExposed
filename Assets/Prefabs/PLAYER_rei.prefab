@@ -2015,7 +2015,7 @@ MonoBehaviour:
   staminaRegenSpeed: 35
   staminaToAttack: 10
   staminaBlock: 0
-  umbreallaDmg: 5
+  umbreallaDmg: 20
   dead: 0
   maxcolor: {r: 1, g: 1, b: 1, a: 1}
   minColor: {r: 0, g: 0, b: 0, a: 0}
@@ -2183,7 +2183,7 @@ MonoBehaviour:
   canfire: 0
   blockingStamina: 50
   cooldown: 0
-  cooldowntime: 2
+  cooldowntime: 1
   cooldowntimer: 0
   enemy:
     serializedVersion: 2
@@ -2202,9 +2202,14 @@ MonoBehaviour:
   boss: {fileID: 0}
   audio: {fileID: 1103017930}
   VFX: {fileID: 1093250023}
-  inbossroom: 1
   shotUI: {fileID: 0}
   phoneLock: 0
+  bulletSpread: 0.1
+  MaxRange: 50
+  MaxDamage: 80
+  pellets: 8
+  xinsButthole: {fileID: 89621463177512375, guid: 191b27c51b2d85a43a91ddebe6810abc,
+    type: 3}
 --- !u!114 &1325763837
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2217,10 +2222,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec0896fd651c14c41b4387b348f1fa93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseSpeed: 1
+  mouseSpeed: 100
   CC: {fileID: 7374786145257753429}
   speed: 5
   THECAM: {fileID: 736449174}
+  pitch: 0
+  yaw: 0
 --- !u!114 &557751168
 MonoBehaviour:
   m_ObjectHideFlags: 0

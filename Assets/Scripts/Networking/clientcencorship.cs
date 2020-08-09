@@ -65,11 +65,13 @@ public class clientcencorship : MonoBehaviour
         }
     }
 
+    //dont cencor message
     public void dontWatchYourProfanity(string toadd)
     {
         messages.Add(toadd);
     }
 
+    //cencor messgae
     public IEnumerator watchYourProfanity(string dump)
     {
         //Wait for another IEnumator
@@ -98,6 +100,7 @@ public class clientcencorship : MonoBehaviour
         yield return null;
     }
 
+    //Censors messages
     static void ThreadProc(System.Object stateInfo)
     {
         //Lock Thread
@@ -105,31 +108,37 @@ public class clientcencorship : MonoBehaviour
 
         passthrough PT = stateInfo as passthrough;
 
-
+        //for each word in the message
         for (int j = 0; j < PT.dawords.Count; j++)
         {
+            //Assign a word
             string check = PT.dawords[j];
             string newcheck = "";
             string checkto = "";
 
+            //For the word I am checking
             for (int i = 0; i < check.Length; i++)
             {
                 checkto += "▇";
             }
 
+            //For each letter of the word but the last
             for (int i = 0; i < check.Length - 1; i++)
             {
+                //Add \s* after each charter for regex
                 newcheck += check[i] + "\\s*";
             }
 
             newcheck += check[check.Length - 1];
 
+            //Setup regex
             string rxp = @"(?i)(" + newcheck + ")(.*?)";
 
-
+            //ReGeX
             Regex rx = new Regex(rxp);
             MatchCollection ans = rx.Matches(PT.dump);
 
+            //For each ans from regex replace word with censor (checkto)
             for (int i = ans.Count - 1; i > -1; i--)
             {
                 PT.dump = PT.dump.Remove(ans[i].Index, ans[i].Length);
@@ -151,10 +160,13 @@ public class clientcencorship : MonoBehaviour
         return File.Exists(path);
     }
 
+    //nessesary for OnPostprocessBuild
     public int callbackOrder { get { return 0; } }
 
 
 #if UNITY_EDITOR
+
+    //when build make save file in the build folder aswell
 
     public void OnPostprocessBuild(BuildReport report)
     {
