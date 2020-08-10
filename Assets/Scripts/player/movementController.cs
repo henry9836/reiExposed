@@ -21,6 +21,7 @@ public class movementController : MonoBehaviour
     public float respawnThreshold = -30.0f;
 
     [Header("Stamina")]
+    public float timeToUnblock = 0.5f;
     public float staminaCostSprint = 2.0f;
     public float staminaCostRoll = 30.0f;
     public float staminaCostJump = 30.0f;
@@ -36,6 +37,10 @@ public class movementController : MonoBehaviour
 
     [Header("Other")]
     public Image sprintLines;
+
+    //Hidden
+    [HideInInspector]
+    public bool attackMovementBlock = false;
 
     //Sounds
     public List<AudioClip> dashSounds = new List<AudioClip>();
@@ -55,10 +60,9 @@ public class movementController : MonoBehaviour
     private bool rolling = false;
     private bool sprinting = false;
     private bool sprintLock = false;
-    [HideInInspector]
-    public bool attacking = false;
     private float rollTimer = 0.0f;
     private float tmpRollDistance = 0.0f;
+    private float unblockTimer = 0.0f;
 
     private void Start()
     {
@@ -67,6 +71,8 @@ public class movementController : MonoBehaviour
         pc = GetComponent<PlayerController>();
         animator = GetComponent<Animator>();
         audio = GetComponent<AudioSource>();
+
+        unblockTimer = timeToUnblock;
     }
 
     private void FixedUpdate()
@@ -80,9 +86,15 @@ public class movementController : MonoBehaviour
         }
     }
 
+    public void forceMovement(Vector3 dir)
+    {
+        ch.Move(dir * Time.deltaTime);
+    }
+
     // Update is called once per frame
     void Update()
     {
+
         //Reset bools
         sprinting = false;
 
@@ -104,7 +116,7 @@ public class movementController : MonoBehaviour
 
 
         //Rotate towards movement in relation to cam direction
-        if (moveDirCam != Vector3.zero && !rolling && !strafemode)
+        if (moveDirCam != Vector3.zero && !rolling && !strafemode && !attackMovementBlock)
         {
 
             //Get cam rotation
@@ -253,14 +265,26 @@ public class movementController : MonoBehaviour
             animator.SetBool("Sprinting", false);
         }
 
+        Debug.Log("BLOCK: " + attackMovementBlock.ToString());
+
         //Move
-        if (!rolling)
+        if (!rolling && !attackMovementBlock)
         {
             ch.Move(moveDir * Time.deltaTime);
         }
 
+        //Stamina Block Timer
+        if ((rolling || sprinting || attackMovementBlock || sprintLock || animator.GetBool("Attack")))
+        {
+            unblockTimer = 0.0f;
+        }
+        else
+        {
+            unblockTimer += Time.deltaTime;
+        }
+
         //Stamina Block
-        pc.staminaBlock = (rolling || sprinting || attacking || sprintLock);
+        pc.staminaBlock = (unblockTimer < timeToUnblock);
 
         //Sprinting lock
         if (sprintLock && !Input.GetButton("Sprint"))
