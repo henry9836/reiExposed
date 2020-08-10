@@ -22,18 +22,8 @@ public class umbrella : MonoBehaviour
     public GameObject umbeaalBone;
     public GameObject boss;
     public AudioSource audio;
-
-    private PlayerController playercontrol;
-    private GameObject cam;
-    private Animator animator;
     public GameObject VFX;
-
-    private movementController movement;
-
-    private bool latetest = false;
-
     public GameObject shotUI;
-
     public bool phoneLock = false;
 
     //shotty
@@ -43,6 +33,13 @@ public class umbrella : MonoBehaviour
     public float pellets = 8.0f;
     public GameObject xinsButthole;
     public GameObject crosshair;
+
+    private movementController movement;
+    private PlayerController playercontrol;
+    private Transform charModel;
+    private GameObject cam;
+    private Animator animator;
+    private bool latetest = false;
 
 
 
@@ -58,6 +55,7 @@ public class umbrella : MonoBehaviour
         umbrellaHitBox.enabled = false;
 
         movement = GetComponent<movementController>();
+        charModel = movement.charcterModel.transform;
 
     }
 
@@ -72,7 +70,7 @@ public class umbrella : MonoBehaviour
             {
                 movement.attackMovementBlock = true;
                 playercontrol.ChangeStamina(-playercontrol.staminaToAttack);
-                animator.SetTrigger("Attack");
+                animator.SetBool("Attack", true);
             }
         }
 

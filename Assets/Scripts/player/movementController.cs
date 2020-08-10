@@ -82,6 +82,11 @@ public class movementController : MonoBehaviour
         }
     }
 
+    public void forceMovement(Vector3 dir)
+    {
+        ch.Move(dir * Time.deltaTime);
+    }
+
     // Update is called once per frame
     void Update()
     {

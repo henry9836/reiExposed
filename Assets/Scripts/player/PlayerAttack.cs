@@ -5,10 +5,15 @@ using UnityEngine;
 public class PlayerAttack : StateMachineBehaviour
 {
     public Vector2 attackWindow = new Vector2(0.0f, 0.9f);
+    public bool resetAllOnEnd = false;
+    public float movementTime = 0.3f;
+    public float movementSpeed = 5.5f;
 
     private umbrella umbrella;
     private bool once = true;
-   
+    private float movementTimer = 0.0f;
+    private movementController movementCtrl;
+    private Transform characterTrans;
 
     //OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -18,8 +23,13 @@ public class PlayerAttack : StateMachineBehaviour
             umbrella = animator.GetComponent<umbrella>();
         }
         animator.SetBool("Attacking", true);
+        animator.SetBool("Attack", false);
+        animator.ResetTrigger("GoToNextAttack");
         once = true;
-        animator.ResetTrigger("Attack");
+
+        movementCtrl = umbrella.GetComponent<movementController>();
+        characterTrans = movementCtrl.charcterModel.transform;
+        movementTimer = 0.0f;
     }
 
     //OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -34,10 +44,33 @@ public class PlayerAttack : StateMachineBehaviour
             }
         }
 
+        //Shunt Forwards after we have started our attack
+        if (!once && movementTimer < movementTime)
+        {
+            //Move forwards
+            movementCtrl.forceMovement(characterTrans.forward * movementSpeed);
+
+            movementTimer += Time.deltaTime;
+        }
 
         if ((stateInfo.normalizedTime % 1.0f) >= attackWindow.y)
         {
-            animator.SetBool("Attacking", false);
+            if (!resetAllOnEnd)
+            {
+                if (animator.GetBool("Attack"))
+                {
+                    animator.SetTrigger("GoToNextAttack");
+                }
+                else
+                {
+                    animator.SetBool("Attacking", false);
+                }
+            }
+            else
+            {
+                animator.SetBool("Attacking", false);
+                animator.ResetTrigger("GoToNextAttack");
+            }
         }
 
 
