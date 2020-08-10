@@ -73,7 +73,6 @@ public class umbrella : MonoBehaviour
                 movement.attackMovementBlock = true;
                 playercontrol.ChangeStamina(-playercontrol.staminaToAttack);
                 animator.SetTrigger("Attack");
-                
             }
         }
 
@@ -140,6 +139,10 @@ public class umbrella : MonoBehaviour
         {
             movement.attackMovementBlock = false;
         }
+        else
+        {
+            movement.attackMovementBlock = true;
+        }
 
 
     }
@@ -147,7 +150,6 @@ public class umbrella : MonoBehaviour
     //currently blocking
     void blocking()
     {
-        movement.attackMovementBlock = true;
         movement.strafemode = true;
 
         RaycastHit hit;
@@ -193,7 +195,6 @@ public class umbrella : MonoBehaviour
     //aiming down sight
     void firemode()
     {
-        movement.attackMovementBlock = true;
         latetest = true;
         //VFX.GetComponent<VisualEffect>().SetFloat("timer", 1.0f);
 
