@@ -68,8 +68,7 @@ public class umbrella : MonoBehaviour
         {
             if (playercontrol.staminaAmount >= playercontrol.staminaToAttack)
             {
-                movement.attackMovementBlock = true;
-                playercontrol.ChangeStamina(-playercontrol.staminaToAttack);
+                //movement.attackMovementBlock = true;
                 animator.SetBool("Attack", true);
             }
         }

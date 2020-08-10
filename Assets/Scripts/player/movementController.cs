@@ -21,6 +21,7 @@ public class movementController : MonoBehaviour
     public float respawnThreshold = -30.0f;
 
     [Header("Stamina")]
+    public float timeToUnblock = 0.5f;
     public float staminaCostSprint = 2.0f;
     public float staminaCostRoll = 30.0f;
     public float staminaCostJump = 30.0f;
@@ -61,6 +62,7 @@ public class movementController : MonoBehaviour
     private bool sprintLock = false;
     private float rollTimer = 0.0f;
     private float tmpRollDistance = 0.0f;
+    private float unblockTimer = 0.0f;
 
     private void Start()
     {
@@ -69,6 +71,8 @@ public class movementController : MonoBehaviour
         pc = GetComponent<PlayerController>();
         animator = GetComponent<Animator>();
         audio = GetComponent<AudioSource>();
+
+        unblockTimer = timeToUnblock;
     }
 
     private void FixedUpdate()
@@ -90,6 +94,7 @@ public class movementController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         //Reset bools
         sprinting = false;
 
@@ -268,8 +273,18 @@ public class movementController : MonoBehaviour
             ch.Move(moveDir * Time.deltaTime);
         }
 
+        //Stamina Block Timer
+        if ((rolling || sprinting || attackMovementBlock || sprintLock || animator.GetBool("Attack")))
+        {
+            unblockTimer = 0.0f;
+        }
+        else
+        {
+            unblockTimer += Time.deltaTime;
+        }
+
         //Stamina Block
-        pc.staminaBlock = (rolling || sprinting || attackMovementBlock || sprintLock);
+        pc.staminaBlock = (unblockTimer < timeToUnblock);
 
         //Sprinting lock
         if (sprintLock && !Input.GetButton("Sprint"))

@@ -14,6 +14,7 @@ public class PlayerAttack : StateMachineBehaviour
     private float movementTimer = 0.0f;
     private movementController movementCtrl;
     private Transform characterTrans;
+    private PlayerController playerControl;
 
     //OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -28,8 +29,14 @@ public class PlayerAttack : StateMachineBehaviour
         once = true;
 
         movementCtrl = umbrella.GetComponent<movementController>();
+        playerControl = umbrella.GetComponent<PlayerController>();
         characterTrans = movementCtrl.charcterModel.transform;
         movementTimer = 0.0f;
+
+        //Charge Player For Attack
+        if (playerControl.staminaAmount >= playerControl.staminaToAttack) {
+            playerControl.ChangeStamina(-playerControl.staminaToAttack);
+        }
     }
 
     //OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
