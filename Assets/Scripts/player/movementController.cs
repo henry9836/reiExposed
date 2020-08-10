@@ -37,6 +37,10 @@ public class movementController : MonoBehaviour
     [Header("Other")]
     public Image sprintLines;
 
+    //Hidden
+    [HideInInspector]
+    public bool attackMovementBlock = false;
+
     //Sounds
     public List<AudioClip> dashSounds = new List<AudioClip>();
     private AudioSource audio;
@@ -55,8 +59,6 @@ public class movementController : MonoBehaviour
     private bool rolling = false;
     private bool sprinting = false;
     private bool sprintLock = false;
-    [HideInInspector]
-    public bool attacking = false;
     private float rollTimer = 0.0f;
     private float tmpRollDistance = 0.0f;
 
@@ -253,14 +255,16 @@ public class movementController : MonoBehaviour
             animator.SetBool("Sprinting", false);
         }
 
+        Debug.Log("BLOCK: " + attackMovementBlock.ToString());
+
         //Move
-        if (!rolling)
+        if (!rolling && !attackMovementBlock)
         {
             ch.Move(moveDir * Time.deltaTime);
         }
 
         //Stamina Block
-        pc.staminaBlock = (rolling || sprinting || attacking || sprintLock);
+        pc.staminaBlock = (rolling || sprinting || attackMovementBlock || sprintLock);
 
         //Sprinting lock
         if (sprintLock && !Input.GetButton("Sprint"))

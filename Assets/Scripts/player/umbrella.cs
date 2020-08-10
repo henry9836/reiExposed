@@ -28,7 +28,7 @@ public class umbrella : MonoBehaviour
     private Animator animator;
     public GameObject VFX;
 
-    private movementController movcont;
+    private movementController movement;
 
     private bool latetest = false;
 
@@ -46,7 +46,6 @@ public class umbrella : MonoBehaviour
 
 
 
-
     void Start()
     {
         playercontrol = GetComponent<PlayerController>();
@@ -58,7 +57,7 @@ public class umbrella : MonoBehaviour
         }
         umbrellaHitBox.enabled = false;
 
-        movcont = GetComponent<movementController>();
+        movement = GetComponent<movementController>();
 
     }
 
@@ -66,21 +65,22 @@ public class umbrella : MonoBehaviour
     {
         latetest = false;
 
-        //if attack button whiel not blocking hit
+        //if attack button while not blocking hit
         if (Input.GetMouseButtonDown(0) && !animator.GetBool("Blocking") && !phoneLock)
         {
             if (playercontrol.staminaAmount >= playercontrol.staminaToAttack)
             {
-                movcont.attacking = true;
+                movement.attackMovementBlock = true;
                 playercontrol.ChangeStamina(-playercontrol.staminaToAttack);
                 animator.SetTrigger("Attack");
+                
             }
         }
 
         VFX.GetComponent<VisualEffect>().SetFloat("timer", 0.0f);
 
         //for blocking / aiming down sight
-        if (cooldown == false && !phoneLock)
+        if (!cooldown && !phoneLock)
         {
             //shoot
             if (Input.GetAxis("Fire2") > 0.5f)
@@ -95,7 +95,7 @@ public class umbrella : MonoBehaviour
                 }
                 else
                 {
-                    movcont.strafemode = false;
+                    movement.strafemode = false;
                     shotUI.SetActive(false);
                     crosshair.transform.GetChild(0).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
                     crosshair.transform.GetChild(1).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
@@ -106,7 +106,7 @@ public class umbrella : MonoBehaviour
             }
             else
             {
-                movcont.strafemode = false;
+                movement.strafemode = false;
                 shotUI.SetActive(false);
                 crosshair.transform.GetChild(0).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
                 crosshair.transform.GetChild(1).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
@@ -114,7 +114,7 @@ public class umbrella : MonoBehaviour
                 crosshair.transform.GetChild(3).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
                 //animator.ResetTrigger("Block");
                 animator.SetBool("Blocking", false);
-                movcont.attacking = false;
+                //movement.attackMovementBlock = false;
             }
         }
         else
@@ -125,7 +125,7 @@ public class umbrella : MonoBehaviour
             crosshair.transform.GetChild(2).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
             crosshair.transform.GetChild(3).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
             animator.SetBool("Blocking", false);
-            movcont.attacking = false;
+            //movement.attackMovementBlock = false;
             cooldowntimer += Time.deltaTime;
             if (cooldowntimer > cooldowntime)
             {
@@ -135,19 +135,26 @@ public class umbrella : MonoBehaviour
             }
         }
 
+        //Check for if we are not attacking then allow movement
+        if (!animator.GetBool("Attacking"))
+        {
+            movement.attackMovementBlock = false;
+        }
+
+
     }
 
     //currently blocking
     void blocking()
     {
-        movcont.attacking = true;
-        movcont.strafemode = true;
+        movement.attackMovementBlock = true;
+        movement.strafemode = true;
 
         RaycastHit hit;
         if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, Mathf.Infinity, ball))
         {
-            hit.point = new Vector3(hit.point.x, movcont.charcterModel.transform.position.y, hit.point.z); //look forwards
-            movcont.charcterModel.transform.LookAt(hit.point);
+            hit.point = new Vector3(hit.point.x, movement.charcterModel.transform.position.y, hit.point.z); //look forwards
+            movement.charcterModel.transform.LookAt(hit.point);
         }
 
         if (!animator.GetBool("Blocking"))
@@ -186,7 +193,7 @@ public class umbrella : MonoBehaviour
     //aiming down sight
     void firemode()
     {
-        movcont.attacking = true;
+        movement.attackMovementBlock = true;
         latetest = true;
         //VFX.GetComponent<VisualEffect>().SetFloat("timer", 1.0f);
 
@@ -281,7 +288,7 @@ public class umbrella : MonoBehaviour
         }
 
 
-        movcont.strafemode = false;
+        movement.strafemode = false;
         cooldown = true;
     }
 
