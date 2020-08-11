@@ -21,6 +21,7 @@ public class movementController : MonoBehaviour
     public float respawnThreshold = -30.0f;
 
     [Header("Stamina")]
+    public float timeToUnblock = 0.5f;
     public float staminaCostSprint = 2.0f;
     public float staminaCostRoll = 30.0f;
     public float staminaCostJump = 30.0f;
@@ -37,6 +38,10 @@ public class movementController : MonoBehaviour
     [Header("Other")]
     public Image sprintLines;
 
+    //Hidden
+    [HideInInspector]
+    public bool attackMovementBlock = false;
+
     //Sounds
     public List<AudioClip> dashSounds = new List<AudioClip>();
     private AudioSource audio;
@@ -44,6 +49,7 @@ public class movementController : MonoBehaviour
     private PlayerController pc;
     private CharacterController ch;
     private Animator animator;
+    private CapsuleCollider playerHitBox;
     [HideInInspector]
     public Vector3 moveDir = Vector3.zero;
     private Vector3 moveDirCam = Vector3.zero; 
@@ -51,14 +57,20 @@ public class movementController : MonoBehaviour
     private Vector3 beforeRollPosition;
     private Vector3 targetRollPosition;
     private Quaternion targetRot;
+
+    //Hit box
+    private float startHitBoxH = 0.0f;
+    private float startHitBoxY = 0.0f;
+    private float rollHitBoxH = 0.87f;
+    private float rollHitBoxY = 0.41f;
+
     private bool isOnGround = false;
     private bool rolling = false;
     private bool sprinting = false;
     private bool sprintLock = false;
-    [HideInInspector]
-    public bool attacking = false;
     private float rollTimer = 0.0f;
     private float tmpRollDistance = 0.0f;
+    private float unblockTimer = 0.0f;
 
     private void Start()
     {
@@ -67,6 +79,10 @@ public class movementController : MonoBehaviour
         pc = GetComponent<PlayerController>();
         animator = GetComponent<Animator>();
         audio = GetComponent<AudioSource>();
+        playerHitBox = GetComponent<CapsuleCollider>();
+        unblockTimer = timeToUnblock;
+        startHitBoxH = playerHitBox.height;
+        startHitBoxY = playerHitBox.center.y;
     }
 
     private void FixedUpdate()
@@ -80,9 +96,15 @@ public class movementController : MonoBehaviour
         }
     }
 
+    public void forceMovement(Vector3 dir)
+    {
+        ch.Move(dir * Time.deltaTime);
+    }
+
     // Update is called once per frame
     void Update()
     {
+
         //Reset bools
         sprinting = false;
 
@@ -104,7 +126,7 @@ public class movementController : MonoBehaviour
 
 
         //Rotate towards movement in relation to cam direction
-        if (moveDirCam != Vector3.zero && !rolling && !strafemode)
+        if (moveDirCam != Vector3.zero && !rolling && !strafemode && !attackMovementBlock)
         {
 
             //Get cam rotation
@@ -173,6 +195,11 @@ public class movementController : MonoBehaviour
                 //Lock other movement until roll is complete
                 rolling = true;
 
+                //Change hitbox
+                playerHitBox.height = rollHitBoxH;
+                playerHitBox.center = new Vector3(playerHitBox.center.x, rollHitBoxY, playerHitBox.center.z);
+
+
                 //Animation
                 animator.SetBool("Rolling", true);
                 animator.SetTrigger("Roll");
@@ -189,6 +216,10 @@ public class movementController : MonoBehaviour
             if (rollTimer >= rollTime)
             {
                 rolling = false;
+
+                //Change hitbox
+                playerHitBox.height = startHitBoxH;
+                playerHitBox.center = new Vector3(playerHitBox.center.x, startHitBoxY, playerHitBox.center.z);
 
                 //Animation
                 animator.SetBool("Rolling", false);
@@ -253,14 +284,26 @@ public class movementController : MonoBehaviour
             animator.SetBool("Sprinting", false);
         }
 
+        Debug.Log("BLOCK: " + attackMovementBlock.ToString());
+
         //Move
-        if (!rolling)
+        if (!rolling && !attackMovementBlock)
         {
             ch.Move(moveDir * Time.deltaTime);
         }
 
+        //Stamina Block Timer
+        if ((rolling || sprinting || attackMovementBlock || sprintLock || animator.GetBool("Attack")))
+        {
+            unblockTimer = 0.0f;
+        }
+        else
+        {
+            unblockTimer += Time.deltaTime;
+        }
+
         //Stamina Block
-        pc.staminaBlock = (rolling || sprinting || attacking || sprintLock);
+        pc.staminaBlock = (unblockTimer < timeToUnblock);
 
         //Sprinting lock
         if (sprintLock && !Input.GetButton("Sprint"))
