@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8461323550516751784}
   - component: {fileID: 3914366824944227565}
   - component: {fileID: 1668138045220279567}
+  - component: {fileID: 1672938905}
   m_Layer: 0
   m_Name: pvmntM_lod0
   m_TagString: Untagged
@@ -79,6 +80,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &1672938905
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2135772406269927435}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 600, y: 8.649742, z: 600}
+  m_Center: {x: 300, y: 4.324871, z: -300}
 --- !u!1 &4411595295069821019
 GameObject:
   m_ObjectHideFlags: 0
@@ -167,6 +181,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1189507041945779403}
+  - component: {fileID: 1672938903}
   m_Layer: 0
   m_Name: pvmntMed
   m_TagString: Untagged
@@ -190,3 +205,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!205 &1672938903
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8670247478766372466}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 300, y: 4.324871, z: -300}
+  m_Size: 600
+  m_FadeMode: 1
+  m_AnimateCrossFading: 1
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.068063125
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 1668138045220279567}
+  - screenRelativeHeight: 0.011685062
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 58094943104356528}
+  m_Enabled: 1
