@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3356042101373581040}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 600, y: 8.649742, z: -600}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3709285193709575178}
@@ -88,6 +88,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3709285193709575178}
+  - component: {fileID: 7709205377557559719}
   m_Layer: 0
   m_Name: pvmntLarRound_Inv
   m_TagString: Untagged
@@ -111,6 +112,29 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!205 &7709205377557559719
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6295164863429635421}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 900.03, y: 4.3248243, z: -900.03}
+  m_Size: 599.93994
+  m_FadeMode: 1
+  m_AnimateCrossFading: 1
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.13486648
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 61401821617363947}
+  - screenRelativeHeight: 0.04974025
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 9167682532497377447}
+  m_Enabled: 1
 --- !u!1 &8090942430836744543
 GameObject:
   m_ObjectHideFlags: 0
@@ -122,6 +146,7 @@ GameObject:
   - component: {fileID: 2732433719801339609}
   - component: {fileID: 767641819585355592}
   - component: {fileID: 61401821617363947}
+  - component: {fileID: 5613947083482461605}
   m_Layer: 0
   m_Name: pvmntLRI_lod0
   m_TagString: Untagged
@@ -137,7 +162,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8090942430836744543}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 600, y: 8.649742, z: -600}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3709285193709575178}
@@ -190,3 +215,17 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!64 &5613947083482461605
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8090942430836744543}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 1168724423202092571, guid: b4013d41282ebed45a7a6751a707675a, type: 3}

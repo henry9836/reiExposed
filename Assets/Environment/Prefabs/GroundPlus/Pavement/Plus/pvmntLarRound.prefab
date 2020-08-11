@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2580452582386638774}
   - component: {fileID: 8036879734273828961}
   - component: {fileID: 6519568166176540189}
+  - component: {fileID: 1067852442430663082}
   m_Layer: 0
   m_Name: pvmntLR_lod0
   m_TagString: Untagged
@@ -26,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 276681956385501825}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 600, y: 8.649742, z: -600}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5574185905727804729}
@@ -79,6 +80,20 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!64 &1067852442430663082
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 276681956385501825}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -2256323743448379038, guid: b4013d41282ebed45a7a6751a707675a, type: 3}
 --- !u!1 &320483836141290141
 GameObject:
   m_ObjectHideFlags: 0
@@ -88,6 +103,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5574185905727804729}
+  - component: {fileID: 681636458401241526}
   m_Layer: 0
   m_Name: pvmntLarRound
   m_TagString: Untagged
@@ -111,6 +127,29 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!205 &681636458401241526
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 320483836141290141}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 600, y: 4.3248663, z: -600}
+  m_Size: 1200
+  m_FadeMode: 1
+  m_AnimateCrossFading: 1
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.13236205
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 6519568166176540189}
+  - screenRelativeHeight: 0.04974025
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 5574655807197705322}
+  m_Enabled: 1
 --- !u!1 &4474145977856904478
 GameObject:
   m_ObjectHideFlags: 0
