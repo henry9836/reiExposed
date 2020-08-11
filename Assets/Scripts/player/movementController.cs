@@ -49,6 +49,7 @@ public class movementController : MonoBehaviour
     private PlayerController pc;
     private CharacterController ch;
     private Animator animator;
+    private CapsuleCollider playerHitBox;
     [HideInInspector]
     public Vector3 moveDir = Vector3.zero;
     private Vector3 moveDirCam = Vector3.zero; 
@@ -56,6 +57,13 @@ public class movementController : MonoBehaviour
     private Vector3 beforeRollPosition;
     private Vector3 targetRollPosition;
     private Quaternion targetRot;
+
+    //Hit box
+    private float startHitBoxH = 0.0f;
+    private float startHitBoxY = 0.0f;
+    private float rollHitBoxH = 0.87f;
+    private float rollHitBoxY = 0.41f;
+
     private bool isOnGround = false;
     private bool rolling = false;
     private bool sprinting = false;
@@ -71,8 +79,10 @@ public class movementController : MonoBehaviour
         pc = GetComponent<PlayerController>();
         animator = GetComponent<Animator>();
         audio = GetComponent<AudioSource>();
-
+        playerHitBox = GetComponent<CapsuleCollider>();
         unblockTimer = timeToUnblock;
+        startHitBoxH = playerHitBox.height;
+        startHitBoxY = playerHitBox.center.y;
     }
 
     private void FixedUpdate()
@@ -185,6 +195,11 @@ public class movementController : MonoBehaviour
                 //Lock other movement until roll is complete
                 rolling = true;
 
+                //Change hitbox
+                playerHitBox.height = rollHitBoxH;
+                playerHitBox.center = new Vector3(playerHitBox.center.x, rollHitBoxY, playerHitBox.center.z);
+
+
                 //Animation
                 animator.SetBool("Rolling", true);
                 animator.SetTrigger("Roll");
@@ -201,6 +216,10 @@ public class movementController : MonoBehaviour
             if (rollTimer >= rollTime)
             {
                 rolling = false;
+
+                //Change hitbox
+                playerHitBox.height = startHitBoxH;
+                playerHitBox.center = new Vector3(playerHitBox.center.x, startHitBoxY, playerHitBox.center.z);
 
                 //Animation
                 animator.SetBool("Rolling", false);
