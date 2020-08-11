@@ -76,8 +76,8 @@ public class ThePhone : MonoBehaviour
         maincam = GameObject.Find("Main Camera");
         myths = GameObject.FindGameObjectWithTag("GameManager").GetComponent<MythWorkerUnion>();
         drone = GameObject.Find("Save&Dronemanage").GetComponent<plugindemo>();
-        clueCtrl = GameObject.FindGameObjectWithTag("GameManager").GetComponent<ClueController>();
-        //StartCoroutine(testmove());
+        clueCtrl = GameObject.FindGameObjectWithTag("GameManager").GetComponent<ClueController>();       
+
     }
 
 
@@ -130,11 +130,17 @@ public class ThePhone : MonoBehaviour
                             selected = Mathf.Clamp(selected, 0, 2);
                         }
                     }
+
+
+
+
                     //scroling UI selected
                     if (prev != selected)
                     {
                         slotno oldslot = ThePhoneUI.transform.GetChild(2).GetChild(prev).GetComponent<slotno>();
                         slotno newslot = ThePhoneUI.transform.GetChild(2).GetChild(selected).GetComponent<slotno>();
+
+  
 
                         if (oldslot.shriking != true)
                         {
