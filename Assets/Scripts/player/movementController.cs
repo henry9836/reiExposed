@@ -10,6 +10,7 @@ public class movementController : MonoBehaviour
     public float moveSpeed = 10.0f;
     public float sprintSpeedMultipler = 2.0f;
     public float jumpForce = 10.0f;
+    public float useItemMoveSpeed = 0.3f;
     public AnimationCurve rollMovementOverTime;
     public float rollTime = 0.5f;
     public float rollDistance = 5.0f;
@@ -153,9 +154,16 @@ public class movementController : MonoBehaviour
             //Move half speed
             moveDir = new Vector3(0.0f, moveDir.y, 0.0f);
 
-            moveDir += camParent.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed));
-            moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed));
-
+            if (!animator.GetBool("UsingItem"))
+            {
+                moveDir += camParent.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed));
+                moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed));
+            }
+            else
+            {
+                moveDir += camParent.transform.forward * ((Input.GetAxis("Vertical") * useItemMoveSpeed));
+                moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * useItemMoveSpeed));
+            }
             //Apply Gravity
             moveDir.y -= gravity * Time.deltaTime;
 
@@ -164,8 +172,16 @@ public class movementController : MonoBehaviour
         //While we are on the ground
         else
         {
-            moveDir = camParent.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed));
-            moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed));
+            if (!animator.GetBool("UsingItem"))
+            {
+                moveDir = camParent.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed));
+                moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed));
+            }
+            else
+            {
+                moveDir = camParent.transform.forward * ((Input.GetAxis("Vertical") * useItemMoveSpeed));
+                moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * useItemMoveSpeed));
+            }
         }
 
         //Rolling Mechanic
@@ -228,7 +244,7 @@ public class movementController : MonoBehaviour
         }
 
         //Sprint
-        else if (Input.GetButton("Sprint") && isOnGround && !rolling && !sprintLock)
+        else if (Input.GetButton("Sprint") && isOnGround && !rolling && !sprintLock && !animator.GetBool("UsingItem"))
         {
             if ((moveDir.x != 0) && (moveDir.z != 0))
             {
