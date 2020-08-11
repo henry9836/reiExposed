@@ -35,12 +35,14 @@ public class GeyserController : MonoBehaviour
         Explode.SetActive(true);
         Prepare.SetActive(false);
         hitBox.enabled = true;
+
         //Wait till end of audio clip
         while (audio.isPlaying)
         {
             yield return null;
         }
-        Destroy(gameObject);
+
+        Destroy(this.gameObject);
     }
 
 

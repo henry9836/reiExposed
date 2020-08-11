@@ -67,11 +67,15 @@ public class ThePhone : MonoBehaviour
     };
 
     public phonestates screen;
- 
+
+    private Animator playerAnimator;
+
+
     void Start()
     {
         screen = phonestates.NONE;
         rei = GameObject.FindGameObjectWithTag("Player");
+        playerAnimator = rei.GetComponent<Animator>();
         canvas = this.gameObject;
         maincam = GameObject.Find("Main Camera");
         myths = GameObject.FindGameObjectWithTag("GameManager").GetComponent<MythWorkerUnion>();
@@ -304,11 +308,6 @@ public class ThePhone : MonoBehaviour
 
                     }
 
-
- 
-
-
-
                     break;
                 } 
             case phonestates.AMAZON:
@@ -332,7 +331,11 @@ public class ThePhone : MonoBehaviour
                     //perchance item
                     if (Input.GetMouseButtonDown(0))
                     {
-                        amazonshop(amazonselected);
+                        if (!playerAnimator.GetBool("UsingItem"))
+                        {
+                            playerAnimator.SetTrigger("UseItem");
+                            amazonshop(amazonselected);
+                        }
                     }
                     
                     //feedback for scroolling
@@ -412,8 +415,12 @@ public class ThePhone : MonoBehaviour
                     {
                         if (canvas.GetComponent<Items>().equipped.Count > itemselected)
                         {
-                            canvas.GetComponent<Items>().removeitemequipped(itemselected, true);
-                            ThePhoneUI.transform.GetChild(5).gameObject.GetComponent<eqitems>().itemchange();
+                            if (!playerAnimator.GetBool("UsingItem"))
+                            {
+                                playerAnimator.SetTrigger("UseItem");
+                                canvas.GetComponent<Items>().removeitemequipped(itemselected, true);
+                                ThePhoneUI.transform.GetChild(5).gameObject.GetComponent<eqitems>().itemchange();
+                            }
                         }
                     }
 
