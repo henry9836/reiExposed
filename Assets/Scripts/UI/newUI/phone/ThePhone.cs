@@ -229,13 +229,16 @@ public class ThePhone : MonoBehaviour
                         if (sec1timer > 0.1f)
                         {
                             sec1timer = 0.0f;
-                            checkPhotoValid(false);
+                            //clue interchnageble with clues1 2 and 3 based on level TODO
+
+                            checkPhotoValid(false, "Clue");
                         }
 
                         //take photo
                         if (Input.GetMouseButtonDown(0))
                         {
-                            checkPhotoValid(true);
+                            //clue interchnageble with clues1 2 and 3 based on level TODO
+                            checkPhotoValid(true, "Clue");
                         }
                         else if (Input.GetKeyDown(KeyCode.Tab) || Input.GetButtonDown("Pause")) // close phone
                         {
@@ -665,12 +668,14 @@ public class ThePhone : MonoBehaviour
     }
 
     //checks if photo is valid
-    public void checkPhotoValid(bool takingphoto)
+    public void checkPhotoValid(bool takingphoto, string checkTag)
     {
         string cluename = "bad";
         bool cluePicTaken = false;
 
-        GameObject[] clues = GameObject.FindGameObjectsWithTag("Clue");
+        GameObject[] clues = GameObject.FindGameObjectsWithTag(checkTag);
+        GameObject[] qr = GameObject.FindGameObjectsWithTag("QRcode");
+
         List<GameObject> clue = new List<GameObject>() { };
         List<List<Vector2>> cluepos = new List<List<Vector2>>() { };
 
@@ -680,6 +685,14 @@ public class ThePhone : MonoBehaviour
             cluepos.Add(new List<Vector2>());
             clue.Add(clues[i]);
         }
+
+        for (int i = 0; i < qr.Length; i++)
+        {
+            cluepos.Add(new List<Vector2>());
+            clue.Add(qr[i]);
+        }
+
+        
 
         //find all clues
         for (int i = 0; i < clue.Count; i++)
@@ -826,10 +839,19 @@ public class ThePhone : MonoBehaviour
         {
             if (cluename != "bad")
             {
+                if (cluename != "QRCode")
+                {
+                    SaveSystemController.updateValue(cluename + "[CLUE]", "yes");
+                    clueCtrl.cluesCollected.Add(cluename);
+                    SaveSystemController.saveDataToDisk();
+                }
+                else
+                { 
+                    //scan QRcode TODO
+                }
+
                 //good photo add to save and stuff
-                SaveSystemController.updateValue(cluename + "[CLUE]", "yes");
-                clueCtrl.cluesCollected.Add(cluename);
-                SaveSystemController.saveDataToDisk();
+
             }
             //any photo 
         }
