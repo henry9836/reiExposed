@@ -127,7 +127,7 @@ public class movementController : MonoBehaviour
 
 
         //Rotate towards movement in relation to cam direction
-        if (moveDirCam != Vector3.zero && !rolling && !strafemode && !attackMovementBlock)
+        if (moveDirCam != Vector3.zero && !rolling && !strafemode && !attackMovementBlock && !animator.GetBool("KnockedDown"))
         {
 
             //Get cam rotation
@@ -154,7 +154,7 @@ public class movementController : MonoBehaviour
             //Move half speed
             moveDir = new Vector3(0.0f, moveDir.y, 0.0f);
 
-            if (!animator.GetBool("UsingItem"))
+            if (!animator.GetBool("UsingItem") && !animator.GetBool("KnockedDown"))
             {
                 moveDir += camParent.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed));
                 moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed));
@@ -172,7 +172,7 @@ public class movementController : MonoBehaviour
         //While we are on the ground
         else
         {
-            if (!animator.GetBool("UsingItem"))
+            if (!animator.GetBool("UsingItem") && !animator.GetBool("KnockedDown"))
             {
                 moveDir = camParent.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed));
                 moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed));
@@ -185,7 +185,7 @@ public class movementController : MonoBehaviour
         }
 
         //Rolling Mechanic
-        if (Input.GetButtonDown("Roll") && !rolling)
+        if (Input.GetButtonDown("Roll") && !rolling && !animator.GetBool("UsingItem") && !animator.GetBool("KnockedDown"))
         {
             //Check stamina
             if (staminaCostRoll <= pc.staminaAmount)
@@ -244,7 +244,7 @@ public class movementController : MonoBehaviour
         }
 
         //Sprint
-        else if (Input.GetButton("Sprint") && isOnGround && !rolling && !sprintLock && !animator.GetBool("UsingItem"))
+        else if (Input.GetButton("Sprint") && isOnGround && !rolling && !sprintLock && !animator.GetBool("UsingItem") && !animator.GetBool("KnockedDown"))
         {
             if ((moveDir.x != 0) && (moveDir.z != 0))
             {

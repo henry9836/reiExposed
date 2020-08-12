@@ -64,7 +64,7 @@ public class umbrella : MonoBehaviour
         latetest = false;
 
         //if attack button while not blocking hit
-        if (Input.GetMouseButtonDown(0) && !animator.GetBool("Blocking") && !phoneLock)
+        if (Input.GetMouseButtonDown(0) && !animator.GetBool("Blocking") && !animator.GetBool("KnockedDown") && !phoneLock)
         {
             if (playercontrol.staminaAmount >= playercontrol.staminaToAttack)
             {
