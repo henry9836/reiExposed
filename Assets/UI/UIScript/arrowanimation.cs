@@ -53,11 +53,13 @@ public class arrowanimation : MonoBehaviour
 
             if (goingUp)
             {
-                transform.position = Vector3.Lerp(initialPosition, endPosition, timer / timeToFloat);
+                //transform.position = Vector3.Lerp(initialPosition, endPosition, timer / timeToFloat);
+                transform.position = Vector3.Slerp(initialPosition, endPosition, timer / timeToFloat);
             }
             else
             {
-                transform.position = Vector3.Lerp(endPosition, initialPosition, timer / timeToFloat);
+                //transform.position = Vector3.Lerp(endPosition, initialPosition, timer / timeToFloat);
+                transform.position = Vector3.Slerp(endPosition, initialPosition, timer / timeToFloat);
             }
 
             if (fadingAway)
