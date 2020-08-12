@@ -1,8 +1,4 @@
-// Upgrade NOTE: replaced '_Object2World' with 'unity_ObjectToWorld'
-
-// Unity built-in shader source. Copyright (c) 2016 Unity Technologies. MIT license (see license.txt)
-
-Shader "UI/Vaughan"
+Shader "Custom/UIvoroni"
 {
     Properties
     {
