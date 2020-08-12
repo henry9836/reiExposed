@@ -1949,6 +1949,7 @@ MonoBehaviour:
   moveSpeed: 5
   sprintSpeedMultipler: 1.1
   jumpForce: 5
+  useItemMoveSpeed: 0
   rollMovementOverTime:
     serializedVersion: 2
     m_Curve:
@@ -1979,6 +1980,7 @@ MonoBehaviour:
   strafemode: 0
   gravity: 19.6131
   respawnThreshold: -150
+  timeToUnblock: 0.5
   staminaCostSprint: 80
   staminaCostRoll: 50
   staminaCostJump: 0
@@ -1992,10 +1994,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 80695
   sprintLines: {fileID: 1484035665}
+  attackMovementBlock: 0
   dashSounds:
   - {fileID: 8300000, guid: a14f5f736ee737f4e8005e78985875b9, type: 3}
   - {fileID: 8300000, guid: 469b6d26d2f7c8f4b9ea2ca5602b51af, type: 3}
-  attacking: 0
+  moveDir: {x: 0, y: 0, z: 0}
 --- !u!114 &3144247446528475113
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2033,10 +2036,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.21
-  m_Height: 1.96
+  m_Radius: 0.14395276
+  m_Height: 1.6770445
   m_Direction: 1
-  m_Center: {x: 0, y: 0.95, z: 0}
+  m_Center: {x: 0, y: 0.80852216, z: 0.004523486}
 --- !u!95 &212265599186769691
 Animator:
   serializedVersion: 3
@@ -2210,6 +2213,7 @@ MonoBehaviour:
   pellets: 8
   xinsButthole: {fileID: 89621463177512375, guid: 191b27c51b2d85a43a91ddebe6810abc,
     type: 3}
+  crosshair: {fileID: 0}
 --- !u!114 &1325763837
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3271,7 +3275,6 @@ MonoBehaviour:
   aimFOV: 55
   aimDistance: 3
   umbrella: {fileID: 4885559644254803688}
-  crosshair: {fileID: 0}
   rei: {fileID: 0}
 --- !u!1 &3339494445147069540
 GameObject:

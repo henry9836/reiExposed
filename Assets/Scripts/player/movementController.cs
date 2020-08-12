@@ -10,6 +10,7 @@ public class movementController : MonoBehaviour
     public float moveSpeed = 10.0f;
     public float sprintSpeedMultipler = 2.0f;
     public float jumpForce = 10.0f;
+    public float useItemMoveSpeed = 0.3f;
     public AnimationCurve rollMovementOverTime;
     public float rollTime = 0.5f;
     public float rollDistance = 5.0f;
@@ -49,6 +50,7 @@ public class movementController : MonoBehaviour
     private PlayerController pc;
     private CharacterController ch;
     private Animator animator;
+    private CapsuleCollider playerHitBox;
     [HideInInspector]
     public Vector3 moveDir = Vector3.zero;
     private Vector3 moveDirCam = Vector3.zero; 
@@ -56,6 +58,13 @@ public class movementController : MonoBehaviour
     private Vector3 beforeRollPosition;
     private Vector3 targetRollPosition;
     private Quaternion targetRot;
+
+    //Hit box
+    private float startHitBoxH = 0.0f;
+    private float startHitBoxY = 0.0f;
+    private float rollHitBoxH = 0.87f;
+    private float rollHitBoxY = 0.41f;
+
     private bool isOnGround = false;
     private bool rolling = false;
     private bool sprinting = false;
@@ -71,8 +80,10 @@ public class movementController : MonoBehaviour
         pc = GetComponent<PlayerController>();
         animator = GetComponent<Animator>();
         audio = GetComponent<AudioSource>();
-
+        playerHitBox = GetComponent<CapsuleCollider>();
         unblockTimer = timeToUnblock;
+        startHitBoxH = playerHitBox.height;
+        startHitBoxY = playerHitBox.center.y;
     }
 
     private void FixedUpdate()
@@ -116,7 +127,7 @@ public class movementController : MonoBehaviour
 
 
         //Rotate towards movement in relation to cam direction
-        if (moveDirCam != Vector3.zero && !rolling && !strafemode && !attackMovementBlock)
+        if (moveDirCam != Vector3.zero && !rolling && !strafemode && !attackMovementBlock && !animator.GetBool("KnockedDown"))
         {
 
             //Get cam rotation
@@ -143,9 +154,16 @@ public class movementController : MonoBehaviour
             //Move half speed
             moveDir = new Vector3(0.0f, moveDir.y, 0.0f);
 
-            moveDir += camParent.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed));
-            moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed));
-
+            if (!animator.GetBool("UsingItem") && !animator.GetBool("KnockedDown"))
+            {
+                moveDir += camParent.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed));
+                moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed));
+            }
+            else
+            {
+                moveDir += camParent.transform.forward * ((Input.GetAxis("Vertical") * useItemMoveSpeed));
+                moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * useItemMoveSpeed));
+            }
             //Apply Gravity
             moveDir.y -= gravity * Time.deltaTime;
 
@@ -154,12 +172,20 @@ public class movementController : MonoBehaviour
         //While we are on the ground
         else
         {
-            moveDir = camParent.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed));
-            moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed));
+            if (!animator.GetBool("UsingItem") && !animator.GetBool("KnockedDown"))
+            {
+                moveDir = camParent.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed));
+                moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed));
+            }
+            else
+            {
+                moveDir = camParent.transform.forward * ((Input.GetAxis("Vertical") * useItemMoveSpeed));
+                moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * useItemMoveSpeed));
+            }
         }
 
         //Rolling Mechanic
-        if (Input.GetButtonDown("Roll") && !rolling)
+        if (Input.GetButtonDown("Roll") && !rolling && !animator.GetBool("UsingItem") && !animator.GetBool("KnockedDown"))
         {
             //Check stamina
             if (staminaCostRoll <= pc.staminaAmount)
@@ -185,6 +211,11 @@ public class movementController : MonoBehaviour
                 //Lock other movement until roll is complete
                 rolling = true;
 
+                //Change hitbox
+                playerHitBox.height = rollHitBoxH;
+                playerHitBox.center = new Vector3(playerHitBox.center.x, rollHitBoxY, playerHitBox.center.z);
+
+
                 //Animation
                 animator.SetBool("Rolling", true);
                 animator.SetTrigger("Roll");
@@ -202,6 +233,10 @@ public class movementController : MonoBehaviour
             {
                 rolling = false;
 
+                //Change hitbox
+                playerHitBox.height = startHitBoxH;
+                playerHitBox.center = new Vector3(playerHitBox.center.x, startHitBoxY, playerHitBox.center.z);
+
                 //Animation
                 animator.SetBool("Rolling", false);
                 animator.ResetTrigger("Roll");
@@ -209,7 +244,7 @@ public class movementController : MonoBehaviour
         }
 
         //Sprint
-        else if (Input.GetButton("Sprint") && isOnGround && !rolling && !sprintLock)
+        else if (Input.GetButton("Sprint") && isOnGround && !rolling && !sprintLock && !animator.GetBool("UsingItem") && !animator.GetBool("KnockedDown"))
         {
             if ((moveDir.x != 0) && (moveDir.z != 0))
             {

@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour
     private AudioSource audio;
     private umbrella umbrella;
     private bool UIon = false;
-
+    private Animator animator;
 
 
     private void Start()
@@ -58,6 +58,7 @@ public class PlayerController : MonoBehaviour
 
         audio = GetComponent<AudioSource>();
         umbrella = GetComponent<umbrella>();
+        animator = GetComponent<Animator>();
     }
     public void ChangeStamina(float amount)
     {
@@ -115,6 +116,8 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("v " + other.name);
+
         if (dead == false)
         {
             GameObject otherObject = other.gameObject;
@@ -129,14 +132,20 @@ public class PlayerController : MonoBehaviour
                 }
                 else if (otherObject.GetComponent<GenericHitboxController>() != null)
                 {
-                    health -= otherObject.GetComponent<GenericHitboxController>().Damage();
-                    Debug.Log($"Took Damage {otherObject.GetComponent<GenericHitboxController>().Damage()}");
+                    Collider col = GetComponent<Collider>();
+                    Debug.DrawLine(other.ClosestPointOnBounds(col.transform.position), col.transform.position, Color.magenta, 10.0f, false);
+                    float dmg = otherObject.GetComponent<GenericHitboxController>().Damage();
+                    health -= dmg;
+                    Debug.Log($"Took Damage {dmg}");
                 }
                 else
                 {
                     Debug.LogWarning($"Unknown Component Damage {otherObject.name}");
                 }
                 audio.PlayOneShot(hurtSounds[Random.Range(0, hurtSounds.Count)]);
+
+                //Stun
+                animator.SetTrigger("KnockDown");
             }
             else if (other.gameObject.CompareTag("EnemyAttackSurface") && umbrella.ISBLockjing)
             {
@@ -145,6 +154,9 @@ public class PlayerController : MonoBehaviour
 
                 //Disable hitboxes
                 boss.GetComponent<AIObject>().body.updateHitBox(AIBody.BodyParts.ALL, false);
+
+                //Stun
+                animator.SetTrigger("KnockDown");
             }
 
 
