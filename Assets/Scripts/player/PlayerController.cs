@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour
     private AudioSource audio;
     private umbrella umbrella;
     private bool UIon = false;
-
+    private Animator animator;
 
 
     private void Start()
@@ -58,6 +58,7 @@ public class PlayerController : MonoBehaviour
 
         audio = GetComponent<AudioSource>();
         umbrella = GetComponent<umbrella>();
+        animator = GetComponent<Animator>();
     }
     public void ChangeStamina(float amount)
     {
@@ -142,6 +143,9 @@ public class PlayerController : MonoBehaviour
                     Debug.LogWarning($"Unknown Component Damage {otherObject.name}");
                 }
                 audio.PlayOneShot(hurtSounds[Random.Range(0, hurtSounds.Count)]);
+
+                //Stun
+                animator.SetTrigger("KnockDown");
             }
             else if (other.gameObject.CompareTag("EnemyAttackSurface") && umbrella.ISBLockjing)
             {
@@ -150,6 +154,9 @@ public class PlayerController : MonoBehaviour
 
                 //Disable hitboxes
                 boss.GetComponent<AIObject>().body.updateHitBox(AIBody.BodyParts.ALL, false);
+
+                //Stun
+                animator.SetTrigger("KnockDown");
             }
 
 
