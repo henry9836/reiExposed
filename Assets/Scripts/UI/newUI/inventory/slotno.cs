@@ -25,6 +25,8 @@ public class slotno : MonoBehaviour
     private void Start()
     {
         this.gameObject.GetComponent<Image>().material = new Material(this.gameObject.GetComponent<Image>().material);
+        this.gameObject.GetComponent<Image>().material.SetColor("_Color", colormin);
+        this.gameObject.GetComponent<Image>().material.SetFloat("_Power", shaderammountmin);
     }
 
 
