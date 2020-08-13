@@ -10,7 +10,7 @@ Material:
   m_Name: tessalation
   m_Shader: {fileID: -6465566751694194690, guid: c160c51da718ed049a2923c12ffe065d,
     type: 3}
-  m_ShaderKeywords: _BLENDMODE_ALPHA _SURFACE_TYPE_TRANSPARENT
+  m_ShaderKeywords: _BLENDMODE_ALPHA _ENABLE_FOG_ON_TRANSPARENT _SURFACE_TYPE_TRANSPARENT
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -24,6 +24,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - Texture2D_4A901707:
+        m_Texture: {fileID: 2800000, guid: 94266b27860d12341912799eeae437fc, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - Texture2D_74E21B02:
         m_Texture: {fileID: 2800000, guid: a9e0a84d93ec9f34e9f1be1667016a5d, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -53,6 +57,13 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - Vector1_2061ABE: 8.72
+    - Vector1_8EF52C0: 0.6
+    - Vector1_B1C5394C: 8
+    - Vector1_C6470598: 0
+    - Vector1_D68607D2: 10
+    - Vector1_D6CC7C50: 0.01
+    - Vector1_F44B25E0: 0
     - _AlphaCutoffEnable: 0
     - _AlphaDstBlend: 10
     - _AlphaSrcBlend: 1
@@ -63,7 +74,7 @@ Material:
     - _DoubleSidedEnable: 0
     - _DoubleSidedNormalMode: 2
     - _DstBlend: 10
-    - _EnableFogOnTransparent: 0
+    - _EnableFogOnTransparent: 1
     - _Glossiness: 0.5
     - _Metallic: 0
     - _ReceivesSSR: 0
@@ -87,13 +98,13 @@ Material:
     - _TransparentSortPriority: 0
     - _TransparentZWrite: 1
     - _UseShadowThreshold: 0
-    - _ZTestDepthEqualForOpaque: 4
+    - _ZTestDepthEqualForOpaque: 2
     - _ZTestGBuffer: 4
-    - _ZTestTransparent: 4
+    - _ZTestTransparent: 2
     - _ZWrite: 1
     m_Colors:
     - Color_57221FFA: {r: 1, g: 1, b: 1, a: 1}
-    - Color_72E057: {r: 1, g: 1, b: 1, a: 0.3529412}
+    - Color_72E057: {r: 0.2883008, g: 0.3243384, b: 3.4415908, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
