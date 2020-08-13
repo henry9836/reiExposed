@@ -18,6 +18,7 @@ public class ClueController : MonoBehaviour
     public bool bossOneCollected = false;
     public bool bossTwoCollected = false;
     public bool bossThreeCollected = false;
+    public bool qrFound = false;
 
     int clueCollectedOne = 0;
     int clueCollectedTwo = 0;
@@ -40,6 +41,9 @@ public class ClueController : MonoBehaviour
                 }
             }
         }
+
+        qrFound = SaveSystemController.getBoolValue("QRCodeFound");
+        
 
         StartCoroutine(clueCheckLoop());
     }
