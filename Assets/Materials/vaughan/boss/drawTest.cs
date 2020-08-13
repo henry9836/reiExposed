@@ -26,6 +26,7 @@ public class drawTest : MonoBehaviour
 
     void Update()
     {
+        Debug.DrawRay(cam.transform.position, cam.transform.forward);
         if (Input.GetKey(KeyCode.Mouse0))
         {
             if (Physics.Raycast(cam.transform.position, cam.transform.forward,  out hit, Mathf.Infinity, tohit))
@@ -37,7 +38,6 @@ public class drawTest : MonoBehaviour
                 RenderTexture.ReleaseTemporary(tmp);
 
                 fromMat.SetTexture("Texture2D_DB299D9F", splatmap);
-
             }
         }
     }
