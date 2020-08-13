@@ -11,7 +11,11 @@ GameObject:
   - component: {fileID: 773883908966235305}
   - component: {fileID: 7478237402947967803}
   - component: {fileID: 5925815583771674298}
+  - component: {fileID: 4537423114006863418}
   - component: {fileID: 225011282}
+  - component: {fileID: 1010358838}
+  - component: {fileID: 1601101144}
+  - component: {fileID: 1601101145}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameManager
@@ -60,7 +64,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cda9afa643fefe34eaa1f8b61f9e32ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rc: {fileID: 0}
+  boss: {fileID: 0}
   GameOverEvent:
     m_PersistentCalls:
       m_Calls:
@@ -75,6 +79,21 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &4537423114006863418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6758719851260491791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c037eeed1560f42489a960211b15c28e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startMode: 1
+  calmClips: []
+  battleClips: []
 --- !u!82 &225011282
 AudioSource:
   m_ObjectHideFlags: 0
@@ -171,3 +190,57 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1010358838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6758719851260491791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7562fb39de41ef4fb04917529ffe2bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1601101144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6758719851260491791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1faf7a887564159478305cbce81d08a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BossArenaControllerOne: {fileID: 1601101145}
+  BossArenaControllerTwo: {fileID: 0}
+  BossArenaControllerThree: {fileID: 0}
+  cluesNeededBossOne:
+  - longbox
+  - human
+  - Building
+  cluesNeededBossTwo: []
+  cluesNeededBossThree: []
+  cluesCollected: []
+  bossOneCollected: 0
+  bossTwoCollected: 0
+  bossThreeCollected: 0
+--- !u!114 &1601101145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6758719851260491791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2dd64d2b4715b947b2276d4ed5fb8db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  room:
+  - {fileID: 0}
+  roomLvl2:
+  - {fileID: 0}
+  boss: {fileID: 0}

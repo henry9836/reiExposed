@@ -10,6 +10,7 @@ public class movementController : MonoBehaviour
     public float moveSpeed = 10.0f;
     public float sprintSpeedMultipler = 2.0f;
     public float jumpForce = 10.0f;
+    public float useItemMoveSpeed = 0.3f;
     public AnimationCurve rollMovementOverTime;
     public float rollTime = 0.5f;
     public float rollDistance = 5.0f;
@@ -21,14 +22,12 @@ public class movementController : MonoBehaviour
     public float respawnThreshold = -30.0f;
 
     [Header("Stamina")]
+    public float timeToUnblock = 0.5f;
     public float staminaCostSprint = 2.0f;
     public float staminaCostRoll = 30.0f;
     public float staminaCostJump = 30.0f;
 
     [Header("Body Parts")]
-    //public Transform feet;
-    //public Transform rightFoot;
-    //public Transform leftFoot;
     public GameObject charcterModel;
     public GameObject camParent;
     public Transform rollCheckTransform;
@@ -40,6 +39,10 @@ public class movementController : MonoBehaviour
     [Header("Other")]
     public Image sprintLines;
 
+    //Hidden
+    [HideInInspector]
+    public bool attackMovementBlock = false;
+
     //Sounds
     public List<AudioClip> dashSounds = new List<AudioClip>();
     private AudioSource audio;
@@ -47,25 +50,28 @@ public class movementController : MonoBehaviour
     private PlayerController pc;
     private CharacterController ch;
     private Animator animator;
-    private Vector3 moveDir = Vector3.zero;
-    private Vector3 moveDirCam = Vector3.zero;
-    private bool isOnGround = false;
-    private float dashThresholdCeiling = 0.5f;
-    private float dashTimer = 0.0f;
+    private CapsuleCollider playerHitBox;
+    [HideInInspector]
+    public Vector3 moveDir = Vector3.zero;
+    private Vector3 moveDirCam = Vector3.zero; 
     private Vector3 initalPosition;
-    private bool jumponce = false;
-    private Quaternion targetRot;
-    private bool previousState = true;
-    private bool currentState = true;
-    private bool rightFootGrounded = false;
-    private bool leftFootGrounded = false;
-    private bool centerFootGrounded = false;
-    private RaycastHit hit;
     private Vector3 beforeRollPosition;
     private Vector3 targetRollPosition;
+    private Quaternion targetRot;
+
+    //Hit box
+    private float startHitBoxH = 0.0f;
+    private float startHitBoxY = 0.0f;
+    private float rollHitBoxH = 0.87f;
+    private float rollHitBoxY = 0.41f;
+
+    private bool isOnGround = false;
     private bool rolling = false;
+    private bool sprinting = false;
+    private bool sprintLock = false;
     private float rollTimer = 0.0f;
     private float tmpRollDistance = 0.0f;
+    private float unblockTimer = 0.0f;
 
     private void Start()
     {
@@ -74,68 +80,15 @@ public class movementController : MonoBehaviour
         pc = GetComponent<PlayerController>();
         animator = GetComponent<Animator>();
         audio = GetComponent<AudioSource>();
+        playerHitBox = GetComponent<CapsuleCollider>();
+        unblockTimer = timeToUnblock;
+        startHitBoxH = playerHitBox.height;
+        startHitBoxY = playerHitBox.center.y;
     }
 
     private void FixedUpdate()
     {
-
-        //=========================
-        //Gravity/Landing Section
-        //=========================
-
-        ////Check for ground below each foot
-        //leftFootGrounded = (Physics.Raycast(leftFoot.position, Vector3.down, out hit, feetCheckDistance, groundLayer));
-        //if (leftFootGrounded)
-        //{
-        //    Debug.DrawLine(leftFoot.position, hit.point, Color.cyan);
-        //    leftFoot.position = hit.point;
-        //}
-        //else
-        //{
-        //    Debug.DrawLine(leftFoot.position, leftFoot.position + (Vector3.down * feetCheckDistance), Color.red);
-        //    leftFoot.position = leftFoot.position;
-        //}
-
-        //rightFootGrounded = (Physics.Raycast(rightFoot.position, Vector3.down, out hit, feetCheckDistance, groundLayer));
-
-        //if (rightFootGrounded)
-        //{
-        //    Debug.DrawLine(rightFoot.position, hit.point, Color.cyan);
-        //    rightFoot.position = hit.point;
-        //}
-        //else
-        //{
-        //    Debug.DrawLine(rightFoot.position, rightFoot.position + (Vector3.down * feetCheckDistance), Color.red);
-        //    rightFoot.position = rightFoot.position;
-        //}
-
-        ////Center foot is important as landing is controlled by character controller
-        //centerFootGrounded = (Physics.Raycast(feet.position, Vector3.down, out hit, feetCheckDistance, groundLayer));
-
-        //if (centerFootGrounded)
-        //{
-        //    Debug.DrawLine(feet.position, hit.point, Color.cyan);
-        //}
-        //else
-        //{
-        //    Debug.DrawLine(feet.position, feet.position + (Vector3.down * feetCheckDistance), Color.red);
-        //}
-
-        ////Set whether we are on the ground or not
-
-        //isOnGround = (rightFootGrounded || leftFootGrounded || centerFootGrounded);
-
         isOnGround = ch.isGrounded;
-
-
-        //if (isOnGround != previousState)
-        //{
-        //    if (isOnGround)
-        //    {
-        //        animator.SetTrigger("jumpLand");
-        //    }
-        //}
-        //previousState = isOnGround;
 
         //Fell out of map, reset pos
         if (transform.position.y < respawnThreshold)
@@ -144,9 +97,18 @@ public class movementController : MonoBehaviour
         }
     }
 
+    public void forceMovement(Vector3 dir)
+    {
+        ch.Move(dir * Time.deltaTime);
+    }
+
     // Update is called once per frame
     void Update()
     {
+
+        //Reset bools
+        sprinting = false;
+
         //Timers
         rollTimer += Time.unscaledDeltaTime;
 
@@ -165,7 +127,7 @@ public class movementController : MonoBehaviour
 
 
         //Rotate towards movement in relation to cam direction
-        if (moveDirCam != Vector3.zero && !rolling && !strafemode)
+        if (moveDirCam != Vector3.zero && !rolling && !strafemode && !attackMovementBlock && !animator.GetBool("KnockedDown"))
         {
 
             //Get cam rotation
@@ -191,12 +153,17 @@ public class movementController : MonoBehaviour
         {
             //Move half speed
             moveDir = new Vector3(0.0f, moveDir.y, 0.0f);
-            //moveDir += (camParent.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed))) * 0.5f;
-            //moveDir += (camParent.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed))) * 0.5f;
 
-            moveDir += camParent.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed));
-            moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed));
-
+            if (!animator.GetBool("UsingItem") && !animator.GetBool("KnockedDown"))
+            {
+                moveDir += camParent.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed));
+                moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed));
+            }
+            else
+            {
+                moveDir += camParent.transform.forward * ((Input.GetAxis("Vertical") * useItemMoveSpeed));
+                moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * useItemMoveSpeed));
+            }
             //Apply Gravity
             moveDir.y -= gravity * Time.deltaTime;
 
@@ -205,27 +172,23 @@ public class movementController : MonoBehaviour
         //While we are on the ground
         else
         {
-            moveDir = camParent.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed));
-            moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed));
-
-            //Removed JUMP
-            //if (Input.GetButton("Jump") && pc.CheckStamina() >= staminaCostJump && !rolling)
-            //{
-
-            //    Debug.Log("Called");
-
-            //    animator.SetTrigger("jumpUp");
-
-            //    moveDir.y += jumpForce;
-            //    pc.ChangeStamina(-staminaCostJump);
-            //}
+            if (!animator.GetBool("UsingItem") && !animator.GetBool("KnockedDown"))
+            {
+                moveDir = camParent.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed));
+                moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed));
+            }
+            else
+            {
+                moveDir = camParent.transform.forward * ((Input.GetAxis("Vertical") * useItemMoveSpeed));
+                moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * useItemMoveSpeed));
+            }
         }
 
         //Rolling Mechanic
-        if (Input.GetButtonDown("Roll") && !rolling)
+        if (Input.GetButtonDown("Roll") && !rolling && !animator.GetBool("UsingItem") && !animator.GetBool("KnockedDown"))
         {
             //Check stamina
-            if (staminaCostSprint <= pc.staminaAmount)
+            if (staminaCostRoll <= pc.staminaAmount)
             {
                 //Check if area is clear
                 tmpRollDistance = rollDistance;
@@ -248,6 +211,11 @@ public class movementController : MonoBehaviour
                 //Lock other movement until roll is complete
                 rolling = true;
 
+                //Change hitbox
+                playerHitBox.height = rollHitBoxH;
+                playerHitBox.center = new Vector3(playerHitBox.center.x, rollHitBoxY, playerHitBox.center.z);
+
+
                 //Animation
                 animator.SetBool("Rolling", true);
                 animator.SetTrigger("Roll");
@@ -265,6 +233,10 @@ public class movementController : MonoBehaviour
             {
                 rolling = false;
 
+                //Change hitbox
+                playerHitBox.height = startHitBoxH;
+                playerHitBox.center = new Vector3(playerHitBox.center.x, startHitBoxY, playerHitBox.center.z);
+
                 //Animation
                 animator.SetBool("Rolling", false);
                 animator.ResetTrigger("Roll");
@@ -272,15 +244,24 @@ public class movementController : MonoBehaviour
         }
 
         //Sprint
-        else if (Input.GetButton("Sprint") && isOnGround && !rolling)
+        else if (Input.GetButton("Sprint") && isOnGround && !rolling && !sprintLock && !animator.GetBool("UsingItem") && !animator.GetBool("KnockedDown"))
         {
             if ((moveDir.x != 0) && (moveDir.z != 0))
             {
                 //move a little more
                 if (pc.CheckStamina() >= staminaCostSprint * Time.deltaTime)
                 {
+                    sprinting = true;
+
                     pc.ChangeStamina(-staminaCostSprint * Time.deltaTime);
                     moveDir += new Vector3(moveDir.x * sprintSpeedMultipler, 0.0f, moveDir.z * sprintSpeedMultipler);
+
+                    //If we have run out of stmina lock sprinting
+                    if(pc.CheckStamina() < (staminaCostSprint * Time.deltaTime))
+                    {
+                        sprintLock = true;
+                    }
+
                     //Animation
                     animator.SetBool("Running", true);
 
@@ -319,17 +300,31 @@ public class movementController : MonoBehaviour
             animator.SetBool("Sprinting", false);
         }
 
-        //Restrict movement with animation
-        if (animator.GetBool("Blocking"))
-        {
-            //moveDir = new Vector3(0.0f, moveDir.y, 0.0f);
-        }
+        Debug.Log("BLOCK: " + attackMovementBlock.ToString());
 
         //Move
-        if (!rolling)
+        if (!rolling && !attackMovementBlock)
         {
             ch.Move(moveDir * Time.deltaTime);
         }
 
+        //Stamina Block Timer
+        if ((rolling || sprinting || attackMovementBlock || sprintLock || animator.GetBool("Attack")))
+        {
+            unblockTimer = 0.0f;
+        }
+        else
+        {
+            unblockTimer += Time.deltaTime;
+        }
+
+        //Stamina Block
+        pc.staminaBlock = (unblockTimer < timeToUnblock);
+
+        //Sprinting lock
+        if (sprintLock && !Input.GetButton("Sprint"))
+        {
+            sprintLock = false;
+        }
     }
 }

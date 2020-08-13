@@ -35,11 +35,12 @@ public class cameraControler : MonoBehaviour
     private float oldfov;
     private bool FOVonce = true;
     public GameObject umbrella;
-    public GameObject crosshair;
 
     private bool cooldownlock;
     private float fov;
     private GameObject pausemenu;
+
+    public GameObject rei;
 
 
     private void Awake()
@@ -49,7 +50,7 @@ public class cameraControler : MonoBehaviour
         camRoot = transform.GetChild(0).GetChild(0).gameObject;
         mainCam = transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Camera>();
         pausemenu = GameObject.Find("pauseMenu");
-        crosshair = GameObject.Find("crosshair");
+        rei = this.transform.root.gameObject;
     }
 
     void Update()
@@ -59,7 +60,7 @@ public class cameraControler : MonoBehaviour
         pitchValueAdj = Mathf.DeltaAngle(camPivot.transform.localRotation.eulerAngles.x, 360.0f - maxPitchUp) / -(maxPitchUp + maxPitchDown);
         zOffset = Mathf.Lerp(2.0f, maxDistance, distCurve.Evaluate(pitchValueAdj));
 
-        if ((Input.GetAxis("Fire2") > 0.5f) && (cooldownlock == false))
+        if ((Input.GetAxis("Fire2") > 0.5f) && (cooldownlock == false) && !rei.GetComponent<umbrella>().phoneLock)
         {
             if (FOVonce == true)
             {
@@ -103,17 +104,10 @@ public class cameraControler : MonoBehaviour
             zOffsetColl = -(Mathf.Clamp(zOffset, 1.0f, hitDistance));
 
         }
-        crosshair.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, ADStimer);
+
+
         camRoot.transform.localPosition = new Vector3(Mathf.Lerp(0.0f, 0.4f, ADStimer), 0.0f, zOffsetColl);
-        //=============================
-        // REMOVED
-        //-----------------------------
-        // SLOW MOTION EFFECT
-        //=============================
-        //if (pausemenu.GetComponent<pauseMenu>().paused == false)
-        //{
-        //    Time.timeScale = Mathf.Lerp(1.0f, 0.3f, ADStimer);
-        //}
+
         mainCam.fieldOfView = fov;
         CameraRotation();
     }

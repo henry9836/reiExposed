@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class pageManager : MonoBehaviour
 {
-    public GameObject upgradespage;
-    public GameObject convertpage;
+    public GameObject shopPage;
+    public GameObject storagePage;
     public GameObject selectedUI;
     public List<Vector2> positions = new List<Vector2>() { };
     private Vector2 canvaspos = new Vector2 (0.0f, 0.0f);
@@ -17,32 +17,33 @@ public class pageManager : MonoBehaviour
         canvas = GameObject.Find("Canvas");
         ETT = GameObject.FindGameObjectWithTag("Shop").GetComponent<enterToTalk>();
     }
-
-    public void upgradesPage()
+    public void StorgePage()
     {
-        upgradespage.SetActive(true);
-        convertpage.SetActive(false);
+        storagePage.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<slot>().itemchange();
+        shopPage.SetActive(false);
+        storagePage.SetActive(true);
+        selectedUI.GetComponent<RectTransform>().localPosition = positions[1] + canvaspos;
+    }
+
+
+    public void ShopPage()
+    {
+        shopPage.SetActive(true);
+        storagePage.SetActive(false);
         selectedUI.GetComponent<RectTransform>().localPosition = positions[0] + canvaspos;
     }
 
-    public void convertPage()
+    void Update()
     {
-        upgradespage.SetActive(false);
-        convertpage.SetActive(true);
-        convertpage.GetComponent<convertDeals>().updateui();
-        selectedUI.GetComponent<RectTransform>().localPosition = positions[1] + canvaspos;
+        if (Input.GetButtonDown("Pause"))
+        {
+            ETT.ShopNowOpen(false);
+
+        }
     }
 
     public void back()
     {
-        GameObject.FindGameObjectWithTag("Shop").GetComponent<AddSaves>().saveCurincies();
         ETT.ShopNowOpen(false);
-    }
-
-    public IEnumerator move()
-    {
- 
-
-        yield return null;
     }
 }

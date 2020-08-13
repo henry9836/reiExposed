@@ -1,83 +1,35 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Windows.Markup;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Settings : MonoBehaviour
 {
-    [Range(0.0f, 10.0f)]
-    public float mouseSence = 1.0f;
-    public cameraControler CC;
+    public GameObject mousesencetext;
+    public GameObject mousesenceslider;
 
-    public GameObject settingsmousesencetext;
+    public GameObject audiotext;
+    public GameObject audioslider;
 
-    private GameObject settingsmousesenceslider;
+    public GameObject cencortoggle;
 
-    private bool once = false;
-
+    public bool tocencor = false;
 
     void Start()
     {
-        settingsmousesenceslider = this.gameObject.transform.GetChild(1).GetChild(1).gameObject;
+        float sence = SaveSystemController.getFloatValue("mouseSensitivity");
+        mousesencetext.GetComponent<InputField>().text = sence.ToString();
+        mousesenceslider.GetComponent<Slider>().value = sence;
+        cencortoggle.GetComponent<Toggle>().isOn = tocencor;
+        float vol = SaveSystemController.getFloatValue("volume");
+        audiotext.GetComponent<InputField>().text = vol.ToString();
+        audioslider.GetComponent<Slider>().value = vol;
     }
 
-    public void apply()
+    public void toggleCencorship(Toggle change)
     {
-        if (once)
-        {
-            once = false;
-            return;
-        }
-        else
-        {
-            once = true;
-        }
-
-        mouseSence = Mathf.Clamp(mouseSence, 0.0f, 10.0f);
-
-
-
-        float t1mouseSence;
-        float t2mouseSence = settingsmousesenceslider.GetComponent<Slider>().value;
-
-
-        if (float.TryParse(settingsmousesencetext.GetComponent<InputField>().text, out t1mouseSence)){}
-        else
-        {
-            
-            t1mouseSence = 0.0f;
-        }
-
-        float t3 = 10.0f * ((t2mouseSence / 10) * (t2mouseSence / 10)) / (1 + (1 - (t2mouseSence / 10)) * 1.6f);
-
-        if (t3 != mouseSence)
-        {
-            t2mouseSence = 10.0f *((t2mouseSence / 10) * (t2mouseSence / 10)) / (1 + (1 - (t2mouseSence / 10) ) * 1.6f);
-
-            mouseSence = t2mouseSence;
-            mouseSence = Mathf.Clamp(mouseSence, 0.0f, 10.0f);
-
-            settingsmousesencetext.GetComponent<InputField>().text = mouseSence.ToString("F2");
-
-        }
-        else if (t1mouseSence != mouseSence)
-        {
-
-            mouseSence = t1mouseSence;
-            mouseSence = Mathf.Clamp(mouseSence, 0.0f, 10.0f);
-
-            settingsmousesenceslider.GetComponent<Slider>().value = 10.0f * ((mouseSence / 10) * (mouseSence / 10)) / (1 + (1 - (mouseSence / 10)) * 1.6f);
-
-
-            settingsmousesencetext.GetComponent<InputField>().text = mouseSence.ToString();
-
-
-        }
-
-        CC.mouseSensitivity = mouseSence;
-
-        
+        tocencor = change.isOn;
+        SaveSystemController.updateValue("toCensor", tocencor);
     }
 }

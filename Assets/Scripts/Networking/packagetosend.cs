@@ -89,7 +89,7 @@ public class multipass
 
 public class packagetosend : MonoBehaviour
 {
-    const int BUFFERSIZE = 2048;
+    const int BUFFERSIZE = 8192; //4*2048 (UTF-8 = 4 bytes each char)
 
     public enum sendpackettypes
     {
@@ -161,12 +161,13 @@ public class packagetosend : MonoBehaviour
                 }
             case sendpackettypes.PACKAGESEND:
                 {
-                    ddID = "STEAM_0:0:98612737"; //TODO replace with propper steamID
-                    ddmessage = usertextbox.GetComponent<Text>().text;
-                    ddcurr = convert(usercurr.GetComponent<Text>().text);
-                    dditem1 = convert(useritem1.GetComponent<Text>().text);
-                    dditem2 = convert(useritem2.GetComponent<Text>().text);
-                    dditem3 = convert(useritem3.GetComponent<Text>().text);
+                    //Handled by Packager.cs now
+                    //ddID = "STEAM_0:0:98612737"; //TODO replace with propper steamID
+                    //ddmessage = usertextbox.GetComponent<Text>().text;
+                    //ddcurr = convert(usercurr.GetComponent<Text>().text);
+                    //dditem1 = convert(useritem1.GetComponent<Text>().text);
+                    //dditem2 = convert(useritem2.GetComponent<Text>().text);
+                    //dditem3 = convert(useritem3.GetComponent<Text>().text);
 
                     package = new datadump((int)ddpackettype, ddID, ddmessage, ddcurr, dditem1, dditem2, dditem3);
 
@@ -188,10 +189,10 @@ public class packagetosend : MonoBehaviour
         multipass tmp = new multipass(package, port, IP, client, data, stream);
         ThreadPool.QueueUserWorkItem(ThreadProc, tmp);
 
-        if (tmp.ddpackettype == 1) {
-            StartCoroutine(returnToMainTmp());
-            TwitterInput.SetActive(false);
-        }
+        //if (tmp.ddpackettype == 1) {
+        //    StartCoroutine(returnToMainTmp());
+        //    TwitterInput.SetActive(false);
+        //}
     }
     
 

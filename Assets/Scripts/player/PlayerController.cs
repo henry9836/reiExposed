@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviour
     public float staminaMaxAmount = 100.0f;
     public float staminaRegenSpeed = 1.0f;
     public float staminaToAttack = 5.0f;
+    [HideInInspector]
+    public bool staminaBlock = false;
 
     [Header("Combat")]
     public float umbreallaDmg = 5.0f;
@@ -37,7 +39,7 @@ public class PlayerController : MonoBehaviour
     private AudioSource audio;
     private umbrella umbrella;
     private bool UIon = false;
-
+    private Animator animator;
 
 
     private void Start()
@@ -56,6 +58,7 @@ public class PlayerController : MonoBehaviour
 
         audio = GetComponent<AudioSource>();
         umbrella = GetComponent<umbrella>();
+        animator = GetComponent<Animator>();
     }
     public void ChangeStamina(float amount)
     {
@@ -83,42 +86,77 @@ public class PlayerController : MonoBehaviour
     {
         uiupdate();
 
-        if (staminaAmount < staminaMaxAmount)
-        {
-            staminaAmount += staminaRegenSpeed * Time.deltaTime;
-
-            if (staminaAmount > staminaMaxAmount)
+        if (!staminaBlock) {
+            if (staminaAmount < staminaMaxAmount)
             {
-                staminaAmount = staminaMaxAmount;
-            }
+                staminaAmount += staminaRegenSpeed * Time.deltaTime;
 
+                if (staminaAmount > staminaMaxAmount)
+                {
+                    staminaAmount = staminaMaxAmount;
+                }
+
+            }
+        }
+    }
+
+    //Changes health value of player
+    public void EffectHeatlh(float amount)
+    {
+        health += amount;
+        if (amount < 0)
+        {
+            audio.PlayOneShot(hurtSounds[Random.Range(0, hurtSounds.Count)]);
+        }
+        else if (health > maxHealth)
+        {
+            health = maxHealth;
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("v " + other.name);
+
         if (dead == false)
         {
+            GameObject otherObject = other.gameObject;
             //Damage From Enemy and we are not blocking
-            if (other.gameObject.CompareTag("EnemyAttackSurface") && !umbrella.ISBLockjing)
+            if (otherObject.CompareTag("EnemyAttackSurface") && !umbrella.ISBLockjing)
             {
                 Debug.Log("I was hit and taking damage");
-                health -= other.gameObject.GetComponent<DamageQuery>().QueryDamage();
-                audio.PlayOneShot(hurtSounds[Random.Range(0, hurtSounds.Count)]);
-            }
 
-            //Damage From Boss
-            else if (other.gameObject.CompareTag("BossAttackSurface") && !umbrella.ISBLockjing)
-            {
-                Debug.Log("I was hit and taking damage");
-                health -= boss.GetComponent<BossController>().QueryDamage();
+                if (otherObject.transform.root.GetComponent<AIObject>() != null)
+                {
+                    health -= otherObject.transform.root.GetComponent<AIObject>().QueryDamage();
+                }
+                else if (otherObject.GetComponent<GenericHitboxController>() != null)
+                {
+                    Collider col = GetComponent<Collider>();
+                    Debug.DrawLine(other.ClosestPointOnBounds(col.transform.position), col.transform.position, Color.magenta, 10.0f, false);
+                    float dmg = otherObject.GetComponent<GenericHitboxController>().Damage();
+                    health -= dmg;
+                    Debug.Log($"Took Damage {dmg}");
+                }
+                else
+                {
+                    Debug.LogWarning($"Unknown Component Damage {otherObject.name}");
+                }
                 audio.PlayOneShot(hurtSounds[Random.Range(0, hurtSounds.Count)]);
+
+                //Stun
+                animator.SetTrigger("KnockDown");
             }
-            else if (other.gameObject.CompareTag("BossAttackSurface") && umbrella.ISBLockjing)
+            else if (other.gameObject.CompareTag("EnemyAttackSurface") && umbrella.ISBLockjing)
             {
                 Debug.Log("I was hit and but blocked");
                 umbrella.cooldown = true;
-                boss.GetComponent<BossController>().arm(BossController.ARMTYPE.ARM_ALL, false);
+
+                //Disable hitboxes
+                boss.GetComponent<AIObject>().body.updateHitBox(AIBody.BodyParts.ALL, false);
+
+                //Stun
+                animator.SetTrigger("KnockDown");
             }
 
 

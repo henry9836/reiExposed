@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(AIAttackContainer))]
 [RequireComponent(typeof(AIModeSwitcher))]
@@ -18,8 +19,15 @@ public class AIObject : MonoBehaviour
     public AIMovement movement;
     public AIInformer informer;
     public AIBody body;
+    public PlayerController playerCtrl;
+    public Animator forwardAnimationsTo;
+    public bool startInSleepState = false;
+    public GameObject damagedText;
 
     public float health = 300.0f;
+    public float staminaRegen = 2.5f;
+    [Range(0.0f, 1.0f)]
+    public float revealThreshold = 0.15f;
     public AIAttackContainer selectedAttack;
     [Range(1, 10)]
     public int amountofModes = 1;
@@ -29,6 +37,8 @@ public class AIObject : MonoBehaviour
     [HideInInspector]
     public float revealAmount = 0.0f;
     [HideInInspector]
+    public float stamina;
+    [HideInInspector]
     public int currentMode = 1;
     [HideInInspector]
     public Animator animator;
@@ -36,10 +46,19 @@ public class AIObject : MonoBehaviour
     [SerializeField]
     public GameObject player;
 
+    public VFXController vfx;
+
+    private float initalVFXObjects;
     private List<int> validAttacks = new List<int>();
+    private bool deathFlag = false;
+
+    public void sleepOverride(bool sleep)
+    {
+        animator.SetBool("Sleeping", sleep);
+    }
 
     //Selects a random attack to use againest the player
-    public int selectAttack()
+    public void selectAttack()
     {
         float distance = Vector3.Distance(tracker.lastSeenPos, transform.position);
         validAttacks.Clear();
@@ -54,15 +73,23 @@ public class AIObject : MonoBehaviour
             if (attacks[i].allowedOnMode(currentMode))
             {
                 //We are within range for an attack
-                if (attacks[i].rangeForAttack.y <= distance)
+                if (attacks[i].rangeForAttack.y >= distance)
                 {
-                    validAttacks.Add(i);
+                    //If we have enough stamina for the attack
+                    if (attacks[i].statminaNeeded <= stamina)
+                    {
+                        validAttacks.Add(i);
+                    }
                 }
                 //record attack if it closer than the last closest attack
                 else if (distance - attacks[i].rangeForAttack.y < closestAttack)
-                {
-                    closestAttack = distance - attacks[i].rangeForAttack.y;
-                    fallbackAttack = i;
+                {   
+                    //If we have enough stamina for the attack
+                    if (attacks[i].statminaNeeded <= stamina)
+                    {
+                        closestAttack = distance - attacks[i].rangeForAttack.y;
+                        fallbackAttack = i;
+                    }
                 }
             }
         }
@@ -77,12 +104,30 @@ public class AIObject : MonoBehaviour
         {
             bindAttack(fallbackAttack);
         }
+    }
 
-        return 0;
+    public float QueryDamage()
+    {
+        if (selectedAttack == null)
+        {
+            return 0.0f;
+        }
+        else
+        {
+            float dmg = selectedAttack.damage;
+
+            if (selectedAttack.damageOnlyOnce)
+            {
+                unbindAttack();
+            }
+
+            return dmg;
+        }
     }
 
     public void bindAttack(int i)
     {
+
         if (i < attacks.Count && i >= 0)
         {
             selectedAttack = attacks[i];
@@ -94,7 +139,7 @@ public class AIObject : MonoBehaviour
         selectedAttack = null;
     }
 
-    private void Start()
+    private void Awake()
     {
         startHealth = health;
         AIAttackContainer[] attacksArray = GetComponents<AIAttackContainer>();
@@ -128,19 +173,135 @@ public class AIObject : MonoBehaviour
         {
             player = GameObject.FindWithTag("Player");
         }
+        if (playerCtrl == null)
+        {
+            playerCtrl = player.GetComponent<PlayerController>();
+        }
 
         animator = GetComponent<Animator>();
 
+
         //Safety Checks
         selectedAttack = null;
-        currentMode = 0;
+        currentMode = 1;
 
         //Disable hitboxes
         body.updateHitBox(AIBody.BodyParts.ALL, false);
+
+        //VFX if boss
+        if (GetComponent<VFXController>() != null)
+        {
+            vfx = GetComponent<VFXController>();
+        }
+
+        if (vfx != null)
+        {
+            initalVFXObjects = vfx.bodysNoVFX.Count;
+        }
+
+        
+        sleepOverride(startInSleepState);
+
+    }
+
+    private void FixedUpdate()
+    {
+        //If we are not sleep
+        if (!animator.GetBool("Sleeping"))
+        {
+            //Increase stamina
+            stamina += staminaRegen * Time.deltaTime;
+        }
+
+        if (initalVFXObjects == 0)
+        {
+            initalVFXObjects = vfx.bodysNoVFX.Count;
+        }
+
+        //Reveal Update
+        if (vfx != null)
+        {
+
+            revealAmount = 0.0f;
+
+            if (vfx.bodysNoVFX.Count != 0)
+            {
+                revealAmount = (float)vfx.bodysNoVFX.Count / (float)initalVFXObjects;
+            }
+
+            if (revealAmount < revealThreshold)
+            {
+                
+
+                for (int i = 0; i < vfx.bodysNoVFX.Count; i++)
+                {
+                    vfx.bodysNoVFX[i].GetComponent<BossRevealSurfaceController>().EnableSurface();
+                }
+                vfx.bodysNoVFX.Clear();
+            }
+        }
+
+        //Death
+        if (health <= 0.0f)
+        {
+            if (!deathFlag)
+            {
+                health = 0.0f;
+                deathFlag = true;
+                animator.SetTrigger("Death");
+                movement.stopMovement();
+            }
+        }
     }
 
     public AIAttackContainer getSelectedAttack()
     {
         return selectedAttack;
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (health > 0.0f)
+        {
+            if (other.tag == "PlayerAttackSurface")
+            {
+                float revealAmount = 0.0f;
+
+                if (vfx != null)
+                {
+                    if (vfx.bodysNoVFX.Count != 0)
+                    {
+                        revealAmount = (float)vfx.bodysNoVFX.Count / (float)initalVFXObjects;
+                    }
+
+                }
+
+                revealAmount *= startHealth;
+
+                if (playerCtrl.umbreallaDmg < (health - revealAmount))
+                {
+                    health -= playerCtrl.umbreallaDmg;
+
+                    GameObject tmp = GameObject.Instantiate(damagedText, other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position), Quaternion.identity);
+                    tmp.transform.SetParent(this.transform, true);
+                    tmp.transform.GetChild(0).GetComponent<Text>().text = "-" + playerCtrl.umbreallaDmg.ToString("F0");
+
+                }
+                else
+                {
+                    float diff = health - revealAmount;
+                    GameObject tmp = GameObject.Instantiate(damagedText, other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position), Quaternion.identity);
+                    tmp.transform.SetParent(this.transform, true);
+                    tmp.transform.GetChild(0).GetComponent<Text>().text = "-" + diff.ToString("F0");
+
+                    health = revealAmount;
+
+                }
+
+
+
+            }
+        }
+    }
+
 }
