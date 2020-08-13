@@ -6,11 +6,23 @@ public class CameraHint : MonoBehaviour
 {
     public ClueController clueCtrl;
 
+    public bool isQRCode = false;
+    
     private void FixedUpdate()
     {
-        if (clueCtrl.cluesCollected.Count > 0)
+        if (!isQRCode)
         {
-            Destroy(gameObject);
+            if (clueCtrl.cluesCollected.Count > 0)
+            {
+                Destroy(gameObject);
+            }
+        }
+        else
+        {
+            if (clueCtrl.qrFound)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 
