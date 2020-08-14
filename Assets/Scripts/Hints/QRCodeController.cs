@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ImportantTweet : MonoBehaviour
+public class QRCodeController : MonoBehaviour
 {
 
     public Logger logger;
@@ -13,18 +13,31 @@ public class ImportantTweet : MonoBehaviour
     public Text loreThree;
 
     public string hint = "Important Hint";
+    [Range(30, 300)]
+    public int currency = 100;
     public Items.AllItems item1 = Items.AllItems.NONE;
     public Items.AllItems item2 = Items.AllItems.NONE;
     public Items.AllItems item3 = Items.AllItems.NONE;
     public bool hintImportant = true;
     public bool addOnToLore = true;
+    public bool randomiseCurrency = false;
+    public bool randomiseAttachments = false;
 
-    private int currency = 100;
+    private bool alreadyTriggered = false;
 
     private void Start()
     {
 
-        currency = Random.Range(100, 300);
+        if (randomiseCurrency)
+        {
+            currency = Random.Range(30, 300);
+        }
+        if (randomiseAttachments)
+        {
+            item1 = (Items.AllItems)(Random.Range((int)Items.AllItems.NONE, (int)Items.AllItems.MOVEBUFF_SMALL));
+            item2 = (Items.AllItems)(Random.Range((int)Items.AllItems.NONE, (int)Items.AllItems.MOVEBUFF_SMALL));
+            item3 = (Items.AllItems)(Random.Range((int)Items.AllItems.NONE, (int)Items.AllItems.MOVEBUFF_SMALL));
+        }
 
         if (!logger)
         {
@@ -50,24 +63,29 @@ public class ImportantTweet : MonoBehaviour
 
     public void triggerTweet()
     {
-        //Display hint
-        dropControl.manualMessage(hint, currency, (int)item1, (int)item2, (int)item3, hintImportant);
-
-        //Add hint to lore
-        if (addOnToLore)
+        if (!alreadyTriggered)
         {
-            if (loreOne.text == "")
+            //Display hint
+            dropControl.manualMessage(hint, currency, (int)item1, (int)item2, (int)item3, hintImportant);
+
+            //Add hint to lore
+            if (addOnToLore)
             {
-                loreOne.text = hint;
+                if (loreOne.text == "")
+                {
+                    loreOne.text = hint;
+                }
+                else if (loreTwo.text == "")
+                {
+                    loreTwo.text = hint;
+                }
+                else if (loreThree.text == "")
+                {
+                    loreThree.text = hint;
+                }
             }
-            else if (loreTwo.text == "")
-            {
-                loreTwo.text = hint;
-            }
-            else if(loreThree.text == "")
-            {
-                loreThree.text = hint;
-            }
+
+            alreadyTriggered = true;
         }
     }
 
