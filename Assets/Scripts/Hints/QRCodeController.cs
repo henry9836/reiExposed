@@ -22,11 +22,19 @@ public class QRCodeController : MonoBehaviour
     public bool addOnToLore = true;
     public bool randomiseCurrency = false;
     public bool randomiseAttachments = false;
+    public float timeTillDestory = 1.0f;
+    public Material qrCodeMat;
 
     private bool alreadyTriggered = false;
+    private MeshRenderer meshRenderer;
+    private float timer = 0.0f;
 
     private void Start()
     {
+        //Create a new material to make each material have unique dissolvness
+        meshRenderer = GetComponent<MeshRenderer>();
+        meshRenderer.material = new Material(qrCodeMat);
+        timer = 0.0f;
 
         if (randomiseCurrency)
         {
@@ -39,25 +47,42 @@ public class QRCodeController : MonoBehaviour
             item3 = (Items.AllItems)(Random.Range((int)Items.AllItems.NONE, (int)Items.AllItems.MOVEBUFF_SMALL));
         }
 
-        if (!logger)
+        if (logger == null)
         {
             logger = GameObject.Find("MessageLog").GetComponent<Logger>();
         }
-        if (!dropControl)
+        if (dropControl == null)
         {
             dropControl = GameObject.Find("Canvas").GetComponent<enemydrop>();
         }
-        if (!loreOne)
+        if (loreOne == null)
         {
             loreOne = GameObject.Find("txtClueLore1").GetComponent<Text>();
         }
-        if (!loreTwo)
+        if (loreTwo == null)
         {
             loreTwo = GameObject.Find("txtClueLore2").GetComponent<Text>();
         }
-        if (!loreThree)
+        if (loreThree == null)
         {
             loreThree = GameObject.Find("txtClueLore3").GetComponent<Text>();
+        }
+
+
+        alreadyTriggered = SaveSystemController.getBoolValue("[QR]"+name);
+    }
+
+    private void Update()
+    {
+       if (alreadyTriggered)
+        {
+            meshRenderer.material.SetFloat("Vector1_9DEB93D9", timer);
+            timer += Time.deltaTime;
+
+            if (timer >= timeTillDestory)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 
