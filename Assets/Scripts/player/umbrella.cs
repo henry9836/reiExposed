@@ -40,9 +40,6 @@ public class umbrella : MonoBehaviour
     private GameObject cam;
     private Animator animator;
     private bool latetest = false;
-
-
-
     void Start()
     {
         playercontrol = GetComponent<PlayerController>();
