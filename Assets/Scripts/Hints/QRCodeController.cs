@@ -12,6 +12,10 @@ public class QRCodeController : MonoBehaviour
     public Text loreTwo;
     public Text loreThree;
 
+    [Header("Online Mode")]
+    public bool useOnlineDatabase = false;
+
+    [Header("Message Parameters")]
     public string hint = "Important Hint";
     [Range(30, 300)]
     public int currency = 100;
@@ -24,6 +28,7 @@ public class QRCodeController : MonoBehaviour
     public bool randomiseAttachments = false;
     public float timeTillDestory = 1.0f;
     public Material qrCodeMat;
+    public enemydrop enemydropCtrl;
 
     private bool alreadyTriggered = false;
     private MeshRenderer meshRenderer;
@@ -47,9 +52,15 @@ public class QRCodeController : MonoBehaviour
             item3 = (Items.AllItems)(Random.Range((int)Items.AllItems.NONE, (int)Items.AllItems.MOVEBUFF_SMALL));
         }
 
+        alreadyTriggered = SaveSystemController.getBoolValue("[QR]" + name);
+
         if (logger == null)
         {
             logger = GameObject.Find("MessageLog").GetComponent<Logger>();
+        }
+        if (enemydropCtrl == null)
+        {
+            enemydropCtrl = GameObject.FindGameObjectWithTag("MainCanvas").GetComponent<enemydrop>();
         }
         if (dropControl == null)
         {
@@ -68,8 +79,6 @@ public class QRCodeController : MonoBehaviour
             loreThree = GameObject.Find("txtClueLore3").GetComponent<Text>();
         }
 
-
-        alreadyTriggered = SaveSystemController.getBoolValue("[QR]"+name);
     }
 
     private void Update()
@@ -90,24 +99,33 @@ public class QRCodeController : MonoBehaviour
     {
         if (!alreadyTriggered)
         {
-            //Display hint
-            dropControl.manualMessage(hint, currency, (int)item1, (int)item2, (int)item3, hintImportant);
+            //If it is an offline message or we did not connect to the database
+            if (!useOnlineDatabase || packagetosend.enemieDrops.Count <= 0) {
+                //Display hint
+                dropControl.manualMessage(hint, currency, (int)item1, (int)item2, (int)item3, hintImportant);
 
-            //Add hint to lore
-            if (addOnToLore)
+                //Add hint to lore
+                if (addOnToLore)
+                {
+                    if (loreOne.text == "")
+                    {
+                        loreOne.text = hint;
+                    }
+                    else if (loreTwo.text == "")
+                    {
+                        loreTwo.text = hint;
+                    }
+                    else if (loreThree.text == "")
+                    {
+                        loreThree.text = hint;
+                    }
+                }
+            }
+            //Else if we are an online message then
+            else if (useOnlineDatabase)
             {
-                if (loreOne.text == "")
-                {
-                    loreOne.text = hint;
-                }
-                else if (loreTwo.text == "")
-                {
-                    loreTwo.text = hint;
-                }
-                else if (loreThree.text == "")
-                {
-                    loreThree.text = hint;
-                }
+                enemydropCtrl.processMessage();
+                enemydropCtrl.messagesToShow++;
             }
 
             alreadyTriggered = true;
