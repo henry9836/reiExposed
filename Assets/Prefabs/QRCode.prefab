@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 6204311040169874371}
   - component: {fileID: 6204311040169874370}
   - component: {fileID: 6204311040169874369}
-  - component: {fileID: 6204311040169874368}
+  - component: {fileID: 4325233395527459642}
+  - component: {fileID: 2698232965303045519}
   m_Layer: 20
   m_Name: QRCode
   m_TagString: QRcode
@@ -80,8 +81,8 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!64 &6204311040169874368
-MeshCollider:
+--- !u!65 &4325233395527459642
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -90,7 +91,33 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+  serializedVersion: 2
+  m_Size: {x: 10.000002, y: 0.00000055125315, z: 10}
+  m_Center: {x: -0.000015258789, y: -0.00012207031, z: -0.000061035156}
+--- !u!114 &2698232965303045519
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6204311040169874383}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6d7b72926c26a34292b7b3e0ea023c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  logger: {fileID: 0}
+  dropControl: {fileID: 0}
+  loreOne: {fileID: 0}
+  loreTwo: {fileID: 0}
+  loreThree: {fileID: 0}
+  hint: Connection Lost. Please wait - attempting to reestablish
+  currency: 100
+  item1: 0
+  item2: 0
+  item3: 0
+  hintImportant: 0
+  addOnToLore: 0
+  randomiseCurrency: 1
+  randomiseAttachments: 1
+  qrCodeMat: {fileID: 2100000, guid: 631a379804616e24e9e689c0babfc231, type: 2}
