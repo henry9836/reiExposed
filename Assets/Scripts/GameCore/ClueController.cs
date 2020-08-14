@@ -44,7 +44,6 @@ public class ClueController : MonoBehaviour
 
         qrFound = SaveSystemController.getBoolValue("QRCodeFound");
         
-
         StartCoroutine(clueCheckLoop());
     }
 

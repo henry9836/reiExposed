@@ -670,6 +670,7 @@ public class ThePhone : MonoBehaviour
     //checks if photo is valid
     public void checkPhotoValid(bool takingphoto, string checkTag)
     {
+        int element = 0;
         string cluename = "bad";
         bool cluePicTaken = false;
 
@@ -730,15 +731,20 @@ public class ThePhone : MonoBehaviour
             if (cluepos[i].Count > 2)
             {
                 cluename = clue[i].name;
+                element = i;
                 if (SaveSystemController.getValue(cluename + "[CLUE]") == "yes") //already taken
                 {
                     clueglow.transform.GetChild(0).GetComponent<Text>().text = "clue already photgraphed";
-
-                    Debug.Log("already taken");
                     clueglow.GetComponent<flash>().fadeout = true;
                     clueglow.GetComponent<flash>().fadein = false;
                     break;
-
+                }
+                else if (SaveSystemController.getBoolValue("[QR]" + cluename)) //already taken
+                {
+                    clueglow.transform.GetChild(0).GetComponent<Text>().text = "QR Code Already Scanned";
+                    clueglow.GetComponent<flash>().fadeout = true;
+                    clueglow.GetComponent<flash>().fadein = false;
+                    break;
                 }
                 else
                 {
@@ -846,8 +852,14 @@ public class ThePhone : MonoBehaviour
                     SaveSystemController.saveDataToDisk();
                 }
                 else
-                { 
+                {
                     //scan QRcode TODO
+                    SaveSystemController.updateValue("QRCodeFound", true);
+                    SaveSystemController.updateValue("[QR]"+cluename, true);
+                    SaveSystemController.saveDataToDisk();
+                    //Trigger stuff :)
+                    clue[element].GetComponent<QRCodeController>().triggerTweet();
+                    Debug.Log("Done.");
                 }
 
                 //good photo add to save and stuff
