@@ -825,7 +825,7 @@ public class ThePhone : MonoBehaviour
                         }
                         else
                         {
-                            clueglow.transform.GetChild(0).GetComponent<Text>().text = "clue visible";
+                            clueglow.transform.GetChild(0).GetComponent<Text>().text = "Clue Visible";
                         }
 
                         Debug.Log("not already teakmn");
@@ -844,7 +844,7 @@ public class ThePhone : MonoBehaviour
             }
             else
             {
-                clueglow.transform.GetChild(0).GetComponent<Text>().text = "clue not visible";
+                clueglow.transform.GetChild(0).GetComponent<Text>().text = "Clue Not Visible";
 
                 clueglow.GetComponent<flash>().fadeout = true;
                 clueglow.GetComponent<flash>().fadein = false;
@@ -863,10 +863,13 @@ public class ThePhone : MonoBehaviour
                 }
                 else
                 {
-                    //scan QRcode TODO
-                    SaveSystemController.updateValue("QRCodeFound", true);
-                    SaveSystemController.updateValue("[QR]"+cluename, true);
-                    SaveSystemController.saveDataToDisk();
+                    //Update Save Controller
+                    if (!cluename.Contains("Myth"))
+                    {
+                        SaveSystemController.updateValue("QRCodeFound", true);
+                        SaveSystemController.updateValue("[QR]" + cluename, true);
+                        SaveSystemController.saveDataToDisk();
+                    }
                     //Trigger stuff :)
                     clue[element].GetComponent<QRCodeController>().triggerTweet();
                     Debug.Log("Done.");
