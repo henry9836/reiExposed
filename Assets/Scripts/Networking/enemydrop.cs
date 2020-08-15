@@ -192,6 +192,16 @@ public class enemydrop : MonoBehaviour
 
     public void dropondeath(Transform mythsTransform)
     {
-        GameObject.Instantiate(dropmessage, mythsTransform);
+        
+
+        //Spawn a qr code with the correct info :)
+        Debug.Log("Spawn a qr code with the correct info :)");
+        
+        //Drop Message
+        GameObject qrCode = GameObject.Instantiate(dropmessage, mythsTransform.position, Quaternion.Euler(0.0f, Random.Range(-360.0f, 360.0f), 0.0f));
+
+        //Populate Message Info
+        QRCodeController qrCtrl = qrCode.GetComponent<QRCodeController>();
+
     }
 }
