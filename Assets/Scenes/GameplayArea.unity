@@ -578,7 +578,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clueCtrl: {fileID: 1601101141}
-  isQRCode: 1
+  monitorObject: {fileID: 314508233}
+  destoryWithObject: 1
 --- !u!114 &198810678
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1197,6 +1198,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6aa241a1d35a07c4284b38ed244ac4d8, type: 3}
+--- !u!1 &314508233 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6204311040169874383, guid: 79b38aa10ff57474a878e4e60216d8ac,
+    type: 3}
+  m_PrefabInstance: {fileID: 2088529405}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &316678450
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4450,17 +4457,17 @@ PrefabInstance:
     - target: {fileID: 5121230018133350252, guid: 665d9e6b8575af745bb88a0116e1de10,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 19
+      value: -113
       objectReference: {fileID: 0}
     - target: {fileID: 5121230018133350252, guid: 665d9e6b8575af745bb88a0116e1de10,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 47.38
+      value: 37.63
       objectReference: {fileID: 0}
     - target: {fileID: 5121230018133350252, guid: 665d9e6b8575af745bb88a0116e1de10,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 29.48
+      value: 83.7
       objectReference: {fileID: 0}
     - target: {fileID: 5121230018133350252, guid: 665d9e6b8575af745bb88a0116e1de10,
         type: 3}
@@ -5291,7 +5298,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clueCtrl: {fileID: 1601101141}
-  isQRCode: 0
+  monitorObject: {fileID: 0}
+  destoryWithObject: 0
 --- !u!1 &1812644324 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 736449174, guid: 665d9e6b8575af745bb88a0116e1de10,
@@ -5843,6 +5851,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2264512484488357319, guid: 79b38aa10ff57474a878e4e60216d8ac,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2264512484488357319, guid: 79b38aa10ff57474a878e4e60216d8ac,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.y
+      value: 6.7e-44
+      objectReference: {fileID: 0}
+    - target: {fileID: 2264512484488357319, guid: 79b38aa10ff57474a878e4e60216d8ac,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.w
+      value: -3.7729757e+12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2264512484488357319, guid: 79b38aa10ff57474a878e4e60216d8ac,
+        type: 3}
+      propertyPath: m_BoundingSphereOverride.z
+      value: 6.977634e+22
+      objectReference: {fileID: 0}
     - target: {fileID: 2698232965303045519, guid: 79b38aa10ff57474a878e4e60216d8ac,
         type: 3}
       propertyPath: hint
@@ -5873,6 +5901,31 @@ PrefabInstance:
       propertyPath: loreOne
       value: 
       objectReference: {fileID: 244026812}
+    - target: {fileID: 3804197044730218420, guid: 79b38aa10ff57474a878e4e60216d8ac,
+        type: 3}
+      propertyPath: playOnAwake
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5631891150355994723, guid: 79b38aa10ff57474a878e4e60216d8ac,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5631891150355994723, guid: 79b38aa10ff57474a878e4e60216d8ac,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5631891150355994723, guid: 79b38aa10ff57474a878e4e60216d8ac,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5670034755148151701, guid: 79b38aa10ff57474a878e4e60216d8ac,
+        type: 3}
+      propertyPath: playOnAwake
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6204311040169874371, guid: 79b38aa10ff57474a878e4e60216d8ac,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5952,6 +6005,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TagString
       value: QRCode
+      objectReference: {fileID: 0}
+    - target: {fileID: 8161125489351192452, guid: 79b38aa10ff57474a878e4e60216d8ac,
+        type: 3}
+      propertyPath: playOnAwake
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 79b38aa10ff57474a878e4e60216d8ac, type: 3}
