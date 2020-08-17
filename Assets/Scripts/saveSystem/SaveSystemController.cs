@@ -31,6 +31,7 @@ public static class SaveSystemController
     }
 
     public static List<entry> saveInfomation = new List<entry>();
+    public static bool readyForProcessing = false;
     public static bool ioBusy = false; //Used for telling user not to alt-f4
     public static bool loadedValues = false;
 
@@ -47,6 +48,7 @@ public static class SaveSystemController
     //Load Data Thread
     static void loadDataFromDiskThread(System.Object stateInfo)
     {
+        readyForProcessing = false;
         string filePath = stateInfo as string;
 
         if (!File.Exists(filePath))
@@ -86,6 +88,7 @@ public static class SaveSystemController
         //Unset busy bit
         ioBusy = false;
         loadedValues = true;
+        readyForProcessing = true;
     }
 
 
@@ -100,6 +103,7 @@ public static class SaveSystemController
     //Save Data Thread
     static void saveDataFromDiskThread(System.Object stateInfo)
     {
+        readyForProcessing = false;
         string filePath = stateInfo as string;
 
         //Wait for file to avaible
@@ -124,12 +128,17 @@ public static class SaveSystemController
 
         //Unset busy bit
         ioBusy = false;
+        readyForProcessing = true;
     }
 
 
     //Removed value from saveInfomation
     public static void removeValue(string _id)
     {
+
+        //wait till ready to process infomation
+       while (!readyForProcessing) { Debug.LogError("Waiting on save system to be ready for processing, have you loaded data from disk?"); }
+
         for (int i = 0; i < saveInfomation.Count; i++)
         {
             if (saveInfomation[i].id == _id)
@@ -150,7 +159,10 @@ public static class SaveSystemController
     //Update a value in our saveInfomation
     public static void updateValue(string _id, string _newValue)
     {
-        
+
+        //wait till ready to process infomation
+        while (!readyForProcessing) { Debug.LogError("Waiting on save system to be ready for processing, have you loaded data from disk?"); }
+
         //Find value
         for (int i = 0; i < saveInfomation.Count; i++)
         {
@@ -170,6 +182,9 @@ public static class SaveSystemController
     //Get a value from our saveInfomation
     public static string getValue(string _id)
     {
+        //wait till ready to process infomation
+       while (!readyForProcessing) { Debug.LogError("Waiting on save system to be ready for processing, have you loaded data from disk?"); }
+
         //Find value
         for (int i = 0; i < saveInfomation.Count; i++)
         {
@@ -186,6 +201,9 @@ public static class SaveSystemController
     //Load data as int type
     public static int getIntValue(string _id)
     {
+        //wait till ready to process infomation
+       while (!readyForProcessing) { Debug.LogError("Waiting on save system to be ready for processing, have you loaded data from disk?"); }
+
         int result = -1;
         if (int.TryParse(getValue(_id), out result))
         {
@@ -199,6 +217,9 @@ public static class SaveSystemController
     //Load data as float type
     public static float getFloatValue(string _id)
     {
+        //wait till ready to process infomation
+       while (!readyForProcessing) { Debug.LogError("Waiting on save system to be ready for processing, have you loaded data from disk?"); }
+
         float result = -1.0f;
         if (float.TryParse(getValue(_id), out result))
         {
@@ -212,6 +233,9 @@ public static class SaveSystemController
     //Load data as bool type
     public static bool getBoolValue(string _id)
     {
+        //wait till ready to process infomation
+       while (!readyForProcessing) { Debug.LogError("Waiting on save system to be ready for processing, have you loaded data from disk?"); }
+
         bool result = false;
         if (bool.TryParse(getValue(_id), out result))
         {
