@@ -116,7 +116,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("v " + other.name);
+        //Debug.Log("v " + other.name);
 
         if (dead == false)
         {
