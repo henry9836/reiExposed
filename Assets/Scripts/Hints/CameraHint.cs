@@ -5,12 +5,14 @@ using UnityEngine;
 public class CameraHint : MonoBehaviour
 {
     public ClueController clueCtrl;
+    public GameObject monitorObject;
 
-    public bool isQRCode = false;
-    
+    public bool destoryWithObject = false;
+
+
     private void FixedUpdate()
     {
-        if (!isQRCode)
+        if (!destoryWithObject)
         {
             if (clueCtrl.cluesCollected.Count > 0)
             {
@@ -19,9 +21,11 @@ public class CameraHint : MonoBehaviour
         }
         else
         {
-            if (clueCtrl.qrFound)
+            if (destoryWithObject)
             {
-                Destroy(gameObject);
+                if (monitorObject == null) {
+                    Destroy(gameObject);
+                }
             }
         }
     }
