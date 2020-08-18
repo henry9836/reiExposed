@@ -155,7 +155,7 @@ SkinnedMeshRenderer:
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
   m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: 8516655311178248995, guid: 8e709084c3475e347a5bfa16a0172b28, type: 3}
+  m_Mesh: {fileID: -3473987182841746970, guid: 8e709084c3475e347a5bfa16a0172b28, type: 3}
   m_Bones:
   - {fileID: 1870928476482990835}
   - {fileID: 1947289869054439517}
@@ -218,9 +218,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shader: {fileID: 4800000, guid: 432ac8033ca216f4e95129014eaacef2, type: 3}
+  splatmap: {fileID: 0}
+  fromMat: {fileID: 0}
+  toMat: {fileID: 0}
   tohit:
     serializedVersion: 2
     m_Bits: 2097152
+  topass: {x: 0, y: 0, z: 0, w: 0}
+  blackpersent: 0
+  splatmapColored: {fileID: 2800000, guid: 7c07a39b6a2d8e14cb0744475cf786be, type: 3}
 --- !u!1 &143871500535750008
 GameObject:
   m_ObjectHideFlags: 0
@@ -15331,6 +15337,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   player: {fileID: 0}
   vfx: {fileID: 0}
+  revealpersentobject: {fileID: 0}
 --- !u!114 &4533981090127729755
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16114,7 +16121,7 @@ MeshCollider:
   serializedVersion: 4
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 8516655311178248995, guid: 8e709084c3475e347a5bfa16a0172b28, type: 3}
+  m_Mesh: {fileID: -3473987182841746970, guid: 8e709084c3475e347a5bfa16a0172b28, type: 3}
 --- !u!1 &5521876543234175664
 GameObject:
   m_ObjectHideFlags: 0
