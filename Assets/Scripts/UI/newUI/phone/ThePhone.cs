@@ -224,6 +224,7 @@ public class ThePhone : MonoBehaviour
                     {
                         fov += 1.0f;
                     }
+                    camgrid.SetActive(true);
 
                     fov = Mathf.Clamp(fov, 2f, 100.0f);
                     phonecam.GetComponent<Camera>().fieldOfView = fov;
@@ -235,6 +236,10 @@ public class ThePhone : MonoBehaviour
 
                     if (scanbossmode == false)
                     {
+
+                        camgrid.transform.GetChild(0).gameObject.SetActive(true);
+                        camgrid.transform.GetChild(1).gameObject.SetActive(false);
+                        camgrid.transform.GetChild(2).GetComponent<Text>().text = "press \"Q\" to swap to Photogrammetry mode";
                         if (!inbossroom)
                         {
                             sec1timer += Time.deltaTime;
@@ -274,13 +279,20 @@ public class ThePhone : MonoBehaviour
                         }
                         else
                         {
-                            clueglow.transform.GetChild(0).GetComponent<Text>().text = "Q to swap to scanner app";
+                            clueglow.transform.GetChild(0).GetComponent<Text>().text = "press \"Q\" to swap to Photogrammetry mode";
                         }
                     }
                     else
                     {
+                        camgrid.transform.GetChild(0).gameObject.SetActive(false);
+                        camgrid.transform.GetChild(1).gameObject.SetActive(true);
+                        camgrid.transform.GetChild(2).GetComponent<Text>().text = "press \"Q\" to swap to Camera mode";
+                        clueglow.transform.GetChild(0).GetComponent<Text>().text = "";
+
+
                         if (Input.GetMouseButton(0))
                         {
+                            camgrid.transform.GetChild(1).GetChild(1).transform.Rotate(Vector3.back * 100.0f * Time.deltaTime);
                             drawtestref.GetComponent<drawTest>().toScanBoss();
                         }
                     }
@@ -539,7 +551,6 @@ public class ThePhone : MonoBehaviour
 
         ThePhoneUI.SetActive(false);
 
-        camgrid.SetActive(true);
 
         Debug.Log(rei.transform.GetChild(0).rotation.eulerAngles.y);
         float test = rei.transform.GetChild(0).rotation.eulerAngles.y;
