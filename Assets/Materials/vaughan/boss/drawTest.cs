@@ -37,7 +37,7 @@ public class drawTest : MonoBehaviour
         toMat.SetColor("_Color", Color.red);
 
         fromMat = GetComponent<SkinnedMeshRenderer>().material;
-        splatmap = new RenderTexture(1024, 1024, 0, RenderTextureFormat.ARGBFloat);
+        splatmap = new RenderTexture(64, 64, 0, RenderTextureFormat.ARGBFloat);
         fromMat.SetTexture("_Splat", splatmap);
     }
 
@@ -62,7 +62,6 @@ public class drawTest : MonoBehaviour
         }
     }
 
-    ////commented bit causes lag
 
     float getblackPixels()
     {
@@ -70,43 +69,17 @@ public class drawTest : MonoBehaviour
         int blackcount = 0;
         int totalcount = 0;
 
-        Texture totest = fromMat.GetTexture("Texture2D_DB299D9F");
-        Texture2D totest2 = new Texture2D(1024, 1024);
+        Texture2D totest2 = new Texture2D(splatmap.width, splatmap.height);
 
         RenderTexture.active = splatmap;
-        totest2.ReadPixels(new Rect(0, 0, 1024, 1024), 0, 0);
+        totest2.ReadPixels(new Rect(0, 0, splatmap.width, splatmap.height), 0, 0);
         totest2.Apply();
 
-        //Texture2D rgbTex = new Texture2D(1024, 1024, TextureFormat.RGBA32, false);
-
-        //RenderTexture.active = totest;
-        //rgbTex.ReadPixels(new Rect(0, 0, 1024, 1024), 0, 0);
-        //rgbTex.Apply();
-        //RenderTexture.active = null;
-
-
-
-        //Color[] tmp = rgbTex.GetPixels(0,0, 1024, 1024);
-
-
-
-
-
-        //for (int i = 0; i < totalcount; i++)
-        //{
-        //    if (tmp[i] == Color.black)
-        //    {
-        //        blackcount++;
-        //    }
-        //}
-
-        for (int i = 0; i < 1024; i++)
+        for (int i = 0; i < splatmap.width; i++)
         {
-            i += 8;
-            for (int j = 0; j < 1024; j++)
+            for (int j = 0; j < splatmap.width; j++)
             {
-                j += 8;
-                if (i < 1024 && j < 1024)
+                if (i < splatmap.width && j < splatmap.width)
                 {
                     Color tmp = totest2.GetPixel(i, j);
                     totalcount++;
@@ -117,8 +90,6 @@ public class drawTest : MonoBehaviour
                 }
             }
         }
-
-        Debug.Log(blackcount + " / " + totalcount);
 
         return ((float)blackcount / (float)totalcount);
     }
