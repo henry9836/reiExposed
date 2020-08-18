@@ -20,9 +20,12 @@ public class drawTest : MonoBehaviour
 
     private Camera cam;
     public Shader shader;
-    private RenderTexture splatmap;
-    private Material fromMat;
-    private Material toMat;
+    [HideInInspector]
+    public RenderTexture splatmap;
+    [HideInInspector]
+    public Material fromMat;
+    [HideInInspector]
+    public Material toMat;
 
     private RaycastHit hit;
     public LayerMask tohit;
@@ -30,6 +33,8 @@ public class drawTest : MonoBehaviour
     public Vector4 topass;
 
     public float blackpersent = 0.0f;
+
+    public Texture splatmapColored;
     void Start()
     {
         cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();

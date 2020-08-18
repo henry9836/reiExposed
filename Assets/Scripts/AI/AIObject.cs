@@ -52,6 +52,7 @@ public class AIObject : MonoBehaviour
     private List<int> validAttacks = new List<int>();
     private bool deathFlag = false;
 
+    public GameObject revealpersentobject;
     public void sleepOverride(bool sleep)
     {
         animator.SetBool("Sleeping", sleep);
@@ -217,6 +218,19 @@ public class AIObject : MonoBehaviour
         {
             initalVFXObjects = vfx.bodysNoVFX.Count;
         }
+
+        //if (this.gameObject.tag == "Boss")
+        //{
+        //    revealAmount = revealpersentobject.GetComponent<drawTest>().blackpersent;
+
+
+        //    if (revealAmount > revealThreshold)
+        //    {
+        //        Graphics.Blit(revealpersentobject.GetComponent<drawTest>().splatmapColored, revealpersentobject.GetComponent<drawTest>().splatmap);
+
+        //        revealpersentobject.GetComponent<drawTest>().fromMat.SetTexture("Texture2D_DB299D9F", revealpersentobject.GetComponent<drawTest>().splatmapColored);
+        //    }
+        //}
 
         //Reveal Update
         if (vfx != null)
