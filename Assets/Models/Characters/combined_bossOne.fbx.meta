@@ -11,7 +11,7 @@ ModelImporter:
     second: basicAttack
   - first:
       74: 8431872214116501318
-    second: heavyAttack
+    second: heavySmash
   - first:
       74: 974678785842290896
     second: walk_forward
@@ -42,6 +42,12 @@ ModelImporter:
   - first:
       74: -6758483313513240000
     second: death
+  - first:
+      74: -998496362607748373
+    second: basicAttack2x
+  - first:
+      74: -7475027975156436336
+    second: basicAttack1
   externalObjects: {}
   materials:
     materialImportMode: 1
@@ -100,11 +106,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: basicAttack
+      name: basicAttack1
       takeName: Take 001
       internalID: 0
-      firstFrame: 35
-      lastFrame: 68
+      firstFrame: 780
+      lastFrame: 884
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -129,11 +135,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: heavyAttack
+      name: heavySmash
       takeName: Take 001
       internalID: 0
-      firstFrame: 68
-      lastFrame: 125
+      firstFrame: 1005
+      lastFrame: 1090
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -447,7 +453,36 @@ ModelImporter:
       maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
-    isReadable: 0
+    - serializedVersion: 16
+      name: basicAttack2x
+      takeName: Take 001
+      internalID: 0
+      firstFrame: 884
+      lastFrame: 1005
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
   meshes:
     lODScreenPercentages: []
     globalScale: 1.1
