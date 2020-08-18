@@ -2,63 +2,46 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
-public static class TextureExtentions
-{
-    public static Texture2D ToTexture2D(this Texture texture)
-    {
-        return Texture2D.CreateExternalTexture(
-            texture.width,
-            texture.height,
-            TextureFormat.RGB24,
-            false, false,
-            texture.GetNativeTexturePtr());
-    }
-}
 public class drawTest : MonoBehaviour
 {
-
-    private Camera cam;
+    public Camera phoneCam;
     public Shader shader;
-    private RenderTexture splatmap;
-    private Material fromMat;
-    private Material toMat;
+    [HideInInspector]
+    public RenderTexture splatmap;
+    [HideInInspector]
+    public Material fromMat;
+    [HideInInspector]
+    public Material toMat;
 
     private RaycastHit hit;
     public LayerMask tohit;
 
     public Vector4 topass;
 
-    public float blackpersent = 0.0f;
+    public float blackpersent = 1.0f;
+
+    public Texture splatmapColored;
     void Start()
     {
-        cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         toMat = new Material(shader);
         toMat.SetColor("_Color", Color.red);
-
         fromMat = GetComponent<SkinnedMeshRenderer>().material;
-        splatmap = new RenderTexture(64, 64, 0, RenderTextureFormat.ARGBFloat);
+        splatmap = new RenderTexture(32, 32, 0, RenderTextureFormat.ARGBFloat);
         fromMat.SetTexture("_Splat", splatmap);
     }
-
-    void Update()
+    public void toScanBoss()
     {
-        Debug.DrawRay(cam.transform.position, cam.transform.forward);
-
-        if (Input.GetKey(KeyCode.Mouse0))
+        if (Physics.Raycast(phoneCam.transform.position, phoneCam.transform.forward, out hit, Mathf.Infinity, tohit))
         {
-            if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, Mathf.Infinity, tohit))
-            {
-                topass = new Vector4(hit.textureCoord.x, hit.textureCoord.y, 0 , 0);
-                toMat.SetVector("_Coordinate", topass); //_Coordinate
-                RenderTexture tmp = RenderTexture.GetTemporary(splatmap.width, splatmap.height, 0, RenderTextureFormat.ARGBFloat);
-                Graphics.Blit(splatmap, tmp);
-                Graphics.Blit(tmp, splatmap, toMat);
-                RenderTexture.ReleaseTemporary(tmp);
-                fromMat.SetTexture("Texture2D_DB299D9F", splatmap);
+            topass = new Vector4(hit.textureCoord.x, hit.textureCoord.y, 0, 0);
+            toMat.SetVector("_Coordinate", topass); //_Coordinate
+            RenderTexture tmp = RenderTexture.GetTemporary(splatmap.width, splatmap.height, 0, RenderTextureFormat.ARGBFloat);
+            Graphics.Blit(splatmap, tmp);
+            Graphics.Blit(tmp, splatmap, toMat);
+            RenderTexture.ReleaseTemporary(tmp);
+            fromMat.SetTexture("Texture2D_DB299D9F", splatmap);
 
-                blackpersent = getblackPixels();
-            }
+            blackpersent = getblackPixels();
         }
     }
 
@@ -83,7 +66,7 @@ public class drawTest : MonoBehaviour
                 {
                     Color tmp = totest2.GetPixel(i, j);
                     totalcount++;
-                    if (tmp.r == 0.0f)
+                    if (tmp.r <= 0.1f)
                     {
                         blackcount++;
                     }
@@ -94,8 +77,8 @@ public class drawTest : MonoBehaviour
         return ((float)blackcount / (float)totalcount);
     }
 
-    private void OnGUI()
-    {
-        GUI.DrawTexture(new Rect(0, 0, 256, 256), splatmap, ScaleMode.ScaleToFit, false, 1);
-    }
+    //private void OnGUI()
+    //{
+    //    GUI.DrawTexture(new Rect(0, 0, 256, 256), splatmap, ScaleMode.ScaleToFit, false, 1);
+    //}
 }
