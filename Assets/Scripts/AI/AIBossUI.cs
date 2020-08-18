@@ -53,9 +53,9 @@ public class AIBossUI : MonoBehaviour
         }
 
         //Reveal Progress
-        if (vfx.bodysNoVFX.Count != 0)
+        if (this.gameObject.tag == "Boss")
         {
-            revealBar.fillAmount = (float)vfx.bodysNoVFX.Count / (float)initalReveal;
+            revealBar.fillAmount = ai.revealAmount;
         }
         else
         {
