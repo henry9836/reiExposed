@@ -34,7 +34,7 @@ public class AIObject : MonoBehaviour
 
     [HideInInspector]
     public float startHealth = 0.0f;
-    [HideInInspector]
+    
     public float revealAmount = 0.0f;
     [HideInInspector]
     public float stamina;
@@ -46,9 +46,6 @@ public class AIObject : MonoBehaviour
     [SerializeField]
     public GameObject player;
 
-    public VFXController vfx;
-
-    private float initalVFXObjects;
     private List<int> validAttacks = new List<int>();
     private bool deathFlag = false;
 
@@ -189,17 +186,6 @@ public class AIObject : MonoBehaviour
         //Disable hitboxes
         body.updateHitBox(AIBody.BodyParts.ALL, false);
 
-        //VFX if boss
-        if (GetComponent<VFXController>() != null)
-        {
-            vfx = GetComponent<VFXController>();
-        }
-
-        if (vfx != null)
-        {
-            initalVFXObjects = vfx.bodysNoVFX.Count;
-        }
-
         
         sleepOverride(startInSleepState);
 
@@ -214,44 +200,17 @@ public class AIObject : MonoBehaviour
             stamina += staminaRegen * Time.deltaTime;
         }
 
-        if (initalVFXObjects == 0)
+
+        if (this.gameObject.tag == "Boss")
         {
-            initalVFXObjects = vfx.bodysNoVFX.Count;
-        }
+            revealAmount = revealpersentobject.GetComponent<drawTest>().blackpersent;
 
-        //if (this.gameObject.tag == "Boss")
-        //{
-        //    revealAmount = revealpersentobject.GetComponent<drawTest>().blackpersent;
-
-
-        //    if (revealAmount > revealThreshold)
-        //    {
-        //        Graphics.Blit(revealpersentobject.GetComponent<drawTest>().splatmapColored, revealpersentobject.GetComponent<drawTest>().splatmap);
-
-        //        revealpersentobject.GetComponent<drawTest>().fromMat.SetTexture("Texture2D_DB299D9F", revealpersentobject.GetComponent<drawTest>().splatmapColored);
-        //    }
-        //}
-
-        //Reveal Update
-        if (vfx != null)
-        {
-
-            revealAmount = 0.0f;
-
-            if (vfx.bodysNoVFX.Count != 0)
-            {
-                revealAmount = (float)vfx.bodysNoVFX.Count / (float)initalVFXObjects;
-            }
 
             if (revealAmount < revealThreshold)
             {
-                
+                Graphics.Blit(revealpersentobject.GetComponent<drawTest>().splatmapColored, revealpersentobject.GetComponent<drawTest>().splatmap);
 
-                for (int i = 0; i < vfx.bodysNoVFX.Count; i++)
-                {
-                    vfx.bodysNoVFX[i].GetComponent<BossRevealSurfaceController>().EnableSurface();
-                }
-                vfx.bodysNoVFX.Clear();
+                revealpersentobject.GetComponent<drawTest>().fromMat.SetTexture("Texture2D_DB299D9F", revealpersentobject.GetComponent<drawTest>().splatmapColored);
             }
         }
 
@@ -281,13 +240,9 @@ public class AIObject : MonoBehaviour
             {
                 float revealAmount = 0.0f;
 
-                if (vfx != null)
+                if (this.gameObject.tag == "boss")
                 {
-                    if (vfx.bodysNoVFX.Count != 0)
-                    {
-                        revealAmount = (float)vfx.bodysNoVFX.Count / (float)initalVFXObjects;
-                    }
-
+                    revealAmount = revealpersentobject.GetComponent<drawTest>().blackpersent;
                 }
 
                 revealAmount *= startHealth;
@@ -311,9 +266,6 @@ public class AIObject : MonoBehaviour
                     health = revealAmount;
 
                 }
-
-
-
             }
         }
     }
