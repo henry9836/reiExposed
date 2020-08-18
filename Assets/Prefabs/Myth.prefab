@@ -592,7 +592,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8504266258047563928}
-  - component: {fileID: 2924762218455014557}
   - component: {fileID: 7041679552260849528}
   - component: {fileID: 1159318661893412549}
   - component: {fileID: 1631037459509395006}
@@ -602,6 +601,8 @@ GameObject:
   - component: {fileID: 5516295935096102756}
   - component: {fileID: 6440507534838509659}
   - component: {fileID: 7594778056846417552}
+  - component: {fileID: 5955476373735586614}
+  - component: {fileID: 1082281662348365926}
   m_Layer: 16
   m_Name: Myth
   m_TagString: Myth
@@ -626,38 +627,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2924762218455014557
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 986330608656297324}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 084cb613cb9443d4a8936dade09221ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attackName: Whack
-  damage: 5
-  statminaNeeded: 5
-  damageOnlyOnce: 1
-  bodyPartsUsedInAttack: 6
-  mustFacePlayer: 1
-  overrideTrackingVisionCone: 0
-  facePlayerThreshold: 0.75
-  rangeForAttack: {x: 1, y: 10}
-  triggerName: Whack
-  allowedModeOne: 1
-  allowedModeTwo: 1
-  allowedModeThree: 1
-  allowedModeFour: 1
-  allowedModeFive: 1
-  allowedModeSix: 1
-  allowedModeSeven: 1
-  allowedModeEight: 1
-  allowedModeNine: 1
-  allowedModeTen: 1
 --- !u!114 &7041679552260849528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -866,6 +835,70 @@ MonoBehaviour:
   animator: {fileID: 0}
   player: {fileID: 0}
   revealpersentobject: {fileID: 0}
+--- !u!114 &5955476373735586614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 986330608656297324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 084cb613cb9443d4a8936dade09221ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackName: ComboWhack
+  damage: 5
+  statminaNeeded: 5
+  damageOnlyOnce: 1
+  bodyPartsUsedInAttack: 0
+  mustFacePlayer: 1
+  overrideTrackingVisionCone: 0
+  facePlayerThreshold: 0.75
+  rangeForAttack: {x: 1, y: 10}
+  triggerName: ComboWhack
+  allowedModeOne: 1
+  allowedModeTwo: 1
+  allowedModeThree: 1
+  allowedModeFour: 1
+  allowedModeFive: 1
+  allowedModeSix: 1
+  allowedModeSeven: 1
+  allowedModeEight: 1
+  allowedModeNine: 1
+  allowedModeTen: 1
+--- !u!114 &1082281662348365926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 986330608656297324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 084cb613cb9443d4a8936dade09221ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackName: Whack
+  damage: 5
+  statminaNeeded: 5
+  damageOnlyOnce: 1
+  bodyPartsUsedInAttack: 6
+  mustFacePlayer: 1
+  overrideTrackingVisionCone: 0
+  facePlayerThreshold: 0.75
+  rangeForAttack: {x: 1, y: 10}
+  triggerName: Whack
+  allowedModeOne: 1
+  allowedModeTwo: 1
+  allowedModeThree: 1
+  allowedModeFour: 1
+  allowedModeFive: 1
+  allowedModeSix: 1
+  allowedModeSeven: 1
+  allowedModeEight: 1
+  allowedModeNine: 1
+  allowedModeTen: 1
 --- !u!1 &1129430613784877214
 GameObject:
   m_ObjectHideFlags: 0
