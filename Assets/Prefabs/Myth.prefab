@@ -622,6 +622,7 @@ Transform:
   m_Children:
   - {fileID: 2420677809290565277}
   - {fileID: 2115222239}
+  - {fileID: 1295538986634931573}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -637,16 +638,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 084cb613cb9443d4a8936dade09221ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackName: Untitled Attack
+  attackName: Whack
   damage: 5
   statminaNeeded: 5
   damageOnlyOnce: 1
-  bodyPartsUsedInAttack: 0
+  bodyPartsUsedInAttack: 6
   mustFacePlayer: 1
   overrideTrackingVisionCone: 0
   facePlayerThreshold: 0.75
   rangeForAttack: {x: 1, y: 10}
-  triggerName: Untitled Trigger
+  triggerName: Whack
   allowedModeOne: 1
   allowedModeTwo: 1
   allowedModeThree: 1
@@ -686,7 +687,7 @@ MonoBehaviour:
   lastSeenDir: {x: 0, y: 0, z: 0}
   predictedPlayerPos: {x: 0, y: 0, z: 0}
   target: {fileID: 0}
-  eyes: {fileID: 1106944145941659141}
+  eyes: {fileID: 1295538986634931573}
   visionCone: 0.5
   timeTillLostPlayer: 10
   maxSpotDistance: 25
@@ -730,7 +731,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   overrideMode: 0
-  moveSpeed: 10
+  moveSpeed: 3.5
   rotSpeed: 120
   fastMoveMulti: 1.5
   fastRotMulti: 1.5
@@ -1527,6 +1528,36 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3254033214577471162}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2597254568859360388
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1295538986634931573}
+  m_Layer: 0
+  m_Name: Eyes
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1295538986634931573
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2597254568859360388}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8504266258047563928}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2625447263983020401
 GameObject:
