@@ -37,7 +37,7 @@ public class drawTest : MonoBehaviour
         toMat.SetColor("_Color", Color.red);
 
         fromMat = GetComponent<SkinnedMeshRenderer>().material;
-        splatmap = new RenderTexture(64, 64, 0, RenderTextureFormat.ARGBFloat);
+        splatmap = new RenderTexture(32, 32, 0, RenderTextureFormat.ARGBFloat);
         fromMat.SetTexture("_Splat", splatmap);
     }
 
