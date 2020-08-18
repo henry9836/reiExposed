@@ -98,12 +98,11 @@ public static class SaveSystemController
     public static void saveDataToDisk(string filePath)
     {
         //Queue A Thread Task
-        ThreadPool.QueueUserWorkItem(saveDataFromDiskThread, filePath);
+        ThreadPool.QueueUserWorkItem(saveDataToDiskThread, filePath);
     }
     //Save Data Thread
-    static void saveDataFromDiskThread(System.Object stateInfo)
+    static void saveDataToDiskThread(System.Object stateInfo)
     {
-        readyForProcessing = false;
         string filePath = stateInfo as string;
 
         //Wait for file to avaible
@@ -128,7 +127,6 @@ public static class SaveSystemController
 
         //Unset busy bit
         ioBusy = false;
-        readyForProcessing = true;
     }
 
 
@@ -234,7 +232,7 @@ public static class SaveSystemController
     public static bool getBoolValue(string _id)
     {
         //wait till ready to process infomation
-       while (!readyForProcessing) { Debug.LogError("Waiting on save system to be ready for processing, have you loaded data from disk?"); }
+        while (!readyForProcessing) { Debug.LogError("Waiting on save system to be ready for processing, have you loaded data from disk?"); }
 
         bool result = false;
         if (bool.TryParse(getValue(_id), out result))

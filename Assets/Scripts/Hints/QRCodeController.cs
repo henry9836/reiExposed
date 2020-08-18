@@ -128,6 +128,9 @@ public class QRCodeController : MonoBehaviour
                 enemydropCtrl.messagesToShow++;
             }
 
+            //Activate VFX
+            transform.GetChild(0).gameObject.SetActive(true);
+
             alreadyTriggered = true;
         }
     }

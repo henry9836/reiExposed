@@ -300,7 +300,7 @@ public class movementController : MonoBehaviour
             animator.SetBool("Sprinting", false);
         }
 
-        Debug.Log("BLOCK: " + attackMovementBlock.ToString());
+        //Debug.Log("BLOCK: " + attackMovementBlock.ToString());
 
         //Move
         if (!rolling && !attackMovementBlock)
