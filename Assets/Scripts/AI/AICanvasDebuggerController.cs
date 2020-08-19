@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class AICanvasDebuggerController : MonoBehaviour
 {
+
 #if UNITY_EDITOR
     public UnityEngine.UI.Image healthBar;
     public UnityEngine.UI.Image eye;
@@ -31,13 +32,16 @@ public class AICanvasDebuggerController : MonoBehaviour
     AITracker tracker;
     Animator animator;
     Transform player;
+    Transform cam;
 
     public void Start()
     {
+        cam = GameObject.FindGameObjectWithTag("MainCamera").transform;
+
         ai = transform.root.GetComponent<AIObject>();
         tracker = ai.tracker;
         animator = ai.animator;
-        player = GameObject.FindGameObjectWithTag("MainCamera").transform;
+        player = tracker.target;
 
         eye.sprite = eyeCannotSee;
         eye.color = red;
@@ -49,7 +53,7 @@ public class AICanvasDebuggerController : MonoBehaviour
     private void FixedUpdate()
     {
         //Look at cam
-        transform.LookAt(transform.position + (transform.position - player.position).normalized);
+        transform.LookAt(transform.position + (transform.position - cam.position).normalized);
 
         //Get attack and vision and range
         if (ai.getSelectedAttack() != null) {
@@ -142,5 +146,12 @@ public class AICanvasDebuggerController : MonoBehaviour
         }
 
     }
+
+#else
+
+    private void Start(){
+        Destroy(gameObject);
+    }
+
 #endif
 }

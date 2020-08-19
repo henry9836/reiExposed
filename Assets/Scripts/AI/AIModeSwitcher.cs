@@ -18,6 +18,8 @@ public class AIModeSwitcher : MonoBehaviour
 
     public virtual bool switchMode(int newMode)
     {
+        Debug.Log($"Switching to mode {newMode}");
+
         if (newMode <= ai.amountofModes && newMode > 0)
         {
             ai.currentMode = newMode;

@@ -45,8 +45,7 @@ public class MythCollisionHandler : AICollisionHandler
 
                 Debug.Log("No Block");
                 animator.SetTrigger("Stun");
-                //aiObject.health -= aiObject.playerCtrl.umbreallaDmg;
-
+                aiObject.health -= aiObject.playerCtrl.umbreallaDmg;
             }
         }
     }

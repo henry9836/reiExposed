@@ -592,7 +592,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8504266258047563928}
-  - component: {fileID: 7041679552260849528}
   - component: {fileID: 1159318661893412549}
   - component: {fileID: 1631037459509395006}
   - component: {fileID: 2309118965541752013}
@@ -606,6 +605,9 @@ GameObject:
   - component: {fileID: 2748742149242710479}
   - component: {fileID: 603137669717844803}
   - component: {fileID: 8675320988976945444}
+  - component: {fileID: 6992123814082180060}
+  - component: {fileID: 3265642449226392436}
+  - component: {fileID: 1073530266}
   m_Layer: 16
   m_Name: Myth
   m_TagString: Myth
@@ -630,19 +632,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7041679552260849528
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 986330608656297324}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 739a5c3374b35274fa13bf7356b40e6d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  behaviour: 0
 --- !u!114 &1159318661893412549
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -711,6 +700,10 @@ MonoBehaviour:
   arriveThreshold: 1.5
   initalPosition: {x: 0, y: 0, z: 0}
   lastUpdatedPos: {x: 0, y: 0, z: 0}
+  initalMoveSpeed: 10
+  initalRotSpeed: 10
+  agent: {fileID: 0}
+  animator: {fileID: 0}
 --- !u!114 &523616526139692268
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -825,19 +818,22 @@ MonoBehaviour:
   playerCtrl: {fileID: 0}
   forwardAnimationsTo: {fileID: 0}
   startInSleepState: 0
+  handleCollision: 1
   damagedText: {fileID: 7401280080073061358, guid: febedf0338a1da8438f0280ae306b1d0,
     type: 3}
   health: 100
   staminaRegen: 2.5
   revealThreshold: 0
   selectedAttack: {fileID: 0}
-  amountofModes: 1
+  amountofModes: 2
   startHealth: 0
   revealAmount: 0
   stamina: 0
   currentMode: 1
   animator: {fileID: 0}
   player: {fileID: 0}
+  validAttacks: 
+  deathFlag: 0
   revealpersentobject: {fileID: 0}
 --- !u!114 &5955476373735586614
 MonoBehaviour:
@@ -853,24 +849,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackName: ComboWhack
   damage: 5
-  statminaNeeded: 5
+  statminaNeeded: 10
   damageOnlyOnce: 1
-  bodyPartsUsedInAttack: 0
+  bodyPartsUsedInAttack: 6
   mustFacePlayer: 1
   overrideTrackingVisionCone: 0
   facePlayerThreshold: 0.75
-  rangeForAttack: {x: 1, y: 10}
+  rangeForAttack: {x: 1, y: 2}
   triggerName: ComboWhack
-  allowedModeOne: 1
+  allowedModeOne: 0
   allowedModeTwo: 1
-  allowedModeThree: 1
-  allowedModeFour: 1
-  allowedModeFive: 1
-  allowedModeSix: 1
-  allowedModeSeven: 1
-  allowedModeEight: 1
-  allowedModeNine: 1
-  allowedModeTen: 1
+  allowedModeThree: 0
+  allowedModeFour: 0
+  allowedModeFive: 0
+  allowedModeSix: 0
+  allowedModeSeven: 0
+  allowedModeEight: 0
+  allowedModeNine: 0
+  allowedModeTen: 0
 --- !u!114 &1082281662348365926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -885,24 +881,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackName: Whack
   damage: 5
-  statminaNeeded: 5
+  statminaNeeded: 10
   damageOnlyOnce: 1
   bodyPartsUsedInAttack: 6
   mustFacePlayer: 1
   overrideTrackingVisionCone: 0
   facePlayerThreshold: 0.75
-  rangeForAttack: {x: 1, y: 10}
+  rangeForAttack: {x: 1, y: 2}
   triggerName: Whack
   allowedModeOne: 1
   allowedModeTwo: 1
-  allowedModeThree: 1
-  allowedModeFour: 1
-  allowedModeFive: 1
-  allowedModeSix: 1
-  allowedModeSeven: 1
-  allowedModeEight: 1
-  allowedModeNine: 1
-  allowedModeTen: 1
+  allowedModeThree: 0
+  allowedModeFour: 0
+  allowedModeFive: 0
+  allowedModeSix: 0
+  allowedModeSeven: 0
+  allowedModeEight: 0
+  allowedModeNine: 0
+  allowedModeTen: 0
 --- !u!136 &2748742149242710479
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -947,6 +943,66 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &6992123814082180060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 986330608656297324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 084cb613cb9443d4a8936dade09221ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackName: Ranged Attack
+  damage: 5
+  statminaNeeded: 5
+  damageOnlyOnce: 1
+  bodyPartsUsedInAttack: 0
+  mustFacePlayer: 1
+  overrideTrackingVisionCone: 0
+  facePlayerThreshold: 0.75
+  rangeForAttack: {x: 10, y: 30}
+  triggerName: RangeAttack
+  allowedModeOne: 1
+  allowedModeTwo: 0
+  allowedModeThree: 0
+  allowedModeFour: 0
+  allowedModeFive: 0
+  allowedModeSix: 0
+  allowedModeSeven: 0
+  allowedModeEight: 0
+  allowedModeNine: 0
+  allowedModeTen: 0
+--- !u!114 &3265642449226392436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 986330608656297324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06dfce167b075d54c8d763a272332f04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  behaviour: 0
+  ai: {fileID: 0}
+--- !u!114 &1073530266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 986330608656297324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0fb6c5806df48749851cdae131979ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aiObject: {fileID: 0}
+  blockStaminaCost: 10
 --- !u!1 &1129430613784877214
 GameObject:
   m_ObjectHideFlags: 0
