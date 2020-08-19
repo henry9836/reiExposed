@@ -76,6 +76,7 @@ public class AIObject : MonoBehaviour
             //Attack can be used in our behaviour mode
             if (attacks[i].allowedOnMode(currentMode))
             {
+                //Debug.Log($"Found Valid Attack {attacks[i].attackName} because it can work in mode |{currentMode}|");
                 //We are within range for an attack
                 if (attacks[i].rangeForAttack.y >= distance)
                 {
