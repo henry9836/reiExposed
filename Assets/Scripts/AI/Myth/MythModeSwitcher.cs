@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MythModeSwitcher : AIModeSwitcher
 {
-    enum MODES
+    public enum MYTHMODES
     {
         PASSIVE = 1,
         AGRO = 2,
@@ -15,12 +15,12 @@ public class MythModeSwitcher : AIModeSwitcher
         Debug.Log($"Switching to mode {newMode}");
 
         //Change speed depending on mode
-        if (newMode == (int)MODES.PASSIVE)
+        if (newMode == (int)MYTHMODES.PASSIVE)
         {
             ai.movement.moveSpeed = ai.movement.initalMoveSpeed;
             ai.movement.rotSpeed = ai.movement.initalRotSpeed;
         }
-        else if (newMode == (int)MODES.AGRO)
+        else if (newMode == (int)MYTHMODES.AGRO)
         {
             ai.movement.moveSpeed = ai.movement.initalMoveSpeed * ai.movement.fastMoveMulti;
             ai.movement.rotSpeed = ai.movement.initalRotSpeed * ai.movement.fastRotMulti;
