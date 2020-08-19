@@ -63,6 +63,7 @@ public class AIAttackEvent : StateMachineBehaviour
         {
             ai.body.updateHitBox(parts, false);
             armed = false;
+            animator.SetBool("Attacking", false);
         }
     }
 

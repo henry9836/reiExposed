@@ -9,7 +9,7 @@ public class fireBallController : MonoBehaviour
     public float damage = 10.0f;
     public float killOverrideTime = 5.0f;
     public LayerMask hittableSurfaces;
-    public EnemyController ec;
+    public AIModeSwitcher behaviour;
 
     private bool canDie = false;
     private float killTimer = 0.0f;
@@ -45,7 +45,7 @@ public class fireBallController : MonoBehaviour
                 }
 
                 //make myth agro
-                ec.aggresiveMode = true;
+                behaviour.switchMode(2);
 
             }
             Destroy(gameObject);
