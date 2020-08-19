@@ -149,8 +149,8 @@ public class ThePhone : MonoBehaviour
                     //scroling UI selected
                     if (prev != selected)
                     {
-                        slotno oldslot = ThePhoneUI.transform.GetChild(2).GetChild(prev).GetComponent<slotno>();
-                        slotno newslot = ThePhoneUI.transform.GetChild(2).GetChild(selected).GetComponent<slotno>();
+                        slotno oldslot = ThePhoneUI.transform.GetChild(2).GetChild(0).GetChild(prev).GetComponent<slotno>();
+                        slotno newslot = ThePhoneUI.transform.GetChild(2).GetChild(0).GetChild(selected).GetComponent<slotno>();
 
                         if (oldslot.shriking != true)
                         {
@@ -490,9 +490,9 @@ public class ThePhone : MonoBehaviour
             itemselected = 0;
             amazonselected = 0;
 
-            ThePhoneUI.transform.GetChild(2).GetChild(selected).GetComponent<slotno>().growing = true;
-            ThePhoneUI.transform.GetChild(2).GetChild(selected).GetComponent<slotno>().shriking = false;
-            StartCoroutine(ThePhoneUI.transform.GetChild(2).GetChild(selected).GetComponent<slotno>().togrow());
+            ThePhoneUI.transform.GetChild(2).GetChild(0).GetChild(selected).GetComponent<slotno>().growing = true;
+            ThePhoneUI.transform.GetChild(2).GetChild(0).GetChild(selected).GetComponent<slotno>().shriking = false;
+            StartCoroutine(ThePhoneUI.transform.GetChild(2).GetChild(0).GetChild(selected).GetComponent<slotno>().togrow());
 
             ThePhoneUI.transform.GetChild(5).GetChild(itemselected + 1).GetComponent<slotno>().growing = true;
             ThePhoneUI.transform.GetChild(5).GetChild(itemselected + 1).GetComponent<slotno>().shriking = false;
@@ -517,10 +517,10 @@ public class ThePhone : MonoBehaviour
             //close eveythign UI
             for (int i = 0; i < 4; i++)
             {
-                ThePhoneUI.transform.GetChild(2).GetChild(i).GetComponent<slotno>().growing = false;
-                ThePhoneUI.transform.GetChild(2).GetChild(i).GetComponent<slotno>().shriking = true;
-                float smol = ThePhoneUI.transform.GetChild(2).GetChild(i).GetComponent<slotno>().smol;
-                ThePhoneUI.transform.GetChild(2).GetChild(i).transform.localScale = new Vector3(smol, smol, smol);
+                ThePhoneUI.transform.GetChild(2).GetChild(0).GetChild(i).GetComponent<slotno>().growing = false;
+                ThePhoneUI.transform.GetChild(2).GetChild(0).GetChild(i).GetComponent<slotno>().shriking = true;
+                float smol = ThePhoneUI.transform.GetChild(2).GetChild(0).GetChild(i).GetComponent<slotno>().smol;
+                ThePhoneUI.transform.GetChild(2).GetChild(0).GetChild(i).transform.localScale = new Vector3(smol, smol, smol);
             }
             //rei can wak
             rei.GetComponent<umbrella>().phoneLock = false;
