@@ -22,6 +22,7 @@ public class AIObject : MonoBehaviour
     public PlayerController playerCtrl;
     public Animator forwardAnimationsTo;
     public bool startInSleepState = false;
+    public bool handleCollision = true;
     public GameObject damagedText;
 
     public float health = 300.0f;
@@ -46,17 +47,22 @@ public class AIObject : MonoBehaviour
     [SerializeField]
     public GameObject player;
 
-    private List<int> validAttacks = new List<int>();
-    private bool deathFlag = false;
+    [HideInInspector]
+    public List<int> validAttacks = new List<int>();
+    [HideInInspector]
+    public bool deathFlag = false;
 
     public GameObject revealpersentobject;
-    public void sleepOverride(bool sleep)
+
+
+
+    public virtual void sleepOverride(bool sleep)
     {
         animator.SetBool("Sleeping", sleep);
     }
 
     //Selects a random attack to use againest the player
-    public void selectAttack()
+    public virtual void selectAttack()
     {
         float distance = Vector3.Distance(tracker.lastSeenPos, transform.position);
         validAttacks.Clear();
@@ -104,7 +110,7 @@ public class AIObject : MonoBehaviour
         }
     }
 
-    public float QueryDamage()
+    public virtual float QueryDamage()
     {
         if (selectedAttack == null)
         {
@@ -123,7 +129,7 @@ public class AIObject : MonoBehaviour
         }
     }
 
-    public void bindAttack(int i)
+    public virtual void bindAttack(int i)
     {
 
         if (i < attacks.Count && i >= 0)
@@ -132,12 +138,12 @@ public class AIObject : MonoBehaviour
         }
     }
 
-    public void unbindAttack()
+    public virtual void unbindAttack()
     {
         selectedAttack = null;
     }
 
-    private void Awake()
+    public virtual void Awake()
     {
         startHealth = health;
         AIAttackContainer[] attacksArray = GetComponents<AIAttackContainer>();
@@ -191,7 +197,7 @@ public class AIObject : MonoBehaviour
 
     }
 
-    private void FixedUpdate()
+    public virtual void FixedUpdate()
     {
         //If we are not sleep
         if (!animator.GetBool("Sleeping"))
@@ -227,44 +233,47 @@ public class AIObject : MonoBehaviour
         }
     }
 
-    public AIAttackContainer getSelectedAttack()
+    public virtual AIAttackContainer getSelectedAttack()
     {
         return selectedAttack;
     }
 
-    private void OnTriggerEnter(Collider other)
+    public virtual void OnTriggerEnter(Collider other)
     {
-        if (health > 0.0f)
+        if (handleCollision)
         {
-            if (other.tag == "PlayerAttackSurface")
+            if (health > 0.0f)
             {
-                float revealAmount = 0.0f;
-
-                if (this.gameObject.tag == "boss")
+                if (other.tag == "PlayerAttackSurface")
                 {
-                    revealAmount = revealpersentobject.GetComponent<drawTest>().blackpersent;
-                }
+                    float revealAmount = 0.0f;
 
-                revealAmount *= startHealth;
+                    if (this.gameObject.tag == "boss")
+                    {
+                        revealAmount = revealpersentobject.GetComponent<drawTest>().blackpersent;
+                    }
 
-                if (playerCtrl.umbreallaDmg < (health - revealAmount))
-                {
-                    health -= playerCtrl.umbreallaDmg;
+                    revealAmount *= startHealth;
 
-                    GameObject tmp = GameObject.Instantiate(damagedText, other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position), Quaternion.identity);
-                    tmp.transform.SetParent(this.transform, true);
-                    tmp.transform.GetChild(0).GetComponent<Text>().text = "-" + playerCtrl.umbreallaDmg.ToString("F0");
+                    if (playerCtrl.umbreallaDmg < (health - revealAmount))
+                    {
+                        health -= playerCtrl.umbreallaDmg;
 
-                }
-                else
-                {
-                    float diff = health - revealAmount;
-                    GameObject tmp = GameObject.Instantiate(damagedText, other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position), Quaternion.identity);
-                    tmp.transform.SetParent(this.transform, true);
-                    tmp.transform.GetChild(0).GetComponent<Text>().text = "-" + diff.ToString("F0");
+                        GameObject tmp = GameObject.Instantiate(damagedText, other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position), Quaternion.identity);
+                        tmp.transform.SetParent(this.transform, true);
+                        tmp.transform.GetChild(0).GetComponent<Text>().text = "-" + playerCtrl.umbreallaDmg.ToString("F0");
 
-                    health = revealAmount;
+                    }
+                    else
+                    {
+                        float diff = health - revealAmount;
+                        GameObject tmp = GameObject.Instantiate(damagedText, other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position), Quaternion.identity);
+                        tmp.transform.SetParent(this.transform, true);
+                        tmp.transform.GetChild(0).GetComponent<Text>().text = "-" + diff.ToString("F0");
 
+                        health = revealAmount;
+
+                    }
                 }
             }
         }
