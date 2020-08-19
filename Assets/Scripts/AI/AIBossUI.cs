@@ -29,14 +29,6 @@ public class AIBossUI : MonoBehaviour
     private void FixedUpdate()
     {
 
-        ////Fix badness
-        //if (!correctlySetup && (lockedUI.gameObject.activeInHierarchy))
-        //{
-        //    lockedUI.enabled = true;
-        //    unlockUI.enabled = false;
-        //    correctlySetup = true;
-        //}
-
         if (initalReveal == 0)
         {
             initalReveal = vfx.bodysNoVFX.Count;

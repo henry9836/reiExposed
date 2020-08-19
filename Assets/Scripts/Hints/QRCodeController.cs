@@ -66,19 +66,21 @@ public class QRCodeController : MonoBehaviour
         {
             dropControl = GameObject.Find("Canvas").GetComponent<enemydrop>();
         }
-        if (loreOne == null)
+        if (addOnToLore)
         {
-            loreOne = GameObject.Find("txtClueLore1").GetComponent<Text>();
+            if (loreOne == null)
+            {
+                loreOne = GameObject.Find("txtClueLore1").GetComponent<Text>();
+            }
+            if (loreTwo == null)
+            {
+                loreTwo = GameObject.Find("txtClueLore2").GetComponent<Text>();
+            }
+            if (loreThree == null)
+            {
+                loreThree = GameObject.Find("txtClueLore3").GetComponent<Text>();
+            }
         }
-        if (loreTwo == null)
-        {
-            loreTwo = GameObject.Find("txtClueLore2").GetComponent<Text>();
-        }
-        if (loreThree == null)
-        {
-            loreThree = GameObject.Find("txtClueLore3").GetComponent<Text>();
-        }
-
     }
 
     private void Update()
