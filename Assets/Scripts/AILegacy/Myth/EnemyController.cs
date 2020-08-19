@@ -551,7 +551,7 @@ public class EnemyController : MonoBehaviour
             lastKnownPlayerPosition = player.transform.position;
             lastKnownPlayerDir = player.GetComponent<movementController>().charcterModel.transform.forward;
             losePlayerTimer = 0.0f;
-            union.ISeeThePlayer(workerID);
+            //union.ISeeThePlayer(workerID);
         }
         //Losing Player
         else

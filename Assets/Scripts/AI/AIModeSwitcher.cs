@@ -13,10 +13,13 @@ public class AIModeSwitcher : MonoBehaviour
 
     public AIModeSwitcher.Behaviours behaviour;
 
-    private AIObject ai;
+    [HideInInspector]
+    public AIObject ai;
 
-    public bool switchMode(int newMode)
+    public virtual bool switchMode(int newMode)
     {
+        Debug.Log($"Switching to mode {newMode}");
+
         if (newMode <= ai.amountofModes && newMode > 0)
         {
             ai.currentMode = newMode;
@@ -29,8 +32,7 @@ public class AIModeSwitcher : MonoBehaviour
 
         return true;
     }
-
-    private void Start()
+    public virtual void Start()
     {
         ai = GetComponent<AIObject>();
     }

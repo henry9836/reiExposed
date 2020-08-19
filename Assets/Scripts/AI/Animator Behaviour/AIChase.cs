@@ -5,6 +5,8 @@ using UnityEngine;
 public class AIChase : StateMachineBehaviour
 {
 
+    public bool overrideBoundAttackOnEntry = false;
+
     AIObject ai;
     AIMovement movement;
     AITracker tracker;
@@ -58,7 +60,7 @@ public class AIChase : StateMachineBehaviour
         }
 
         //If there is no attack bound
-        if (ai.selectedAttack == null)
+        if (ai.selectedAttack == null || overrideBoundAttackOnEntry)
         {
             ai.selectAttack();
         }
