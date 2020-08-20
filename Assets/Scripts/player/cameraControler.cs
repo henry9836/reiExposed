@@ -42,7 +42,11 @@ public class cameraControler : MonoBehaviour
 
     public GameObject rei;
 
-
+    private GameObject targetgo;
+    public bool camtargetlock = false;
+	public GameObject targetSphere;
+	public float maxlockdistance = 15.0f;
+	
     private void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -109,9 +113,91 @@ public class cameraControler : MonoBehaviour
         camRoot.transform.localPosition = new Vector3(Mathf.Lerp(0.0f, 0.4f, ADStimer), 0.0f, zOffsetColl);
 
         mainCam.fieldOfView = fov;
-        CameraRotation();
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (camtargetlock == false)
+            {
+                GameObject[] tmp1 = GameObject.FindGameObjectsWithTag("Myth");
+                GameObject[] tmp2 = GameObject.FindGameObjectsWithTag("Dummy");
+                GameObject[] tmp3 = GameObject.FindGameObjectsWithTag("Boss");
+
+                List<GameObject> targets = new List<GameObject>() { };
+
+                for (int i = 0; i < tmp1.Length; i++)
+                {
+                    targets.Add(tmp1[i]);
+                }
+                for (int i = 0; i < tmp2.Length; i++)
+                {
+                    targets.Add(tmp2[i]);
+                }
+                for (int i = 0; i < tmp3.Length; i++)
+                {
+                    targets.Add(tmp3[i]);
+                }
+
+                float closest = maxlockdistance;
+                int closestobj = -1;
+
+                for (int i = 0; i < targets.Count; i++)
+                {
+                    float dist = Vector3.Distance(targets[i].transform.position, rei.transform.position);
+                    if (dist < closest)
+                    {
+                        closest = dist;
+                        closestobj = i;
+                    }
+                }
+                Debug.Log(closest);
+
+                if (closestobj != -1)
+                {
+                    targetgo = targets[closestobj];
+                    camtargetlock = true;
+					targetSphere.SetActive(true);
+                }
+				
+            }
+            else
+            {
+                camtargetlock = false;
+				targetSphere.SetActive(false);
+
+            }
+
+        }
+
+        if (camtargetlock == false)
+        {
+            CameraRotation();
+        }
+        else
+        {
+            if (targetgo == null || Vector3.Distance(rei.transform.position, targetgo.transform.position) > maxlockdistance)
+            {
+                camtargetlock = false;
+				targetSphere.SetActive(false);
+                CameraRotation();
+            }
+            else
+            {
+                cameraLockOn(targetgo);
+            }
+        }
     }
 
+    private void cameraLockOn(GameObject target)
+    {
+        Vector3 targetpos = target.transform.position + new Vector3(0.0f, 1.0f, 0.0f);
+		targetSphere.transform.position = targetpos;
+        Quaternion targetRotation = Quaternion.LookRotation(targetpos - mainCam.transform.position);
+        Vector3 tmp = targetRotation.eulerAngles;
+        transform.rotation = Quaternion.Euler(0.0f, tmp.y, 0.0f);
+        camPivot.transform.localRotation = Quaternion.Euler(tmp.x, 0.0f, 0.0f);
+
+		
+    }
     private void CameraRotation()
     {
         float mouseX = Mathf.Clamp(Input.GetAxisRaw(mouseXInputName) * mouseSensitivity * 100.0f * Time.unscaledDeltaTime, -50f, 50f);
