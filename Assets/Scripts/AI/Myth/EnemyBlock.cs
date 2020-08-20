@@ -6,8 +6,10 @@ public class EnemyBlock : StateMachineBehaviour
 {
 
     Transform player;
+    MythCollisionHandler collHandler;
 
-    float blockTimeout = 3.0f;
+    float fullBlockTime = 0.5f;
+    float blockTimeout = 1.0f;
     float blocktimer = 0.0f;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
@@ -21,6 +23,8 @@ public class EnemyBlock : StateMachineBehaviour
         animator.gameObject.GetComponent<AIMovement>().stopMovement();
         animator.SetBool("Blocking", true);
         animator.ResetTrigger("Block");
+
+        collHandler = animator.gameObject.GetComponent<MythCollisionHandler>();
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -34,6 +38,11 @@ public class EnemyBlock : StateMachineBehaviour
             animator.SetBool("Blocking", false);
         }
 
+        if (blocktimer > fullBlockTime)
+        {
+            collHandler.fullyBlocking = true;
+        }
+
         //If player is away stop blocking
         if (Vector3.Distance(player.position, animator.transform.position) > 5.0f)
         {
@@ -45,6 +54,7 @@ public class EnemyBlock : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        collHandler.fullyBlocking = false;
         animator.SetBool("Blocking", false);
         blocktimer = 0.0f;
     }
