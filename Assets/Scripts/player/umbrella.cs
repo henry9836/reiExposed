@@ -266,17 +266,6 @@ public class umbrella : MonoBehaviour
                         Debug.Log("attackign for " + damage);
                         break;
                     }
-                    else if (Hit.collider.GetComponent<EnemyController>())
-                    {
-                        GameObject tmp = GameObject.Instantiate(damagedText, Hit.point, Quaternion.identity);
-                        tmp.transform.SetParent(Hit.collider.gameObject.transform, true);
-                        tmp.transform.GetChild(0).GetComponent<Text>().text = "-" + damage.ToString("F0");
-                        Hit.collider.GetComponent<EnemyController>().ChangeHealth(-damage);
-
-                        Debug.Log("attackign for " + damage);
-                        break;
-
-                    }
                     else if (Hit.collider.GetComponent<traningDummy>())
                     {
                         GameObject tmp = GameObject.Instantiate(damagedText, Hit.point, Quaternion.identity);
