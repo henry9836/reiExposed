@@ -153,7 +153,7 @@ public class AIMovement : MonoBehaviour
         }
 
         //If not moving
-        animator.SetBool("Idle", (agent.velocity.magnitude < 1.0f));
+        //animator.SetBool("Idle", (agent.velocity.magnitude < 1.0f));
 
     }
 
