@@ -17,7 +17,7 @@ public class AIInformer : MonoBehaviour
 
     AITracker tracker;
     
-    public void Inform()
+    public virtual void Inform()
     {
         RaycastHit[] hits = Physics.SphereCastAll(transform.position, informRange, transform.forward, Mathf.Infinity, informObjects);
         for (int i = 0; i < hits.Length; i++)
@@ -31,7 +31,7 @@ public class AIInformer : MonoBehaviour
         }
     }
 
-    private void Start()
+    public virtual void Start()
     {
         tracker = GetComponent<AITracker>();
     }

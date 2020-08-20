@@ -21,17 +21,21 @@ public class AIMovement : MonoBehaviour
     public float fastRotMulti = 1.5f;
     public float wanderRange = 10.0f;
     public float arriveThreshold = 1.5f;
+
     [HideInInspector]
     public Vector3 initalPosition = Vector3.zero;
     [HideInInspector]
     public Vector3 lastUpdatedPos;
+    [HideInInspector]
+    public float initalMoveSpeed = 10.0f;
+    [HideInInspector]
+    public float initalRotSpeed = 10.0f;
+    [HideInInspector]
+    public NavMeshAgent agent;
+    [HideInInspector]
+    public Animator animator;
 
-    private float initalMoveSpeed = 10.0f;
-    private float initalRotSpeed = 10.0f;
-    private NavMeshAgent agent;
-    private Animator animator;
-
-    public Vector3 pickWanderPosition()
+    public virtual Vector3 pickWanderPosition()
     {
         Vector3 target = initalPosition;
 
@@ -40,18 +44,18 @@ public class AIMovement : MonoBehaviour
         return target;
     }
 
-    public bool agentArrived()
+    public virtual bool agentArrived()
     {
         return (agent.remainingDistance != Mathf.Infinity && agent.pathStatus == NavMeshPathStatus.PathComplete && agent.remainingDistance == 0.0f);
     }
 
-    public Vector3 getDest()
+    public virtual Vector3 getDest()
     {
         return agent.destination;
     }
 
     //Go to a new position
-    public bool goToPosition(Vector3 pos)
+    public virtual bool goToPosition(Vector3 pos)
     {
         //If we our movement is not overwritten
         if (!agent.isStopped && (overrideMode == OVERRIDE.NO_OVERRIDE || overrideMode == OVERRIDE.ROT_OVERRIDE || overrideMode == OVERRIDE.MOVE_OVERRIDE)) {
@@ -81,7 +85,7 @@ public class AIMovement : MonoBehaviour
         return false;
     }
 
-    public void setOverride(OVERRIDE newMode)
+    public virtual void setOverride(OVERRIDE newMode)
     {
         overrideMode = newMode; 
         switch (overrideMode)
@@ -117,14 +121,14 @@ public class AIMovement : MonoBehaviour
         }
     }
 
-    public void stopMovement()
+    public virtual void stopMovement()
     {
         agent.isStopped = true;
         agent.ResetPath();
         agent.isStopped = false;
     }
 
-    private void Start()
+    public virtual void Start()
     {
         initalPosition = transform.position;
         initalRotSpeed = rotSpeed;
@@ -135,7 +139,7 @@ public class AIMovement : MonoBehaviour
         animator = GetComponent<AIObject>().animator;
     }
 
-    private void FixedUpdate()
+    public virtual void FixedUpdate()
     {
         //If we have a new position
         if (lastUpdatedPos != agent.destination)
@@ -149,7 +153,7 @@ public class AIMovement : MonoBehaviour
         }
 
         //If not moving
-        //animator.SetBool("Idle", (agent.velocity.magnitude < 1.0f));
+        animator.SetBool("Idle", (agent.velocity.magnitude < 1.0f));
 
     }
 

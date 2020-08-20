@@ -40,9 +40,15 @@ public static class SaveSystemController
     //Loads data from savefile into saveInfomation
     public static void loadDataFromDisk(string filePath)
     {
-        //Queue A Thread Task
-        ThreadPool.QueueUserWorkItem(loadDataFromDiskThread, filePath);
-
+        if (!readyForProcessing && !ioBusy)
+        {
+            //Queue A Thread Task
+            ThreadPool.QueueUserWorkItem(loadDataFromDiskThread, filePath);
+        }
+        else
+        {
+            Debug.LogWarning("loadDataFromDisk Invoked but data is already loaded or the IO is busy");
+        }
     }
 
     //Load Data Thread
