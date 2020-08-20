@@ -8,6 +8,8 @@ public class MythCollisionHandler : AICollisionHandler
     Animator animator;
     Animator playerAnimator;
     public float blockStaminaCost = 10.0f;
+    [HideInInspector]
+    public bool fullyBlocking = false;
 
     public override void Start()
     {
@@ -19,6 +21,8 @@ public class MythCollisionHandler : AICollisionHandler
 
         //Get animator
         animator = GetComponent<Animator>();
+
+        fullyBlocking = false;
     }
 
     public override void OnTriggerEnter(Collider other)
@@ -38,12 +42,16 @@ public class MythCollisionHandler : AICollisionHandler
                         //Block
                         if ((dice <= 5 && aiObject.stamina >= blockStaminaCost) || animator.GetBool("Blocking"))
                         {
+
+                            if (animator.GetBool("Blocking") && fullyBlocking)
+                            {
+                                //Stun the player if they hit an already blocking myth
+                                playerAnimator.SetTrigger("KnockDown");
+                            }
+
                             Debug.Log("Block");
                             aiObject.stamina -= blockStaminaCost;
                             animator.SetTrigger("Block");
-
-                            //Stun the player
-                            playerAnimator.SetTrigger("Stun");
 
                             return;
                         }
