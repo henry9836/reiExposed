@@ -511,6 +511,8 @@ public class ThePhone : MonoBehaviour
 
             screen = phonestates.HOME;
             constantUI.SetActive(false);
+
+            
         }
         else // close
         {
@@ -548,7 +550,6 @@ public class ThePhone : MonoBehaviour
         rei.transform.GetChild(1).gameObject.SetActive(false);
         rei.GetComponent<Animator>().enabled = false;
 
-
         ThePhoneUI.SetActive(false);
 
 
@@ -560,6 +561,10 @@ public class ThePhone : MonoBehaviour
         rei.GetComponent<fistpersoncontroler>().enabled = true;
         rei.GetComponent<fistpersoncontroler>().SetPitch(0);
         rei.GetComponent<fistpersoncontroler>().SetYaw(test);
+
+        //stops player cam being locked into player
+        rei.transform.GetChild(0).GetComponent<cameraControler>().camtargetlock = false;
+        rei.transform.GetChild(0).GetComponent<cameraControler>().targetSphere.SetActive(false);
 
     }
 

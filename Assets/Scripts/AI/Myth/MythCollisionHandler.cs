@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class MythCollisionHandler : AICollisionHandler
 {
     Animator animator;
+    Animator playerAnimator;
     public float blockStaminaCost = 10.0f;
 
     public override void Start()
@@ -13,6 +14,8 @@ public class MythCollisionHandler : AICollisionHandler
         //Disable AIObjects built-in dectection
         aiObject = GetComponent<AIObject>();
         aiObject.handleCollision = false;
+
+        playerAnimator = aiObject.player.GetComponent<Animator>();
 
         //Get animator
         animator = GetComponent<Animator>();
@@ -38,6 +41,10 @@ public class MythCollisionHandler : AICollisionHandler
                             Debug.Log("Block");
                             aiObject.stamina -= blockStaminaCost;
                             animator.SetTrigger("Block");
+
+                            //Stun the player
+                            playerAnimator.SetTrigger("Stun");
+
                             return;
                         }
                     }
