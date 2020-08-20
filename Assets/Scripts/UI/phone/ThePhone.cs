@@ -548,7 +548,6 @@ public class ThePhone : MonoBehaviour
         rei.transform.GetChild(1).gameObject.SetActive(false);
         rei.GetComponent<Animator>().enabled = false;
 
-
         ThePhoneUI.SetActive(false);
 
 
