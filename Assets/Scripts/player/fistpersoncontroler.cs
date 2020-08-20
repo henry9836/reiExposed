@@ -31,7 +31,7 @@ public class fistpersoncontroler : MonoBehaviour
             Vector3 hoz = Input.GetAxis("Horizontal") * transform.right;
             Vector3 vrt = Input.GetAxis("Vertical") * transform.forward;
 
-            CC.Move((hoz + vrt).normalized * Time.deltaTime * speed);
+            CC.Move((hoz + vrt) * Time.deltaTime * speed);
 
         }
         else
@@ -40,7 +40,7 @@ public class fistpersoncontroler : MonoBehaviour
             Vector3 vrt = Input.GetAxis("Vertical") * transform.forward;
             Vector3 fall = new Vector3(0.0f, -9.81f, 0.0f);
 
-            CC.Move((hoz + vrt + fall).normalized * Time.deltaTime * speed);
+            CC.Move((hoz + vrt + fall) * Time.deltaTime * speed);
         }
 
         SetPitch(pitch + -Input.GetAxis("Mouse Y") * mouseSpeed * Time.deltaTime);

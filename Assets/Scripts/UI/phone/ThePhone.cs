@@ -555,6 +555,11 @@ public class ThePhone : MonoBehaviour
 
         Debug.Log(rei.transform.GetChild(0).rotation.eulerAngles.y);
         float test = rei.transform.GetChild(0).rotation.eulerAngles.y;
+        if (test > 180.0f)
+        {
+            test -= 360.0f;
+        }
+
         Quaternion facing = Quaternion.Euler(0, test, 0);
 
         rei.transform.rotation = facing;
