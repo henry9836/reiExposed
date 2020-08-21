@@ -84,6 +84,9 @@ public class AIInformer : MonoBehaviour
                                     //Reset
                                     ais[i].tracker.lostPlayerTimer = 0.0f;
                                     ais[i].tracker.informOverrideTimer = 0.0f;
+
+                                    //Set inform trigger
+                                    ais[i].animator.SetTrigger("Inform");
                                 }
                             }
                         }
