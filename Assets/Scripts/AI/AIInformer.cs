@@ -20,29 +20,42 @@ public class AIInformer : MonoBehaviour
 
     public virtual void Inform()
     {
-        RaycastHit[] hits = Physics.SphereCastAll(transform.position, informRange, transform.forward, Mathf.Infinity, informObjects);
-        for (int i = 0; i < hits.Length; i++)
+        switch (type)
         {
-            //If we can get an AITracker
-            if (tmp = hits[i].collider.gameObject.GetComponent<AITracker>())
-            {
-                if (tmp.GetComponent<Animator>().GetBool("CanSeePlayer") == false) {
+            case INFORMTYPE.DISABLED:
+                break;
+            case INFORMTYPE.RANGE_BASED:
+                {
+                    RaycastHit[] hits = Physics.SphereCastAll(transform.position, informRange, transform.forward, Mathf.Infinity, informObjects);
+                    for (int i = 0; i < hits.Length; i++)
+                    {
+                        //If we can get an AITracker
+                        if (tmp = hits[i].collider.gameObject.GetComponent<AITracker>())
+                        {
+                            if (tmp.GetComponent<Animator>().GetBool("CanSeePlayer") == false)
+                            {
 
-                    //Inform
-                    tmp.lastSeenPos = tracker.lastSeenPos;
-                    tmp.lastSeenDir = tracker.lastSeenDir;
+                                //Inform
+                                tmp.lastSeenPos = tracker.lastSeenPos;
+                                tmp.lastSeenDir = tracker.lastSeenDir;
 
-                    //Reset
-                    tmp.lostPlayerTimer = 0.0f;
+                                //Reset
+                                tmp.lostPlayerTimer = 0.0f;
 
-                    //Animator
-                    //tmp.GetComponent<Animator>().SetBool("CanSeePlayer", true);
-                    tmp.GetComponent<Animator>().SetBool("LosingPlayer", true);
-                    tmp.GetComponent<Animator>().SetTrigger("Inform");
-                    //tmp.GetComponent<Animator>().SetBool("LosingPlayer", true);
+                                //Animator
+                                tmp.GetComponent<Animator>().SetBool("LosingPlayer", true);
+                                tmp.GetComponent<Animator>().SetTrigger("Inform");
+                            }
+                        }
+                    }
+                    break;
                 }
-            }
+            case INFORMTYPE.RANGE_CARRIER:
+                break;
+            default:
+                break;
         }
+        
     }
 
     public virtual void Start()
