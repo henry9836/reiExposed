@@ -31,6 +31,7 @@ public class fistpersoncontroler : MonoBehaviour
             Vector3 hoz = Input.GetAxis("Horizontal") * transform.right;
             Vector3 vrt = Input.GetAxis("Vertical") * transform.forward;
 
+
             CC.Move((hoz + vrt) * Time.deltaTime * speed);
 
         }
