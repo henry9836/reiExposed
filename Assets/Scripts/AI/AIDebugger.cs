@@ -15,6 +15,7 @@ public class AIDebugger : MonoBehaviour
     AIMovement movement;
     AITracker tracker;
     AIObject ai;
+    AIInformer informer;
 
     private void Start()
     {
@@ -45,9 +46,17 @@ public class AIDebugger : MonoBehaviour
             {
                 movement = GetComponent<AIMovement>();
             }
+            if (informer == null)
+            {
+                informer = GetComponent<AIInformer>();
+            }
 
             if (Application.isPlaying)
             {
+
+                //Inform
+                Gizmos.color = Color.magenta;
+                Gizmos.DrawWireSphere(transform.position, informer.informRange);
 
                 //Visual Drawing
                 Gizmos.color = new Color(1.0f, 0.69f, 0.0f);
@@ -133,6 +142,10 @@ public class AIDebugger : MonoBehaviour
             }
             else
             {
+                //Inform
+                Gizmos.color = Color.magenta;
+                Gizmos.DrawWireSphere(transform.position, informer.informRange);
+
                 //Wander
                 Gizmos.color = Color.cyan;
                 Gizmos.DrawWireCube(transform.position, new Vector3(movement.wanderRange * 2.0f, 2.0f, movement.wanderRange * 2.0f));
