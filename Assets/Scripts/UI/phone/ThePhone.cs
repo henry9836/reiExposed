@@ -555,6 +555,11 @@ public class ThePhone : MonoBehaviour
 
         Debug.Log(rei.transform.GetChild(0).rotation.eulerAngles.y);
         float test = rei.transform.GetChild(0).rotation.eulerAngles.y;
+        if (test > 180.0f)
+        {
+            test -= 360.0f;
+        }
+
         Quaternion facing = Quaternion.Euler(0, test, 0);
 
         rei.transform.rotation = facing;
@@ -565,6 +570,10 @@ public class ThePhone : MonoBehaviour
         //stops player cam being locked into player
         rei.transform.GetChild(0).GetComponent<cameraControler>().camtargetlock = false;
         rei.transform.GetChild(0).GetComponent<cameraControler>().targetSphere.SetActive(false);
+
+        //fixes wierd movment
+        rei.GetComponent<movementController>().enabled = false;
+        rei.transform.GetChild(2).gameObject.SetActive(false);
 
     }
 
@@ -628,6 +637,10 @@ public class ThePhone : MonoBehaviour
         clueglow.GetComponent<flash>().fadein = false;
 
         clueglow.transform.GetChild(0).GetComponent<Text>().text = "";
+
+        //fixes wierd movment
+        rei.GetComponent<movementController>().enabled = true;
+        rei.transform.GetChild(2).gameObject.SetActive(true);
 
     }
 
