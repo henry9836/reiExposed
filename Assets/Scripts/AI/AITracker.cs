@@ -28,9 +28,11 @@ public class AITracker : MonoBehaviour
     private Transform playerTargetNode;
     private Transform playerModel;
     private AIObject ai;
-    private float lostPlayerTimer = 0.0f;
+    [HideInInspector]
+    public float lostPlayerTimer = 0.0f;
     private Animator animator;
-    
+    private AIInformer informer;
+
 
     public Vector3 estimateNewPosition()
     {
@@ -88,6 +90,7 @@ public class AITracker : MonoBehaviour
         }
 
         animator = ai.animator;
+        informer = ai.informer;
 
         playerTargetNode = GameObject.FindGameObjectWithTag("PlayerTargetNode").transform;
 
@@ -111,6 +114,9 @@ public class AITracker : MonoBehaviour
             //Reset
             lostPlayerTimer = 0.0f;
             animator.SetBool("LosingPlayer", false);
+
+            //Inform
+            informer.Inform();
         }
         //Losing Player
         else if (lostPlayerTimer > 1.0f)
