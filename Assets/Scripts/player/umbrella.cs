@@ -33,6 +33,8 @@ public class umbrella : MonoBehaviour
     public float pellets = 8.0f;
     public GameObject xinsButthole;
     public GameObject crosshair;
+    public List<GameObject> xinsButtholes;
+    public int buttholeToMove;
 
     private movementController movement;
     private PlayerController playercontrol;
@@ -54,6 +56,11 @@ public class umbrella : MonoBehaviour
         movement = GetComponent<movementController>();
         charModel = movement.charcterModel.transform;
 
+        for (int i = 0; i < 50; i++)
+        {
+            GameObject tmp = Instantiate(xinsButthole, new Vector3(0, 0, 0), Quaternion.identity);
+            xinsButtholes.Add(tmp);
+        }
     }
 
     void Update()
@@ -237,7 +244,7 @@ public class umbrella : MonoBehaviour
             {
                 RaycastHit Hit = Hits[i];
                 var go = Hit.collider.gameObject;
-                if (go.CompareTag("Myth") || go.CompareTag("Boss"))
+                if (go.CompareTag("Myth") || go.CompareTag("Boss") || go.CompareTag("Dummy"))
                 {
                     //angle for bullethole
                     GameObject enemy = Hit.collider.gameObject;
@@ -259,16 +266,11 @@ public class umbrella : MonoBehaviour
                         Debug.Log("attackign for " + damage);
                         break;
                     }
-                    else if (Hit.collider.GetComponent<EnemyController>())
+                    else if (Hit.collider.GetComponent<traningDummy>())
                     {
                         GameObject tmp = GameObject.Instantiate(damagedText, Hit.point, Quaternion.identity);
                         tmp.transform.SetParent(Hit.collider.gameObject.transform, true);
                         tmp.transform.GetChild(0).GetComponent<Text>().text = "-" + damage.ToString("F0");
-                        Hit.collider.GetComponent<EnemyController>().ChangeHealth(-damage);
-
-                        Debug.Log("attackign for " + damage);
-                        break;
-
                     }
                 }
 
@@ -277,7 +279,16 @@ public class umbrella : MonoBehaviour
                 {
                     Quaternion hitRotation = Quaternion.FromToRotation(Vector3.forward, Hit.normal);
                     Vector3 hitposition = Hit.point + (Hit.normal * 0.01f);
-                    GameObject hole = Instantiate(xinsButthole, hitposition, hitRotation);
+
+                    //move pre spawned holes into position
+                    xinsButtholes[buttholeToMove].transform.position = hitposition;
+                    xinsButtholes[buttholeToMove].transform.rotation = hitRotation;
+                    buttholeToMove++;
+                    if (buttholeToMove > xinsButtholes.Count - 1)
+                    {
+                        buttholeToMove = 0;
+                    }
+
                 }
             }
         }

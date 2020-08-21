@@ -33,14 +33,10 @@ public class plugindemo : MonoBehaviour
         if (holdRei == true)
         {
             Debug.Log("holding");
-            //rei.transform.parent = drone.transform;
             rei.GetComponent<movementController>().enabled = false;
             rei.transform.position = drone.transform.position;
         }
-        else
-        {
-            rei.GetComponent<movementController>().enabled = true;
-        }
+
 
 
         if (candeliver == false)
@@ -97,6 +93,7 @@ public class plugindemo : MonoBehaviour
         {
             candeliver = true;
             holdRei = false;
+            rei.GetComponent<movementController>().enabled = true;
 
         }
 

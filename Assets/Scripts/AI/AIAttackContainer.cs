@@ -79,7 +79,7 @@ public class AIAttackContainer : MonoBehaviour
 
         Debug.LogWarning($"Cannot check if allowed on mode {i} no logic exists");
 
-        return true;
+        return false;
     }
 
     private void Start()

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class mythHPbar : MonoBehaviour
 {
-    private EnemyController EC;
+    private AIObject aiCtrl;
     private float maxhealth;
     private GameObject player;
 
@@ -19,8 +19,8 @@ public class mythHPbar : MonoBehaviour
 
     void Start()
     {
-        EC = this.transform.root.GetComponent<EnemyController>();
-        maxhealth = EC.health;
+        aiCtrl = this.transform.root.GetComponent<AIObject>();
+        maxhealth = aiCtrl.health;
         bg = this.transform.GetChild(0).gameObject.GetComponent<Image>();
         foreground = this.transform.GetChild(1).gameObject.GetComponent<Image>();
         player = Camera.main.transform.root.gameObject;
@@ -28,9 +28,9 @@ public class mythHPbar : MonoBehaviour
 
     void Update()
     {
-        foreground.fillAmount = EC.health / maxhealth;
+        foreground.fillAmount = aiCtrl.health / maxhealth;
 
-        if (EC.health >= maxhealth)
+        if (aiCtrl.health >= maxhealth)
         {
             showUI = false;
         }
