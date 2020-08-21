@@ -59,7 +59,6 @@ public class AIMovement : MonoBehaviour
     {
         //If we our movement is not overwritten
         if (!agent.isStopped && (overrideMode == OVERRIDE.NO_OVERRIDE || overrideMode == OVERRIDE.ROT_OVERRIDE || overrideMode == OVERRIDE.MOVE_OVERRIDE)) {
-            Debug.DrawLine(pos, pos + Vector3.up * 1000.0f, Color.red, 5.0f);
 
             //Stop movement
             stopMovement();
