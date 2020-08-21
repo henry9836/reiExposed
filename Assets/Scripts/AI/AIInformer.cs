@@ -11,43 +11,96 @@ public class AIInformer : MonoBehaviour
         RANGE_CARRIER
     }
 
+    public class aiBlobOfThings
+    {
+        public AIObject ai = null;
+        public AITracker tracker = null;
+        public Animator animator = null;
+        public Transform transform = null;
+
+        public aiBlobOfThings(GameObject obj)
+        {
+            transform = obj.transform;
+            ai = obj.GetComponent<AIObject>();
+            tracker = obj.GetComponent<AITracker>();
+            animator = obj.GetComponent<Animator>();
+        }
+    }
+
     public float informRange = 5.0f;
-    public INFORMTYPE type = INFORMTYPE.RANGE_BASED;
+    public INFORMTYPE type = INFORMTYPE.DISABLED;
     public LayerMask informObjects;
 
+    
     AITracker tracker;
-    AITracker tmp = null;
+    List<aiBlobOfThings> ais = new List<aiBlobOfThings>();
 
-    public virtual void Inform()
+    public virtual void Start()
     {
-        RaycastHit[] hits = Physics.SphereCastAll(transform.position, informRange, transform.forward, Mathf.Infinity, informObjects);
-        for (int i = 0; i < hits.Length; i++)
+        if (type == INFORMTYPE.DISABLED) { return; }
+
+        tracker = GetComponent<AITracker>();
+
+        //Find other objects with our tag
+        GameObject[] objs = GameObject.FindGameObjectsWithTag(gameObject.tag);
+
+        //For each object setup our list
+        for (int i = 0; i < objs.Length; i++)
         {
-            //If we can get an AITracker
-            if (tmp = hits[i].collider.gameObject.GetComponent<AITracker>())
+            //Do not add outselves
+            if (objs[i].name != name)
             {
-                if (tmp.GetComponent<Animator>().GetBool("CanSeePlayer") == false) {
-
-                    //Inform
-                    tmp.lastSeenPos = tracker.lastSeenPos;
-                    tmp.lastSeenDir = tracker.lastSeenDir;
-
-                    //Reset
-                    tmp.lostPlayerTimer = 0.0f;
-
-                    //Animator
-                    //tmp.GetComponent<Animator>().SetBool("CanSeePlayer", true);
-                    tmp.GetComponent<Animator>().SetBool("LosingPlayer", true);
-                    tmp.GetComponent<Animator>().SetTrigger("Inform");
-                    //tmp.GetComponent<Animator>().SetBool("LosingPlayer", true);
-                }
+                ais.Add(new aiBlobOfThings(objs[i]));
             }
         }
     }
 
-    public virtual void Start()
+    public virtual void Inform()
     {
-        tracker = GetComponent<AITracker>();
+        switch (type)
+        {
+            case INFORMTYPE.DISABLED:
+                break;
+            case INFORMTYPE.RANGE_BASED:
+                {
+                    //For each ai inform
+                    for (int i = 0; i < ais.Count; i++)
+                    {
+                        if (ais[i].transform != null)
+                        {
+                            //If the other object cannot see the player
+                            if (ais[i].animator.GetBool("CanSeePlayer") == false)
+                            {
+                                //If the other object is close enough inform
+                                if ((transform.position - ais[i].transform.position).sqrMagnitude <= (informRange * informRange))
+                                {
+
+                                    Debug.DrawLine(transform.position, ais[i].transform.position, Color.green, 100.0f);
+
+                                    //Inform
+                                    ais[i].tracker.lastSeenPos = tracker.lastSeenPos;
+                                    ais[i].tracker.lastSeenDir = tracker.lastSeenDir;
+
+                                    //Reset
+                                    ais[i].tracker.lostPlayerTimer = 0.0f;
+                                    ais[i].tracker.informOverrideTimer = 0.0f;
+
+                                    //Set inform trigger
+                                    ais[i].animator.SetTrigger("Inform");
+                                }
+                            }
+                        }
+
+                    }
+
+                    break;
+                }
+            case INFORMTYPE.RANGE_CARRIER:
+                break;
+            default:
+                break;
+        }
+        
     }
 
 }
