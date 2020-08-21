@@ -511,6 +511,8 @@ public class ThePhone : MonoBehaviour
 
             screen = phonestates.HOME;
             constantUI.SetActive(false);
+
+            
         }
         else // close
         {
@@ -548,18 +550,30 @@ public class ThePhone : MonoBehaviour
         rei.transform.GetChild(1).gameObject.SetActive(false);
         rei.GetComponent<Animator>().enabled = false;
 
-
         ThePhoneUI.SetActive(false);
 
 
         Debug.Log(rei.transform.GetChild(0).rotation.eulerAngles.y);
         float test = rei.transform.GetChild(0).rotation.eulerAngles.y;
+        if (test > 180.0f)
+        {
+            test -= 360.0f;
+        }
+
         Quaternion facing = Quaternion.Euler(0, test, 0);
 
         rei.transform.rotation = facing;
         rei.GetComponent<fistpersoncontroler>().enabled = true;
         rei.GetComponent<fistpersoncontroler>().SetPitch(0);
         rei.GetComponent<fistpersoncontroler>().SetYaw(test);
+
+        //stops player cam being locked into player
+        rei.transform.GetChild(0).GetComponent<cameraControler>().camtargetlock = false;
+        rei.transform.GetChild(0).GetComponent<cameraControler>().targetSphere.SetActive(false);
+
+        //fixes wierd movment
+        rei.GetComponent<movementController>().enabled = false;
+        rei.transform.GetChild(2).gameObject.SetActive(false);
 
     }
 
@@ -623,6 +637,10 @@ public class ThePhone : MonoBehaviour
         clueglow.GetComponent<flash>().fadein = false;
 
         clueglow.transform.GetChild(0).GetComponent<Text>().text = "";
+
+        //fixes wierd movment
+        rei.GetComponent<movementController>().enabled = true;
+        rei.transform.GetChild(2).gameObject.SetActive(true);
 
     }
 
