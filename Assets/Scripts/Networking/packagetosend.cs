@@ -85,6 +85,7 @@ public class multipass
     public int dditem1;
     public int dditem2;
     public int dditem3;
+
 }
 
 public class packagetosend : MonoBehaviour
@@ -121,6 +122,8 @@ public class packagetosend : MonoBehaviour
     public GameObject useritem3;
     public GameObject TwitterInput;
 
+    public Text debugText;
+
     public static List<datadump> enemieDrops = new List<datadump>() { };
 
     void Start()
@@ -139,6 +142,27 @@ public class packagetosend : MonoBehaviour
         {
             toPackage = false;
             send(ddpackettype);
+        }
+
+
+        //FOR SOME REASON WE CANNOT HAVE QR CODE WORKING UNLESS WE DO THIS CHECK
+        if (enemieDrops.Count > 0)
+        {
+            if (enemieDrops[0] != null)
+            {
+                //debugText.text = enemieDrops.Count.ToString() + ":" + enemieDrops[0].tmessage;
+                //debugText.text = ""; //Things are going well
+            }
+            else
+            {
+                //debugText.text = enemieDrops.Count.ToString() + ":NULL";
+                //debugText.text = "";
+            }
+        }
+        else
+        {
+            //debugText.text = enemieDrops.Count.ToString() + ":EMPTY";
+            //debugText.text = "";
         }
     }
     public void send(int type) { send((sendpackettypes)type); }
@@ -231,8 +255,6 @@ public class packagetosend : MonoBehaviour
                     break;
                 }
         }
-
-
 
         mp.stream.Close();
         mp.client.Close();
