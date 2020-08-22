@@ -148,16 +148,16 @@ public class packagetosend : MonoBehaviour
         //FOR SOME REASON WE CANNOT HAVE QR CODE WORKING UNLESS WE DO THIS CHECK
         if (enemieDrops.Count > 0)
         {
-            if (enemieDrops[0] != null)
-            {
-                //debugText.text = enemieDrops.Count.ToString() + ":" + enemieDrops[0].tmessage;
-                //debugText.text = ""; //Things are going well
-            }
-            else
-            {
-                //debugText.text = enemieDrops.Count.ToString() + ":NULL";
-                //debugText.text = "";
-            }
+            //if (enemieDrops[0] != null)
+            //{
+            //    //debugText.text = enemieDrops.Count.ToString() + ":" + enemieDrops[0].tmessage;
+            //    //debugText.text = ""; //Things are going well
+            //}
+            //else
+            //{
+            //    //debugText.text = enemieDrops.Count.ToString() + ":NULL";
+            //    //debugText.text = "";
+            //}
         }
         else
         {
