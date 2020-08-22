@@ -99,10 +99,11 @@ public class QRCodeController : MonoBehaviour
 
     public void triggerTweet()
     {
+
         if (!alreadyTriggered)
         {
-            //If it is an offline message or we did not connect to the database
-            if (!useOnlineDatabase || packagetosend.enemieDrops.Count <= 0) {
+            //If it is an offline message or we did not connect to the database and our package is null
+            if (!useOnlineDatabase || packagetosend.enemieDrops.Count <= 0 || packagetosend.enemieDrops[0] == null) {
                 //Display hint
                 dropControl.manualMessage(hint, currency, (int)item1, (int)item2, (int)item3, hintImportant);
 
