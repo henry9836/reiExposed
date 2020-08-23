@@ -112,7 +112,7 @@ Transform:
   m_Children:
   - {fileID: 4940811557840592684}
   - {fileID: 3818825161298287523}
-  m_Father: {fileID: 7810231502137906818}
+  m_Father: {fileID: 3011943697892313638}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!205 &6730539854947586618
@@ -168,7 +168,7 @@ Transform:
   m_Children:
   - {fileID: 2616097941013633982}
   - {fileID: 5752036469010003147}
-  m_Father: {fileID: 7810231502137906818}
+  m_Father: {fileID: 3011943697892313638}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!205 &6188407214074592119
@@ -203,7 +203,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7810231502137906818}
-  - component: {fileID: 6240757937523956935}
   m_Layer: 0
   m_Name: Tunnel
   m_TagString: Untagged
@@ -218,37 +217,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1903020414222740338}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 24.727509, y: -0.32910898, z: 89.80964}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -49.88282, y: 36, z: 27.704313}
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_Children:
-  - {fileID: 6584869663835937038}
-  - {fileID: 9038269090234020294}
-  - {fileID: 8146013680976772198}
+  - {fileID: 3011943697892313638}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!205 &6240757937523956935
-LODGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1903020414222740338}
-  serializedVersion: 2
-  m_LocalReferencePoint: {x: 0, y: 0, z: 0}
-  m_Size: 1
-  m_FadeMode: 1
-  m_AnimateCrossFading: 1
-  m_LastLODIsBillboard: 0
-  m_LODs:
-  - screenRelativeHeight: 0.1378393
-    fadeTransitionWidth: 0
-    renderers: []
-  - screenRelativeHeight: 0.019538356
-    fadeTransitionWidth: 0
-    renderers: []
-  m_Enabled: 1
 --- !u!1 &2545140802653159963
 GameObject:
   m_ObjectHideFlags: 0
@@ -470,7 +446,7 @@ Transform:
   - {fileID: 2443625371663008560}
   - {fileID: 7494265503620186269}
   - {fileID: 8788828323639172204}
-  m_Father: {fileID: 7810231502137906818}
+  m_Father: {fileID: 3011943697892313638}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!205 &7769911684830529971
@@ -879,3 +855,58 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!1 &6901753258431739862
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3011943697892313638}
+  - component: {fileID: 1383931891554926691}
+  m_Layer: 0
+  m_Name: Tunnel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3011943697892313638
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6901753258431739862}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -1200}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 6584869663835937038}
+  - {fileID: 9038269090234020294}
+  - {fileID: 8146013680976772198}
+  m_Father: {fileID: 7810231502137906818}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!205 &1383931891554926691
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6901753258431739862}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 0, y: 0, z: 0}
+  m_Size: 1
+  m_FadeMode: 1
+  m_AnimateCrossFading: 1
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.1378393
+    fadeTransitionWidth: 0
+    renderers: []
+  - screenRelativeHeight: 0.019538356
+    fadeTransitionWidth: 0
+    renderers: []
+  m_Enabled: 1
