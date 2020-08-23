@@ -30,6 +30,10 @@ public class AITracker : MonoBehaviour
     private AIObject ai;
     [HideInInspector]
     public float lostPlayerTimer = 0.0f;
+    [HideInInspector]
+    public float informOverrideTimer = 0.0f;
+    [HideInInspector]
+    public float informOverrideTime = 3.0f;
     private Animator animator;
     private AIInformer informer;
 
@@ -101,9 +105,10 @@ public class AITracker : MonoBehaviour
     {
         //Timer
         lostPlayerTimer += Time.deltaTime;
+        informOverrideTimer += Time.deltaTime;
 
         //Can We See Player
-        if (canSeePlayer())
+        if (canSeePlayer() || (informOverrideTimer < informOverrideTime))
         {
             //Update Infomation About Player
             lastSeenPos = player.transform.position;
@@ -114,6 +119,7 @@ public class AITracker : MonoBehaviour
             //Reset
             lostPlayerTimer = 0.0f;
             animator.SetBool("LosingPlayer", false);
+            animator.ResetTrigger("LostPlayer");
 
             //Inform
             informer.Inform();
