@@ -244,12 +244,16 @@ public class umbrella : MonoBehaviour
             {
                 animator.SetTrigger("Shoot");
                 ammo--;
+                SaveSystemController.updateValue("ammo", ammo);
+
                 bang();
             }
             else if (ammocycle == 1 && ammoTwo > 1)
             {
                 animator.SetTrigger("Shoot");
                 ammoTwo--;
+                SaveSystemController.updateValue("ammoTwo", ammoTwo);
+
                 bang();
             }
             else
