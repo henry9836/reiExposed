@@ -34,6 +34,8 @@ public class AISeek : StateMachineBehaviour
         }
         //Go to where we think player will be
         movement.goToPosition(tracker.estimateNewPosition());
+
+        animator.ResetTrigger("Inform");
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

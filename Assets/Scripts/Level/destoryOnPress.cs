@@ -36,6 +36,9 @@ public class destoryOnPress : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        trigger();
+        if (other.tag == "Player")
+        {
+            trigger();
+        }
     }
 }
