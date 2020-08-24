@@ -32,7 +32,7 @@ public class pageManager : MonoBehaviour
         selectedUI.GetComponent<RectTransform>().localPosition = positions[1] + canvaspos;
         if (current != camMove.locations.STORAGE)
         {
-            konobinicam.GetComponent<camMove>().move(current, camMove.locations.STORAGE);
+            konobinicam.GetComponent<camMove>().move(camMove.locations.STORAGE);
             current = camMove.locations.STORAGE;
         }
 
@@ -48,7 +48,7 @@ public class pageManager : MonoBehaviour
         selectedUI.GetComponent<RectTransform>().localPosition = positions[0] + canvaspos;
         if (current != camMove.locations.ITEM)
         {
-            konobinicam.GetComponent<camMove>().move(current, camMove.locations.ITEM);
+            konobinicam.GetComponent<camMove>().move(camMove.locations.ITEM);
             current = camMove.locations.ITEM;
         }
 
@@ -63,7 +63,7 @@ public class pageManager : MonoBehaviour
         selectedUI.GetComponent<RectTransform>().localPosition = positions[2] + canvaspos;
         if (current != camMove.locations.UMBRELLA)
         {
-            konobinicam.GetComponent<camMove>().move(current, camMove.locations.UMBRELLA);
+            konobinicam.GetComponent<camMove>().move(camMove.locations.UMBRELLA);
             current = camMove.locations.UMBRELLA;
         }
 

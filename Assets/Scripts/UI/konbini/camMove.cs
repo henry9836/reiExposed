@@ -14,48 +14,8 @@ public class camMove : MonoBehaviour
         STORAGE,
     }
 
-    public void move(locations from, locations to)
+    public void move(locations to)
     {
-        if (from == locations.ITEM)
-        {
-            if (to == locations.STORAGE)
-            {
-                animationref.SetFloat("dir", -1.0f);
-                animationref.SetInteger("current", 0);
-            }
-            else if (to == locations.UMBRELLA)
-            {
-                animationref.SetFloat("dir", 1.0f);
-                animationref.SetInteger("current", 1);
-            }
-        }
-        else if (from == locations.UMBRELLA)
-        {
-            if (to == locations.ITEM)
-            {
-                animationref.SetFloat("dir", -1.0f);
-                animationref.SetInteger("current", 1);
-            }
-            else if (to == locations.STORAGE)
-            {
-                animationref.SetFloat("dir", 1.0f);
-                animationref.SetInteger("current", 2);
-            }
-        }
-        else if (from == locations.STORAGE)
-        {
-            if (to == locations.ITEM)
-            {
-                animationref.SetFloat("dir", 1.0f);
-                animationref.SetInteger("current", 0);
-            }
-            else if (to == locations.UMBRELLA)
-            {
-                animationref.SetFloat("dir", -1.0f);
-                animationref.SetInteger("current", 2);
-            }
-        }
-
-
+        animationref.SetInteger("current", (int)to);
     }
 }
