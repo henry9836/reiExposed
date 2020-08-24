@@ -15,6 +15,8 @@ public class movementController : MonoBehaviour
     public float rollTime = 0.5f;
     public float rollDistance = 5.0f;
     public float feetCheckDistance = 0.5f;
+    [HideInInspector]
+    public bool canTurnDuringAttack = true;
     public bool strafemode = false;
 
     [Header("World")]
@@ -127,7 +129,8 @@ public class movementController : MonoBehaviour
 
 
         //Rotate towards movement in relation to cam direction
-        if (moveDirCam != Vector3.zero && !rolling && !strafemode && !attackMovementBlock && !animator.GetBool("KnockedDown"))
+        //if (moveDirCam != Vector3.zero && !rolling && !strafemode && !attackMovementBlock && !animator.GetBool("KnockedDown"))
+        if (moveDirCam != Vector3.zero && !rolling && !strafemode && (!attackMovementBlock || canTurnDuringAttack) && !animator.GetBool("KnockedDown"))
         {
 
             //Get cam rotation
