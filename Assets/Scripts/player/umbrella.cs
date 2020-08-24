@@ -27,14 +27,21 @@ public class umbrella : MonoBehaviour
     public bool phoneLock = false;
 
     //shotty
-    public float bulletSpread = 0.1f;
-    public float MaxRange = 15.0f;
-    public float MaxDamage = 25.0f;
-    public float pellets = 8.0f;
+    [HideInInspector]
+    public float bulletSpread; // do not touch
+    public float bulletSpreadRunning = 0.165f;
+    public float bulletSpreadADS = 0.08f;
+    public float MaxRange;
+    public float MaxDamage;
+    public int pellets;
     public GameObject xinsButthole;
     public GameObject crosshair;
     public List<GameObject> xinsButtholes;
     public int buttholeToMove;
+    public int ammo;
+    public int ammoTwo;
+    private int ammocycle;
+
 
     private movementController movement;
     private PlayerController playercontrol;
@@ -42,6 +49,9 @@ public class umbrella : MonoBehaviour
     private GameObject cam;
     private Animator animator;
     private bool latetest = false;
+
+
+
     void Start()
     {
         playercontrol = GetComponent<PlayerController>();
@@ -61,6 +71,12 @@ public class umbrella : MonoBehaviour
             GameObject tmp = Instantiate(xinsButthole, new Vector3(0, 0, 0), Quaternion.identity);
             xinsButtholes.Add(tmp);
         }
+
+
+
+        
+
+
     }
 
     void Update()
@@ -170,11 +186,11 @@ public class umbrella : MonoBehaviour
         {
             if ((Mathf.Abs(this.GetComponent<movementController>().moveDir.z) + Mathf.Abs(this.GetComponent<movementController>().moveDir.x)) > 1.0f)
             {
-                bulletSpread = 0.165f;
+                bulletSpread = bulletSpreadRunning;
             }
             else
             {
-                bulletSpread = 0.08f;
+                bulletSpread = bulletSpreadADS;
             }
 
 
@@ -197,17 +213,59 @@ public class umbrella : MonoBehaviour
     void firemode()
     {
         latetest = true;
-        //VFX.GetComponent<VisualEffect>().SetFloat("timer", 1.0f);
 
-        //shotUI.SetActive(true);
-        //shotUI.transform.GetChild(0).GetComponent<Text>().text = "E to take photo";
 
-        
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            ammocycle++;
+            if (ammocycle > 1)
+            {
+                ammocycle = 0;
+            }
+        }
+
+        shotUI.SetActive(true);
+
+        if (ammocycle == 0)
+        {
+            shotUI.transform.GetChild(0).GetComponent<Text>().text = ammo.ToString() + "/100\nQ for expolsive rounds";
+
+        }
+        else if (ammocycle == 1)
+        {
+            shotUI.transform.GetChild(0).GetComponent<Text>().text = ammo.ToString() + "/100\nQ for regular ammo";
+
+        }
+
+
         if (Input.GetAxis("Fire1") > 0.5f && canfire == true) // shoot
         {
-            animator.SetTrigger("Shoot");
-            bang();
+            if (ammocycle == 0 && ammo > 1)
+            {
+                animator.SetTrigger("Shoot");
+                ammo--;
+                SaveSystemController.updateValue("ammo", ammo);
+
+                bang();
+            }
+            else if (ammocycle == 1 && ammoTwo > 1)
+            {
+                animator.SetTrigger("Shoot");
+                ammoTwo--;
+                SaveSystemController.updateValue("ammoTwo", ammoTwo);
+
+                bang();
+            }
+            else
+            { 
+                //empty click
+            }
+
         }
+
+        
+        
+
     }
 
     //shoot
@@ -253,7 +311,7 @@ public class umbrella : MonoBehaviour
                     //damage calculation
                     float dist = Vector3.Distance(this.gameObject.transform.position, Hit.point);
                     float falloff = Mathf.Clamp(1.5f * Mathf.Cos(Mathf.Pow(dist / MaxRange, 0.3f) * (Mathf.PI / 2)), 0.0f, 1.0f);
-                    float damage = falloff * (MaxDamage / pellets);
+                    float damage = falloff * (MaxDamage / (float)pellets);
 
                     //apply damage
                     if (Hit.collider.GetComponent<AIObject>())
