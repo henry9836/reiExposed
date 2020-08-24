@@ -191,6 +191,7 @@ public class upgradeUmbrella : MonoBehaviour
     {
         SaveSystemController.updateValue("MythTraces", SaveSystemController.getIntValue("MythTraces") - shotgunDamagePrice);
         shotgunDamageLVL++;
+        SaveSystemController.updateValue("shotgunDamageLVL", shotgunDamageLVL);
         LVLtovalue(shotgunDamageLVL, upgrading.DAMAGE);
     }
 
@@ -198,6 +199,8 @@ public class upgradeUmbrella : MonoBehaviour
     {
         SaveSystemController.updateValue("MythTraces", SaveSystemController.getIntValue("MythTraces") - shotgunRangePrice);
         shotgunRangeLVL++;
+        SaveSystemController.updateValue("shotgunRangeLVL", shotgunRangeLVL);
+
         LVLtovalue(shotgunRangeLVL, upgrading.RANGE);
     }
 
@@ -205,6 +208,8 @@ public class upgradeUmbrella : MonoBehaviour
     {
         SaveSystemController.updateValue("MythTraces", SaveSystemController.getIntValue("MythTraces") - shotgunBulletSpreadADSPrice);
         shotgunBulletSpreadADSLVL++;
+        SaveSystemController.updateValue("shotgunBulletSpreadADSLVL", shotgunBulletSpreadADSLVL);
+
         LVLtovalue(shotgunBulletSpreadADSLVL, upgrading.SPREADADS);
     }
 
@@ -212,6 +217,8 @@ public class upgradeUmbrella : MonoBehaviour
     {
         SaveSystemController.updateValue("MythTraces", SaveSystemController.getIntValue("MythTraces") - shotgunBulletSpreadRunningPrice);
         shotgunBulletSpreadRunningLVL++;
+        SaveSystemController.updateValue("shotgunBulletSpreadRunningLVL", shotgunBulletSpreadRunningLVL);
+
         LVLtovalue(shotgunBulletSpreadRunningLVL, upgrading.SPREADRUN);
     }
 
@@ -219,6 +226,8 @@ public class upgradeUmbrella : MonoBehaviour
     {
         SaveSystemController.updateValue("MythTraces", SaveSystemController.getIntValue("MythTraces") - meeleeDamagePrice);
         meeleeDamageLVL++;
+        SaveSystemController.updateValue("meeleeDamageLVL", meeleeDamageLVL);
+
         LVLtovalue(meeleeDamageLVL, upgrading.MEELEE);
     }
 
@@ -226,12 +235,16 @@ public class upgradeUmbrella : MonoBehaviour
     {
         SaveSystemController.updateValue("MythTraces", SaveSystemController.getIntValue("MythTraces") - ammoPrice);
         umbrella.ammo++;
+        SaveSystemController.updateValue("ammo", umbrella.ammo);
+
     }
-    
+
     public void buyAmmoTwo()
     {
         SaveSystemController.updateValue("MythTraces", SaveSystemController.getIntValue("MythTraces") - ammoTwoPrice);
         umbrella.ammoTwo++;
+        SaveSystemController.updateValue("ammoTwo", umbrella.ammoTwo);
+
     }
 
 
