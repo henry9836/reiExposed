@@ -11,6 +11,8 @@ public class MythCollisionHandler : AICollisionHandler
     [HideInInspector]
     public bool fullyBlocking = false;
 
+    private AITracker tracker;
+
     public override void Start()
     {
         //Disable AIObjects built-in dectection
@@ -18,6 +20,9 @@ public class MythCollisionHandler : AICollisionHandler
         aiObject.handleCollision = false;
 
         playerAnimator = aiObject.player.GetComponent<Animator>();
+
+        //Get Tracker
+        tracker = aiObject.tracker;
 
         //Get animator
         animator = GetComponent<Animator>();
@@ -39,21 +44,25 @@ public class MythCollisionHandler : AICollisionHandler
                         //Roll for block
                         int dice = Random.Range(0, 10);
 
-                        //Block
-                        if ((dice <= 5 && aiObject.stamina >= blockStaminaCost) || animator.GetBool("Blocking"))
+                        //If we are facing the player
+                        if (tracker.isFacingPlayer())
                         {
-
-                            if (animator.GetBool("Blocking") && fullyBlocking)
+                            //Block
+                            if ((dice <= 5 && aiObject.stamina >= blockStaminaCost) || animator.GetBool("Blocking"))
                             {
-                                //Stun the player if they hit an already blocking myth
-                                playerAnimator.SetTrigger("KnockDown");
+
+                                if (animator.GetBool("Blocking") && fullyBlocking)
+                                {
+                                    //Stun the player if they hit an already blocking myth
+                                    playerAnimator.SetTrigger("KnockDown");
+                                }
+
+                                Debug.Log("Block");
+                                aiObject.stamina -= blockStaminaCost;
+                                animator.SetTrigger("Block");
+
+                                return;
                             }
-
-                            Debug.Log("Block");
-                            aiObject.stamina -= blockStaminaCost;
-                            animator.SetTrigger("Block");
-
-                            return;
                         }
                     }
                 }
