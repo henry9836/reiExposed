@@ -55,9 +55,11 @@ public class enterToTalk : MonoBehaviour
             Cursor.lockState = CursorLockMode.Confined;
             Cursor.visible = true;
             biginvinstorage.transform.root.GetComponent<ThePhone>().constantUI.SetActive(false);
+            rei.GetComponent<upgradeUmbrella>().updateInteractable();
         }
         else
         {
+            SaveSystemController.saveDataToDisk();
             konbiniUI.SetActive(false);
             rei.GetComponent<CharacterController>().enabled = true;
             Cursor.lockState = CursorLockMode.Locked;
