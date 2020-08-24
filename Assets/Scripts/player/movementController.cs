@@ -127,7 +127,8 @@ public class movementController : MonoBehaviour
 
 
         //Rotate towards movement in relation to cam direction
-        if (moveDirCam != Vector3.zero && !rolling && !strafemode && !attackMovementBlock && !animator.GetBool("KnockedDown"))
+        //if (moveDirCam != Vector3.zero && !rolling && !strafemode && !attackMovementBlock && !animator.GetBool("KnockedDown"))
+        if (moveDirCam != Vector3.zero && !rolling && !strafemode && !animator.GetBool("KnockedDown"))
         {
 
             //Get cam rotation
