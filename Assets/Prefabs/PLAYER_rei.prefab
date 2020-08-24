@@ -1887,6 +1887,7 @@ GameObject:
   - component: {fileID: 1095730228}
   - component: {fileID: 2309231160478187698}
   - component: {fileID: 2081805776}
+  - component: {fileID: 4041328941732909559}
   - component: {fileID: 1325763837}
   - component: {fileID: 557751168}
   m_Layer: 14
@@ -2208,6 +2209,8 @@ MonoBehaviour:
   shotUI: {fileID: 0}
   phoneLock: 0
   bulletSpread: 0.1
+  bulletSpreadRunning: 0.165
+  bulletSpreadADS: 0.08
   MaxRange: 50
   MaxDamage: 80
   pellets: 8
@@ -2216,6 +2219,34 @@ MonoBehaviour:
   crosshair: {fileID: 0}
   xinsButtholes: []
   buttholeToMove: 0
+  ammo: 0
+  ammoTwo: 0
+--- !u!114 &4041328941732909559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1943698811393534155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46128440a9b30734d915cea59b0be8f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  umbrella: {fileID: 0}
+  whackUmbrella: {fileID: 0}
+  shotgunDamageLVL: 0
+  shotgunRangeLVL: 0
+  shotgunBulletSpreadADSLVL: 0
+  shotgunBulletSpreadRunningLVL: 0
+  meeleeDamageLVL: 0
+  shotgunDamagePrice: 0
+  shotgunRangePrice: 0
+  shotgunBulletSpreadADSPrice: 0
+  shotgunBulletSpreadRunningPrice: 0
+  ammoPrice: 100
+  ammoTwoPrice: 200
+  meeleeDamagePrice: 0
 --- !u!114 &1325763837
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3278,6 +3309,10 @@ MonoBehaviour:
   aimDistance: 3
   umbrella: {fileID: 4885559644254803688}
   rei: {fileID: 0}
+  camtargetlock: 0
+  targetSphere: {fileID: 0}
+  maxlockdistance: 15
+  maxlockdistanceBoss: 150
 --- !u!1 &3339494445147069540
 GameObject:
   m_ObjectHideFlags: 0
@@ -3321,6 +3356,7 @@ GameObject:
   - component: {fileID: 3339494445285328788}
   - component: {fileID: 3339494445285328789}
   - component: {fileID: 3339494445285328790}
+  - component: {fileID: 1710301391}
   m_Layer: 14
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -3498,6 +3534,28 @@ MonoBehaviour:
       data1: 0
       data2: 0
   defaultFrameSettings: 0
+--- !u!114 &1710301391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3339494445285328791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3b0c081917bd1c44bed40abaec57f3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  passTargetPos: {x: 0, y: 0, z: 0}
+  passTargetRot: {x: 0, y: 0, z: 0}
+  passOverallSpeed: 0
+  funcin: 0
+  funcout: 0
+  speedIn: 0
+  speedOut: 0
+  Test: 0
+  shakenumber: 0
+  active: 0
 --- !u!1 &3339494445936054584
 GameObject:
   m_ObjectHideFlags: 0

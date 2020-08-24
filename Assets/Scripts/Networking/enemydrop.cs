@@ -93,9 +93,16 @@ public class enemydrop : MonoBehaviour
 
     public void processMessage()
     {
+        //Handle Null
+        if (packagetosend.enemieDrops[0] == null)
+        {
+            return;
+        }
+
         if (tocencor.tocencor == true)
         {
             Debug.Log("censord");
+            Debug.Log(packagetosend.enemieDrops[0].tmessage);
             StartCoroutine(clientCencorship.watchYourProfanity(packagetosend.enemieDrops[0].tmessage));
         }
         else

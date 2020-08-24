@@ -6,6 +6,7 @@ public class pageManager : MonoBehaviour
 {
     public GameObject shopPage;
     public GameObject storagePage;
+    public GameObject umbrellaUpgrade;
     public GameObject selectedUI;
     public List<Vector2> positions = new List<Vector2>() { };
     private Vector2 canvaspos = new Vector2 (0.0f, 0.0f);
@@ -22,6 +23,7 @@ public class pageManager : MonoBehaviour
         storagePage.transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<slot>().itemchange();
         shopPage.SetActive(false);
         storagePage.SetActive(true);
+        umbrellaUpgrade.SetActive(false);
         selectedUI.GetComponent<RectTransform>().localPosition = positions[1] + canvaspos;
     }
 
@@ -30,7 +32,17 @@ public class pageManager : MonoBehaviour
     {
         shopPage.SetActive(true);
         storagePage.SetActive(false);
+        umbrellaUpgrade.SetActive(false);
         selectedUI.GetComponent<RectTransform>().localPosition = positions[0] + canvaspos;
+    }
+
+    public void umbrellaPage()
+    {
+        shopPage.SetActive(false);
+        storagePage.SetActive(false);
+        umbrellaUpgrade.SetActive(true);
+        selectedUI.GetComponent<RectTransform>().localPosition = positions[2] + canvaspos;
+
     }
 
     void Update()
