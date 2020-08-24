@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class upgradeUmbrella : MonoBehaviour
 {
@@ -18,9 +19,12 @@ public class upgradeUmbrella : MonoBehaviour
     public float shotgunRangePrice;
     public float shotgunBulletSpreadADSPrice;
     public float shotgunBulletSpreadRunningPrice;
-    public float ammoPrice = 100;
-    public float ammoTwoPrice = 200;
+    public float ammoPrice = 75;
+    public float ammoTwoPrice = 600;
     public float meeleeDamagePrice;
+
+    
+    public GameObject umbrellaPage;
 
     public enum upgrading
     { 
@@ -111,7 +115,7 @@ public class upgradeUmbrella : MonoBehaviour
             SaveSystemController.updateValue("ammoTwo", umbrella.ammoTwo);
         }
 
-
+        updateInteractable();
     }
 
 
@@ -121,68 +125,67 @@ public class upgradeUmbrella : MonoBehaviour
 
         if (yen < shotgunDamagePrice)
         {
-            //button.interactable = false
+            umbrellaPage.transform.GetChild(1).GetComponent<Button>().interactable = false;
         }
         else
         {
-            //button.interactable = true
+            umbrellaPage.transform.GetChild(1).GetComponent<Button>().interactable = true;
         }
 
         if (yen < shotgunRangePrice)
         {
-            //button.interactable = false
+            umbrellaPage.transform.GetChild(2).GetComponent<Button>().interactable = false;
         }
         else
         {
-            //button.interactable = true
+            umbrellaPage.transform.GetChild(2).GetComponent<Button>().interactable = true;
         }
 
         if (yen < shotgunBulletSpreadADSPrice)
         {
-            //button.interactable = false
+            umbrellaPage.transform.GetChild(3).GetComponent<Button>().interactable = false;
         }
         else
         {
-            //button.interactable = true
+            umbrellaPage.transform.GetChild(3).GetComponent<Button>().interactable = true;
         }
 
         if (yen < shotgunBulletSpreadRunningPrice)
         {
-            //button.interactable = false
+            umbrellaPage.transform.GetChild(4).GetComponent<Button>().interactable = false;
         }
         else
         {
-            //button.interactable = true
+            umbrellaPage.transform.GetChild(4).GetComponent<Button>().interactable = true;
         }
 
 
         if (yen < meeleeDamagePrice)
         {
-            //button.interactable = false
+            umbrellaPage.transform.GetChild(5).GetComponent<Button>().interactable = false;
         }
         else
         {
-            //button.interactable = true
+            umbrellaPage.transform.GetChild(5).GetComponent<Button>().interactable = true;
         }
 
-        if (yen < ammoPrice)
+        if (yen < ammoPrice || umbrella.ammo > 99)
         {
-            //button.interactable = false
+            umbrellaPage.transform.GetChild(6).GetComponent<Button>().interactable = false;
         }
         else
         {
-            //button.interactable = true
+            umbrellaPage.transform.GetChild(6).GetComponent<Button>().interactable = true;
         }
 
-        if (yen < ammoTwoPrice)
+        if (yen < ammoTwoPrice || umbrella.ammoTwo > 99)
         {
-            //button.interactable = false
+            umbrellaPage.transform.GetChild(7).GetComponent<Button>().interactable = false;
         }
         else
         {
-            //button.interactable = true
+            umbrellaPage.transform.GetChild(7).GetComponent<Button>().interactable = true;
         }
-
     }
 
 
@@ -193,6 +196,7 @@ public class upgradeUmbrella : MonoBehaviour
         shotgunDamageLVL++;
         SaveSystemController.updateValue("shotgunDamageLVL", shotgunDamageLVL);
         LVLtovalue(shotgunDamageLVL, upgrading.DAMAGE);
+        updateInteractable();
     }
 
     public void Range()
@@ -202,6 +206,7 @@ public class upgradeUmbrella : MonoBehaviour
         SaveSystemController.updateValue("shotgunRangeLVL", shotgunRangeLVL);
 
         LVLtovalue(shotgunRangeLVL, upgrading.RANGE);
+        updateInteractable();
     }
 
     public void SpreadADS()
@@ -211,6 +216,7 @@ public class upgradeUmbrella : MonoBehaviour
         SaveSystemController.updateValue("shotgunBulletSpreadADSLVL", shotgunBulletSpreadADSLVL);
 
         LVLtovalue(shotgunBulletSpreadADSLVL, upgrading.SPREADADS);
+        updateInteractable();
     }
 
     public void Spreadrunning()
@@ -220,6 +226,7 @@ public class upgradeUmbrella : MonoBehaviour
         SaveSystemController.updateValue("shotgunBulletSpreadRunningLVL", shotgunBulletSpreadRunningLVL);
 
         LVLtovalue(shotgunBulletSpreadRunningLVL, upgrading.SPREADRUN);
+        updateInteractable();
     }
 
     public void whackDamage()
@@ -229,6 +236,7 @@ public class upgradeUmbrella : MonoBehaviour
         SaveSystemController.updateValue("meeleeDamageLVL", meeleeDamageLVL);
 
         LVLtovalue(meeleeDamageLVL, upgrading.MEELEE);
+        updateInteractable();
     }
 
     public void buyAmmo()
@@ -236,7 +244,7 @@ public class upgradeUmbrella : MonoBehaviour
         SaveSystemController.updateValue("MythTraces", SaveSystemController.getIntValue("MythTraces") - ammoPrice);
         umbrella.ammo++;
         SaveSystemController.updateValue("ammo", umbrella.ammo);
-
+        updateInteractable();
     }
 
     public void buyAmmoTwo()
@@ -244,7 +252,7 @@ public class upgradeUmbrella : MonoBehaviour
         SaveSystemController.updateValue("MythTraces", SaveSystemController.getIntValue("MythTraces") - ammoTwoPrice);
         umbrella.ammoTwo++;
         SaveSystemController.updateValue("ammoTwo", umbrella.ammoTwo);
-
+        updateInteractable();
     }
 
 
