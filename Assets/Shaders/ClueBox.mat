@@ -10,7 +10,7 @@ Material:
   m_Name: ClueBox
   m_Shader: {fileID: -6465566751694194690, guid: 3e38708d377140f41960b6883cd4792f,
     type: 3}
-  m_ShaderKeywords: _BLENDMODE_ADD _ENABLE_FOG_ON_TRANSPARENT _SURFACE_TYPE_TRANSPARENT
+  m_ShaderKeywords: _ALPHATEST_ON _BLENDMODE_ADD _ENABLE_FOG_ON_TRANSPARENT _SURFACE_TYPE_TRANSPARENT
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -126,7 +126,7 @@ Material:
     m_Floats:
     - Boolean_19E47E41: 1
     - Boolean_56D7D98B: 0
-    - Vector1_7B57EDC9: 0.1
+    - Vector1_7B57EDC9: 0.033
     - Vector1_AD597E9B: 0
     - Vector1_C3F37A20: 1
     - Vector1_F197F117: 100
@@ -136,7 +136,7 @@ Material:
     - _AddPrecomputedVelocity: 0
     - _AlbedoAffectEmissive: 0
     - _AlphaCutoff: 0.5
-    - _AlphaCutoffEnable: 0
+    - _AlphaCutoffEnable: 1
     - _AlphaCutoffPostpass: 0.5
     - _AlphaCutoffPrepass: 0.5
     - _AlphaCutoffShadow: 0.5
@@ -247,11 +247,12 @@ Material:
     - _UseEmissiveIntensity: 0
     - _UseShadowThreshold: 0
     - _ZTestDepthEqualForOpaque: 4
-    - _ZTestGBuffer: 4
+    - _ZTestGBuffer: 3
     - _ZTestModeDistortion: 4
     - _ZTestTransparent: 4
     - _ZWrite: 0
     m_Colors:
+    - Color_55DB4FEE: {r: 1, g: 1, b: 1, a: 1}
     - Color_E00627CB: {r: 0, g: 2827.043, b: 49087.75, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
