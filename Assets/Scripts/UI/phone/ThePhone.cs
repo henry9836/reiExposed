@@ -723,7 +723,15 @@ public class ThePhone : MonoBehaviour
             Vector3 sumTotal = Vector3.zero;
             Vector3[] vertexMesh = { };
 
-            vertexMesh = clue[i].GetComponent<MeshFilter>().mesh.vertices;
+            //Handle different objects
+            if (clue[i].GetComponent<MeshFilter>()) {
+                vertexMesh = clue[i].GetComponent<MeshFilter>().mesh.vertices;
+            }
+            else
+            {
+                vertexMesh = clue[i].GetComponent<SkinnedMeshRenderer>().sharedMesh.vertices;
+            }
+
             var crc = clue[i].GetComponent<ClueReCentre>();
             Vector3 offset = crc == null ? Vector3.zero : crc.offset;
 
@@ -881,6 +889,7 @@ public class ThePhone : MonoBehaviour
                     SaveSystemController.updateValue(cluename + "[CLUE]", "yes");
                     clueCtrl.cluesCollected.Add(cluename);
                     SaveSystemController.saveDataToDisk();
+                    clue[element].GetComponent<TraceController>().Trigger();
                 }
                 else
                 {
