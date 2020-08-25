@@ -853,6 +853,8 @@ GameObject:
   - component: {fileID: 2429947141257451504}
   - component: {fileID: 2389871299496409980}
   - component: {fileID: 4250373466783455553}
+  - component: {fileID: 1656479076}
+  - component: {fileID: 3999638767904686964}
   m_Layer: 17
   m_Name: myth_body
   m_TagString: Clue
@@ -999,6 +1001,35 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.365226, y: 2.311963, z: 1.8388125}
   m_Center: {x: -0.0022071898, y: 0.9058346, z: 0.30020887}
+--- !u!114 &1656479076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3258108989032447969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7baf2bfb1861b1f43bf4dc7fe69ae546, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offset: {x: 0, y: 0, z: 0}
+--- !u!114 &3999638767904686964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3258108989032447969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fc61cccc1a3d6e468c719e2d6fac51b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  toDestory: {fileID: 8691000088526528527}
+  renderers:
+  - {fileID: 2389871299496409980}
+  - {fileID: 3832676823525350017}
 --- !u!1 &3434658778201479401
 GameObject:
   m_ObjectHideFlags: 0
