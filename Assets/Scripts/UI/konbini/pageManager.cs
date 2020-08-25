@@ -66,21 +66,18 @@ public class pageManager : MonoBehaviour
             konobinicam.GetComponent<camMove>().move(camMove.locations.UMBRELLA);
             current = camMove.locations.UMBRELLA;
         }
-
-
     }
 
     void Update()
     {
         if (Input.GetButtonDown("Pause"))
         {
-            ETT.ShopNowOpen(false);
-
+            ETT.bakcbutton();
         }
     }
 
     public void back()
     {
-        ETT.ShopNowOpen(false);
+        ETT.bakcbutton();
     }
 }
