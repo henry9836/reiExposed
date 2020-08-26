@@ -15042,11 +15042,12 @@ GameObject:
   - component: {fileID: 4059565761304736567}
   - component: {fileID: 4533981090127729755}
   - component: {fileID: 7565428885590965207}
-  - component: {fileID: 4533981090127729757}
   - component: {fileID: 7565428885590965192}
+  - component: {fileID: 4533981090127729757}
   - component: {fileID: 5256648503180215486}
   - component: {fileID: 7565428885590965157}
   - component: {fileID: 7565428885590965154}
+  - component: {fileID: 100898904854015967}
   - component: {fileID: 931822222814206917}
   - component: {fileID: 5715697771144031159}
   m_Layer: 13
@@ -15387,38 +15388,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 451a9b439188aa64e9b23f780988b771, type: 3}
   - {fileID: 8300000, guid: 2d684dcdb90f510439e27214327e1f5d, type: 3}
   - {fileID: 8300000, guid: acf7b084170b7144d8366efa8b50548d, type: 3}
---- !u!114 &4533981090127729757
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5256648503180215460}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 084cb613cb9443d4a8936dade09221ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attackName: Heavy Attack
-  damage: 20
-  statminaNeeded: 5
-  damageOnlyOnce: 1
-  bodyPartsUsedInAttack: 2
-  mustFacePlayer: 1
-  overrideTrackingVisionCone: 1
-  facePlayerThreshold: 0.7
-  rangeForAttack: {x: 0, y: 5}
-  triggerName: heavyAttack
-  allowedModeOne: 1
-  allowedModeTwo: 1
-  allowedModeThree: 1
-  allowedModeFour: 1
-  allowedModeFive: 1
-  allowedModeSix: 1
-  allowedModeSeven: 1
-  allowedModeEight: 1
-  allowedModeNine: 1
-  allowedModeTen: 1
 --- !u!82 &7565428885590965192
 AudioSource:
   m_ObjectHideFlags: 0
@@ -15515,6 +15484,38 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &4533981090127729757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5256648503180215460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 084cb613cb9443d4a8936dade09221ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackName: Heavy Attack
+  damage: 20
+  statminaNeeded: 5
+  damageOnlyOnce: 1
+  bodyPartsUsedInAttack: 2
+  mustFacePlayer: 1
+  overrideTrackingVisionCone: 1
+  facePlayerThreshold: 0.7
+  rangeForAttack: {x: 0, y: 5}
+  triggerName: heavyAttack
+  allowedModeOne: 1
+  allowedModeTwo: 1
+  allowedModeThree: 1
+  allowedModeFour: 1
+  allowedModeFive: 1
+  allowedModeSix: 1
+  allowedModeSeven: 1
+  allowedModeEight: 1
+  allowedModeNine: 1
+  allowedModeTen: 1
 --- !u!114 &5256648503180215486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15601,6 +15602,38 @@ MonoBehaviour:
   facePlayerThreshold: -1
   rangeForAttack: {x: 10, y: 50}
   triggerName: FlameG
+  allowedModeOne: 1
+  allowedModeTwo: 1
+  allowedModeThree: 1
+  allowedModeFour: 1
+  allowedModeFive: 1
+  allowedModeSix: 1
+  allowedModeSeven: 1
+  allowedModeEight: 1
+  allowedModeNine: 1
+  allowedModeTen: 1
+--- !u!114 &100898904854015967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5256648503180215460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 084cb613cb9443d4a8936dade09221ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackName: AOE
+  damage: 5
+  statminaNeeded: 50
+  damageOnlyOnce: 1
+  bodyPartsUsedInAttack: 0
+  mustFacePlayer: 0
+  overrideTrackingVisionCone: 0
+  facePlayerThreshold: 0.75
+  rangeForAttack: {x: 0, y: 3}
+  triggerName: SlamAOE
   allowedModeOne: 1
   allowedModeTwo: 1
   allowedModeThree: 1

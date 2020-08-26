@@ -5,10 +5,24 @@ using UnityEngine;
 public class FlameAI : AIObject
 {
 
-    private AIAttackContainer lastAttackUsed = null;
+    private int lastAttackUsed = 0;
     private int amountOfAttacksPickedWhenCloseToPlayer = 0;
     private int amountOfAttacksTillSlam = 3;
     private float closeAttackThreshold = 10.0f;
+
+    private int AOEAttackIndex = -1;
+
+    private int findAttack(string name)
+    {
+        for (int i = 0; i < attacks.Count; i++)
+        {
+            if (attacks[i].name == name)
+            {
+                return i;
+            }
+        }
+        return 0;
+    }
 
     //Selects a random attack to use againest the player
     public override void selectAttack()
@@ -17,6 +31,11 @@ public class FlameAI : AIObject
         validAttacks.Clear();
         int fallbackAttack = 0;
         float closestAttack = Mathf.Infinity;
+        
+        if (AOEAttackIndex == -1)
+        {
+            findAttack("AOE");
+        }
 
         if (distance <= closeAttackThreshold)
         {
@@ -26,7 +45,7 @@ public class FlameAI : AIObject
         if (amountOfAttacksPickedWhenCloseToPlayer >= amountOfAttacksTillSlam)
         {
             //bind AOE Attack
-            //bindAttack();
+            bindAttack("AOE");
         }
 
         //SELECT FROM RANGE AND MODE
@@ -41,7 +60,11 @@ public class FlameAI : AIObject
                     //If we have enough stamina for the attack
                     if (attacks[i].statminaNeeded <= stamina)
                     {
-                        validAttacks.Add(i);
+                        //If we haven't just used this attack
+                        if (lastAttackUsed != i)
+                        {
+                            validAttacks.Add(i);
+                        }
                     }
                 }
                 //record attack if it closer than the last closest attack
@@ -61,13 +84,13 @@ public class FlameAI : AIObject
         if (validAttacks.Count > 0)
         {
             int element = Random.Range(0, validAttacks.Count);
-            lastAttackUsed = attacks[element];
+            lastAttackUsed = element;
             bindAttack(validAttacks[element]);
         }
         //Use fallback attack
         else
         {
-            lastAttackUsed = attacks[fallbackAttack];
+            lastAttackUsed = fallbackAttack;
             bindAttack(fallbackAttack);
         }
     }
