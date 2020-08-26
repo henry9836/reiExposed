@@ -13,10 +13,15 @@ public class pageManager : MonoBehaviour
     private GameObject canvas;
     private enterToTalk ETT;
 
+    public GameObject konobinicam;
+
+    public camMove.locations current;
+
     private void Start()
     {
         canvas = GameObject.Find("Canvas");
         ETT = GameObject.FindGameObjectWithTag("Shop").GetComponent<enterToTalk>();
+        current = camMove.locations.ITEM;
     }
     public void StorgePage()
     {
@@ -25,6 +30,13 @@ public class pageManager : MonoBehaviour
         storagePage.SetActive(true);
         umbrellaUpgrade.SetActive(false);
         selectedUI.GetComponent<RectTransform>().localPosition = positions[1] + canvaspos;
+        if (current != camMove.locations.STORAGE)
+        {
+            konobinicam.GetComponent<camMove>().move(camMove.locations.STORAGE);
+            current = camMove.locations.STORAGE;
+        }
+
+
     }
 
 
@@ -34,6 +46,13 @@ public class pageManager : MonoBehaviour
         storagePage.SetActive(false);
         umbrellaUpgrade.SetActive(false);
         selectedUI.GetComponent<RectTransform>().localPosition = positions[0] + canvaspos;
+        if (current != camMove.locations.ITEM)
+        {
+            konobinicam.GetComponent<camMove>().move(camMove.locations.ITEM);
+            current = camMove.locations.ITEM;
+        }
+
+
     }
 
     public void umbrellaPage()
@@ -42,20 +61,23 @@ public class pageManager : MonoBehaviour
         storagePage.SetActive(false);
         umbrellaUpgrade.SetActive(true);
         selectedUI.GetComponent<RectTransform>().localPosition = positions[2] + canvaspos;
-
+        if (current != camMove.locations.UMBRELLA)
+        {
+            konobinicam.GetComponent<camMove>().move(camMove.locations.UMBRELLA);
+            current = camMove.locations.UMBRELLA;
+        }
     }
 
     void Update()
     {
         if (Input.GetButtonDown("Pause"))
         {
-            ETT.ShopNowOpen(false);
-
+            ETT.bakcbutton();
         }
     }
 
     public void back()
     {
-        ETT.ShopNowOpen(false);
+        ETT.bakcbutton();
     }
 }
