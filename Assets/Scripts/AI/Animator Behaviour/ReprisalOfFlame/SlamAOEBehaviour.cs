@@ -87,6 +87,9 @@ public class SlamAOEBehaviour : StateMachineBehaviour
                     //Disappear Logic
                     if (progress >= disapearTarget)
                     {
+                        //Spawn flame
+                        flameInstance = Instantiate(flame, transform.position, Quaternion.identity);
+
                         //Disapear logic done in animation
                         currentStage = STAGES.HIDDEN;
                     }
