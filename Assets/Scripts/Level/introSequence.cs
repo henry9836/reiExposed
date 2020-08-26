@@ -11,6 +11,7 @@ public class introSequence : MonoBehaviour
     public GameObject tabandscrollhelp;
     private GameObject img;
     private GameObject txt;
+    private GameObject gameMNGR;
     private string VA1 = "Urban legends subsist on mystery-  "; //2x space at end
     private string VA2 = "they live so long as they are obscure.  ";
     private string VA3 = "To be documented is their sole,  ";
@@ -19,6 +20,7 @@ public class introSequence : MonoBehaviour
 
     void Start()
     {
+        gameMNGR = GameObject.Find("GameManager");
         if (playintro)
         {
             StartCoroutine(intro());
@@ -28,6 +30,7 @@ public class introSequence : MonoBehaviour
 
     public IEnumerator intro()
     {
+
         tabandscrollhelp.SetActive(false);
         img = introUI.transform.GetChild(0).gameObject;
         txt = introUI.transform.GetChild(4).gameObject;
@@ -38,13 +41,17 @@ public class introSequence : MonoBehaviour
         img.SetActive(true);
         img.GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 1.0f);
 
+        yield return new WaitForEndOfFrame();
+        gameMNGR.GetComponent<GameManager>().stopPlayer(true);
+
+
         yield return new WaitForSeconds(1.5f);
         this.transform.GetChild(0).GetComponent<AudioSource>().Play();
 
 
 
 
-        StartCoroutine(type(2.0f, VA1));
+        StartCoroutine(type(2.25f, VA1));
         yield return new WaitForSeconds(3.5f);
         StartCoroutine(type(2.0f, VA2));
         yield return new WaitForSeconds(3.0f);
@@ -72,6 +79,7 @@ public class introSequence : MonoBehaviour
 
         txt.SetActive(false);
         tabandscrollhelp.SetActive(true);
+        gameMNGR.GetComponent<GameManager>().stopPlayer(false);
 
         yield return null;
 
