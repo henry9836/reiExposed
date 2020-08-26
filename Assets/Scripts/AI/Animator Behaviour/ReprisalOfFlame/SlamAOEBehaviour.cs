@@ -174,7 +174,7 @@ public class SlamAOEBehaviour : StateMachineBehaviour
                 {
                     //Leave state
                     animator.SetBool("Attacking", false);
-                    Debug.Break();
+                    //Debug.Break();
                     break;
                 }
             default:
