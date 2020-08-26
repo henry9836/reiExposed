@@ -8,6 +8,8 @@ public class PlayerAttack : StateMachineBehaviour
     public bool resetAllOnEnd = false;
     public float movementTime = 0.3f;
     public float movementSpeed = 5.5f;
+    [Range(0.0f, 1.0f)]
+    public float stopTurning = 0.5f;
 
     private umbrella umbrella;
     private bool once = true;
@@ -50,6 +52,9 @@ public class PlayerAttack : StateMachineBehaviour
                 once = false;
             }
         }
+
+        //Allow turning during attack
+        movementCtrl.canTurnDuringAttack = ((stateInfo.normalizedTime % 1.0f) < stopTurning);
 
         //Shunt Forwards after we have started our attack
         if (!once && movementTimer < movementTime)
