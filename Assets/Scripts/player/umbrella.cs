@@ -228,19 +228,19 @@ public class umbrella : MonoBehaviour
 
         if (ammocycle == 0)
         {
-            shotUI.transform.GetChild(0).GetComponent<Text>().text = ammo.ToString() + "/100\nQ for expolsive rounds";
+            shotUI.transform.GetChild(0).GetComponent<Text>().text = ammo.ToString() + "/100\nRegualr shells - Q to swap";
 
         }
         else if (ammocycle == 1)
         {
-            shotUI.transform.GetChild(0).GetComponent<Text>().text = ammo.ToString() + "/100\nQ for regular ammo";
+            shotUI.transform.GetChild(0).GetComponent<Text>().text = ammoTwo.ToString() + "/100\nExplosive shells - Q to swap";
 
         }
 
 
         if (Input.GetAxis("Fire1") > 0.5f && canfire == true) // shoot
         {
-            if (ammocycle == 0 && ammo > 1)
+            if (ammocycle == 0 && ammo > 0)
             {
                 animator.SetTrigger("Shoot");
                 ammo--;
@@ -248,7 +248,7 @@ public class umbrella : MonoBehaviour
 
                 bang();
             }
-            else if (ammocycle == 1 && ammoTwo > 1)
+            else if (ammocycle == 1 && ammoTwo > 0)
             {
                 animator.SetTrigger("Shoot");
                 ammoTwo--;

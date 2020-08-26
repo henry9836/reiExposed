@@ -7,6 +7,7 @@ public class interactableUmbrella : MonoBehaviour
     public float mouseSpeed = 1.0f;
 	private float x = 90;
 	private float y;
+
 	
     void Update()
     {
@@ -36,23 +37,23 @@ public class interactableUmbrella : MonoBehaviour
         }
 		else
 		{
-			float xdis = Mathf.Abs(x - 90) / 3.0f;
-			float ydis = Mathf.Abs(y - 0) / 3.0f;
+			float xdis = Mathf.Abs(x - 90.0f) / 3.0f;
+			float ydis = Mathf.Abs(y - 0.0f) / 3.0f;
 
-			if (x < 89)
+			if (x < 90.0f - 1.0f)
 			{
 				x += xdis;
 			}
-			else if (x > 91)
+			else if (x > 90.0f + 1.0f)
 			{
 				x -= xdis;		
 			}
 
-			if (y < -1)
+			if (y < 0.0f - 1.0f)
 			{
 				y += ydis;
 			}
-			else if (y > 1)
+			else if (y > 0.0f + 1.0f)
 			{
 				y -= ydis;		
 			}

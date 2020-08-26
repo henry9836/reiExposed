@@ -16,7 +16,6 @@ public class plugindemo : MonoBehaviour
     public GameObject drone;
 
     public bool candeliver = false;
-    public bool holdRei = false;
 
 
     public int todrop = 0;
@@ -30,12 +29,7 @@ public class plugindemo : MonoBehaviour
 
     void LateUpdate()
     {
-        if (holdRei == true)
-        {
-            Debug.Log("holding");
-            rei.GetComponent<movementController>().enabled = false;
-            rei.transform.position = drone.transform.position;
-        }
+
 
 
 
@@ -79,7 +73,7 @@ public class plugindemo : MonoBehaviour
                 else // pick me up mum
                 {
                     yield return new WaitForSeconds(0.25f);
-                    holdRei = true;
+                    //fade to black move player to spwnm
                 }
 
 
@@ -92,8 +86,6 @@ public class plugindemo : MonoBehaviour
         else
         {
             candeliver = true;
-            holdRei = false;
-            rei.GetComponent<movementController>().enabled = true;
 
         }
 

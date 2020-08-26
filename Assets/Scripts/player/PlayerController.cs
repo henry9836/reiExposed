@@ -49,7 +49,7 @@ public class PlayerController : MonoBehaviour
         boss = GameObject.FindGameObjectWithTag("Boss");
         staminaUI = GameObject.Find("staminaUI");
         HPui = GameObject.Find("playersHP");
-        GameObject temp = GameObject.Find("deathUI");
+        GameObject temp = GameObject.Find("IntroAndDeathUI");
 
         for (int i = 0; i < temp.transform.childCount; i++)
         {

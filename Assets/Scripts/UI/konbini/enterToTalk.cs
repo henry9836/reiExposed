@@ -13,7 +13,16 @@ public class enterToTalk : MonoBehaviour
     public GameObject biginvinstorage;
     public GameObject konobiniCam;
 
+    public GameObject BGmusic;
+    public GameObject BGkonobini;
+
     private bool toggle = true;
+    private GameObject gameMNGR;
+
+    private void Start()
+    {
+        gameMNGR = GameObject.Find("GameManager");
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -42,6 +51,11 @@ public class enterToTalk : MonoBehaviour
     {
         if (isOpen == true)
         {
+            
+            BGkonobini.GetComponent<AudioSource>().Play();
+            BGmusic.GetComponent<MusicPlayer>().StartNone();
+            BGmusic.GetComponent<MusicPlayer>().Pause();
+
             konbiniUI.transform.root.GetChild(3).gameObject.SetActive(false);
             GetComponent<AudioSource>().Play();
             konbiniUI.SetActive(true);
@@ -57,6 +71,10 @@ public class enterToTalk : MonoBehaviour
         }
         else
         {
+            BGkonobini.GetComponent<AudioSource>().Pause();
+            BGmusic.GetComponent<MusicPlayer>().StartCalm();
+            BGmusic.GetComponent<MusicPlayer>().Resume();
+
             konbiniUI.transform.root.GetChild(3).gameObject.SetActive(true);
 
             SaveSystemController.saveDataToDisk();
@@ -75,7 +93,7 @@ public class enterToTalk : MonoBehaviour
     public IEnumerator doormat()
     {
         UIelement.SetActive(true);
-        rei.GetComponent<CharacterController>().enabled = false;
+        gameMNGR.GetComponent<GameManager>().stopPlayer(true);
 
         for (float i = 0.0f; i < 1.0f; i += Time.deltaTime)
         {
@@ -120,6 +138,7 @@ public class enterToTalk : MonoBehaviour
         }
 
         UIelement.SetActive(false);
+        gameMNGR.GetComponent<GameManager>().stopPlayer(false);
 
 
         yield return null;
