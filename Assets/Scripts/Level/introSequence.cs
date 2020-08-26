@@ -14,7 +14,7 @@ public class introSequence : MonoBehaviour
     private GameObject gameMNGR;
     private string VA1 = "Urban legends subsist on mystery-  "; //2x space at end
     private string VA2 = "they live so long as they are obscure.  ";
-    private string VA3 = "To be documented is their sole,  ";
+    private string VA3 = "\nTo be documented is their sole,  ";
     private string VA4 = "absolute poison.  ";
 
 
