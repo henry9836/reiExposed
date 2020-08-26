@@ -2,6 +2,9 @@
 using UnityEngine;
 using System.IO;
 
+//used for creating reves animation clips
+//NOTE: CANNONT BUILD, SO COMMENT OUT WHEN NOT IN USE
+
 public static class ReverseAnimationContext
 {
 
