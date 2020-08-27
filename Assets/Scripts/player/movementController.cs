@@ -41,6 +41,11 @@ public class movementController : MonoBehaviour
     [Header("Other")]
     public Image sprintLines;
 
+    //cam shake
+    private GameObject cam;
+    private float shakeTimer = 0.0f;
+    private int shakenumber = 0;
+
     //Hidden
     [HideInInspector]
     public bool attackMovementBlock = false;
@@ -67,7 +72,7 @@ public class movementController : MonoBehaviour
     private float rollHitBoxH = 0.87f;
     private float rollHitBoxY = 0.41f;
 
-    private bool isOnGround = false;
+    public bool isOnGround = false;
     private bool rolling = false;
     private bool sprinting = false;
     private bool sprintLock = false;
@@ -86,6 +91,7 @@ public class movementController : MonoBehaviour
         unblockTimer = timeToUnblock;
         startHitBoxH = playerHitBox.height;
         startHitBoxY = playerHitBox.center.y;
+        cam = GameObject.FindGameObjectWithTag("MainCamera");
     }
 
     private void FixedUpdate()
@@ -151,41 +157,29 @@ public class movementController : MonoBehaviour
 
         }
 
-        //While we are in the air
-        if (!isOnGround)
+        if (isOnGround)
         {
-            //Move half speed
-            moveDir = new Vector3(0.0f, moveDir.y, 0.0f);
-
-            if (!animator.GetBool("UsingItem") && !animator.GetBool("KnockedDown"))
-            {
-                moveDir += camParent.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed));
-                moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed));
-            }
-            else
-            {
-                moveDir += camParent.transform.forward * ((Input.GetAxis("Vertical") * useItemMoveSpeed));
-                moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * useItemMoveSpeed));
-            }
-            //Apply Gravity
-            moveDir.y -= gravity * Time.deltaTime;
-
-
+            moveDir = new Vector3(0.0f, 0.0f, 0.0f);
         }
-        //While we are on the ground
         else
         {
-            if (!animator.GetBool("UsingItem") && !animator.GetBool("KnockedDown"))
-            {
-                moveDir = camParent.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed));
-                moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed));
-            }
-            else
-            {
-                moveDir = camParent.transform.forward * ((Input.GetAxis("Vertical") * useItemMoveSpeed));
-                moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * useItemMoveSpeed));
-            }
+            moveDir = new Vector3(0.0f, moveDir.y, 0.0f);
         }
+
+        if (!animator.GetBool("UsingItem") && !animator.GetBool("KnockedDown"))
+        {
+            moveDir += camParent.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed));
+            moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed));
+        }
+        else
+        {
+            moveDir += camParent.transform.forward * ((Input.GetAxis("Vertical") * useItemMoveSpeed));
+            moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * useItemMoveSpeed));
+        }
+
+        //Apply Gravity
+        moveDir.y -= gravity * Time.deltaTime;
+       
 
         //Rolling Mechanic
         if (Input.GetButtonDown("Roll") && !rolling && !animator.GetBool("UsingItem") && !animator.GetBool("KnockedDown"))
@@ -247,63 +241,116 @@ public class movementController : MonoBehaviour
         }
 
         //Sprint
-        else if (Input.GetButton("Sprint") && isOnGround && !rolling && !sprintLock && !animator.GetBool("UsingItem") && !animator.GetBool("KnockedDown"))
+        else if (Input.GetButton("Sprint") && isOnGround && !rolling && !sprintLock && !animator.GetBool("UsingItem") && !animator.GetBool("KnockedDown") && ((moveDir.x != 0) && (moveDir.z != 0)) && (pc.CheckStamina() >= staminaCostSprint * Time.deltaTime))
         {
-            if ((moveDir.x != 0) && (moveDir.z != 0))
-            {
-                //move a little more
-                if (pc.CheckStamina() >= staminaCostSprint * Time.deltaTime)
-                {
-                    sprinting = true;
+             //move a little more
 
-                    pc.ChangeStamina(-staminaCostSprint * Time.deltaTime);
-                    moveDir += new Vector3(moveDir.x * sprintSpeedMultipler, 0.0f, moveDir.z * sprintSpeedMultipler);
+             sprinting = true;
 
-                    //If we have run out of stmina lock sprinting
-                    if(pc.CheckStamina() < (staminaCostSprint * Time.deltaTime))
-                    {
-                        sprintLock = true;
-                    }
 
-                    //Animation
-                    animator.SetBool("Running", true);
+             pc.ChangeStamina(-staminaCostSprint * Time.deltaTime);
+             moveDir += new Vector3(moveDir.x * sprintSpeedMultipler, 0.0f, moveDir.z * sprintSpeedMultipler);
 
-                    float alpha = sprintLines.material.GetFloat("Vector1_BD31B2DE");
-                    alpha = Mathf.Clamp((alpha + (Time.unscaledDeltaTime * 2.5f)), 0.0f, 1.0f);
-                    sprintLines.material.SetFloat("Vector1_BD31B2DE", alpha);
-                }
-            }
-        }
+             //If we have run out of stmina lock sprinting
+             if(pc.CheckStamina() < (staminaCostSprint * Time.deltaTime))
+             {
+                 sprintLock = true;
+             }
 
-        if (!Input.GetButton("Sprint") || !isOnGround || !(pc.CheckStamina() >= staminaCostSprint))
-        {
-            float alpha = sprintLines.material.GetFloat("Vector1_BD31B2DE");
-            alpha = Mathf.Clamp((alpha - (Time.unscaledDeltaTime * 2.5f)), 0.0f, 1.0f);
-            sprintLines.material.SetFloat("Vector1_BD31B2DE", alpha);
-        }
+             //Animation
+             animator.SetBool("Sprinting", true);
+             animator.SetBool("Running", false);
 
-        //Animation
-        //Walking
 
-        if ((moveDir.x == 0) && (moveDir.z == 0))
-        {
-            animator.SetBool("Running", false);
-        }
-        else
-        {
-            animator.SetBool("Running", true);
-        }
-        //Sprint
-        if (Input.GetButton("Sprint") && pc.CheckStamina() >= staminaCostSprint)
-        {
-            animator.SetBool("Sprinting", true);
+            //camshake
+            shakeTimer += Time.deltaTime;
+             if (shakeTimer > 0.285)
+             {
+                 shakeTimer = 0.0f;
+
+                 if (shakenumber == 0)
+                 {
+                     shakenumber = 1;
+
+                     Vector3 passTargetRot = new Vector3(0.0f, 0.0f, 0.0f);
+                     float passOverallSpeed = 3.50877192982f;
+                     Vector3 passTargetPos = new Vector3(0.2f, 0.1f, 0.0f);
+                     cam.GetComponent<cameraShake>().addOperation(passTargetPos, passTargetRot, passOverallSpeed, shakeOperation.lerpModes.OUTSINE, shakeOperation.lerpModes.INSINE, 1.0f, 1.0f);
+                 }
+                 else if (shakenumber == 1)
+                 {
+                     shakenumber = 0;
+
+                     Vector3 passTargetRot = new Vector3(0.0f, 0.0f, 0.0f);
+                     float passOverallSpeed = 3.50877192982f;
+                     Vector3 passTargetPos = new Vector3(-0.2f, 0.1f, 0.0f);
+                     cam.GetComponent<cameraShake>().addOperation(passTargetPos, passTargetRot, passOverallSpeed, shakeOperation.lerpModes.OUTSINE, shakeOperation.lerpModes.INSINE, 1.0f, 1.0f);
+                 }
+                 else
+                 {
+                     shakenumber = 0;
+                 }
+
+
+             }
+
+
+             float alpha = sprintLines.material.GetFloat("Vector1_BD31B2DE");
+             alpha = Mathf.Clamp((alpha + (Time.deltaTime * 10.0f)), 0.0f, 0.15f);
+             sprintLines.material.SetFloat("Vector1_BD31B2DE", alpha);
+             
+              
         }
         else
         {
             animator.SetBool("Sprinting", false);
-        }
 
-        //Debug.Log("BLOCK: " + attackMovementBlock.ToString());
+            float alpha = sprintLines.material.GetFloat("Vector1_BD31B2DE");
+            alpha = Mathf.Clamp((alpha - (Time.deltaTime * 10.0f)), 0.0f, 0.15f);
+            sprintLines.material.SetFloat("Vector1_BD31B2DE", alpha);
+
+
+            //Walking
+            if ((moveDir.x == 0) && (moveDir.z == 0))
+            {
+                animator.SetBool("Running", false);
+            }
+            else
+            {
+                //cam shake
+                shakeTimer += Time.deltaTime;
+                if (shakeTimer > 0.36)
+                {
+                    shakeTimer = 0.0f;
+                    shakeTimer = 0.0f;
+
+                    if (shakenumber == 0)
+                    {
+                        shakenumber = 1;
+
+                        Vector3 passTargetRot = new Vector3(0.0f, 0.0f, 0.0f);
+                        float passOverallSpeed = 2.77777f;
+                        Vector3 passTargetPos = new Vector3(0.02f, -0.01f, 0.0f);
+                        cam.GetComponent<cameraShake>().addOperation(passTargetPos, passTargetRot, passOverallSpeed, shakeOperation.lerpModes.OUTSINE, shakeOperation.lerpModes.INSINE, 1.0f, 1.0f);
+                    }
+                    else if (shakenumber == 1)
+                    {
+                        shakenumber = 0;
+
+                        Vector3 passTargetRot = new Vector3(0.0f, 0.0f, 0.0f);
+                        float passOverallSpeed = 2.77777f;
+                        Vector3 passTargetPos = new Vector3(-0.02f, -0.01f, 0.0f);
+                        cam.GetComponent<cameraShake>().addOperation(passTargetPos, passTargetRot, passOverallSpeed, shakeOperation.lerpModes.OUTSINE, shakeOperation.lerpModes.INSINE, 1.0f, 1.0f);
+                    }
+                    else
+                    {
+                        shakenumber = 0;
+                    }
+                }
+
+                animator.SetBool("Running", true);
+            }
+        }
 
         //Move
         if (!rolling && !attackMovementBlock)
