@@ -22,6 +22,8 @@ public class SlamAOEBehaviour : StateMachineBehaviour
     public float spawnFlameTarget = 0.5f;
     [Range(0.0f, 1.0f)]
     public float reappearTarget = 0.6f;
+    [Range(0.0f, 1.0f)]
+    public float resumeAITarget = 0.9f;
 
     public float distanceBehindPlayerToLook = 10.0f;
     public float sizeOfAreaToSearch = 10.0f;
@@ -175,8 +177,13 @@ public class SlamAOEBehaviour : StateMachineBehaviour
                 }
             case STAGES.FINISHED:
                 {
-                    //Leave state
-                    animator.SetBool("Attacking", false);
+                    //AI Resume Logic
+                    if (progress >= resumeAITarget)
+                    {
+                        currentStage = STAGES.FINISHED;
+                        //Leave state
+                        animator.SetBool("Attacking", false);
+                    }
                     //Debug.Break();
                     break;
                 }
