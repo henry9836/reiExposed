@@ -14,7 +14,8 @@ public class SlamAOEBehaviour : StateMachineBehaviour
         FINISHED
     }
 
-    public GameObject flame;
+    public GameObject disappearPrefab;
+    public GameObject reappearPrefab;
 
     [Range(0.0f, 1.0f)]
     public float disapearTarget = 0.2f;
@@ -42,7 +43,8 @@ public class SlamAOEBehaviour : StateMachineBehaviour
     float colSize;
 
     Vector3 targetPos;
-    GameObject flameInstance;
+    GameObject disappearInstance;
+    GameObject reappearInstance;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -72,9 +74,13 @@ public class SlamAOEBehaviour : StateMachineBehaviour
         //Reset
         targetPos = Vector3.zero;
         currentStage = STAGES.SLAM;
-        if (flameInstance != null)
+        if (disappearInstance != null)
         {
-            Destroy(flameInstance);
+            Destroy(disappearInstance);
+        }
+        if (reappearInstance != null)
+        {
+            Destroy(reappearInstance);
         }
     }
 
@@ -90,7 +96,7 @@ public class SlamAOEBehaviour : StateMachineBehaviour
                     if (progress >= disapearTarget)
                     {
                         //Spawn flame
-                        flameInstance = Instantiate(flame, transform.position, Quaternion.identity);
+                        disappearInstance = Instantiate(disappearPrefab, transform.position, Quaternion.identity);
 
                         //Disapear logic done in animation
                         currentStage = STAGES.HIDDEN;
@@ -155,7 +161,7 @@ public class SlamAOEBehaviour : StateMachineBehaviour
                         }
 
                         //Spawn flame
-                        flameInstance = Instantiate(flame, targetPos, Quaternion.identity);
+                        reappearInstance = Instantiate(disappearPrefab, targetPos, Quaternion.identity);
 
 
                         currentStage = STAGES.FLAME;
@@ -200,8 +206,7 @@ public class SlamAOEBehaviour : StateMachineBehaviour
     {
         //Resume movement
         movement.setOverride(AIMovement.OVERRIDE.NO_OVERRIDE);
-        //Reset selected attack
-        //ai.unbindAttack();
+
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
