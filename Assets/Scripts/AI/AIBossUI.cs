@@ -29,10 +29,10 @@ public class AIBossUI : MonoBehaviour
     private void FixedUpdate()
     {
 
-        if (initalReveal == 0)
-        {
-            initalReveal = vfx.bodysNoVFX.Count;
-        }
+        //if (initalReveal == 0)
+        //{
+        //    initalReveal = vfx.bodysNoVFX.Count;
+        //}
 
         //Health
         if (ai.health != 0)

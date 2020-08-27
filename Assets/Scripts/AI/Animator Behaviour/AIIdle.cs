@@ -11,7 +11,7 @@ public class AIIdle : StateMachineBehaviour
 
     AIObject ai;
     AIMovement movement;
-    AIForwardAnimator forwarder;
+    
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -19,19 +19,7 @@ public class AIIdle : StateMachineBehaviour
         if (ai == null)
         {
             ai = animator.gameObject.GetComponent<AIObject>();
-        }
-
-        if (movement == null)
-        {
             movement = ai.movement;
-        }
-
-        if (forwarder == null)
-        {
-            if (animator.GetBehaviour<AIForwardAnimator>() != null)
-            {
-                forwarder = animator.GetBehaviour<AIForwardAnimator>();
-            }
         }
         movement.stopMovement();
 
@@ -40,10 +28,7 @@ public class AIIdle : StateMachineBehaviour
 
         //Reset Values
         animator.ResetTrigger("LostPlayer");
-        if (forwarder != null)
-        {
-            forwarder.ResetTrigger("LostPlayer");
-        }
+
         //Attacks
         for (int i = 0; i < ai.attacks.Count; i++)
         {
@@ -62,10 +47,6 @@ public class AIIdle : StateMachineBehaviour
         if (timer >= waittime)
         {
             animator.SetBool("Idle", false); 
-            if (forwarder != null)
-            {
-                forwarder.SetBool("Idle", false);
-            }
         }
     }
 

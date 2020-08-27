@@ -6,7 +6,7 @@ public class AIAttackEvent : StateMachineBehaviour
 {
     public Vector2 damageWindow;
    
-    AIForwardAnimator forwarder;
+    
     AIObject ai;
     AIAttackContainer attack;
     AIBody.BodyParts parts;
@@ -21,24 +21,17 @@ public class AIAttackEvent : StateMachineBehaviour
         {
             ai = animator.gameObject.GetComponent<AIObject>();
         }
-        if (ai == null)
-        {
-            return;
-        }
-        if (forwarder == null)
-        {
-            if (animator.GetBehaviour<AIForwardAnimator>() != null)
-            {
-                forwarder = animator.GetBehaviour<AIForwardAnimator>();
-            }
-        }
-
-        if (forwarder != null)
-        {
-            forwarder.SetBool("Attacking", true);
-        }
 
         attack = ai.getSelectedAttack();
+
+        //Error
+        if (attack == null)
+        {
+            Debug.LogError("Got to attack but there is no attack bound");
+            animator.SetBool("Attacking", false);
+            return;
+        }
+
         parts = attack.bodyPartsUsedInAttack;
 
         ai.movement.stopMovement();
@@ -48,10 +41,13 @@ public class AIAttackEvent : StateMachineBehaviour
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (ai == null)
+        //Error
+        if (attack == null)
         {
+            animator.SetBool("Attacking", false);
             return;
         }
+
         //Turn on triggers
         if (damageWindow.y >= stateInfo.normalizedTime && stateInfo.normalizedTime > damageWindow.x && !armed)
         {
@@ -76,9 +72,5 @@ public class AIAttackEvent : StateMachineBehaviour
         }
 
         animator.SetBool("Attacking", false);
-        if (forwarder != null)
-        {
-            forwarder.SetBool("Attacking", false);
-        }
     }
 }

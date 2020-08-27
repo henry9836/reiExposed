@@ -553,7 +553,7 @@ public class ThePhone : MonoBehaviour
         ThePhoneUI.SetActive(false);
 
 
-        Debug.Log(rei.transform.GetChild(0).rotation.eulerAngles.y);
+        //Debug.Log(rei.transform.GetChild(0).rotation.eulerAngles.y);
         float test = rei.transform.GetChild(0).rotation.eulerAngles.y;
         if (test > 180.0f)
         {
@@ -857,7 +857,7 @@ public class ThePhone : MonoBehaviour
                             clueglow.transform.GetChild(0).GetComponent<Text>().text = "Clue Visible";
                         }
 
-                        Debug.Log("not already teakmn");
+                        //Debug.Log("not already teakmn");
                         clueglow.GetComponent<flash>().fadeout = false;
                         clueglow.GetComponent<flash>().fadein = true;
                         break;
