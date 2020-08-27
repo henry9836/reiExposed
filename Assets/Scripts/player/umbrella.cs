@@ -245,7 +245,7 @@ public class umbrella : MonoBehaviour
                 animator.SetTrigger("Shoot");
                 ammo--;
                 SaveSystemController.updateValue("ammo", ammo);
-
+                
                 bang();
             }
             else if (ammocycle == 1 && ammoTwo > 0)
@@ -271,6 +271,17 @@ public class umbrella : MonoBehaviour
     //shoot
     void bang()
     {
+        //shake
+        Vector3 passTargetPos = new Vector3(0.0f, 0.1f, -0.3f);
+        float passOverallSpeed = 3.0f;
+        Vector3 passTargetRot = new Vector3(-3.0f, 2.0f, 0.0f);
+        shakeOperation.lerpModes funcin = shakeOperation.lerpModes.OUTEXPO;
+        shakeOperation.lerpModes funcout = shakeOperation.lerpModes.INSINE;
+        float speedIn = 5000.0f;
+        float speedOut = 1.0f;
+        cam.GetComponent<cameraShake>().addOperation(passTargetPos, passTargetRot, passOverallSpeed, funcin, funcout, speedIn, speedOut);
+
+
         Transform brella = this.transform.GetChild(1).GetChild(6);
         var cameraThingTransform = cam.transform.parent.parent.transform;
         for (int j = 0; j < pellets; j++)
