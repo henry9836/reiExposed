@@ -4821,6 +4821,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6639313048959318483}
+  - component: {fileID: 4641182843294821926}
+  - component: {fileID: 8864162546732419719}
   m_Layer: 0
   m_Name: Boss AOE Attack
   m_TagString: Untagged
@@ -4847,6 +4849,31 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &4641182843294821926
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6639313048959318480}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 12
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8864162546732419719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6639313048959318480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66af20513f9c7644b948d3f1c441c2bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6639313049664379607
 GameObject:
   m_ObjectHideFlags: 0
@@ -19372,7 +19399,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 5.4e-43, y: 0, z: 0, w: 0}
+  m_BoundingSphereOverride: {x: -0.7687531, y: 2.8359222, z: 7.45e-43, w: 1.4033e-41}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
