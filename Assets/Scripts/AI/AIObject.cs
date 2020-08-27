@@ -130,6 +130,18 @@ public class AIObject : MonoBehaviour
         }
     }
 
+    public virtual void bindAttack(string name)
+    {
+        for (int i = 0; i < attacks.Count; i++)
+        {
+            if (attacks[i].attackName == name)
+            {
+                selectedAttack = attacks[i];
+                return;
+            }
+        }
+    }
+
     public virtual void bindAttack(int i)
     {
 
