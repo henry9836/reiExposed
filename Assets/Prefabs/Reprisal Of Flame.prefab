@@ -14141,7 +14141,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 709647734231253519}
-  - component: {fileID: 4576348824239681565}
   m_Layer: 13
   m_Name: Reprisal Of FlameBody
   m_TagString: Untagged
@@ -14168,25 +14167,6 @@ Transform:
   m_Father: {fileID: 9126549243076785847}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &4576348824239681565
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4576348824239681564}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 156030e838c0b934b8fd9a2677544500, type: 3}
-  m_Controller: {fileID: 9100000, guid: f55f3f94686767f4f91739e64d9ef3c2, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &4627093231614220810
 GameObject:
   m_ObjectHideFlags: 0
@@ -15030,7 +15010,6 @@ GameObject:
   - component: {fileID: 3571246182170304288}
   - component: {fileID: 5326106790708351361}
   - component: {fileID: 8712548130974696105}
-  - component: {fileID: 1762889396408738047}
   - component: {fileID: 5256648503180215487}
   - component: {fileID: 5256648503180215484}
   - component: {fileID: 5256648503180215485}
@@ -15119,26 +15098,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1762889396408738047
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5256648503180215460}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72c0762017372f04db956ddd511104a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  transparent: {fileID: 2100000, guid: 342987a14864d3f4da490c69142838b9, type: 2}
-  visible: {fileID: -1327931180133130153, guid: 156030e838c0b934b8fd9a2677544500,
-    type: 3}
-  vs: {fileID: 0}
-  obsctules:
-    serializedVersion: 2
-    m_Bits: 82433
-  bodysNoVFX: []
 --- !u!114 &5256648503180215487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15335,7 +15294,7 @@ MonoBehaviour:
   informer: {fileID: 0}
   body: {fileID: 0}
   playerCtrl: {fileID: 0}
-  forwardAnimationsTo: {fileID: 4576348824239681565}
+  forwardAnimationsTo: {fileID: 0}
   startInSleepState: 1
   handleCollision: 1
   damagedText: {fileID: 7401280080073061358, guid: febedf0338a1da8438f0280ae306b1d0,
@@ -15504,7 +15463,7 @@ MonoBehaviour:
   mustFacePlayer: 1
   overrideTrackingVisionCone: 1
   facePlayerThreshold: 0.7
-  rangeForAttack: {x: 0, y: 5}
+  rangeForAttack: {x: 0, y: 2}
   triggerName: heavyAttack
   allowedModeOne: 1
   allowedModeTwo: 1
@@ -15536,7 +15495,7 @@ MonoBehaviour:
   mustFacePlayer: 1
   overrideTrackingVisionCone: 1
   facePlayerThreshold: 0.7
-  rangeForAttack: {x: 0, y: 5}
+  rangeForAttack: {x: 0, y: 2}
   triggerName: basicAttack
   allowedModeOne: 1
   allowedModeTwo: 1
@@ -15632,7 +15591,7 @@ MonoBehaviour:
   mustFacePlayer: 0
   overrideTrackingVisionCone: 0
   facePlayerThreshold: 0.75
-  rangeForAttack: {x: 0, y: 3}
+  rangeForAttack: {x: 0, y: 9999}
   triggerName: SlamAOE
   allowedModeOne: 1
   allowedModeTwo: 1

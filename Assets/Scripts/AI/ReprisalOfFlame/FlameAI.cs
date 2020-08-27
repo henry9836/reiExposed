@@ -27,6 +27,7 @@ public class FlameAI : AIObject
     //Selects a random attack to use againest the player
     public override void selectAttack()
     {
+        Debug.Log("[DEBUG] Select Attack Called");
         float distance = Vector3.Distance(tracker.lastSeenPos, transform.position);
         validAttacks.Clear();
         int fallbackAttack = 0;

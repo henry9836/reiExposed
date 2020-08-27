@@ -193,6 +193,8 @@ public class SlamAOEBehaviour : StateMachineBehaviour
     {
         //Resume movement
         movement.setOverride(AIMovement.OVERRIDE.NO_OVERRIDE);
+        //Reset selected attack
+        //ai.unbindAttack();
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

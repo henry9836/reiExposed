@@ -10,7 +10,7 @@ public class AIChase : StateMachineBehaviour
     AIObject ai;
     AIMovement movement;
     AITracker tracker;
-    AIForwardAnimator forwarder;
+    
 
     AIAttackContainer attack;
     Transform player;
@@ -26,25 +26,8 @@ public class AIChase : StateMachineBehaviour
         if (ai == null)
         {
             ai = animator.gameObject.GetComponent<AIObject>();
-        }
-        if (ai == null)
-        {
-            return;
-        }
-        if (movement == null)
-        {
             movement = ai.movement;
-        }
-        if (tracker == null)
-        {
             tracker = ai.tracker;
-        }
-        if (forwarder == null)
-        {
-            if (animator.GetBehaviour<AIForwardAnimator>() != null)
-            {
-                forwarder = animator.GetBehaviour<AIForwardAnimator>();
-            }
         }
 
         player = ai.player.transform;
@@ -53,17 +36,11 @@ public class AIChase : StateMachineBehaviour
         for (int i = 0; i < ai.attacks.Count; i++)
         {
             animator.ResetTrigger(ai.attacks[i].triggerName);
-            if (forwarder != null)
-            {
-                forwarder.ResetTrigger(ai.attacks[i].triggerName);
-            }
         }
 
         //If there is no attack bound
-        if (ai.selectedAttack == null || overrideBoundAttackOnEntry)
-        {
-            ai.selectAttack();
-        }
+        ai.selectAttack();
+
         attacked = false;
         attack = ai.getSelectedAttack();
         wrongAttackChosenTimer = 0.0f;
@@ -84,21 +61,17 @@ public class AIChase : StateMachineBehaviour
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (ai == null)
-        {
-            return;
-        }
+        //If attack is null
+        //if (attack == null)
+        //{
+        //    ai.selectAttack();
+        //    attack = ai.getSelectedAttack();
+        //    movement.goToPosition(player.position);
+        //    return;
+        //}
 
-        if (attack == null)
-        {
-            ai.selectAttack();
-            attack = ai.getSelectedAttack();
-            movement.goToPosition(player.position);
-            return;
-        }
-
+        //If we have taken too long to attack
         wrongAttackChosenTimer += Time.deltaTime;
-
         if (wrongAttackChosenTimer >= repickAttackThreshold)
         {
             movement.stopMovement();
@@ -146,10 +119,6 @@ public class AIChase : StateMachineBehaviour
                             attacked = true;
                         }
                         animator.SetTrigger(attack.triggerName);
-                        if (forwarder != null)
-                        {
-                            forwarder.SetTrigger(attack.triggerName);
-                        }
                     }
                     else
                     {

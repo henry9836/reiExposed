@@ -20,7 +20,7 @@ public class AIDash : StateMachineBehaviour
     AIObject ai;
     AITracker tracker;
     AIMovement movement;
-    AIForwardAnimator forwarder;
+    
     Transform transform;
     Vector3 targetDir;
 
@@ -30,26 +30,8 @@ public class AIDash : StateMachineBehaviour
         if (ai == null)
         {
             ai = animator.gameObject.GetComponent<AIObject>();
-            if (ai == null)
-            {
-                return;
-            }
-        }
-
-        if (tracker == null)
-        {
             tracker = ai.tracker;
-        }
-        if (movement == null)
-        {
             movement = ai.movement;
-        }
-        if (forwarder == null)
-        {
-            if (animator.GetBehaviour<AIForwardAnimator>() != null)
-            {
-                forwarder = animator.GetBehaviour<AIForwardAnimator>();
-            }
         }
 
         dashing = false;
@@ -65,10 +47,6 @@ public class AIDash : StateMachineBehaviour
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (ai == null)
-        {
-            return;
-        }
 
         movement.goToPosition(tracker.lastSeenPos);
 
@@ -125,7 +103,6 @@ public class AIDash : StateMachineBehaviour
         //Ends on animation over
         if ((stateInfo.normalizedTime % 1.0f) >= endDashTrigger)
         {
-            forwarder.SetBool("Dashing", false);
             animator.SetBool("Dashing", false);
         }
 
@@ -134,10 +111,10 @@ public class AIDash : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (movement != null)
-        {
-            movement.setOverride(AIMovement.OVERRIDE.NO_OVERRIDE);
-        }
+        movement.setOverride(AIMovement.OVERRIDE.NO_OVERRIDE);
+
+        //Reset selected attack
+        //ai.unbindAttack();
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
