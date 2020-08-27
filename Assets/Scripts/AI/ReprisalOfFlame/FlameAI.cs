@@ -10,20 +10,6 @@ public class FlameAI : AIObject
     private int amountOfAttacksTillSlam = 3;
     private float closeAttackThreshold = 10.0f;
 
-    private int AOEAttackIndex = -1;
-
-    private int findAttack(string name)
-    {
-        for (int i = 0; i < attacks.Count; i++)
-        {
-            if (attacks[i].name == name)
-            {
-                return i;
-            }
-        }
-        return 0;
-    }
-
     //Selects a random attack to use againest the player
     public override void selectAttack()
     {
@@ -32,39 +18,52 @@ public class FlameAI : AIObject
         validAttacks.Clear();
         int fallbackAttack = 0;
         float closestAttack = Mathf.Infinity;
-        
-        if (AOEAttackIndex == -1)
-        {
-            findAttack("AOE");
-        }
 
         if (distance <= closeAttackThreshold)
         {
             amountOfAttacksPickedWhenCloseToPlayer++;
         }
+        else
+        {
+            amountOfAttacksPickedWhenCloseToPlayer = 0;
+        }
+
+        Debug.Log("Amount of attacks close to player: " + amountOfAttacksPickedWhenCloseToPlayer.ToString());
         
         if (amountOfAttacksPickedWhenCloseToPlayer >= amountOfAttacksTillSlam)
         {
             //bind AOE Attack
             bindAttack("AOE");
+            amountOfAttacksPickedWhenCloseToPlayer = 0;
+            return;
         }
 
         //SELECT FROM RANGE AND MODE
         for (int i = 0; i < attacks.Count; i++)
         {
-            //Attack can be used in our behaviour mode
-            if (attacks[i].allowedOnMode(currentMode))
+            //If this isn't the AOE Attack
+            if (attacks[i].attackName != "AOE")
             {
-                //We are within range for an attack
-                if (attacks[i].rangeForAttack.y >= distance)
+                Debug.Log("Name of attack is " + attacks[i].attackName);
+
+                //Attack can be used in our behaviour mode
+                if (attacks[i].allowedOnMode(currentMode))
                 {
-                    //If we have enough stamina for the attack
-                    if (attacks[i].statminaNeeded <= stamina)
+                    //We are within range for an attack
+                    if (attacks[i].rangeForAttack.y >= distance)
                     {
-                        //If we haven't just used this attack
-                        if (lastAttackUsed != i)
+                        //if we are not too close for an attack
+                        if (attacks[i].rangeForAttack.x <= distance)
                         {
-                            validAttacks.Add(i);
+                            //If we have enough stamina for the attack
+                            if (attacks[i].statminaNeeded <= stamina)
+                            {
+                                //If we haven't just used this attack
+                                if (lastAttackUsed != i)
+                                {
+                                    validAttacks.Add(i);
+                                }
+                            }
                         }
                     }
                 }

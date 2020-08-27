@@ -134,7 +134,7 @@ public class AIObject : MonoBehaviour
     {
         for (int i = 0; i < attacks.Count; i++)
         {
-            if (attacks[i].name == name)
+            if (attacks[i].attackName == name)
             {
                 selectedAttack = attacks[i];
                 return;

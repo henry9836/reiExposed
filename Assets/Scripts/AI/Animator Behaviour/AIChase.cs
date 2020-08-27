@@ -61,14 +61,6 @@ public class AIChase : StateMachineBehaviour
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        //If attack is null
-        //if (attack == null)
-        //{
-        //    ai.selectAttack();
-        //    attack = ai.getSelectedAttack();
-        //    movement.goToPosition(player.position);
-        //    return;
-        //}
 
         //If we have taken too long to attack
         wrongAttackChosenTimer += Time.deltaTime;
@@ -87,14 +79,14 @@ public class AIChase : StateMachineBehaviour
             animator.SetBool("Attacking", false);
         }
         //Too close to attack pick new attack!
-        else if (Vector3.Distance(ai.transform.position, player.position) < attack.rangeForAttack.x)
-        {
-            attacked = false;
-            movement.stopMovement();
-            ai.selectAttack();
-            attack = ai.getSelectedAttack();
-            animator.SetBool("Attacking", false);
-        }
+        //else if (Vector3.Distance(ai.transform.position, player.position) < attack.rangeForAttack.x)
+        //{
+        //    attacked = false;
+        //    movement.stopMovement();
+        //    //ai.selectAttack();
+        //    attack = ai.getSelectedAttack();
+        //    animator.SetBool("Attacking", false);
+        //}
         //Close enough to attack
         else
         {
