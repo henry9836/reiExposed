@@ -39,10 +39,6 @@ public class FlameAOEController : MonoBehaviour
             other.GetComponent<PlayerController>().health -= damage * dmgMulitiplier;
             other.GetComponent<Animator>().SetTrigger("KnockDown");
 
-
-            Debug.Log("Player was hurt: " + damage.ToString() + "x" + dmgMulitiplier.ToString() + "=" + (damage * dmgMulitiplier).ToString() + " || " + "D: " + Vector3.Distance(transform.position, other.transform.position).ToString() + "/" + rangeForDMG.ToString());
-
-
             //Disable
             col.enabled = false;
         }

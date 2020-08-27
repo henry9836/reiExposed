@@ -15,6 +15,7 @@ public class SlamAOEBehaviour : StateMachineBehaviour
     }
 
     public GameObject disappearPrefab;
+    public GameObject reappearFlamePrefab;
     public GameObject reappearPrefab;
 
     [Range(0.0f, 1.0f)]
@@ -161,7 +162,7 @@ public class SlamAOEBehaviour : StateMachineBehaviour
                         }
 
                         //Spawn flame
-                        reappearInstance = Instantiate(disappearPrefab, targetPos, Quaternion.identity);
+                        reappearInstance = Instantiate(reappearFlamePrefab, targetPos, Quaternion.identity);
 
 
                         currentStage = STAGES.FLAME;
@@ -174,6 +175,8 @@ public class SlamAOEBehaviour : StateMachineBehaviour
                     //Reappear Logic
                     if (progress >= reappearTarget)
                     {
+                        //Spawn flame
+                        reappearInstance = Instantiate(disappearPrefab, targetPos, Quaternion.identity);
                         //Move the boss to flame
                         ai.transform.position = targetPos;
                         currentStage = STAGES.FINISHED;
