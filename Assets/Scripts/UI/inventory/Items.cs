@@ -75,7 +75,7 @@ public class Items : MonoBehaviour
             biginvin.Add(null);
         }
 
-        Debug.Log(SaveSystemController.saveInfomation.Count);
+        //Debug.Log(SaveSystemController.saveInfomation.Count);
 
         StartCoroutine(loaditems());
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();

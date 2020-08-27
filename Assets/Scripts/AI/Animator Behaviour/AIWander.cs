@@ -7,7 +7,7 @@ public class AIWander : StateMachineBehaviour
 
     AIObject ai;
     AIMovement movement;
-    AIForwardAnimator forwarder;
+    
 
     Vector3 wanderTarget;
     bool pickedTarget;
@@ -18,18 +18,7 @@ public class AIWander : StateMachineBehaviour
         if (ai == null)
         {
             ai = animator.gameObject.GetComponent<AIObject>();
-        }
-
-        if (movement == null)
-        {
             movement = ai.movement;
-        }
-        if (forwarder == null)
-        {
-            if (animator.GetBehaviour<AIForwardAnimator>() != null)
-            {
-                forwarder = animator.GetBehaviour<AIForwardAnimator>();
-            }
         }
 
         pickedTarget = false;
@@ -62,10 +51,6 @@ public class AIWander : StateMachineBehaviour
             {
                 movement.stopMovement();
                 animator.SetBool("Idle", true);
-                if (forwarder != null)
-                {
-                    forwarder.SetBool("Idle", true);
-                }
             }
         }
 

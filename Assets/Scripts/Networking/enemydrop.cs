@@ -45,10 +45,10 @@ public class enemydrop : MonoBehaviour
         //Init Popup Message
         UIpop.SetActive(true);
 
-        Debug.Log(UIpop.gameObject.name);
-        Debug.Log(UIpop.transform.GetChild(0).gameObject.name);
-        Debug.Log(UIpop.transform.GetChild(0).GetChild(0).gameObject.name);
-        Debug.Log(UIpop.transform.GetChild(0).GetChild(0).GetComponent<Text>());
+        //Debug.Log(UIpop.gameObject.name);
+        //Debug.Log(UIpop.transform.GetChild(0).gameObject.name);
+        //Debug.Log(UIpop.transform.GetChild(0).GetChild(0).gameObject.name);
+        //Debug.Log(UIpop.transform.GetChild(0).GetChild(0).GetComponent<Text>());
 
         messageText = UIpop.transform.GetChild(0).GetChild(0).GetComponent<Text>();
         currencyText = UIpop.transform.GetChild(0).GetChild(1).GetComponent<Text>();
