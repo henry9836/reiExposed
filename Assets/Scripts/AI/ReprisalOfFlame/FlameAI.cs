@@ -7,8 +7,23 @@ public class FlameAI : AIObject
 
     private int lastAttackUsed = 0;
     private int amountOfAttacksPickedWhenCloseToPlayer = 0;
-    private int amountOfAttacksTillSlam = 3;
+    private int amountOfAttacksTillSlam = 4;
     private float closeAttackThreshold = 10.0f;
+
+    private int AOEAttackElement = -1;
+
+    private int findAttack(string attack)
+    {
+        for (int i = 0; i < attacks.Count; i++)
+        {
+            if (attacks[i].attackName == attack)
+            {
+                return i;
+            }
+        }
+
+        return -1;
+    }
 
     //Selects a random attack to use againest the player
     public override void selectAttack()
@@ -18,6 +33,11 @@ public class FlameAI : AIObject
         validAttacks.Clear();
         int fallbackAttack = 0;
         float closestAttack = Mathf.Infinity;
+
+        if (AOEAttackElement == -1)
+        {
+            AOEAttackElement = findAttack("AOE");
+        }
 
         if (distance <= closeAttackThreshold)
         {
@@ -30,11 +50,13 @@ public class FlameAI : AIObject
 
         Debug.Log("Amount of attacks close to player: " + amountOfAttacksPickedWhenCloseToPlayer.ToString());
         
-        if (amountOfAttacksPickedWhenCloseToPlayer >= amountOfAttacksTillSlam)
+        //If we have attacked the player enough times up close and we have stamina do AOE attack
+        if (amountOfAttacksPickedWhenCloseToPlayer >= amountOfAttacksTillSlam && attacks[AOEAttackElement].statminaNeeded <= stamina)
         {
             //bind AOE Attack
             bindAttack("AOE");
             amountOfAttacksPickedWhenCloseToPlayer = 0;
+            amountOfAttacksTillSlam = Random.Range(4, 7);
             return;
         }
 
@@ -44,8 +66,6 @@ public class FlameAI : AIObject
             //If this isn't the AOE Attack
             if (attacks[i].attackName != "AOE")
             {
-                Debug.Log("Name of attack is " + attacks[i].attackName);
-
                 //Attack can be used in our behaviour mode
                 if (attacks[i].allowedOnMode(currentMode))
                 {
@@ -84,6 +104,7 @@ public class FlameAI : AIObject
         if (validAttacks.Count > 0)
         {
             int element = Random.Range(0, validAttacks.Count);
+            Debug.Log("Attack Picked: " + attacks[validAttacks[element]].attackName);
             lastAttackUsed = element;
             bindAttack(validAttacks[element]);
         }
@@ -91,6 +112,7 @@ public class FlameAI : AIObject
         else
         {
             lastAttackUsed = fallbackAttack;
+            Debug.Log("Attack Picked: " + attacks[fallbackAttack].attackName);
             bindAttack(fallbackAttack);
         }
     }
