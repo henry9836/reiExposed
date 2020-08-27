@@ -28,7 +28,6 @@ public class FlameAI : AIObject
     //Selects a random attack to use againest the player
     public override void selectAttack()
     {
-        Debug.Log("[DEBUG] Select Attack Called");
         float distance = Vector3.Distance(tracker.lastSeenPos, transform.position);
         validAttacks.Clear();
         int fallbackAttack = 0;
@@ -47,8 +46,6 @@ public class FlameAI : AIObject
         {
             amountOfAttacksPickedWhenCloseToPlayer = 0;
         }
-
-        Debug.Log("Amount of attacks close to player: " + amountOfAttacksPickedWhenCloseToPlayer.ToString());
         
         //If we have attacked the player enough times up close and we have stamina do AOE attack
         if (amountOfAttacksPickedWhenCloseToPlayer >= amountOfAttacksTillSlam && attacks[AOEAttackElement].statminaNeeded <= stamina)
@@ -104,7 +101,6 @@ public class FlameAI : AIObject
         if (validAttacks.Count > 0)
         {
             int element = Random.Range(0, validAttacks.Count);
-            Debug.Log("Attack Picked: " + attacks[validAttacks[element]].attackName);
             lastAttackUsed = element;
             bindAttack(validAttacks[element]);
         }
@@ -112,7 +108,6 @@ public class FlameAI : AIObject
         else
         {
             lastAttackUsed = fallbackAttack;
-            Debug.Log("Attack Picked: " + attacks[fallbackAttack].attackName);
             bindAttack(fallbackAttack);
         }
     }
