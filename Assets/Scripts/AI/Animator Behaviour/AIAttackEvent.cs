@@ -5,7 +5,7 @@ using UnityEngine;
 public class AIAttackEvent : StateMachineBehaviour
 {
     public Vector2 damageWindow;
-   
+    public bool normalExitBehaviour = true;
     
     AIObject ai;
     AIAttackContainer attack;
@@ -59,7 +59,10 @@ public class AIAttackEvent : StateMachineBehaviour
         {
             ai.body.updateHitBox(parts, false);
             armed = false;
-            animator.SetBool("Attacking", false);
+            if (normalExitBehaviour)
+            {
+                animator.SetBool("Attacking", false);
+            }
         }
     }
 
