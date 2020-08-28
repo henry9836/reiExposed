@@ -266,12 +266,9 @@ public class AIObject : MonoBehaviour
                         revealAmount = revealpersentobject.GetComponent<drawTest>().blackpersent;
                     }
 
-                    Debug.Log("r" + revealAmount);
                     revealAmount = startHealth * revealAmount;
 
                     float diff = (health - revealAmount);
-
-                    Debug.Log(diff);
 
                     if (playerCtrl.umbreallaDmg < diff)
                     {
