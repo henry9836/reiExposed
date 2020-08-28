@@ -327,12 +327,34 @@ public class umbrella : MonoBehaviour
                     //apply damage
                     if (Hit.collider.GetComponent<AIObject>())
                     {
-                        GameObject tmp = GameObject.Instantiate(damagedText, Hit.point, Quaternion.identity);
-                        tmp.transform.SetParent(Hit.collider.gameObject.transform, true);
-                        tmp.transform.GetChild(0).GetComponent<Text>().text = "-" + damage.ToString("F0");
-                        Hit.collider.GetComponent<AIObject>().health -= damage;
+                        float revealAmount = 0.0f;
 
-                        Debug.Log("attackign for " + damage);
+                        if (Hit.collider.gameObject.tag == "Boss")
+                        {
+                            revealAmount = Hit.collider.GetComponent<AIObject>().revealpersentobject.GetComponent<drawTest>().blackpersent;
+                        }
+
+
+                        revealAmount = Hit.collider.GetComponent<AIObject>().startHealth * revealAmount;
+
+                        float diff = (Hit.collider.GetComponent<AIObject>().health - revealAmount);
+
+                        if (damage < diff)
+                        {
+                            GameObject tmp = GameObject.Instantiate(damagedText, Hit.point, Quaternion.identity);
+                            tmp.transform.SetParent(Hit.collider.gameObject.transform, true);
+                            tmp.transform.GetChild(0).GetComponent<Text>().text = "-" + damage.ToString("F0");
+                            Hit.collider.GetComponent<AIObject>().health -= damage;
+
+                        }
+                        else
+                        {
+                            GameObject tmp = GameObject.Instantiate(damagedText, Hit.point, Quaternion.identity);
+                            tmp.transform.SetParent(Hit.collider.gameObject.transform, true);
+                            tmp.transform.GetChild(0).GetComponent<Text>().text = "-" + diff.ToString("F0");
+                            Hit.collider.GetComponent<AIObject>().health = revealAmount;
+                        }
+
                         break;
                     }
                     else if (Hit.collider.GetComponent<traningDummy>())

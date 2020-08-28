@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class introSequence : MonoBehaviour
 {
     public GameObject introUI;
-    public bool playintro = true;
 
     public GameObject tabandscrollhelp;
     private GameObject img;
@@ -21,7 +20,8 @@ public class introSequence : MonoBehaviour
     void Start()
     {
         gameMNGR = GameObject.Find("GameManager");
-        if (playintro)
+
+        if (!SaveSystemController.getBoolValue("notFirstPlay"))
         {
             StartCoroutine(intro());
 
@@ -80,6 +80,10 @@ public class introSequence : MonoBehaviour
         txt.SetActive(false);
         tabandscrollhelp.SetActive(true);
         gameMNGR.GetComponent<GameManager>().stopPlayer(false);
+
+
+        SaveSystemController.updateValue("notFirstPlay", true);
+
 
         yield return null;
 
