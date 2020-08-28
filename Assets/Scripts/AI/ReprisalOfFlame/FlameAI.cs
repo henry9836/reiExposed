@@ -48,7 +48,7 @@ public class FlameAI : AIObject
         }
         
         //If we have attacked the player enough times up close and we have stamina do AOE attack
-        if (amountOfAttacksPickedWhenCloseToPlayer >= amountOfAttacksTillSlam && attacks[AOEAttackElement].statminaNeeded <= stamina)
+        if (amountOfAttacksPickedWhenCloseToPlayer >= amountOfAttacksTillSlam && attacks[AOEAttackElement].statminaNeeded <= stamina && attacks[AOEAttackElement].allowedOnMode(currentMode))
         {
             //bind AOE Attack
             bindAttack("AOE");
@@ -83,17 +83,18 @@ public class FlameAI : AIObject
                             }
                         }
                     }
-                }
-                //record attack if it closer than the last closest attack
-                else if (distance - attacks[i].rangeForAttack.y < closestAttack)
-                {
-                    //If we have enough stamina for the attack
-                    if (attacks[i].statminaNeeded <= stamina)
+                    //record attack if it closer than the last closest attack
+                    else if (distance - attacks[i].rangeForAttack.y < closestAttack)
                     {
-                        closestAttack = distance - attacks[i].rangeForAttack.y;
-                        fallbackAttack = i;
+                        //If we have enough stamina for the attack
+                        if (attacks[i].statminaNeeded <= stamina)
+                        {
+                            closestAttack = distance - attacks[i].rangeForAttack.y;
+                            fallbackAttack = i;
+                        }
                     }
                 }
+                
             }
         }
 

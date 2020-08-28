@@ -39,7 +39,7 @@ public class AIObject : MonoBehaviour
     public float revealAmount = 0.0f;
     [HideInInspector]
     public float stamina;
-    [HideInInspector]
+    //[HideInInspector]
     public int currentMode = 1;
     [HideInInspector]
     public Animator animator;
