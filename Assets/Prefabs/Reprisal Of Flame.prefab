@@ -15010,7 +15010,6 @@ GameObject:
   - component: {fileID: 3571246182170304288}
   - component: {fileID: 5326106790708351361}
   - component: {fileID: 8712548130974696105}
-  - component: {fileID: 5256648503180215487}
   - component: {fileID: 5256648503180215484}
   - component: {fileID: 5256648503180215485}
   - component: {fileID: 5256648503180215482}
@@ -15030,6 +15029,7 @@ GameObject:
   - component: {fileID: 1260518056347103479}
   - component: {fileID: 931822222814206917}
   - component: {fileID: 5715697771144031159}
+  - component: {fileID: 6439600856069253462}
   m_Layer: 13
   m_Name: Reprisal Of Flame
   m_TagString: Boss
@@ -15099,20 +15099,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &5256648503180215487
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5256648503180215460}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 739a5c3374b35274fa13bf7356b40e6d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  behaviour: 0
-  ai: {fileID: 0}
 --- !u!114 &5256648503180215484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15304,7 +15290,7 @@ MonoBehaviour:
   staminaRegen: 3
   revealThreshold: 0.035
   selectedAttack: {fileID: 0}
-  amountofModes: 1
+  amountofModes: 3
   startHealth: 0
   revealAmount: 0
   stamina: 0
@@ -15457,7 +15443,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackName: Heavy Attack
-  damage: 20
+  damage: 5
   statminaNeeded: 5
   damageOnlyOnce: 1
   bodyPartsUsedInAttack: 2
@@ -15475,7 +15461,7 @@ MonoBehaviour:
   allowedModeSeven: 1
   allowedModeEight: 1
   allowedModeNine: 1
-  allowedModeTen: 1
+  allowedModeTen: 0
 --- !u!114 &5256648503180215486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15507,7 +15493,7 @@ MonoBehaviour:
   allowedModeSeven: 1
   allowedModeEight: 1
   allowedModeNine: 1
-  allowedModeTen: 1
+  allowedModeTen: 0
 --- !u!114 &7565428885590965157
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15530,8 +15516,8 @@ MonoBehaviour:
   facePlayerThreshold: 0.75
   rangeForAttack: {x: 10, y: 90}
   triggerName: Dash
-  allowedModeOne: 1
-  allowedModeTwo: 1
+  allowedModeOne: 0
+  allowedModeTwo: 0
   allowedModeThree: 1
   allowedModeFour: 1
   allowedModeFive: 1
@@ -15539,7 +15525,7 @@ MonoBehaviour:
   allowedModeSeven: 1
   allowedModeEight: 1
   allowedModeNine: 1
-  allowedModeTen: 1
+  allowedModeTen: 0
 --- !u!114 &7565428885590965154
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15562,8 +15548,8 @@ MonoBehaviour:
   facePlayerThreshold: -1
   rangeForAttack: {x: 10, y: 50}
   triggerName: FlameG
-  allowedModeOne: 1
-  allowedModeTwo: 1
+  allowedModeOne: 0
+  allowedModeTwo: 0
   allowedModeThree: 1
   allowedModeFour: 1
   allowedModeFive: 1
@@ -15571,7 +15557,7 @@ MonoBehaviour:
   allowedModeSeven: 1
   allowedModeEight: 1
   allowedModeNine: 1
-  allowedModeTen: 1
+  allowedModeTen: 0
 --- !u!114 &100898904854015967
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15594,7 +15580,7 @@ MonoBehaviour:
   facePlayerThreshold: 0.75
   rangeForAttack: {x: 0, y: 9999}
   triggerName: SlamAOE
-  allowedModeOne: 1
+  allowedModeOne: 0
   allowedModeTwo: 1
   allowedModeThree: 1
   allowedModeFour: 1
@@ -15603,7 +15589,7 @@ MonoBehaviour:
   allowedModeSeven: 1
   allowedModeEight: 1
   allowedModeNine: 1
-  allowedModeTen: 1
+  allowedModeTen: 0
 --- !u!114 &1260518056347103479
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15619,14 +15605,14 @@ MonoBehaviour:
   attackName: Swipe
   damage: 5
   statminaNeeded: 5
-  damageOnlyOnce: 1
+  damageOnlyOnce: 0
   bodyPartsUsedInAttack: 11
   mustFacePlayer: 1
   overrideTrackingVisionCone: 1
   facePlayerThreshold: 0.7
   rangeForAttack: {x: 0, y: 2}
   triggerName: Swipe
-  allowedModeOne: 1
+  allowedModeOne: 0
   allowedModeTwo: 1
   allowedModeThree: 1
   allowedModeFour: 1
@@ -15635,7 +15621,7 @@ MonoBehaviour:
   allowedModeSeven: 1
   allowedModeEight: 1
   allowedModeNine: 1
-  allowedModeTen: 1
+  allowedModeTen: 0
 --- !u!114 &931822222814206917
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15714,6 +15700,24 @@ MonoBehaviour:
   onStart:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &6439600856069253462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5256648503180215460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f662f019297290048b0efe5796e7e102, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  behaviour: 2
+  ai: {fileID: 0}
+  stageThresholds:
+  - 1
+  - 0.9
+  - 0.8
 --- !u!1 &5353923937124038183
 GameObject:
   m_ObjectHideFlags: 0
