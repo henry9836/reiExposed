@@ -14141,7 +14141,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 709647734231253519}
-  - component: {fileID: 4576348824239681565}
   m_Layer: 13
   m_Name: Reprisal Of FlameBody
   m_TagString: Untagged
@@ -14168,25 +14167,6 @@ Transform:
   m_Father: {fileID: 9126549243076785847}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &4576348824239681565
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4576348824239681564}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 156030e838c0b934b8fd9a2677544500, type: 3}
-  m_Controller: {fileID: 9100000, guid: f55f3f94686767f4f91739e64d9ef3c2, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &4627093231614220810
 GameObject:
   m_ObjectHideFlags: 0
@@ -15030,8 +15010,6 @@ GameObject:
   - component: {fileID: 3571246182170304288}
   - component: {fileID: 5326106790708351361}
   - component: {fileID: 8712548130974696105}
-  - component: {fileID: 1762889396408738047}
-  - component: {fileID: 5256648503180215487}
   - component: {fileID: 5256648503180215484}
   - component: {fileID: 5256648503180215485}
   - component: {fileID: 5256648503180215482}
@@ -15039,18 +15017,19 @@ GameObject:
   - component: {fileID: 5256648503180215480}
   - component: {fileID: 5256648503180215481}
   - component: {fileID: 5256648503180215462}
-  - component: {fileID: 5256648503180215463}
+  - component: {fileID: 4059565761304736567}
   - component: {fileID: 4533981090127729755}
   - component: {fileID: 7565428885590965207}
-  - component: {fileID: 7565428885590965206}
-  - component: {fileID: 7565428885590965193}
   - component: {fileID: 7565428885590965192}
-  - component: {fileID: 5256648503180215486}
   - component: {fileID: 4533981090127729757}
+  - component: {fileID: 5256648503180215486}
   - component: {fileID: 7565428885590965157}
   - component: {fileID: 7565428885590965154}
+  - component: {fileID: 100898904854015967}
+  - component: {fileID: 1260518056347103479}
   - component: {fileID: 931822222814206917}
   - component: {fileID: 5715697771144031159}
+  - component: {fileID: 6439600856069253462}
   m_Layer: 13
   m_Name: Reprisal Of Flame
   m_TagString: Boss
@@ -15120,40 +15099,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1762889396408738047
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5256648503180215460}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72c0762017372f04db956ddd511104a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  transparent: {fileID: 2100000, guid: 342987a14864d3f4da490c69142838b9, type: 2}
-  visible: {fileID: -1327931180133130153, guid: 156030e838c0b934b8fd9a2677544500,
-    type: 3}
-  vs: {fileID: 0}
-  obsctules:
-    serializedVersion: 2
-    m_Bits: 82433
-  bodysNoVFX: []
---- !u!114 &5256648503180215487
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5256648503180215460}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 739a5c3374b35274fa13bf7356b40e6d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  behaviour: 0
-  ai: {fileID: 0}
 --- !u!114 &5256648503180215484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15317,7 +15262,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &5256648503180215463
+--- !u!114 &4059565761304736567
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -15326,7 +15271,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5256648503180215460}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8869689b6427f9345b083195350320ce, type: 3}
+  m_Script: {fileID: 11500000, guid: 2f21360b355e18d4b8ad6dc915c5d3d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   attacks: []
@@ -15336,7 +15281,7 @@ MonoBehaviour:
   informer: {fileID: 0}
   body: {fileID: 0}
   playerCtrl: {fileID: 0}
-  forwardAnimationsTo: {fileID: 4576348824239681565}
+  forwardAnimationsTo: {fileID: 0}
   startInSleepState: 1
   handleCollision: 1
   damagedText: {fileID: 7401280080073061358, guid: febedf0338a1da8438f0280ae306b1d0,
@@ -15345,7 +15290,7 @@ MonoBehaviour:
   staminaRegen: 3
   revealThreshold: 0.035
   selectedAttack: {fileID: 0}
-  amountofModes: 1
+  amountofModes: 3
   startHealth: 0
   revealAmount: 0
   stamina: 0
@@ -15389,198 +15334,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 451a9b439188aa64e9b23f780988b771, type: 3}
   - {fileID: 8300000, guid: 2d684dcdb90f510439e27214327e1f5d, type: 3}
   - {fileID: 8300000, guid: acf7b084170b7144d8366efa8b50548d, type: 3}
---- !u!82 &7565428885590965206
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5256648503180215460}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!82 &7565428885590965193
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5256648503180215460}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!82 &7565428885590965192
 AudioSource:
   m_ObjectHideFlags: 0
@@ -15677,6 +15430,38 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &4533981090127729757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5256648503180215460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 084cb613cb9443d4a8936dade09221ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackName: Heavy Attack
+  damage: 5
+  statminaNeeded: 5
+  damageOnlyOnce: 1
+  bodyPartsUsedInAttack: 2
+  mustFacePlayer: 1
+  overrideTrackingVisionCone: 1
+  facePlayerThreshold: 0.7
+  rangeForAttack: {x: 0, y: 2}
+  triggerName: heavyAttack
+  allowedModeOne: 1
+  allowedModeTwo: 1
+  allowedModeThree: 1
+  allowedModeFour: 1
+  allowedModeFive: 1
+  allowedModeSix: 1
+  allowedModeSeven: 1
+  allowedModeEight: 1
+  allowedModeNine: 1
+  allowedModeTen: 0
 --- !u!114 &5256648503180215486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15697,7 +15482,7 @@ MonoBehaviour:
   mustFacePlayer: 1
   overrideTrackingVisionCone: 1
   facePlayerThreshold: 0.7
-  rangeForAttack: {x: 0, y: 5}
+  rangeForAttack: {x: 0, y: 2}
   triggerName: basicAttack
   allowedModeOne: 1
   allowedModeTwo: 1
@@ -15708,39 +15493,7 @@ MonoBehaviour:
   allowedModeSeven: 1
   allowedModeEight: 1
   allowedModeNine: 1
-  allowedModeTen: 1
---- !u!114 &4533981090127729757
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5256648503180215460}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 084cb613cb9443d4a8936dade09221ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attackName: Heavy Attack
-  damage: 20
-  statminaNeeded: 5
-  damageOnlyOnce: 1
-  bodyPartsUsedInAttack: 2
-  mustFacePlayer: 1
-  overrideTrackingVisionCone: 1
-  facePlayerThreshold: 0.7
-  rangeForAttack: {x: 0, y: 5}
-  triggerName: heavyAttack
-  allowedModeOne: 1
-  allowedModeTwo: 1
-  allowedModeThree: 1
-  allowedModeFour: 1
-  allowedModeFive: 1
-  allowedModeSix: 1
-  allowedModeSeven: 1
-  allowedModeEight: 1
-  allowedModeNine: 1
-  allowedModeTen: 1
+  allowedModeTen: 0
 --- !u!114 &7565428885590965157
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15763,8 +15516,8 @@ MonoBehaviour:
   facePlayerThreshold: 0.75
   rangeForAttack: {x: 10, y: 90}
   triggerName: Dash
-  allowedModeOne: 1
-  allowedModeTwo: 1
+  allowedModeOne: 0
+  allowedModeTwo: 0
   allowedModeThree: 1
   allowedModeFour: 1
   allowedModeFive: 1
@@ -15772,7 +15525,7 @@ MonoBehaviour:
   allowedModeSeven: 1
   allowedModeEight: 1
   allowedModeNine: 1
-  allowedModeTen: 1
+  allowedModeTen: 0
 --- !u!114 &7565428885590965154
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15795,7 +15548,39 @@ MonoBehaviour:
   facePlayerThreshold: -1
   rangeForAttack: {x: 10, y: 50}
   triggerName: FlameG
-  allowedModeOne: 1
+  allowedModeOne: 0
+  allowedModeTwo: 0
+  allowedModeThree: 1
+  allowedModeFour: 1
+  allowedModeFive: 1
+  allowedModeSix: 1
+  allowedModeSeven: 1
+  allowedModeEight: 1
+  allowedModeNine: 1
+  allowedModeTen: 0
+--- !u!114 &100898904854015967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5256648503180215460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 084cb613cb9443d4a8936dade09221ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackName: AOE
+  damage: 5
+  statminaNeeded: 5
+  damageOnlyOnce: 1
+  bodyPartsUsedInAttack: 0
+  mustFacePlayer: 0
+  overrideTrackingVisionCone: 0
+  facePlayerThreshold: 0.75
+  rangeForAttack: {x: 0, y: 9999}
+  triggerName: SlamAOE
+  allowedModeOne: 0
   allowedModeTwo: 1
   allowedModeThree: 1
   allowedModeFour: 1
@@ -15804,7 +15589,39 @@ MonoBehaviour:
   allowedModeSeven: 1
   allowedModeEight: 1
   allowedModeNine: 1
-  allowedModeTen: 1
+  allowedModeTen: 0
+--- !u!114 &1260518056347103479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5256648503180215460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 084cb613cb9443d4a8936dade09221ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackName: Swipe
+  damage: 5
+  statminaNeeded: 5
+  damageOnlyOnce: 0
+  bodyPartsUsedInAttack: 11
+  mustFacePlayer: 1
+  overrideTrackingVisionCone: 1
+  facePlayerThreshold: 0.7
+  rangeForAttack: {x: 0, y: 2}
+  triggerName: Swipe
+  allowedModeOne: 0
+  allowedModeTwo: 1
+  allowedModeThree: 1
+  allowedModeFour: 1
+  allowedModeFive: 1
+  allowedModeSix: 1
+  allowedModeSeven: 1
+  allowedModeEight: 1
+  allowedModeNine: 1
+  allowedModeTen: 0
 --- !u!114 &931822222814206917
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15883,6 +15700,24 @@ MonoBehaviour:
   onStart:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &6439600856069253462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5256648503180215460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f662f019297290048b0efe5796e7e102, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  behaviour: 2
+  ai: {fileID: 0}
+  stageThresholds:
+  - 1
+  - 0.9
+  - 0.8
 --- !u!1 &5353923937124038183
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,9 +9,8 @@ public class GameManager : MonoBehaviour
 
     public AIObject boss;
     public UnityEvent GameOverEvent;
+    public GameObject rei;
 
-
-    bool once = false;
 
     private void Start()
     {
@@ -21,13 +20,19 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         GameOverEvent.Invoke();
-        //StartCoroutine(goToMainMenu());
     }
 
-    IEnumerator goToMainMenu()
+    //true stops the player doing anything
+    public void stopPlayer(bool tostop)
     {
-        yield return new WaitForSeconds(10.0f);
-        SceneManager.LoadScene(0);
+        rei.GetComponent<CharacterController>().enabled = !tostop;
+        rei.GetComponent<movementController>().enabled = !tostop; // movemnt control turns back on automatically
+        rei.GetComponent<PlayerController>().enabled = !tostop;
+        rei.GetComponent<umbrella>().enabled = !tostop;
+        rei.transform.GetChild(0).GetComponent<cameraControler>().enabled = !tostop;
+        rei.GetComponent<Animator>().enabled = !tostop;
+        
     }
+
 
 }

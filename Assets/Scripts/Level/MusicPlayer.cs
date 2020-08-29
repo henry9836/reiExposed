@@ -59,6 +59,11 @@ public class MusicPlayer : MonoBehaviour
         startPlaylist(PLAYLIST_MODES.BATTLE);
     }
 
+    public void StartNone()
+    {
+        playMode = PLAYLIST_MODES.NONE;
+    }
+
 
     public void LoadClip()
     {
@@ -68,11 +73,17 @@ public class MusicPlayer : MonoBehaviour
             case PLAYLIST_MODES.CALM:
                 {
                     audioSource.clip = calmClips[Random.Range(0, calmClips.Count)];
+                    Resume();
                     break;
                 }
             case PLAYLIST_MODES.BATTLE:
                 {
                     audioSource.clip = battleClips[Random.Range(0, battleClips.Count)];
+                    Resume();
+                    break;
+                }
+            case PLAYLIST_MODES.NONE:
+                {
                     break;
                 }
             default:
@@ -80,7 +91,6 @@ public class MusicPlayer : MonoBehaviour
                     break;
                 }
         }
-        Resume();
     }
 
 

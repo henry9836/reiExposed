@@ -140,6 +140,10 @@ public class AIFlameGeyser : StateMachineBehaviour
         {
             return;
         }
+
+        //Reset selected attack
+        //ai.unbindAttack();
+
         movement.setOverride(AIMovement.OVERRIDE.NO_OVERRIDE);
     }
 

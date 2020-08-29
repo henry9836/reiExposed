@@ -101,14 +101,13 @@ public class cameraShake : MonoBehaviour
                     {
                         Test = false;
 
-                        passTargetPos = new Vector3(0.0f, 0.0f, -0.15f);
+                        passTargetPos = new Vector3(0.0f, 0.1f, -0.3f);
                         passOverallSpeed = 3.0f;
-                        passTargetRot = new Vector3(-3.0f, 0.4f, 0.0f);
+                        passTargetRot = new Vector3(-3.0f, 2.0f, 0.0f);
                         funcin = shakeOperation.lerpModes.OUTEXPO;
                         funcout = shakeOperation.lerpModes.INSINE;
-                        speedIn = 1.5f;
+                        speedIn = 5000.0f;
                         speedOut = 1.0f;
-
 
                         addOperation(passTargetPos, passTargetRot, passOverallSpeed, funcin, funcout, speedIn, speedOut);
                     }

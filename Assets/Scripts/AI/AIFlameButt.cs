@@ -65,6 +65,8 @@ public class AIFlameButt : StateMachineBehaviour
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         movement.setOverride(AIMovement.OVERRIDE.NO_OVERRIDE);
+        //Reset selected attack
+        //ai.unbindAttack();
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
