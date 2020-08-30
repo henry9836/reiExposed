@@ -8,6 +8,8 @@ using System.IO;
 public static class ReverseAnimationContext
 {
 
+#if UNITY_EDITOR
+
     [MenuItem("Assets/Create Reversed Clip", false, 14)]
     private static void ReverseClip()
     {
@@ -73,5 +75,7 @@ public static class ReverseAnimationContext
         }
         return null;
     }
+
+#endif
 
 }

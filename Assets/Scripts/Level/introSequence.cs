@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class introSequence : MonoBehaviour
 {
     public GameObject introUI;
-    public bool playintro = true;
 
     public GameObject tabandscrollhelp;
     private GameObject img;
@@ -14,14 +13,15 @@ public class introSequence : MonoBehaviour
     private GameObject gameMNGR;
     private string VA1 = "Urban legends subsist on mystery-  "; //2x space at end
     private string VA2 = "they live so long as they are obscure.  ";
-    private string VA3 = "To be documented is their sole,  ";
+    private string VA3 = "\nTo be documented is their sole,  ";
     private string VA4 = "absolute poison.  ";
 
 
     void Start()
     {
         gameMNGR = GameObject.Find("GameManager");
-        if (playintro)
+
+        if (!SaveSystemController.getBoolValue("notFirstPlay"))
         {
             StartCoroutine(intro());
 
@@ -80,6 +80,10 @@ public class introSequence : MonoBehaviour
         txt.SetActive(false);
         tabandscrollhelp.SetActive(true);
         gameMNGR.GetComponent<GameManager>().stopPlayer(false);
+
+
+        SaveSystemController.updateValue("notFirstPlay", true);
+
 
         yield return null;
 

@@ -46,7 +46,7 @@ public class drawTest : MonoBehaviour
     }
 
 
-    float getblackPixels()
+    public float getblackPixels()
     {
 
         int blackcount = 0;
