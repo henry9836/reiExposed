@@ -126,6 +126,11 @@ public class packagetosend : MonoBehaviour
 
     public static List<datadump> enemieDrops = new List<datadump>() { };
 
+    [Header("Network Messages Debug")]
+    public bool debugMessages = true;
+    private float timerThing = 0.0f;
+    private int thingy = 0;
+
     void Start()
     {
         GameObject[] enemylist = GameObject.FindGameObjectsWithTag("Myth");
@@ -144,25 +149,43 @@ public class packagetosend : MonoBehaviour
             send(ddpackettype);
         }
 
-
+        timerThing += Time.deltaTime;
         //FOR SOME REASON WE CANNOT HAVE QR CODE WORKING UNLESS WE DO THIS CHECK
-        if (enemieDrops.Count > 0)
+        if (debugMessages)
         {
-            //if (enemieDrops[0] != null)
-            //{
-            //    //debugText.text = enemieDrops.Count.ToString() + ":" + enemieDrops[0].tmessage;
-            //    //debugText.text = ""; //Things are going well
-            //}
-            //else
-            //{
-            //    //debugText.text = enemieDrops.Count.ToString() + ":NULL";
-            //    //debugText.text = "";
-            //}
+            debugText.enabled = true;
+            if (timerThing > 3.0f)
+            {
+                timerThing = 0.0f;
+                if (enemieDrops.Count > 0)
+                {
+                    if (enemieDrops[thingy] != null)
+                    {
+                        debugText.text = enemieDrops.Count.ToString() + ":" + enemieDrops[thingy].tmessage + ":" + thingy.ToString();
+                        //debugText.text = ""; //Things are going well
+                    }
+                    else
+                    {
+                        debugText.text = enemieDrops.Count.ToString() + ":NULL:" + thingy.ToString();
+                        //debugText.text = "";
+                    }
+                }
+                else
+                {
+                    debugText.text = enemieDrops.Count.ToString() + ":EMPTY:" + thingy.ToString();
+                    //debugText.text = "";
+                }
+
+                thingy++;
+                if (thingy >= enemieDrops.Count)
+                {
+                    thingy = 0;
+                }
+            }
         }
         else
         {
-            //debugText.text = enemieDrops.Count.ToString() + ":EMPTY";
-            //debugText.text = "";
+            debugText.enabled = false;
         }
     }
     public void send(int type) { send((sendpackettypes)type); }
