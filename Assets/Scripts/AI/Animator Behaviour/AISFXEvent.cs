@@ -6,48 +6,29 @@ public class AISFXEvent : StateMachineBehaviour
 {
     [Range(0.0f, 1.0f)]
     public float trigger;
-    public AudioClip clip;
-    public int SFXIndex = 0;
-    public bool SFXRandom;
-    public Vector2 SFXRandomRange = new Vector2(0, 1);
+    public List<AudioClip> clips = new List<AudioClip>();
 
-    MultipleSoundObject soundObj = null;
+    AudioSource audioSrc = null;
     bool triggered = false;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (animator.gameObject.GetComponent<MultipleSoundObject>() == null)
+        if (audioSrc == null)
         {
+            audioSrc = animator.gameObject.GetComponent<AudioSource>();
             return;
         }
         triggered = false;
-        soundObj = animator.gameObject.GetComponent<MultipleSoundObject>();
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (soundObj == null)
-        {
-            return;
-        }
-
         //Trigger sfx
-        if (trigger >= stateInfo.normalizedTime && !triggered)
+        if (trigger <= (stateInfo.normalizedTime % 1.0f) && !triggered)
         {
-            if (clip == null)
-            {
-                if (SFXRandom)
-                {
-                    SFXIndex = (int)Random.Range(SFXRandomRange.x, SFXRandomRange.y);
-                }
-                soundObj.Play(SFXIndex);
-            }
-            else
-            {
-                soundObj.Play(clip);
-            }
+            audioSrc.PlayOneShot(clips[Random.Range(0, clips.Count)]);
             triggered = true;
         }
     }
