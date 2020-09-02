@@ -11,8 +11,10 @@ GameObject:
   - component: {fileID: 4908271754372137462}
   - component: {fileID: 4127172582499711936}
   - component: {fileID: 7672481145751832377}
+  - component: {fileID: 6979349744777159834}
+  - component: {fileID: 5842938784499701310}
   m_Layer: 0
-  m_Name: exhaust fan
+  m_Name: Exhaust
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25,9 +27,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8234540544374191077}
-  m_LocalRotation: {x: -0, y: -0.0000014603136, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 90.5, y: 2, z: 34}
-  m_LocalScale: {x: 2.6407, y: 2.6407, z: 2.6407}
+  m_LocalScale: {x: 3.508038, y: 3.508038, z: 3.508038}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -58,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 5561349426305759274, guid: b6c0d2faffd807d4387e02941445e476, type: 3}
+  - {fileID: 2100000, guid: 688a4425e8dfdd1459a8a556f0e3a147, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -79,3 +81,35 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!205 &6979349744777159834
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8234540544374191077}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: -0.11873066, y: 0.09592863, z: 0.09296584}
+  m_Size: 0.23746131
+  m_FadeMode: 1
+  m_AnimateCrossFading: 1
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.008576448
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 7672481145751832377}
+  m_Enabled: 1
+--- !u!65 &5842938784499701310
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8234540544374191077}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.23746131, y: 0.19185726, z: 0.18593168}
+  m_Center: {x: -0.11873066, y: 0.09592863, z: 0.09296584}
