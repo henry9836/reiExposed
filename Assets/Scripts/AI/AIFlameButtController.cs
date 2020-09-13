@@ -45,7 +45,6 @@ public class AIFlameButtController : MonoBehaviour
         playerCtrl = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
     }
 
-    //Detection
     private void OnTriggerStay(Collider other)
     {
         if (!flamed && ai.stamina >= staminaCost)
