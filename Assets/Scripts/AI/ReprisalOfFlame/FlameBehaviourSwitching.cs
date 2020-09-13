@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class FlameBehaviourSwitching : AIModeSwitcher
 {
     [Range(0.0f, 1.0f)]
     public List<float> stageThresholds = new List<float>();
+
+    public List<UnityEvent> stageEvents = new List<UnityEvent>();
 
     private int currentBehaviour = 0;
     private float maxHealth = 1;
@@ -28,12 +31,12 @@ public class FlameBehaviourSwitching : AIModeSwitcher
             if (stageThresholds[currentBehaviour] >= (ai.health / maxHealth))
             {
                 //Switch to the next stage
+                stageEvents[currentBehaviour].Invoke();
                 currentBehaviour++;
                 ai.currentMode = currentBehaviour;
             }
         }
 
-        Debug.Log("Behaviour: " + currentBehaviour.ToString() + " | " + stageThresholds[currentBehaviour].ToString() + " >= " + (ai.health / maxHealth).ToString());
 
     }
 }
