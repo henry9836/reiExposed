@@ -7,9 +7,6 @@ public class AIFlameButt : StateMachineBehaviour
     public float timeToTrigger = 0.35f;
 
     AIObject ai;
-    AITracker tracker;
-    Transform player;
-    AIBody body;
     AIMovement movement;
     AIFlameButtController butt;
     bool attacked = false;
