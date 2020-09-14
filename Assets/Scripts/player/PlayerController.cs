@@ -28,6 +28,8 @@ public class PlayerController : MonoBehaviour
     public Color maxcolor;
     public Color minColor;
     public Image damaged;
+    public GameObject bossHitVFX;
+
     //Sounds
     public List<AudioClip> hurtSounds = new List<AudioClip>();
     public AudioClip deathSound;
@@ -114,10 +116,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    void uiupdate()
+    {
+        staminaUI.GetComponent<Image>().fillAmount = staminaAmount / staminaMaxAmount;
+        HPui.GetComponent<Image>().fillAmount = health / maxHealth;
+    }
+
+
     private void OnTriggerEnter(Collider other)
     {
-        //Debug.Log("v " + other.name);
-
         if (dead == false)
         {
             GameObject otherObject = other.gameObject;
@@ -143,6 +150,13 @@ public class PlayerController : MonoBehaviour
                     Debug.LogWarning($"Unknown Component Damage {otherObject.name}");
                 }
                 audio.PlayOneShot(hurtSounds[Random.Range(0, hurtSounds.Count)]);
+
+                //Boss VFX Hit
+                if (otherObject.transform.root.tag == "Boss")
+                {
+                    //Spawn VFX
+                    Instantiate(bossHitVFX, GetComponent<Collider>().ClosestPointOnBounds(otherObject.transform.position), Quaternion.identity);
+                }
 
                 //Stun
                 animator.SetTrigger("KnockDown");
@@ -179,13 +193,6 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-
-    void uiupdate()
-    {
-        staminaUI.GetComponent<Image>().fillAmount = staminaAmount / staminaMaxAmount;
-        HPui.GetComponent<Image>().fillAmount = health / maxHealth;
-    }
-
 
     public IEnumerator death()
     {
