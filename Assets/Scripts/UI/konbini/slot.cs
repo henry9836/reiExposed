@@ -75,6 +75,8 @@ public class slot : MonoBehaviour
         {
             item = itemref.images[(int)tmp.itemtype];
 
+            Debug.Log(test2);
+
             if (tmp.equipped == true)
             {
                 itemref.upequipItem(test2);
@@ -114,6 +116,8 @@ public class slot : MonoBehaviour
         if (tmp != null)
         {
             item = itemref.images[(int)tmp.itemtype];
+
+            Debug.Log(tmp.biginvinpos);
 
             if (tmp.equipped == true)
             {
