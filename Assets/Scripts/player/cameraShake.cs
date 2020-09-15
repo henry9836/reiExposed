@@ -46,6 +46,8 @@ public class cameraShake : MonoBehaviour
 
     public bool Test = false;
     public int shakenumber;
+    private int hitcycle = 0;
+
 
     public enum Modes
     { 
@@ -55,12 +57,18 @@ public class cameraShake : MonoBehaviour
         SHOTGUN,
         WALKING,
         SPRINTING,
+        WHACK,
     }
 
     public Modes active;
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            Test = true;
+        }
+
         shakeupdate();
 
         switch (active)
@@ -182,6 +190,56 @@ public class cameraShake : MonoBehaviour
                         }
                     }
 
+                    break;
+                }
+            case Modes.WHACK:
+                {
+                    if (Test == true)
+                    {
+                        Test = false;
+                        hitcycle++;
+
+                        if (hitcycle > 2)
+                        {
+                            hitcycle = 0;
+                        }
+
+                        if (hitcycle == 0)
+                        {
+                            passTargetPos = new Vector3(-0.05f, -0.1f, 0.0f);
+                            passOverallSpeed = 10.0f;
+                            passTargetRot = new Vector3(2.0f, -1.0f, 0.0f);
+                            funcin = shakeOperation.lerpModes.INEXPO;
+                            funcout = shakeOperation.lerpModes.OUTEXPO;
+                            speedIn = 1.5f;
+                            speedOut = 0.1f;
+
+                        }
+                        else if (hitcycle == 1)
+                        {
+                            passTargetPos = new Vector3(0.1f, 0.0f, 0.0f);
+                            passOverallSpeed = 10.0f;
+                            passTargetRot = new Vector3(-0.5f, 2.0f, 0.0f);
+                            funcin = shakeOperation.lerpModes.INEXPO;
+                            funcout = shakeOperation.lerpModes.OUTEXPO;
+                            speedIn = 1.5f;
+                            speedOut = 0.1f;
+                        }
+                        else if (hitcycle == 2)
+                        {
+                            passTargetPos = new Vector3(0.0f, 0.0f, 0.1f);
+                            passOverallSpeed = 10.0f;
+                            passTargetRot = new Vector3(2.0f, 0.0f, 0.0f);
+                            funcin = shakeOperation.lerpModes.INEXPO;
+                            funcout = shakeOperation.lerpModes.OUTEXPO;
+                            speedIn = 1.0f;
+                            speedOut = 0.1f;
+                        }
+
+                        addOperation(passTargetPos, passTargetRot, passOverallSpeed, funcin, funcout, speedIn, speedOut);
+
+
+                    }
                     break;
                 }
             default:

@@ -11,6 +11,9 @@ public class PlayerAttack : StateMachineBehaviour
     public float movementSpeed = 5.5f;
     [Range(0.0f, 1.0f)]
     public float stopTurning = 0.5f;
+    public float playshake = 0.0f;
+    public bool playshakeonce = false;
+    public int attackno;
 
     private umbrella umbrella;
     private bool once = true;
@@ -30,6 +33,7 @@ public class PlayerAttack : StateMachineBehaviour
         animator.SetBool("Attack", false);
         animator.ResetTrigger("GoToNextAttack");
         once = true;
+        playshakeonce = true;
 
         movementCtrl = umbrella.GetComponent<movementController>();
         playerControl = umbrella.GetComponent<PlayerController>();
@@ -51,6 +55,60 @@ public class PlayerAttack : StateMachineBehaviour
             {
                 umbrella.Hitbox(true);
                 once = false;
+            }
+        }
+
+        if (playshakeonce == true)
+        {
+            if ((stateInfo.normalizedTime % 1.0f) >= playshake)
+            {
+                playshakeonce = false;
+                Vector3 passTargetPos = Vector3.zero;
+                float passOverallSpeed = 0.0f;
+                Vector3 passTargetRot = Vector3.zero;
+                shakeOperation.lerpModes funcin = shakeOperation.lerpModes.LINEAR;
+                shakeOperation.lerpModes funcout = shakeOperation.lerpModes.LINEAR;
+                float speedIn = 0.0f;
+                float speedOut = 0.0f;
+
+
+                if (attackno == 0)
+                {
+                    passTargetPos = new Vector3(-0.05f, -0.1f, 0.0f);
+                    passOverallSpeed = 10.0f;
+                    passTargetRot = new Vector3(2.0f, -1.0f, 0.0f);
+                    funcin = shakeOperation.lerpModes.INEXPO;
+                    funcout = shakeOperation.lerpModes.OUTEXPO;
+                    speedIn = 1.5f;
+                    speedOut = 0.1f;
+                }
+                else if (attackno == 1)
+                {
+                    passTargetPos = new Vector3(0.1f, 0.0f, 0.0f);
+                    passOverallSpeed = 10.0f;
+                    passTargetRot = new Vector3(-0.5f, 2.0f, 0.0f);
+                    funcin = shakeOperation.lerpModes.INEXPO;
+                    funcout = shakeOperation.lerpModes.OUTEXPO;
+                    speedIn = 1.5f;
+                    speedOut = 0.1f;
+                }
+                else if (attackno == 2)
+                {
+                    passTargetPos = new Vector3(0.0f, 0.0f, 0.1f);
+                    passOverallSpeed = 10.0f;
+                    passTargetRot = new Vector3(2.0f, 0.0f, 0.0f);
+                    funcin = shakeOperation.lerpModes.INEXPO;
+                    funcout = shakeOperation.lerpModes.OUTEXPO;
+                    speedIn = 1.0f;
+                    speedOut = 0.1f;
+                }
+                else
+                {
+                    Debug.LogWarning("whack animation was called but no shake effect was played");
+                }
+
+                animator.gameObject.transform.root.GetChild(0).GetChild(0).GetChild(0).GetChild(0).gameObject.GetComponent<cameraShake>().addOperation(passTargetPos, passTargetRot, passOverallSpeed, funcin, funcout, speedIn, speedOut);
+
             }
         }
 
