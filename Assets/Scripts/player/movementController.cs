@@ -79,6 +79,7 @@ public class movementController : MonoBehaviour
     private float rollTimer = 0.0f;
     private float tmpRollDistance = 0.0f;
     private float unblockTimer = 0.0f;
+    private float rollSpeed = 0.0f;
 
     private void Start()
     {
@@ -114,9 +115,17 @@ public class movementController : MonoBehaviour
     void Update()
     {
 
+        //Reset movedir
+        moveDir = new Vector3(moveDir.x * 0.0f, moveDir.y * 1.0f, moveDir.z * 0.0f);
+
+        //Reset y velocity if on ground
+        if (isOnGround)
+        {
+            moveDir.y = 0.0f;
+        }
+
         //Apply Gravity
         moveDir.y -= gravity * Time.deltaTime;
-
 
         //Reset bools
         sprinting = false;
@@ -139,7 +148,6 @@ public class movementController : MonoBehaviour
 
 
         //Rotate towards movement in relation to cam direction
-        //if (moveDirCam != Vector3.zero && !rolling && !strafemode && !attackMovementBlock && !animator.GetBool("KnockedDown"))
         if (moveDirCam != Vector3.zero && !rolling && !strafemode && (!attackMovementBlock || canTurnDuringAttack) && !animator.GetBool("KnockedDown"))
         {
 
@@ -159,15 +167,6 @@ public class movementController : MonoBehaviour
             //Rotation
             charcterModel.transform.LookAt(offset, Vector3.up);
 
-        }
-
-        if (isOnGround)
-        {
-            moveDir = new Vector3(0.0f, 0.0f, 0.0f);
-        }
-        else
-        {
-            moveDir = new Vector3(0.0f, moveDir.y, 0.0f);
         }
 
         if (!animator.GetBool("UsingItem") && !animator.GetBool("KnockedDown"))
@@ -212,6 +211,8 @@ public class movementController : MonoBehaviour
                 playerHitBox.height = rollHitBoxH;
                 playerHitBox.center = new Vector3(playerHitBox.center.x, rollHitBoxY, playerHitBox.center.z);
 
+                //Get speed
+                rollSpeed = Vector3.Distance(targetRollPosition, beforeRollPosition);
 
                 //Animation
                 animator.SetBool("Rolling", true);
@@ -222,8 +223,14 @@ public class movementController : MonoBehaviour
         //Lerp between start roll and end roll pos if we are rolling
         if (rolling)
         {
+
+            Vector3 dir = (targetRollPosition - beforeRollPosition).normalized;
+            dir += new Vector3(0.0f, 1.0f * moveDir.y, 0.0f);
+            ch.Move(dir * (rollSpeed * 3.0f) * rollMovementOverTime.Evaluate(rollTimer / rollTime) * Time.deltaTime);
+
             //Move towards target
-            transform.position = Vector3.Lerp(beforeRollPosition, targetRollPosition, rollMovementOverTime.Evaluate(rollTimer / rollTime));
+            //transform.position = Vector3.Lerp(beforeRollPosition + new Vector3(0.0f, 1.0f * moveDir.y, 0.0f), targetRollPosition + new Vector3(0.0f, 1.0f * moveDir.y, 0.0f), rollMovementOverTime.Evaluate(rollTimer / rollTime));
+            //transform.position += new Vector3(0.0f, 1.0f * moveDir.y, 0.0f);
 
             //Toggle off the roll once we have reached the end of the roll
             if (rollTimer >= rollTime)
