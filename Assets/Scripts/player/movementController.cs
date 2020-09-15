@@ -114,6 +114,10 @@ public class movementController : MonoBehaviour
     void Update()
     {
 
+        //Apply Gravity
+        moveDir.y -= gravity * Time.deltaTime;
+
+
         //Reset bools
         sprinting = false;
 
@@ -176,10 +180,6 @@ public class movementController : MonoBehaviour
             moveDir += camParent.transform.forward * ((Input.GetAxis("Vertical") * useItemMoveSpeed));
             moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * useItemMoveSpeed));
         }
-
-        //Apply Gravity
-        moveDir.y -= gravity * Time.deltaTime;
-       
 
         //Rolling Mechanic
         if (Input.GetButtonDown("Roll") && !rolling && !animator.GetBool("UsingItem") && !animator.GetBool("KnockedDown"))

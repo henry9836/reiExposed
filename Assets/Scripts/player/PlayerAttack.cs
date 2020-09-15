@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerAttack : StateMachineBehaviour
 {
     public Vector2 attackWindow = new Vector2(0.0f, 0.9f);
+    public LayerMask enemyObjectList;
     public bool resetAllOnEnd = false;
     public float movementTime = 0.3f;
     public float movementSpeed = 5.5f;
@@ -59,9 +60,21 @@ public class PlayerAttack : StateMachineBehaviour
         //Shunt Forwards after we have started our attack
         if (!once && movementTimer < movementTime)
         {
-            //Move forwards
-            movementCtrl.forceMovement(characterTrans.forward * movementSpeed);
-
+            //If we are not going to climb onto a enemy
+            //Does the ray intersect any objects excluding the player layer
+            //if (Physics.BoxCast(characterTrans.position, Vector3.one * movementSpeed, characterTrans.forward, Quaternion.identity, movementSpeed + 1.0f, enemyObjectList))
+            if (Physics.CheckBox(characterTrans.position, Vector3.one * (movementSpeed + 1.0f), Quaternion.identity, enemyObjectList))
+            {
+                //Do not move forwards
+                Debug.Log("Watch OUT!");
+                //movementCtrl.forceMovement(characterTrans.forward * (hit.distance - 0.5f));
+                //movementCtrl.forceMovement(characterTrans.forward * movementSpeed);
+            }
+            else
+            {
+                //Move forwards
+                movementCtrl.forceMovement(characterTrans.forward * movementSpeed);
+            }
             movementTimer += Time.deltaTime;
         }
 

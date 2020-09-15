@@ -72,11 +72,6 @@ public class umbrella : MonoBehaviour
             xinsButtholes.Add(tmp);
         }
 
-
-
-        
-
-
     }
 
     void Update()
