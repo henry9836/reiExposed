@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerAttack : StateMachineBehaviour
 {
     public Vector2 attackWindow = new Vector2(0.0f, 0.9f);
+    public LayerMask enemyObjectList;
     public bool resetAllOnEnd = false;
     public float movementTime = 0.3f;
     public float movementSpeed = 5.5f;
@@ -117,9 +118,47 @@ public class PlayerAttack : StateMachineBehaviour
         //Shunt Forwards after we have started our attack
         if (!once && movementTimer < movementTime)
         {
-            //Move forwards
-            movementCtrl.forceMovement(characterTrans.forward * movementSpeed);
+            //Stop player getting on top of the enemy
+            RaycastHit hit;
 
+            //Search in the area we would end up
+            Vector3 adjustedPos = (characterTrans.position + ((characterTrans.forward * movementSpeed) * 0.5f));
+            // Cast a sphere wrapping character controller 10 meters forward
+            // to see if it is about to hit anything.
+            RaycastHit[] hits = Physics.SphereCastAll(adjustedPos, movementSpeed * 0.5f, characterTrans.forward, movementSpeed, enemyObjectList);
+            if (hits.Length > 0)
+            {
+
+                hit = hits[0];
+
+                //Get correct hit
+                for (int i = 0; i < hits.Length; i++)
+                {
+                    if (hit.distance > hits[i].distance)
+                    {
+                        hit = hits[i];
+                    }
+                }
+                //If we would overshoot
+                if (hit.distance > movementSpeed)
+                {
+                    movementCtrl.forceMovement(characterTrans.forward * movementSpeed);
+                }
+                //If we would not overshoot but not too close to target
+                else if (0.5f < hit.distance)
+                {
+                    movementCtrl.forceMovement(characterTrans.forward * (hit.distance - 0.5f));
+                }
+                else
+                {
+                    //Do not move we are too close
+                }
+            }
+            else
+            {
+                //Move forwards
+                movementCtrl.forceMovement(characterTrans.forward * movementSpeed);
+            }
             movementTimer += Time.deltaTime;
         }
 
