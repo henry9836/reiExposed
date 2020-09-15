@@ -114,6 +114,13 @@ public class movementController : MonoBehaviour
     void Update()
     {
 
+        moveDir = new Vector3(moveDir.x * 0.0f, moveDir.y * 1.0f, moveDir.z * 0.0f);
+
+        if (isOnGround)
+        {
+            moveDir.y = 0.0f;
+        }
+
         //Apply Gravity
         moveDir.y -= gravity * Time.deltaTime;
 
@@ -159,15 +166,6 @@ public class movementController : MonoBehaviour
             //Rotation
             charcterModel.transform.LookAt(offset, Vector3.up);
 
-        }
-
-        if (isOnGround)
-        {
-            moveDir = new Vector3(0.0f, 0.0f, 0.0f);
-        }
-        else
-        {
-            moveDir = new Vector3(0.0f, moveDir.y, 0.0f);
         }
 
         if (!animator.GetBool("UsingItem") && !animator.GetBool("KnockedDown"))
