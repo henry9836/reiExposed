@@ -224,6 +224,7 @@ public class movementController : MonoBehaviour
         if (rolling)
         {
 
+            //Move towards roll target
             Vector3 dir = (targetRollPosition - beforeRollPosition).normalized;
             dir += new Vector3(0.0f, 1.0f * moveDir.y, 0.0f);
             ch.Move(dir * (rollSpeed * 3.0f) * rollMovementOverTime.Evaluate(rollTimer / rollTime) * Time.deltaTime);
