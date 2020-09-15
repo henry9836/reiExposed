@@ -61,10 +61,10 @@ public class PlayerAttack : StateMachineBehaviour
         if (!once && movementTimer < movementTime)
         {
             //Stop player getting on top of the enemy
-            //Does the ray intersect any objects in the enemy layers
             RaycastHit hit;
+
+            //Search in the area we would end up
             Vector3 adjustedPos = (characterTrans.position + ((characterTrans.forward * movementSpeed) * 0.5f));
-            //if (Physics.BoxCast(adjustedPos, Vector3.one * (movementSpeed * 0.5f), characterTrans.forward, out hit, Quaternion.identity, Mathf.Infinity, enemyObjectList))
             // Cast a sphere wrapping character controller 10 meters forward
             // to see if it is about to hit anything.
             RaycastHit[] hits = Physics.SphereCastAll(adjustedPos, movementSpeed * 0.5f, characterTrans.forward, movementSpeed, enemyObjectList);
@@ -81,10 +81,20 @@ public class PlayerAttack : StateMachineBehaviour
                         hit = hits[i];
                     }
                 }
-                Debug.Log($"Watch OUT! {hit.point} {hit.collider.name}");
-                Debug.DrawLine(hit.point, Vector3.up * 999999.0f, Color.red, 100.0f);
-                movementCtrl.forceMovement(characterTrans.forward * (hit.distance - 0.5f));
-                //movementCtrl.forceMovement(characterTrans.forward * movementSpeed);
+                //If we would overshoot
+                if (hit.distance > movementSpeed)
+                {
+                    movementCtrl.forceMovement(characterTrans.forward * movementSpeed);
+                }
+                //If we would not overshoot but not too close to target
+                else if (0.5f < hit.distance)
+                {
+                    movementCtrl.forceMovement(characterTrans.forward * (hit.distance - 0.5f));
+                }
+                else
+                {
+                    //Do not move we are too close
+                }
             }
             else
             {
