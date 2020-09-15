@@ -10,6 +10,8 @@ public class fireBallController : MonoBehaviour
     public float killOverrideTime = 5.0f;
     public LayerMask hittableSurfaces;
     public AIModeSwitcher behaviour;
+    public GameObject hitVFX;
+    public GameObject spawnVFX;
 
     private bool canDie = false;
     private float killTimer = 0.0f;
@@ -17,6 +19,7 @@ public class fireBallController : MonoBehaviour
     void Start()
     {
         StartCoroutine(liveThenDie());
+        Instantiate(spawnVFX, transform.position, Quaternion.identity);
     }
 
     // Update is called once per frame
@@ -36,6 +39,7 @@ public class fireBallController : MonoBehaviour
     {
         if (canDie && (((1 << other.gameObject.layer) & hittableSurfaces) != 0))
         {
+            Instantiate(hitVFX, transform.position, Quaternion.identity);
 
             if (other.tag == "Player")
             {
