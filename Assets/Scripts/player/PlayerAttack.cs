@@ -60,14 +60,30 @@ public class PlayerAttack : StateMachineBehaviour
         //Shunt Forwards after we have started our attack
         if (!once && movementTimer < movementTime)
         {
-            //If we are not going to climb onto a enemy
-            //Does the ray intersect any objects excluding the player layer
-            //if (Physics.BoxCast(characterTrans.position, Vector3.one * movementSpeed, characterTrans.forward, Quaternion.identity, movementSpeed + 1.0f, enemyObjectList))
-            if (Physics.CheckBox(characterTrans.position, Vector3.one * (movementSpeed + 1.0f), Quaternion.identity, enemyObjectList))
+            //Stop player getting on top of the enemy
+            //Does the ray intersect any objects in the enemy layers
+            RaycastHit hit;
+            Vector3 adjustedPos = (characterTrans.position + ((characterTrans.forward * movementSpeed) * 0.5f));
+            //if (Physics.BoxCast(adjustedPos, Vector3.one * (movementSpeed * 0.5f), characterTrans.forward, out hit, Quaternion.identity, Mathf.Infinity, enemyObjectList))
+            // Cast a sphere wrapping character controller 10 meters forward
+            // to see if it is about to hit anything.
+            RaycastHit[] hits = Physics.SphereCastAll(adjustedPos, movementSpeed * 0.5f, characterTrans.forward, movementSpeed, enemyObjectList);
+            if (hits.Length > 0)
             {
-                //Do not move forwards
-                Debug.Log("Watch OUT!");
-                //movementCtrl.forceMovement(characterTrans.forward * (hit.distance - 0.5f));
+
+                hit = hits[0];
+
+                //Get correct hit
+                for (int i = 0; i < hits.Length; i++)
+                {
+                    if (hit.distance > hits[i].distance)
+                    {
+                        hit = hits[i];
+                    }
+                }
+                Debug.Log($"Watch OUT! {hit.point} {hit.collider.name}");
+                Debug.DrawLine(hit.point, Vector3.up * 999999.0f, Color.red, 100.0f);
+                movementCtrl.forceMovement(characterTrans.forward * (hit.distance - 0.5f));
                 //movementCtrl.forceMovement(characterTrans.forward * movementSpeed);
             }
             else
