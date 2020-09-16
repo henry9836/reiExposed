@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
     public Color minColor;
     public Image damaged;
     public GameObject bossHitVFX;
+    public GameObject blockVFX;
 
     //Sounds
     public List<AudioClip> hurtSounds = new List<AudioClip>();
@@ -168,11 +169,8 @@ public class PlayerController : MonoBehaviour
 
                 //Disable hitboxes
                 boss.GetComponent<AIObject>().body.updateHitBox(AIBody.BodyParts.ALL, false);
-
-                //Stun
-                animator.SetTrigger("KnockDown");
+                Instantiate(blockVFX, other.transform.position, Quaternion.identity);
             }
-
 
             if (health <= 40.0f)
             {
