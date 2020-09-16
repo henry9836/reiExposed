@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class MythCollisionHandler : AICollisionHandler
 {
     public GameObject blockVFX;
+    public GameObject hitVFX;
     public List<AudioClip> blockSounds = new List<AudioClip>();
 
     Animator animator;
@@ -77,6 +78,9 @@ public class MythCollisionHandler : AICollisionHandler
                 }
 
                 Debug.Log("No Block");
+
+                Instantiate(hitVFX, transform.position, Quaternion.identity);
+
                 animator.SetTrigger("Stun");
                 aiObject.health -= aiObject.playerCtrl.umbreallaDmg;
             }
