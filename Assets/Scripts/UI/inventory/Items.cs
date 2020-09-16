@@ -226,18 +226,25 @@ public class Items : MonoBehaviour
 
     public void upequipItem(int biginvinpos)
     {
-        //singleItem tmp = biginvin[biginvinpos];
 
-        //for (int i = tmp.equippedpos; i < equipped.Count - 1; i++)
-        for (int i = biginvin[biginvinpos].equippedpos; i < equipped.Count - 1; i++)
+        int test = biginvin[biginvinpos].equippedpos;
+        for (int i = test; i < equipped.Count - 1; i++)
         {
-            //biginvin[equipped[i].biginvinpos] = biginvin[equipped[i + 1].biginvinpos];
             equipped[i] = equipped[i + 1];
         }
-        //biginvin.RemoveAt(biginvin.Count - 1);
         equipped.RemoveAt(equipped.Count - 1);
         biginvin[biginvinpos].equipped = false;
         biginvin[biginvinpos].equippedpos = -1;
+
+        for (int i = test; i < equipped.Count - 1; i++)
+        {
+            equipped[i].equippedpos--;
+        }
+
+        //for (int i = test; i < equipped.Count - 1; i++)
+        //{
+        //    biginvin[equipped[i].biginvinpos].equippedpos--;
+        //}
 
         for (int i = 0; i < SaveSystemController.saveInfomation.Count; i++)
         {
