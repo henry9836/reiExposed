@@ -162,6 +162,7 @@ public class PlayerController : MonoBehaviour
                 //Stun
                 animator.SetTrigger("KnockDown");
             }
+            //If we are blocking
             else if (other.gameObject.CompareTag("EnemyAttackSurface") && umbrella.ISBLockjing)
             {
                 Debug.Log("I was hit and but blocked");
