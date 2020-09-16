@@ -1966,7 +1966,7 @@ CharacterController:
   m_Height: 1.77
   m_Radius: 0.35
   m_SlopeLimit: 45
-  m_StepOffset: 0.5
+  m_StepOffset: 0.6
   m_SkinWidth: 0.0001
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.8, z: 0}
@@ -2062,6 +2062,8 @@ MonoBehaviour:
   minColor: {r: 0, g: 0, b: 0, a: 0}
   damaged: {fileID: 0}
   bossHitVFX: {fileID: 3780777114319743235, guid: e9cdcddc7d89dcb4e91eadc7a806239a,
+    type: 3}
+  blockVFX: {fileID: 2293523615995652735, guid: 49638e36e34c46145a69270c1a5d9f28,
     type: 3}
   hurtSounds:
   - {fileID: 8300000, guid: adec7287250c0684c962c1bd60e7cb94, type: 3}
@@ -3451,7 +3453,7 @@ Camera:
   m_TargetEye: 3
   m_HDR: 0
   m_AllowMSAA: 0
-  m_AllowDynamicResolution: 0
+  m_AllowDynamicResolution: 1
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -3545,7 +3547,7 @@ MonoBehaviour:
     m_Anamorphism: 0
   flipYMode: 0
   fullscreenPassthrough: 0
-  allowDynamicResolution: 0
+  allowDynamicResolution: 1
   customRenderingSettings: 0
   invertFaceCulling: 0
   probeLayerMask:
