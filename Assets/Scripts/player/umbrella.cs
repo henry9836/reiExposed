@@ -6,6 +6,7 @@ using UnityEngine.VFX;
 
 public class umbrella : MonoBehaviour
 {
+    [Header("General")]
     public bool canfire = false;
     public float blockingStamina;
     public float timeTillHeavyAttack = 1.0f;
@@ -26,8 +27,11 @@ public class umbrella : MonoBehaviour
     public GameObject VFX;
     public GameObject shotUI;
     public bool phoneLock = false;
+    [HideInInspector]
+    public List<GameObject> targetsTouched = new List<GameObject>();
 
     //shotty
+    [Header("Shotty")]
     [HideInInspector]
     public float bulletSpread; // do not touch
     public float bulletSpreadRunning = 0.165f;
@@ -54,6 +58,24 @@ public class umbrella : MonoBehaviour
     private float timerToHeavy = 0.0f;
 
 
+    public void clearHits()
+    {
+        targetsTouched.Clear();
+    }
+
+    //Tests if we have already hit this myth during our current attack animation
+    public bool validDmg(GameObject test)
+    {
+        for (int i = 0; i < targetsTouched.Count; i++)
+        {
+            if (targetsTouched[i] == test)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     void Start()
     {
@@ -97,7 +119,6 @@ public class umbrella : MonoBehaviour
             }
         }
 
-
         latetest = false;
 
         if (attackQueued && !animator.GetBool("Blocking") && !animator.GetBool("KnockedDown") && !phoneLock)
@@ -112,8 +133,6 @@ public class umbrella : MonoBehaviour
                 {
                     animator.SetBool("HeavyAttack", true);
                 }
-
-                //timerToHeavy = 0.0f;
 
             }
         }
