@@ -1,10 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
 using UnityEngine.UI;
 
 public class MythCollisionHandler : AICollisionHandler
 {
+    public GameObject blockVFX;
+    public List<AudioClip> blockSounds = new List<AudioClip>();
+
     Animator animator;
     Animator playerAnimator;
     public float blockStaminaCost = 10.0f;
@@ -12,6 +16,7 @@ public class MythCollisionHandler : AICollisionHandler
     public bool fullyBlocking = false;
 
     private AITracker tracker;
+    private AudioSource audio;
 
     public override void Start()
     {
@@ -26,6 +31,7 @@ public class MythCollisionHandler : AICollisionHandler
 
         //Get animator
         animator = GetComponent<Animator>();
+        audio = GetComponent<AudioSource>();
 
         fullyBlocking = false;
     }
@@ -48,8 +54,11 @@ public class MythCollisionHandler : AICollisionHandler
                         if (tracker.isFacingPlayer())
                         {
                             //Block
-                            if ((dice <= 5 && aiObject.stamina >= blockStaminaCost) || animator.GetBool("Blocking"))
+                            if (((dice <= 8 && aiObject.stamina >= blockStaminaCost) || animator.GetBool("Blocking")))
                             {
+
+                                Instantiate(blockVFX, other.transform.position, Quaternion.identity);
+                                audio.PlayOneShot(blockSounds[Random.Range(0, blockSounds.Count)]);
 
                                 if (animator.GetBool("Blocking") && fullyBlocking)
                                 {
