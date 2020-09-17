@@ -8,6 +8,7 @@ public class umbrella : MonoBehaviour
 {
     public bool canfire = false;
     public float blockingStamina;
+    public float timeTillHeavyAttack = 1.0f;
     public bool cooldown = false;
     public float cooldowntime = 2.0f;
     public float cooldowntimer = 0.0f;
@@ -49,6 +50,8 @@ public class umbrella : MonoBehaviour
     private GameObject cam;
     private Animator animator;
     private bool latetest = false;
+    private bool attackQueued = false;
+    private float timerToHeavy = 0.0f;
 
 
 
@@ -76,15 +79,49 @@ public class umbrella : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetMouseButton(0))
+        {
+            timerToHeavy += Time.deltaTime;
+        }
+        
+        if (Input.GetMouseButtonUp(0) || timerToHeavy > timeTillHeavyAttack)
+        {
+            attackQueued = true;
+        }
+
+
         latetest = false;
 
         //if attack button while not blocking hit
-        if (Input.GetMouseButtonDown(0) && !animator.GetBool("Blocking") && !animator.GetBool("KnockedDown") && !phoneLock)
+        //if (Input.GetMouseButtonDown(0) && !animator.GetBool("Blocking") && !animator.GetBool("KnockedDown") && !phoneLock)
+        //{
+        //    if (playercontrol.staminaAmount >= playercontrol.staminaToAttack)
+        //    {
+        //        //movement.attackMovementBlock = true;
+        //        animator.SetBool("Attack", true);
+
+        //        if (timerToHeavy > timeTillHeavyAttack)
+        //        {
+        //            animator.SetTrigger("");
+        //        }
+
+        //    }
+        //}
+        if (attackQueued && !animator.GetBool("Blocking") && !animator.GetBool("KnockedDown") && !phoneLock)
         {
             if (playercontrol.staminaAmount >= playercontrol.staminaToAttack)
             {
-                //movement.attackMovementBlock = true;
+                attackQueued = false;
+
                 animator.SetBool("Attack", true);
+
+                if (timerToHeavy > timeTillHeavyAttack)
+                {
+                    animator.SetBool("HeavyAttack", true);
+                }
+
+                timerToHeavy = 0.0f;
+
             }
         }
 
