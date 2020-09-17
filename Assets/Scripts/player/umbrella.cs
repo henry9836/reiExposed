@@ -6,8 +6,10 @@ using UnityEngine.VFX;
 
 public class umbrella : MonoBehaviour
 {
+    [Header("General")]
     public bool canfire = false;
     public float blockingStamina;
+    public float timeTillHeavyAttack = 1.0f;
     public bool cooldown = false;
     public float cooldowntime = 2.0f;
     public float cooldowntimer = 0.0f;
@@ -25,8 +27,11 @@ public class umbrella : MonoBehaviour
     public GameObject VFX;
     public GameObject shotUI;
     public bool phoneLock = false;
+    [HideInInspector]
+    public List<GameObject> targetsTouched = new List<GameObject>();
 
     //shotty
+    [Header("Shotty")]
     [HideInInspector]
     public float bulletSpread; // do not touch
     public float bulletSpreadRunning = 0.165f;
@@ -49,8 +54,28 @@ public class umbrella : MonoBehaviour
     private GameObject cam;
     private Animator animator;
     private bool latetest = false;
+    private bool attackQueued = false;
+    private float timerToHeavy = 0.0f;
 
 
+    public void clearHits()
+    {
+        targetsTouched.Clear();
+    }
+
+    //Tests if we have already hit this myth during our current attack animation
+    public bool validDmg(GameObject test)
+    {
+        for (int i = 0; i < targetsTouched.Count; i++)
+        {
+            if (targetsTouched[i] == test)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     void Start()
     {
@@ -76,15 +101,39 @@ public class umbrella : MonoBehaviour
 
     void Update()
     {
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            if (timerToHeavy <= timeTillHeavyAttack) {
+                attackQueued = true;
+            }
+            timerToHeavy = 0.0f;
+        }
+
+        if (Input.GetMouseButton(0))
+        {
+            timerToHeavy += Time.deltaTime;
+            if (timerToHeavy > timeTillHeavyAttack && !animator.GetBool("Attacking"))
+            {
+                attackQueued = true;
+            }
+        }
+
         latetest = false;
 
-        //if attack button while not blocking hit
-        if (Input.GetMouseButtonDown(0) && !animator.GetBool("Blocking") && !animator.GetBool("KnockedDown") && !phoneLock)
+        if (attackQueued && !animator.GetBool("Blocking") && !animator.GetBool("KnockedDown") && !phoneLock)
         {
-            if (playercontrol.staminaAmount >= playercontrol.staminaToAttack)
+            if ((playercontrol.staminaAmount >= playercontrol.staminaToAttack && timerToHeavy <= timeTillHeavyAttack) || (playercontrol.staminaAmount >= playercontrol.staminaToHeavyAttack && timerToHeavy > timeTillHeavyAttack))
             {
-                //movement.attackMovementBlock = true;
+                attackQueued = false;
+
                 animator.SetBool("Attack", true);
+
+                if (timerToHeavy > timeTillHeavyAttack)
+                {
+                    animator.SetBool("HeavyAttack", true);
+                }
+
             }
         }
 

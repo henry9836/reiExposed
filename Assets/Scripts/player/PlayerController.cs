@@ -15,11 +15,13 @@ public class PlayerController : MonoBehaviour
     public float staminaMaxAmount = 100.0f;
     public float staminaRegenSpeed = 1.0f;
     public float staminaToAttack = 5.0f;
+    public float staminaToHeavyAttack = 15.0f;
     [HideInInspector]
     public bool staminaBlock = false;
 
     [Header("Combat")]
-    public float umbreallaDmg = 5.0f;
+    public float umbreallaDmg = 20.0f;
+    public float umbreallaHeavyDmg = 50.0f;
 
     [Header("Death")]
     public bool dead = false;
