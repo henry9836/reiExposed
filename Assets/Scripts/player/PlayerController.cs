@@ -28,8 +28,11 @@ public class PlayerController : MonoBehaviour
     public Color maxcolor;
     public Color minColor;
     public Image damaged;
+
+    [Header("VFX")]
     public GameObject bossHitVFX;
     public GameObject blockVFX;
+    public GameObject hitVFX;
 
     //Sounds
     public List<AudioClip> hurtSounds = new List<AudioClip>();
@@ -158,7 +161,11 @@ public class PlayerController : MonoBehaviour
                     //Spawn VFX
                     Instantiate(bossHitVFX, GetComponent<Collider>().ClosestPointOnBounds(otherObject.transform.position), Quaternion.identity);
                 }
-
+                else
+                {
+                    //Spawn VFX
+                    Instantiate(hitVFX, transform.position, Quaternion.identity);
+                }
                 //Stun
                 animator.SetTrigger("KnockDown");
             }
