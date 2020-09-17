@@ -46,16 +46,24 @@ public class MythRangedAttack : StateMachineBehaviour
     {
         timeBetweenTimer += Time.deltaTime;
 
-        if (timeBetweenTimer >= timeBetweenSpawns)
+        if (tracker.isFacingPlayer())
         {
-            GameObject tmp = Instantiate(projectile, projectileFireLoc.position, Quaternion.identity);
-            tmp.transform.LookAt(player);
-            tmp.GetComponent<fireBallController>().behaviour = behaviour;
-            timeBetweenTimer = 0.0f;
-            spawnCounter++;
-        }
 
-        if (spawnCounter >= amountToSpawn)
+            if (timeBetweenTimer >= timeBetweenSpawns)
+            {
+                GameObject tmp = Instantiate(projectile, projectileFireLoc.position, Quaternion.identity);
+                tmp.transform.LookAt(player);
+                tmp.GetComponent<fireBallController>().behaviour = behaviour;
+                timeBetweenTimer = 0.0f;
+                spawnCounter++;
+            }
+
+            if (spawnCounter >= amountToSpawn)
+            {
+                animator.SetBool("Attacking", false);
+            }
+        }
+        else
         {
             animator.SetBool("Attacking", false);
         }
