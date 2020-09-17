@@ -17,6 +17,8 @@ public class pageManager : MonoBehaviour
 
     public camMove.locations current;
 
+    public GameObject stlyeBG;
+
     private void Start()
     {
         canvas = GameObject.Find("Canvas");
@@ -35,7 +37,7 @@ public class pageManager : MonoBehaviour
             konobinicam.GetComponent<camMove>().move(camMove.locations.STORAGE);
             current = camMove.locations.STORAGE;
         }
-
+        stlyeBG.SetActive(true);
 
     }
 
@@ -51,6 +53,7 @@ public class pageManager : MonoBehaviour
             konobinicam.GetComponent<camMove>().move(camMove.locations.ITEM);
             current = camMove.locations.ITEM;
         }
+        stlyeBG.SetActive(true);
 
 
     }
@@ -66,6 +69,8 @@ public class pageManager : MonoBehaviour
             konobinicam.GetComponent<camMove>().move(camMove.locations.UMBRELLA);
             current = camMove.locations.UMBRELLA;
         }
+        stlyeBG.SetActive(false);
+
     }
 
     void Update()

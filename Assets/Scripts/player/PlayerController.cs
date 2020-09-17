@@ -28,7 +28,11 @@ public class PlayerController : MonoBehaviour
     public Color maxcolor;
     public Color minColor;
     public Image damaged;
+
+    [Header("VFX")]
     public GameObject bossHitVFX;
+    public GameObject blockVFX;
+    public GameObject hitVFX;
 
     //Sounds
     public List<AudioClip> hurtSounds = new List<AudioClip>();
@@ -157,10 +161,15 @@ public class PlayerController : MonoBehaviour
                     //Spawn VFX
                     Instantiate(bossHitVFX, GetComponent<Collider>().ClosestPointOnBounds(otherObject.transform.position), Quaternion.identity);
                 }
-
+                else
+                {
+                    //Spawn VFX
+                    Instantiate(hitVFX, transform.position, Quaternion.identity);
+                }
                 //Stun
                 animator.SetTrigger("KnockDown");
             }
+            //If we are blocking
             else if (other.gameObject.CompareTag("EnemyAttackSurface") && umbrella.ISBLockjing)
             {
                 Debug.Log("I was hit and but blocked");
@@ -168,11 +177,8 @@ public class PlayerController : MonoBehaviour
 
                 //Disable hitboxes
                 boss.GetComponent<AIObject>().body.updateHitBox(AIBody.BodyParts.ALL, false);
-
-                //Stun
-                animator.SetTrigger("KnockDown");
+                Instantiate(blockVFX, other.transform.position, Quaternion.identity);
             }
-
 
             if (health <= 40.0f)
             {
