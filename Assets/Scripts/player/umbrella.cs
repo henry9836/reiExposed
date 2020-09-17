@@ -134,8 +134,6 @@ public class umbrella : MonoBehaviour
                     animator.SetBool("HeavyAttack", true);
                 }
 
-                //timerToHeavy = 0.0f;
-
             }
         }
 

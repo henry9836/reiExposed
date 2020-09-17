@@ -13,6 +13,8 @@ public class FlameAI : AIObject
 
     private int AOEAttackElement = -1;
 
+    private Animator playerAnim;
+
     private int findAttack(string attack)
     {
         for (int i = 0; i < attacks.Count; i++)
@@ -29,6 +31,11 @@ public class FlameAI : AIObject
     //Used by collison handler
     public void CollisonLogic(Collider other)
     {
+        if (playerAnim == null)
+        {
+            playerAnim = other.transform.root.gameObject.GetComponent<Animator>();
+        }
+
         revealAmount = 0.0f;
 
         revealAmount = revealpersentobject.GetComponent<drawTest>().blackpersent;
@@ -39,11 +46,21 @@ public class FlameAI : AIObject
 
         if (playerCtrl.umbreallaDmg < diff)
         {
-            health -= playerCtrl.umbreallaDmg;
+            float dmg;
 
+            if (playerAnim.GetBool("HeavyAttack"))
+            {
+                dmg = playerCtrl.umbreallaHeavyDmg;
+            }
+            else
+            {
+                dmg = playerCtrl.umbreallaDmg;
+            }
+
+            health -= dmg;
             GameObject tmp = GameObject.Instantiate(damagedText, other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position), Quaternion.identity);
             tmp.transform.SetParent(this.transform, true);
-            tmp.transform.GetChild(0).GetComponent<Text>().text = "-" + playerCtrl.umbreallaDmg.ToString("F0");
+            tmp.transform.GetChild(0).GetComponent<Text>().text = "-" + dmg.ToString("F0");
 
         }
         else

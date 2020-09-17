@@ -30,10 +30,6 @@ public class FlameCollisonOverride : AICollisionHandler
                     umbrella.targetsTouched.Add(gameObject);
                     flameObject.CollisonLogic(other);
                 }
-                else
-                {
-                    Debug.Log("In list blocked!");
-                }
             }
         }
     }
