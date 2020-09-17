@@ -30,6 +30,7 @@ public class PlayerAttack : StateMachineBehaviour
             umbrella = animator.GetComponent<umbrella>();
         }
         animator.SetBool("Attacking", true);
+        animator.SetBool("HeavyAttack", false);
         animator.SetBool("Attack", false);
         animator.ResetTrigger("GoToNextAttack");
         once = true;
