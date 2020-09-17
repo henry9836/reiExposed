@@ -29,6 +29,10 @@ public class PlayerAttack : StateMachineBehaviour
         {
             umbrella = animator.GetComponent<umbrella>();
         }
+
+        //Clear hit list
+        umbrella.clearHits();
+
         animator.SetBool("Attacking", true);
         animator.SetBool("Attack", false);
         animator.ResetTrigger("GoToNextAttack");
@@ -50,7 +54,6 @@ public class PlayerAttack : StateMachineBehaviour
             playerControl.ChangeStamina(-playerControl.staminaToAttack);
         }
 
-        animator.SetBool("HeavyAttack", false);
     }
 
     //OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -196,6 +199,7 @@ public class PlayerAttack : StateMachineBehaviour
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         umbrella.Hitbox(false);
+        animator.SetBool("HeavyAttack", false);
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

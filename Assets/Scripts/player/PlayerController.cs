@@ -20,7 +20,8 @@ public class PlayerController : MonoBehaviour
     public bool staminaBlock = false;
 
     [Header("Combat")]
-    public float umbreallaDmg = 5.0f;
+    public float umbreallaDmg = 20.0f;
+    public float umbreallaHeavyDmg = 50.0f;
 
     [Header("Death")]
     public bool dead = false;
