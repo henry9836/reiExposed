@@ -30,7 +30,6 @@ public class PlayerAttack : StateMachineBehaviour
             umbrella = animator.GetComponent<umbrella>();
         }
         animator.SetBool("Attacking", true);
-        animator.SetBool("HeavyAttack", false);
         animator.SetBool("Attack", false);
         animator.ResetTrigger("GoToNextAttack");
         once = true;
@@ -42,9 +41,16 @@ public class PlayerAttack : StateMachineBehaviour
         movementTimer = 0.0f;
 
         //Charge Player For Attack
-        if (playerControl.staminaAmount >= playerControl.staminaToAttack) {
+        if (animator.GetBool("HeavyAttack"))
+        {
+            playerControl.ChangeStamina(-playerControl.staminaToHeavyAttack);
+        }
+        else
+        {
             playerControl.ChangeStamina(-playerControl.staminaToAttack);
         }
+
+        animator.SetBool("HeavyAttack", false);
     }
 
     //OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

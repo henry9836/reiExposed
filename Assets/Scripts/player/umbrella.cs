@@ -79,37 +79,30 @@ public class umbrella : MonoBehaviour
 
     void Update()
     {
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            if (timerToHeavy <= timeTillHeavyAttack) {
+                attackQueued = true;
+            }
+            timerToHeavy = 0.0f;
+        }
+
         if (Input.GetMouseButton(0))
         {
             timerToHeavy += Time.deltaTime;
-        }
-        
-        if (Input.GetMouseButtonUp(0) || timerToHeavy > timeTillHeavyAttack)
-        {
-            attackQueued = true;
+            if (timerToHeavy > timeTillHeavyAttack && !animator.GetBool("Attacking"))
+            {
+                attackQueued = true;
+            }
         }
 
 
         latetest = false;
 
-        //if attack button while not blocking hit
-        //if (Input.GetMouseButtonDown(0) && !animator.GetBool("Blocking") && !animator.GetBool("KnockedDown") && !phoneLock)
-        //{
-        //    if (playercontrol.staminaAmount >= playercontrol.staminaToAttack)
-        //    {
-        //        //movement.attackMovementBlock = true;
-        //        animator.SetBool("Attack", true);
-
-        //        if (timerToHeavy > timeTillHeavyAttack)
-        //        {
-        //            animator.SetTrigger("");
-        //        }
-
-        //    }
-        //}
         if (attackQueued && !animator.GetBool("Blocking") && !animator.GetBool("KnockedDown") && !phoneLock)
         {
-            if (playercontrol.staminaAmount >= playercontrol.staminaToAttack)
+            if ((playercontrol.staminaAmount >= playercontrol.staminaToAttack && timerToHeavy <= timeTillHeavyAttack) || (playercontrol.staminaAmount >= playercontrol.staminaToHeavyAttack && timerToHeavy > timeTillHeavyAttack))
             {
                 attackQueued = false;
 
@@ -120,7 +113,7 @@ public class umbrella : MonoBehaviour
                     animator.SetBool("HeavyAttack", true);
                 }
 
-                timerToHeavy = 0.0f;
+                //timerToHeavy = 0.0f;
 
             }
         }
