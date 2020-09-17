@@ -28,7 +28,7 @@ public class umbrella : MonoBehaviour
     public GameObject shotUI;
     public bool phoneLock = false;
     [HideInInspector]
-    public List<MythCollisionHandler> mythsTouched = new List<MythCollisionHandler>();
+    public List<GameObject> targetsTouched = new List<GameObject>();
 
     //shotty
     [Header("Shotty")]
@@ -60,15 +60,15 @@ public class umbrella : MonoBehaviour
 
     public void clearHits()
     {
-        mythsTouched.Clear();
+        targetsTouched.Clear();
     }
 
     //Tests if we have already hit this myth during our current attack animation
-    public bool validDmg(MythCollisionHandler test)
+    public bool validDmg(GameObject test)
     {
-        for (int i = 0; i < mythsTouched.Count; i++)
+        for (int i = 0; i < targetsTouched.Count; i++)
         {
-            if (mythsTouched[i] == test)
+            if (targetsTouched[i] == test)
             {
                 return false;
             }

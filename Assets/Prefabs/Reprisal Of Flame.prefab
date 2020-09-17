@@ -2921,6 +2921,7 @@ GameObject:
   - component: {fileID: 931822222814206917}
   - component: {fileID: 5715697771144031159}
   - component: {fileID: 6439600856069253462}
+  - component: {fileID: 6312584756221701256}
   - component: {fileID: 1265875210462290092}
   m_Layer: 13
   m_Name: Reprisal Of Flame
@@ -3177,7 +3178,7 @@ MonoBehaviour:
   playerCtrl: {fileID: 0}
   forwardAnimationsTo: {fileID: 0}
   startInSleepState: 1
-  handleCollision: 1
+  handleCollision: 0
   damagedText: {fileID: 7401280080073061358, guid: febedf0338a1da8438f0280ae306b1d0,
     type: 3}
   health: 5000
@@ -3674,6 +3675,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+--- !u!114 &6312584756221701256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5256648503180215460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 425b1c1a3de67504894ae97114747e66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  aiObject: {fileID: 0}
 --- !u!114 &1265875210462290092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6458,15 +6472,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43b659d2d40f24449a8ca29b553beede, type: 3}
---- !u!1 &3515865585417562605 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5504903284278290134, guid: 43b659d2d40f24449a8ca29b553beede,
-    type: 3}
-  m_PrefabInstance: {fileID: 8984546298776276795}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3515865585417562606 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5504903284278290133, guid: 43b659d2d40f24449a8ca29b553beede,
+    type: 3}
+  m_PrefabInstance: {fileID: 8984546298776276795}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3515865585417562605 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5504903284278290134, guid: 43b659d2d40f24449a8ca29b553beede,
     type: 3}
   m_PrefabInstance: {fileID: 8984546298776276795}
   m_PrefabAsset: {fileID: 0}

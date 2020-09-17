@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class FlameAI : AIObject
 {
@@ -23,6 +24,37 @@ public class FlameAI : AIObject
         }
 
         return -1;
+    }
+
+    //Used by collison handler
+    public void CollisonLogic(Collider other)
+    {
+        revealAmount = 0.0f;
+
+        revealAmount = revealpersentobject.GetComponent<drawTest>().blackpersent;
+
+        revealAmount = startHealth * revealAmount;
+
+        float diff = (health - revealAmount);
+
+        if (playerCtrl.umbreallaDmg < diff)
+        {
+            health -= playerCtrl.umbreallaDmg;
+
+            GameObject tmp = GameObject.Instantiate(damagedText, other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position), Quaternion.identity);
+            tmp.transform.SetParent(this.transform, true);
+            tmp.transform.GetChild(0).GetComponent<Text>().text = "-" + playerCtrl.umbreallaDmg.ToString("F0");
+
+        }
+        else
+        {
+            GameObject tmp = GameObject.Instantiate(damagedText, other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position), Quaternion.identity);
+            tmp.transform.SetParent(this.transform, true);
+            tmp.transform.GetChild(0).GetComponent<Text>().text = "-" + diff.ToString("F0");
+
+            health = revealAmount;
+
+        }
     }
 
     //Selects a random attack to use againest the player
@@ -112,4 +144,5 @@ public class FlameAI : AIObject
             bindAttack(fallbackAttack);
         }
     }
+
 }

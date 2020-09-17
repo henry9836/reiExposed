@@ -47,10 +47,10 @@ public class MythCollisionHandler : AICollisionHandler
         {
             if (aiObject.health > 0.0f)
             {
-                if (playerUmbrella.validDmg(this))
+                if (playerUmbrella.validDmg(gameObject))
                 {
                     //Add onto player known attack
-                    playerUmbrella.mythsTouched.Add(this);
+                    playerUmbrella.targetsTouched.Add(gameObject);
 
                     //Passive
                     if (aiObject.currentMode == 1)
