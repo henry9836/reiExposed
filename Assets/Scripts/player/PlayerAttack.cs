@@ -29,6 +29,10 @@ public class PlayerAttack : StateMachineBehaviour
         {
             umbrella = animator.GetComponent<umbrella>();
         }
+
+        //Clear hit list
+        umbrella.clearHits();
+
         animator.SetBool("Attacking", true);
         animator.SetBool("Attack", false);
         animator.ResetTrigger("GoToNextAttack");

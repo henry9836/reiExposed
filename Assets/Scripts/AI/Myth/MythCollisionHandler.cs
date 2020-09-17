@@ -12,6 +12,7 @@ public class MythCollisionHandler : AICollisionHandler
 
     Animator animator;
     Animator playerAnimator;
+    umbrella playerUmbrella;
     public float blockStaminaCost = 10.0f;
     [HideInInspector]
     public bool fullyBlocking = false;
@@ -34,6 +35,9 @@ public class MythCollisionHandler : AICollisionHandler
         animator = GetComponent<Animator>();
         audio = GetComponent<AudioSource>();
 
+        //Get Umbrella
+        playerUmbrella = aiObject.player.GetComponent<umbrella>();
+
         fullyBlocking = false;
     }
 
@@ -43,8 +47,11 @@ public class MythCollisionHandler : AICollisionHandler
         {
             if (aiObject.health > 0.0f)
             {
-                if (other.tag == "PlayerAttackSurface")
+                if (playerUmbrella.validDmg(this))
                 {
+                    //Add onto player known attack
+                    playerUmbrella.mythsTouched.Add(this);
+
                     //Passive
                     if (aiObject.currentMode == 1)
                     {
@@ -75,14 +82,14 @@ public class MythCollisionHandler : AICollisionHandler
                             }
                         }
                     }
+
+                    Debug.Log("No Block");
+
+                    Instantiate(hitVFX, transform.position, Quaternion.identity);
+
+                    animator.SetTrigger("Stun");
+                    aiObject.health -= aiObject.playerCtrl.umbreallaDmg;
                 }
-
-                Debug.Log("No Block");
-
-                Instantiate(hitVFX, transform.position, Quaternion.identity);
-
-                animator.SetTrigger("Stun");
-                aiObject.health -= aiObject.playerCtrl.umbreallaDmg;
             }
         }
     }
