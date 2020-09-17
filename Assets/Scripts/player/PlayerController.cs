@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
@@ -22,6 +23,7 @@ public class PlayerController : MonoBehaviour
     [Header("Combat")]
     public float umbreallaDmg = 20.0f;
     public float umbreallaHeavyDmg = 50.0f;
+    public float knockDownThreshold = 15.0f;
 
     [Header("Death")]
     public bool dead = false;
@@ -139,6 +141,32 @@ public class PlayerController : MonoBehaviour
             {
                 Debug.Log("I was hit and taking damage");
 
+                //Stun based on type
+                AIAttackContainer.EFFECTTYPES effect = otherObject.transform.root.GetComponent<AIObject>().QueryDamageEffect();
+
+                switch (effect)
+                {
+                    case AIAttackContainer.EFFECTTYPES.STUN:
+                        {
+                            animator.SetTrigger("Stun");
+                            break;
+                        }
+                    case AIAttackContainer.EFFECTTYPES.KNOCKBACK:
+                        {
+                            animator.SetTrigger("KnockBack");
+                            break;
+                        }
+                    case AIAttackContainer.EFFECTTYPES.KNOCKDOWN:
+                        {
+                            animator.SetTrigger("KnockDown");
+                            break;
+                        }
+                    default:
+                        break;
+                }
+
+
+                //Apply Damage
                 if (otherObject.transform.root.GetComponent<AIObject>() != null)
                 {
                     health -= otherObject.transform.root.GetComponent<AIObject>().QueryDamage();
@@ -168,8 +196,6 @@ public class PlayerController : MonoBehaviour
                     //Spawn VFX
                     Instantiate(hitVFX, transform.position, Quaternion.identity);
                 }
-                //Stun
-                animator.SetTrigger("KnockDown");
             }
             //If we are blocking
             else if (other.gameObject.CompareTag("EnemyAttackSurface") && umbrella.ISBLockjing)
