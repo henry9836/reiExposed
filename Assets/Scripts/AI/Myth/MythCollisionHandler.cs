@@ -54,7 +54,7 @@ public class MythCollisionHandler : AICollisionHandler
                         if (tracker.isFacingPlayer())
                         {
                             //Block
-                            if (((dice <= 8 && aiObject.stamina >= blockStaminaCost) || animator.GetBool("Blocking")) || true)
+                            if (((dice <= 8 && aiObject.stamina >= blockStaminaCost) || animator.GetBool("Blocking")))
                             {
 
                                 Instantiate(blockVFX, other.transform.position, Quaternion.identity);
