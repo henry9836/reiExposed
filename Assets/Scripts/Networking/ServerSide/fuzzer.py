@@ -5,6 +5,7 @@ IP = "45.32.245.198"
 FILE = "fuzz.txt"
 PORT = 27100
 MAXRECV = 2048
+SEPERATOR = "--"
 
 
 def sendServer(data):
@@ -12,12 +13,15 @@ def sendServer(data):
 	itemP1 = "1"
 	itemP2 = "2"
 	itemP3 = "3"
+	name = "FUZZERMAN"
+	time = "01:00:00.000000"
 	if randomMode:
 		currP = str(random.randint(-9999, 9999))
 		itemP1 = str(random.randint(-9999, 9999))
 		itemP2 = str(random.randint(-9999, 9999))
 		itemP3 = str(random.randint(-9999, 9999))
-	packet = "1--FUZZER--" + data + "--"+currP+"--"+itemP1+"--"+itemP2+"--"+itemP3+""
+		time = "0" + str(random.randint(0, 1)) + ":" + str(random.randint(10, 59)) + ":" + str(random.randint(10, 59)) + "." + str(random.randint(1, 99))
+	packet = "FUZZER" + SEPERATOR +"FUZZER" + SEPERATOR + data + SEPERATOR + currP + SEPERATOR + itemP1 + SEPERATOR + itemP2 + SEPERATOR + itemP3 + SEPERATOR + name + SEPERATOR + time
 	sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	sock.connect(server_address)
 	if user_in == "y":
