@@ -249,7 +249,7 @@ public class movementController : MonoBehaviour
         }
 
         //Sprint
-        else if (Input.GetButton("Sprint") && isOnGround && !rolling && !sprintLock && !animator.GetBool("UsingItem") && !animator.GetBool("KnockedDown") && ((moveDir.x != 0) && (moveDir.z != 0)) && (pc.CheckStamina() >= staminaCostSprint * Time.deltaTime))
+        else if (Input.GetButton("Sprint") && isOnGround && !rolling && !sprintLock && !animator.GetBool("UsingItem") && !animator.GetBool("Stunned") && ((moveDir.x != 0) && (moveDir.z != 0)) && (pc.CheckStamina() >= staminaCostSprint * Time.deltaTime))
         {
              //move a little more
 
