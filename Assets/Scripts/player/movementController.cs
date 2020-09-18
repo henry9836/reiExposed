@@ -282,7 +282,7 @@ public class movementController : MonoBehaviour
 
                      Vector3 passTargetRot = new Vector3(0.0f, 0.0f, 0.0f);
                      float passOverallSpeed = 3.50877192982f;
-                     Vector3 passTargetPos = new Vector3(0.2f, 0.1f, 0.0f);
+                     Vector3 passTargetPos = new Vector3(0.075f, 0.035f, 0.0f);
                      cam.GetComponent<cameraShake>().addOperation(passTargetPos, passTargetRot, passOverallSpeed, shakeOperation.lerpModes.OUTSINE, shakeOperation.lerpModes.INSINE, 1.0f, 1.0f);
                  }
                  else if (shakenumber == 1)
@@ -291,7 +291,7 @@ public class movementController : MonoBehaviour
 
                      Vector3 passTargetRot = new Vector3(0.0f, 0.0f, 0.0f);
                      float passOverallSpeed = 3.50877192982f;
-                     Vector3 passTargetPos = new Vector3(-0.2f, 0.1f, 0.0f);
+                     Vector3 passTargetPos = new Vector3(-0.075f, 0.035f, 0.0f);
                      cam.GetComponent<cameraShake>().addOperation(passTargetPos, passTargetRot, passOverallSpeed, shakeOperation.lerpModes.OUTSINE, shakeOperation.lerpModes.INSINE, 1.0f, 1.0f);
                  }
                  else
