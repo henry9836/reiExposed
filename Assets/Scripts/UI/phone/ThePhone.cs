@@ -338,7 +338,17 @@ public class ThePhone : MonoBehaviour
                         amazonselected += 1;
                         //ThePhoneUI.transform.GetChild(5).gameObject.GetComponent<eqitems>().itemchange();
                     }
-                    amazonselected = Mathf.Clamp(amazonselected, 0, 1);
+
+                    if (inbossroom == false)
+                    {
+                        amazonselected = Mathf.Clamp(amazonselected, 0, 1);
+                    }
+                    else
+                    {
+                        amazonselected = 0;
+                        ThePhoneUI.transform.GetChild(4).GetChild(1).GetComponent<Image>().color = new Color(0.5f, 0.5f, 0.5f, 1.0f);
+
+                    }
 
                     //perchance item
                     if (Input.GetMouseButtonDown(0))

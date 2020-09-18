@@ -32,10 +32,6 @@ public class plugindemo : MonoBehaviour
 
     void LateUpdate()
     {
-
-
-
-
         if (candeliver == false)
         {
             float dist = Vector3.Distance(drone.transform.position, destinaitons[currdestination].transform.position);
@@ -53,6 +49,20 @@ public class plugindemo : MonoBehaviour
         candeliver = false;
         iar.destination = destinaitons[currdestination];
         iar.movfin1call = true;
+    }
+
+    //bailed on uber
+    public void bail()
+    {
+        if (todrop == 999 && destinaitons[currdestination] == rei && currdestination == 0)
+        {
+            drone.transform.position = this.transform.position + new Vector3(0.0f, 10.0f, 0.0f);
+            this.GetComponent<iamryan>().movment = true;
+            currdestination = 1;
+            iar.recalculate();
+        }
+
+
     }
 
 
@@ -95,7 +105,6 @@ public class plugindemo : MonoBehaviour
         else
         {
             candeliver = true;
-
         }
 
         //update and move again
