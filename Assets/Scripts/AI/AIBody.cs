@@ -38,6 +38,8 @@ public class AIBody : MonoBehaviour
     //Arms or disarms mutilple body parts based on what is requested
     public void updateHitBox(BodyParts parts, bool mode)
     {
+        Debug.Log($"Parts update {mode}");
+
         switch (parts)
         {
             case BodyParts.ALL:

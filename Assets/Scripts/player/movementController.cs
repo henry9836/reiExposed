@@ -148,7 +148,7 @@ public class movementController : MonoBehaviour
 
 
         //Rotate towards movement in relation to cam direction
-        if (moveDirCam != Vector3.zero && !rolling && !strafemode && (!attackMovementBlock || canTurnDuringAttack) && !animator.GetBool("KnockedDown"))
+        if (moveDirCam != Vector3.zero && !rolling && !strafemode && (!attackMovementBlock || canTurnDuringAttack) && !animator.GetBool("Stunned"))
         {
 
             //Get cam rotation
@@ -169,7 +169,7 @@ public class movementController : MonoBehaviour
 
         }
 
-        if (!animator.GetBool("UsingItem") && !animator.GetBool("KnockedDown"))
+        if (!animator.GetBool("UsingItem") && !animator.GetBool("Stunned"))
         {
             moveDir += camParent.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed));
             moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed));
@@ -181,7 +181,7 @@ public class movementController : MonoBehaviour
         }
 
         //Rolling Mechanic
-        if (Input.GetButtonDown("Roll") && !rolling && !animator.GetBool("UsingItem") && !animator.GetBool("KnockedDown"))
+        if (Input.GetButtonDown("Roll") && !rolling && !animator.GetBool("UsingItem") && !animator.GetBool("Stunned"))
         {
             //Check stamina
             if (staminaCostRoll <= pc.staminaAmount)

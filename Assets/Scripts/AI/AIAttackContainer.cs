@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class AIAttackContainer : MonoBehaviour
 {
+
+    public enum EFFECTTYPES{
+        NONE,
+        STUN,
+        KNOCKBACK,
+        KNOCKDOWN
+    }
+
     public string attackName = "Untitled Attack";
     public float damage = 5.0f;
     public float statminaNeeded = 5.0f;
@@ -15,6 +23,7 @@ public class AIAttackContainer : MonoBehaviour
     public float facePlayerThreshold = 0.75f;
     public Vector2 rangeForAttack = new Vector2(1.0f, 10.0f);
     public string triggerName = "Untitled Trigger";
+    public EFFECTTYPES effect = EFFECTTYPES.STUN;
 
     [Header("AI Modes")]
     public bool allowedModeOne = true;
