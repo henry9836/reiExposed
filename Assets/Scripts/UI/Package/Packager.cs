@@ -164,7 +164,11 @@ public class Packager : MonoBehaviour
         //Build package
         sender.ddID = "STEAM_0:0:98612737"; //TODO replace with propper steamID
         sender.ddmessage = message.text;
-        sender.ddcurr = int.Parse(currency.text) + 100; //Whatever the user put in +100
+        sender.ddcurr = int.Parse(currency.text);
+        if (int.Parse(currency.text) < 100)
+        {
+            sender.ddcurr += 100; //Whatever the user put in +100
+        }
         sender.dditem1 = (int)item1;
         sender.dditem2 = (int)item2;
         sender.dditem3 = (int)item3;
