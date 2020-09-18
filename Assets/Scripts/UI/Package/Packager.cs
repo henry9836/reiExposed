@@ -172,6 +172,8 @@ public class Packager : MonoBehaviour
         sender.dditem1 = (int)item1;
         sender.dditem2 = (int)item2;
         sender.dditem3 = (int)item3;
+        sender.ddname = "Anon";
+        sender.ddtime = NetworkUtility.convertToTime(3600.0f);
 
         //Remove Items
         items.removeitemequipped(item1, false);

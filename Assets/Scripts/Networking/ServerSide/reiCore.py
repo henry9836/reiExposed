@@ -63,7 +63,7 @@ class packetStruct:
 				self.item2 = int(self.data[5])
 				self.item3 = int(self.data[6])
 				self.name = str(self.data[7])
-				self.time = float(self.data[8])
+				self.time = str(self.data[8])
 
 				#check for incorrect values
 				if (self.curr < 10):
@@ -97,7 +97,6 @@ class packetStruct:
 #CREATE A ENTRY
 def createPackage(packet, _cursor, _db):
 	#INSERT into Packages (ID, MSG, ATTACH1, ATTACH2, ATTACH3, NAME, TIME) VALUES ("FUZZER", "TEST", 1, 1, 1, "FUZZERNOTREALLY", "01:23:45.678900")
-	#INSERT into Packages (ID, MSG, ATTACH1, ATTACH2, ATTACH3, NAME, TIME) VALUES ("FUZZER", "TEST", 1, 1, 1, "FUZZERNOTREALLY", "120.5") also works
 	q = "INSERT INTO Packages (ID, MSG, CURR, ATTACH1, ATTACH2, ATTACH3, NAME, TIME) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
 	v = (packet.ID, packet.msg, packet.curr, packet.item1, packet.item2, packet.item3, packet.name, packet.time);
 	_cursor.execute(q, v)

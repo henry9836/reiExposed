@@ -14,7 +14,7 @@ public class datadump
 
     }
 
-    public datadump(int pack, string ID, string msg, int curr, int itm1, int itm2, int itm3)
+    public datadump(int pack, string ID, string msg, int curr, int itm1, int itm2, int itm3, string nam, string tim)
     {
         tpacketType = pack;
         tID = ID;
@@ -23,6 +23,10 @@ public class datadump
         titem1 = itm1;
         titem2 = itm2;
         titem3 = itm3;
+        titem3 = itm3;
+        titem3 = itm3;
+        tName = nam;
+        tTime = tim;
     }
 
     public datadump(int pack, string msg)
@@ -43,6 +47,8 @@ public class datadump
     public int titem1;
     public int titem2;
     public int titem3;
+    public string tName;
+    public string tTime;
 }
 
 public class multipass
@@ -68,6 +74,8 @@ public class multipass
         dditem1 = mpdatadump.titem1;
         dditem2 = mpdatadump.titem2;
         dditem3 = mpdatadump.titem3;
+        ddName = mpdatadump.tName;
+        ddTime = mpdatadump.tTime;
     }
 
     public datadump mpdatadump;
@@ -85,6 +93,8 @@ public class multipass
     public int dditem1;
     public int dditem2;
     public int dditem3;
+    public string ddName;
+    public string ddTime;
 
 }
 
@@ -114,6 +124,8 @@ public class packagetosend : MonoBehaviour
     public int dditem1;
     public int dditem2;
     public int dditem3;
+    public string ddname;
+    public string ddtime; //String in seconds
 
     public GameObject usertextbox;
     public GameObject usercurr;
@@ -216,7 +228,7 @@ public class packagetosend : MonoBehaviour
                     //dditem2 = convert(useritem2.GetComponent<Text>().text);
                     //dditem3 = convert(useritem3.GetComponent<Text>().text);
 
-                    package = new datadump((int)ddpackettype, ddID, ddmessage, ddcurr, dditem1, dditem2, dditem3);
+                    package = new datadump((int)ddpackettype, ddID, ddmessage, ddcurr, dditem1, dditem2, dditem3, ddname, ddtime);
 
 
                     break;
@@ -356,7 +368,9 @@ public class packagetosend : MonoBehaviour
                     thestring += dump.tcurr + "--";
                     thestring += dump.titem1 + "--";
                     thestring += dump.titem2 + "--";
-                    thestring += dump.titem3;
+                    thestring += dump.titem3 + "--";
+                    thestring += dump.tName + "--";
+                    thestring += dump.tTime;
                     break;
                 }
             case sendpackettypes.PACKAGERECIVE:
