@@ -121,7 +121,7 @@ public class umbrella : MonoBehaviour
 
         latetest = false;
 
-        if (attackQueued && !animator.GetBool("Blocking") && !animator.GetBool("KnockedDown") && !phoneLock)
+        if (attackQueued && !animator.GetBool("Blocking") && !animator.GetBool("Stunned") && !phoneLock)
         {
             if ((playercontrol.staminaAmount >= playercontrol.staminaToAttack && timerToHeavy <= timeTillHeavyAttack) || (playercontrol.staminaAmount >= playercontrol.staminaToHeavyAttack && timerToHeavy > timeTillHeavyAttack))
             {

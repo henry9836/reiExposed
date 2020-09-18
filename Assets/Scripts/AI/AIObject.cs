@@ -111,6 +111,18 @@ public class AIObject : MonoBehaviour
         }
     }
 
+    public virtual AIAttackContainer.EFFECTTYPES QueryDamageEffect()
+    {
+        if (selectedAttack == null)
+        {
+            return AIAttackContainer.EFFECTTYPES.NONE;
+        }
+        else
+        {
+            return selectedAttack.effect;
+        }
+    }
+
     public virtual float QueryDamage()
     {
         if (selectedAttack == null)
@@ -251,6 +263,7 @@ public class AIObject : MonoBehaviour
         return selectedAttack;
     }
 
+    //NOT USED ALL COLLISION IS HANDLED IN THEIR OWN COLLISION MANAGERS
     public virtual void OnTriggerEnter(Collider other)
     {
         if (handleCollision)
@@ -270,6 +283,8 @@ public class AIObject : MonoBehaviour
 
                     float diff = (health - revealAmount);
 
+      
+
                     if (playerCtrl.umbreallaDmg < diff)
                     {
                         health -= playerCtrl.umbreallaDmg;
@@ -277,6 +292,7 @@ public class AIObject : MonoBehaviour
                         GameObject tmp = GameObject.Instantiate(damagedText, other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position), Quaternion.identity);
                         tmp.transform.SetParent(this.transform, true);
                         tmp.transform.GetChild(0).GetComponent<Text>().text = "-" + playerCtrl.umbreallaDmg.ToString("F0");
+
 
                     }
                     else

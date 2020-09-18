@@ -11,7 +11,12 @@ public class playerStunBehaviour : StateMachineBehaviour
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {;
         animator.ResetTrigger("KnockDown");
-        animator.SetBool("KnockedDown", true);
+        animator.ResetTrigger("Stun");
+        animator.ResetTrigger("KnockBack");
+        animator.SetBool("Stunned", true);
+
+        animator.SetInteger("StunToUse", Random.Range(0, 3));
+
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -20,7 +25,7 @@ public class playerStunBehaviour : StateMachineBehaviour
 
         if ((stateInfo.normalizedTime % 1.0f) >= exitTrigger)
         {
-            animator.SetBool("KnockedDown", false);
+            animator.SetBool("Stunned", false);
         }
 
     }

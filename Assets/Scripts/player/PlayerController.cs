@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
@@ -22,6 +23,7 @@ public class PlayerController : MonoBehaviour
     [Header("Combat")]
     public float umbreallaDmg = 20.0f;
     public float umbreallaHeavyDmg = 50.0f;
+    public float knockDownThreshold = 15.0f;
 
     [Header("Death")]
     public bool dead = false;
@@ -139,8 +141,13 @@ public class PlayerController : MonoBehaviour
             {
                 Debug.Log("I was hit and taking damage");
 
+                AIAttackContainer.EFFECTTYPES effect = AIAttackContainer.EFFECTTYPES.NONE;
+
+                //Apply Damage
                 if (otherObject.transform.root.GetComponent<AIObject>() != null)
                 {
+                    //Stun based on type
+                    effect = otherObject.transform.root.GetComponent<AIObject>().QueryDamageEffect();
                     health -= otherObject.transform.root.GetComponent<AIObject>().QueryDamage();
                 }
                 else if (otherObject.GetComponent<GenericHitboxController>() != null)
@@ -148,6 +155,8 @@ public class PlayerController : MonoBehaviour
                     Collider col = GetComponent<Collider>();
                     Debug.DrawLine(other.ClosestPointOnBounds(col.transform.position), col.transform.position, Color.magenta, 10.0f, false);
                     float dmg = otherObject.GetComponent<GenericHitboxController>().Damage();
+                    //Stun based on type
+                    effect = otherObject.GetComponent<GenericHitboxController>().effect;
                     health -= dmg;
                     Debug.Log($"Took Damage {dmg}");
                 }
@@ -156,6 +165,28 @@ public class PlayerController : MonoBehaviour
                     Debug.LogWarning($"Unknown Component Damage {otherObject.name}");
                 }
                 audio.PlayOneShot(hurtSounds[Random.Range(0, hurtSounds.Count)]);
+
+                //Stun Animation
+                switch (effect)
+                {
+                    case AIAttackContainer.EFFECTTYPES.STUN:
+                        {
+                            animator.SetTrigger("Stun");
+                            break;
+                        }
+                    case AIAttackContainer.EFFECTTYPES.KNOCKBACK:
+                        {
+                            animator.SetTrigger("KnockBack");
+                            break;
+                        }
+                    case AIAttackContainer.EFFECTTYPES.KNOCKDOWN:
+                        {
+                            animator.SetTrigger("KnockDown");
+                            break;
+                        }
+                    default:
+                        break;
+                }
 
                 //Boss VFX Hit
                 if (otherObject.transform.root.tag == "Boss")
@@ -168,8 +199,6 @@ public class PlayerController : MonoBehaviour
                     //Spawn VFX
                     Instantiate(hitVFX, transform.position, Quaternion.identity);
                 }
-                //Stun
-                animator.SetTrigger("KnockDown");
             }
             //If we are blocking
             else if (other.gameObject.CompareTag("EnemyAttackSurface") && umbrella.ISBLockjing)
@@ -181,6 +210,8 @@ public class PlayerController : MonoBehaviour
                 boss.GetComponent<AIObject>().body.updateHitBox(AIBody.BodyParts.ALL, false);
                 Instantiate(blockVFX, other.transform.position, Quaternion.identity);
             }
+
+            
 
             if (health <= 40.0f)
             {

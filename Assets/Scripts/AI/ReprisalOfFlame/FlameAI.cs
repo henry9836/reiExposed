@@ -44,19 +44,19 @@ public class FlameAI : AIObject
 
         float diff = (health - revealAmount);
 
-        if (playerCtrl.umbreallaDmg < diff)
+        float dmg;
+
+        if (playerAnim.GetBool("HeavyAttack"))
         {
-            float dmg;
+            dmg = playerCtrl.umbreallaHeavyDmg;
+        }
+        else
+        {
+            dmg = playerCtrl.umbreallaDmg;
+        }
 
-            if (playerAnim.GetBool("HeavyAttack"))
-            {
-                dmg = playerCtrl.umbreallaHeavyDmg;
-            }
-            else
-            {
-                dmg = playerCtrl.umbreallaDmg;
-            }
-
+        if (dmg < diff)
+        {
             health -= dmg;
             GameObject tmp = GameObject.Instantiate(damagedText, other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position), Quaternion.identity);
             tmp.transform.SetParent(this.transform, true);

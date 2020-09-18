@@ -54,6 +54,7 @@ public class AIDash : StateMachineBehaviour
         {
             dashing = true;
             movement.setOverride(AIMovement.OVERRIDE.MOVE_OVERRIDE);
+            ai.body.updateHitBox(AIBody.BodyParts.ALL, true);
         }
         if (!lostPlayerTracking && ((stateInfo.normalizedTime % 1.0f) >= losePlayerTrigger))
         {
@@ -64,6 +65,7 @@ public class AIDash : StateMachineBehaviour
         //Dash forwards
         if (dashing)
         {
+
             //If we are close enought to the player stop moving
             if (playerStopTheshold >= Vector3.Distance(transform.position, ai.player.transform.position))
             {
@@ -112,6 +114,7 @@ public class AIDash : StateMachineBehaviour
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         movement.setOverride(AIMovement.OVERRIDE.NO_OVERRIDE);
+        ai.body.updateHitBox(AIBody.BodyParts.ALL, false);
 
         //Reset selected attack
         //ai.unbindAttack();

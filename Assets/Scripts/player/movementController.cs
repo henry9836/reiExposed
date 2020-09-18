@@ -148,7 +148,7 @@ public class movementController : MonoBehaviour
 
 
         //Rotate towards movement in relation to cam direction
-        if (moveDirCam != Vector3.zero && !rolling && !strafemode && (!attackMovementBlock || canTurnDuringAttack) && !animator.GetBool("KnockedDown"))
+        if (moveDirCam != Vector3.zero && !rolling && !strafemode && (!attackMovementBlock || canTurnDuringAttack) && !animator.GetBool("Stunned"))
         {
 
             //Get cam rotation
@@ -169,7 +169,7 @@ public class movementController : MonoBehaviour
 
         }
 
-        if (!animator.GetBool("UsingItem") && !animator.GetBool("KnockedDown"))
+        if (!animator.GetBool("UsingItem") && !animator.GetBool("Stunned"))
         {
             moveDir += camParent.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed));
             moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed));
@@ -181,7 +181,7 @@ public class movementController : MonoBehaviour
         }
 
         //Rolling Mechanic
-        if (Input.GetButtonDown("Roll") && !rolling && !animator.GetBool("UsingItem") && !animator.GetBool("KnockedDown"))
+        if (Input.GetButtonDown("Roll") && !rolling && !animator.GetBool("UsingItem") && !animator.GetBool("Stunned"))
         {
             //Check stamina
             if (staminaCostRoll <= pc.staminaAmount)
@@ -249,7 +249,7 @@ public class movementController : MonoBehaviour
         }
 
         //Sprint
-        else if (Input.GetButton("Sprint") && isOnGround && !rolling && !sprintLock && !animator.GetBool("UsingItem") && !animator.GetBool("KnockedDown") && ((moveDir.x != 0) && (moveDir.z != 0)) && (pc.CheckStamina() >= staminaCostSprint * Time.deltaTime))
+        else if (Input.GetButton("Sprint") && isOnGround && !rolling && !sprintLock && !animator.GetBool("UsingItem") && !animator.GetBool("Stunned") && ((moveDir.x != 0) && (moveDir.z != 0)) && (pc.CheckStamina() >= staminaCostSprint * Time.deltaTime))
         {
              //move a little more
 
@@ -282,7 +282,7 @@ public class movementController : MonoBehaviour
 
                      Vector3 passTargetRot = new Vector3(0.0f, 0.0f, 0.0f);
                      float passOverallSpeed = 3.50877192982f;
-                     Vector3 passTargetPos = new Vector3(0.2f, 0.1f, 0.0f);
+                     Vector3 passTargetPos = new Vector3(0.075f, 0.035f, 0.0f);
                      cam.GetComponent<cameraShake>().addOperation(passTargetPos, passTargetRot, passOverallSpeed, shakeOperation.lerpModes.OUTSINE, shakeOperation.lerpModes.INSINE, 1.0f, 1.0f);
                  }
                  else if (shakenumber == 1)
@@ -291,7 +291,7 @@ public class movementController : MonoBehaviour
 
                      Vector3 passTargetRot = new Vector3(0.0f, 0.0f, 0.0f);
                      float passOverallSpeed = 3.50877192982f;
-                     Vector3 passTargetPos = new Vector3(-0.2f, 0.1f, 0.0f);
+                     Vector3 passTargetPos = new Vector3(-0.075f, 0.035f, 0.0f);
                      cam.GetComponent<cameraShake>().addOperation(passTargetPos, passTargetRot, passOverallSpeed, shakeOperation.lerpModes.OUTSINE, shakeOperation.lerpModes.INSINE, 1.0f, 1.0f);
                  }
                  else
