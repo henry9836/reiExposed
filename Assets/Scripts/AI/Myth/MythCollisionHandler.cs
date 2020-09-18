@@ -98,7 +98,13 @@ public class MythCollisionHandler : AICollisionHandler
                     Instantiate(hitVFX, transform.position, Quaternion.identity);
 
                     animator.SetTrigger("Stun");
+
                     aiObject.health -= dmg;
+
+
+                    GameObject tmp = GameObject.Instantiate(this.gameObject.GetComponent<AIObject>().damagedText, other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position), Quaternion.identity);
+                    tmp.transform.SetParent(this.transform, true);
+                    tmp.transform.GetChild(0).GetComponent<Text>().text = "-" + dmg.ToString("F0");
                 }
             }
         }
