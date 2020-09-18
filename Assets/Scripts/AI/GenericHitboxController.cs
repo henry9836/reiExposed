@@ -8,6 +8,8 @@ public class GenericHitboxController : MonoBehaviour
     public float damage = 5.0f;
     public bool damageOnce = false;
 
+    public AIAttackContainer.EFFECTTYPES effect = AIAttackContainer.EFFECTTYPES.STUN;
+
     public float Damage()
     {
         float tmp = damage;

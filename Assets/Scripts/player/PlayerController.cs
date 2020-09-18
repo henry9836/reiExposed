@@ -141,9 +141,32 @@ public class PlayerController : MonoBehaviour
             {
                 Debug.Log("I was hit and taking damage");
 
-                //Stun based on type
-                AIAttackContainer.EFFECTTYPES effect = otherObject.transform.root.GetComponent<AIObject>().QueryDamageEffect();
+                AIAttackContainer.EFFECTTYPES effect = AIAttackContainer.EFFECTTYPES.NONE;
 
+                //Apply Damage
+                if (otherObject.transform.root.GetComponent<AIObject>() != null)
+                {
+                    //Stun based on type
+                    effect = otherObject.transform.root.GetComponent<AIObject>().QueryDamageEffect();
+                    health -= otherObject.transform.root.GetComponent<AIObject>().QueryDamage();
+                }
+                else if (otherObject.GetComponent<GenericHitboxController>() != null)
+                {
+                    Collider col = GetComponent<Collider>();
+                    Debug.DrawLine(other.ClosestPointOnBounds(col.transform.position), col.transform.position, Color.magenta, 10.0f, false);
+                    float dmg = otherObject.GetComponent<GenericHitboxController>().Damage();
+                    //Stun based on type
+                    effect = otherObject.GetComponent<GenericHitboxController>().effect;
+                    health -= dmg;
+                    Debug.Log($"Took Damage {dmg}");
+                }
+                else
+                {
+                    Debug.LogWarning($"Unknown Component Damage {otherObject.name}");
+                }
+                audio.PlayOneShot(hurtSounds[Random.Range(0, hurtSounds.Count)]);
+
+                //Stun Animation
                 switch (effect)
                 {
                     case AIAttackContainer.EFFECTTYPES.STUN:
@@ -164,26 +187,6 @@ public class PlayerController : MonoBehaviour
                     default:
                         break;
                 }
-
-
-                //Apply Damage
-                if (otherObject.transform.root.GetComponent<AIObject>() != null)
-                {
-                    health -= otherObject.transform.root.GetComponent<AIObject>().QueryDamage();
-                }
-                else if (otherObject.GetComponent<GenericHitboxController>() != null)
-                {
-                    Collider col = GetComponent<Collider>();
-                    Debug.DrawLine(other.ClosestPointOnBounds(col.transform.position), col.transform.position, Color.magenta, 10.0f, false);
-                    float dmg = otherObject.GetComponent<GenericHitboxController>().Damage();
-                    health -= dmg;
-                    Debug.Log($"Took Damage {dmg}");
-                }
-                else
-                {
-                    Debug.LogWarning($"Unknown Component Damage {otherObject.name}");
-                }
-                audio.PlayOneShot(hurtSounds[Random.Range(0, hurtSounds.Count)]);
 
                 //Boss VFX Hit
                 if (otherObject.transform.root.tag == "Boss")
@@ -207,6 +210,8 @@ public class PlayerController : MonoBehaviour
                 boss.GetComponent<AIObject>().body.updateHitBox(AIBody.BodyParts.ALL, false);
                 Instantiate(blockVFX, other.transform.position, Quaternion.identity);
             }
+
+            
 
             if (health <= 40.0f)
             {
