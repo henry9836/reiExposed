@@ -18,6 +18,7 @@ class PACKET(enum.Enum):
     ACK = 0
     PACKAGE_SEND = 1
     PACKAGE_RECIEVE = 2
+    REQUEST_LEADERBOARD = 3
 
 class packetStruct:
 	def __init__(self, input, db):
@@ -35,14 +36,14 @@ class packetStruct:
 
 			#setup packet depending on type of packet
 			if self.type == PACKET.PACKAGE_SEND.value:
-				#try:
+
 				#grab character blacklist
 				blacklistFile = open("blacklist.txt", 'r')
 				blacklist = blacklistFile.read().splitlines()
 				blacklistFile.close()
 
 				#check for naughtyness
-				for i in range(1, 6):
+				for i in range(1, len(self.data)):
 					for y in blacklist:
 						tmp = str(self.data[i]).lower()
 						y = y.lower()
@@ -90,6 +91,26 @@ class packetStruct:
 					print("Msg Too Long")
 					self.type = ERROR_GENERAL #error value
 					return;
+			elif self.type == PACKET.REQUEST_LEADERBOARD.value:
+				#grab character blacklist
+				blacklistFile = open("blacklist.txt", 'r')
+				blacklist = blacklistFile.read().splitlines()
+				blacklistFile.close()
+
+				#check for naughtyness
+				for i in range(1, len(self.data)):
+					for y in blacklist:
+						tmp = str(self.data[i]).lower()
+						y = y.lower()
+						if y in tmp:
+							print("Invalid Word Found: " + y)
+							self.type = ERROR_GENERAL #error value
+							return;
+						elif tmp == '':
+							print("Null Value Found!")
+							self.type = ERROR_GENERAL #error value
+							return;
+				self.nameOfUser =  str(self.data[1])
 			#Nothing Values
 			elif self.type == PACKET.ACK.value or  self.type == PACKET.PACKAGE_RECIEVE.value:
 				pass
@@ -152,6 +173,10 @@ def clientThread(conn):
 				package = getPackage(cursor).fetchone();
 				conn.send(("2"+SEPERATOR+str(package[0])+SEPERATOR+str(package[1])+SEPERATOR+str(package[2])+SEPERATOR+str(package[3])+SEPERATOR+str(package[4])+SEPERATOR+str(package[5])).encode('utf-8', 'replace'))
 				print("Sent back package")
+			elif packet.type == PACKET.REQUEST_LEADERBOARD.value:
+				print("LEADERBOARD_REQUEST")
+				#to do logic get the top few and the ones around/above us
+				#send info back
 			else:
 				print("Unknown Package Type " + data[0])
 				conn.send(("0"+SEPERATOR+"UNKNOWN").encode('utf-8', 'replace'))

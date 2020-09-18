@@ -107,6 +107,7 @@ public class packagetosend : MonoBehaviour
         ACK,
         PACKAGESEND,
         PACKAGERECIVE,
+        REQUESTLEADERBOARD
     };
 
     public bool toPackage;
@@ -155,6 +156,11 @@ public class packagetosend : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Comma))
+        {
+            send(sendpackettypes.REQUESTLEADERBOARD);
+        }
+
         if (toPackage == true)
         {
             toPackage = false;
@@ -238,9 +244,15 @@ public class packagetosend : MonoBehaviour
                     package = new datadump((int)ddpackettype);
                     break;
                 }
+            case sendpackettypes.REQUESTLEADERBOARD:
+                {
+                    ddmessage = "YourNameHere";
+                    package = new datadump((int)ddpackettype, ddmessage);
+                    break;
+                }
             default:
                 {
-                    Debug.Log("invalid packet type");
+                    Debug.Log($"invalid packet type {type.ToString()}");
                     break;
                 }
         }
@@ -282,6 +294,11 @@ public class packagetosend : MonoBehaviour
                 {
                     Debug.Log("Recieved:" + ((sendpackettypes)tmp.tpacketType).ToString() + " ID:" + tmp.tID + " msg:" + tmp.tmessage + " curr:" + tmp.tcurr + " itm1:" + tmp.titem1 + " itm2:" + tmp.titem2 + " itm3:" + tmp.titem3);
                     enemieDrops.Add(tmp);
+                    break;
+                }
+            case sendpackettypes.REQUESTLEADERBOARD:
+                {
+                    Debug.Log("LEADERBOARD INFO: " + ((sendpackettypes)tmp.tpacketType).ToString() + " msg:" + tmp.tmessage);
                     break;
                 }
             default:
@@ -376,6 +393,11 @@ public class packagetosend : MonoBehaviour
             case sendpackettypes.PACKAGERECIVE:
                 {
                     thestring += dump.tpacketType + "--";
+                    break;
+                }
+            case sendpackettypes.REQUESTLEADERBOARD:
+                {
+                    thestring += dump.tpacketType + "--" + dump.tmessage;
                     break;
                 }
             default:
