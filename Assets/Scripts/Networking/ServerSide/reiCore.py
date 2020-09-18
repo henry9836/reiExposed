@@ -82,6 +82,14 @@ class packetStruct:
 					print("Item3 Amount Invalid")
 					self.type = ERROR_GENERAL #error value
 					return;
+				elif (len(self.name) > 30):
+					print("Name Too Long")
+					self.type = ERROR_GENERAL #error value
+					return;
+				elif (len(self.msg) > 230):
+					print("Msg Too Long")
+					self.type = ERROR_GENERAL #error value
+					return;
 			#Nothing Values
 			elif self.type == PACKET.ACK.value or  self.type == PACKET.PACKAGE_RECIEVE.value:
 				pass

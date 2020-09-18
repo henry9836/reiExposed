@@ -10,7 +10,7 @@ public static class NetworkUtility
         int mins = Mathf.FloorToInt(time / 60.0f);
         int hours = Mathf.FloorToInt(mins / 60.0f);
         float secs = (((time / 60.0f) - mins) * 60.0f); //((mins non rounded) - (mins rounded)) * 60.0f
-        //Readjust mins
+        //readjust mins
         mins = Mathf.FloorToInt((((mins / 60.0f) - hours) * 60.0f));
 
         //SQL does not allow 60 mins
