@@ -111,6 +111,18 @@ public class AIObject : MonoBehaviour
         }
     }
 
+    public virtual AIAttackContainer.EFFECTTYPES QueryDamageEffect()
+    {
+        if (selectedAttack == null)
+        {
+            return AIAttackContainer.EFFECTTYPES.NONE;
+        }
+        else
+        {
+            return selectedAttack.effect;
+        }
+    }
+
     public virtual float QueryDamage()
     {
         if (selectedAttack == null)
