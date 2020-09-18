@@ -92,6 +92,7 @@ public class ClueController : MonoBehaviour
             if (newLore == clueLore[i])
             {
                 clueLoreCollected.Add(newLore);
+                return;
             }
         }
 
