@@ -23,11 +23,14 @@ public class ClueController : MonoBehaviour
     public BossArenaController BossArenaControllerTwo;
     public BossArenaController BossArenaControllerThree;
 
-    
+
+    [Header("Setup")]
     public List<string> cluesNeededBossOne = new List<string>();
     public List<string> clueLore = new List<string>();
 
+    [Header("Player")]
     public List<string> cluesCollected = new List<string>();
+    public List<string> clueLoreCollected = new List<string>();
 
     public bool bossOneCollected = false;
     public bool bossTwoCollected = false;
@@ -82,6 +85,20 @@ public class ClueController : MonoBehaviour
         StartCoroutine(clueCheckLoop());
     }
 
+    public void addOntoLore(string newLore)
+    {
+        for (int i = 0; i < clueLore.Count; i++)
+        {
+            if (newLore == clueLore[i])
+            {
+                clueLoreCollected.Add(newLore);
+            }
+        }
+
+        Debug.LogWarning($"New Lore Doesn't Exist {newLore}");
+
+    }
+
     //Update Phone UI
     public void updateUI(GameObject rootKeyObj)
     {
@@ -102,6 +119,42 @@ public class ClueController : MonoBehaviour
         keyProgressText.text = $"{cluesCollected.Count}/3";
         keyProgress.fillAmount = cluesCollected.Count / 3.0f;
 
+        //Update Slots
+        for (int i = 0; i < slots.Count; i++)
+        {
+            bool found = false;
+
+            slots[i].text.text = "?";
+
+            //For all of our collected clues
+            for (int j = 0; j < cluesCollected.Count; j++)
+            {
+                //If it matches the position which the slot is
+                if (cluesCollected[j] == cluesNeededBossOne[i])
+                {
+                    found = true;
+                    slots[i].image.color = Color.green;
+                }
+            }
+
+            //If we didn't find a matching clue
+            if (!found)
+            {
+                slots[i].image.color = Color.red;
+            }
+        }
+
+        //Setup text
+        for (int i = 0; i < clueLore.Count; i++)
+        {
+            for (int j = 0; j < clueLoreCollected.Count; j++)
+            {
+                if (clueLoreCollected[j] == clueLore[i])
+                {
+                    slots[i].text.text = clueLoreCollected[j];
+                }
+            }
+        }
 
     }
 
