@@ -1,10 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class ClueController : MonoBehaviour
 {
+
+    class slot
+    {
+        public Image image;
+        public Text text;
+
+        public slot(Image img, Text txt)
+        {
+            image = img;
+            text = txt;
+        }
+
+    }
 
     public BossArenaController BossArenaControllerOne;
     public BossArenaController BossArenaControllerTwo;
@@ -12,10 +25,7 @@ public class ClueController : MonoBehaviour
 
     
     public List<string> cluesNeededBossOne = new List<string>();
-
-    //public List<string> cluesNeededBossOne = new List<string>();
-    //public List<string> cluesNeededBossTwo = new List<string>();
-    //public List<string> cluesNeededBossThree = new List<string>();
+    public List<string> clueLore = new List<string>();
 
     public List<string> cluesCollected = new List<string>();
 
@@ -25,10 +35,11 @@ public class ClueController : MonoBehaviour
     public bool qrFound = false;
 
     int clueCollectedOne = 0;
-    int clueCollectedTwo = 0;
-    int clueCollectedThree = 0;
 
     private List<TraceController> traces = new List<TraceController>();
+    private List<slot> slots = new List<slot>();
+    private Image keyProgress;
+    private Text keyProgressText;
 
 
     void Start()
@@ -71,16 +82,41 @@ public class ClueController : MonoBehaviour
         StartCoroutine(clueCheckLoop());
     }
 
+    //Update Phone UI
+    public void updateUI(GameObject rootKeyObj)
+    {
+        //Set up values if they haven't been
+        if (slots.Count == 0)
+        {
+            keyProgress = rootKeyObj.transform.GetChild(4).GetChild(1).GetComponent<Image>();
+            keyProgressText = rootKeyObj.transform.GetChild(4).GetChild(2).GetComponent<Text>();
+
+            //For each clue slot
+            for (int i = 0; i < rootKeyObj.transform.GetChild(3).GetChild(0).childCount; i++)
+            {
+                slots.Add(new slot(rootKeyObj.transform.GetChild(3).GetChild(0).GetChild(i).GetComponent<Image>(), rootKeyObj.transform.GetChild(3).GetChild(0).GetChild(i).GetChild(0).GetChild(0).GetComponent<Text>()));
+            }
+        }
+
+        //Set Progress
+        keyProgressText.text = $"{cluesCollected.Count}/3";
+        keyProgress.fillAmount = cluesCollected.Count / 3.0f;
+
+
+    }
+
+
     IEnumerator clueCheckLoop()
     {
         //Check conditions periodically
-        int checkIntThreshold = 100;
+        int checkIntThreshold = 120;
         int checkInt = 0;
 
         while (true)
         {
             checkInt++;
 
+            //Limit how often we check info
             if (checkInt > checkIntThreshold) {
                 //Boss Clue One Group
                 if (!bossOneCollected && BossArenaControllerOne != null)
@@ -114,6 +150,8 @@ public class ClueController : MonoBehaviour
                         clueCollectedOne = 0;
                     }
                 }
+
+
 
                 ////I don't know why, I don't want to know why but for some reason you 
                 ////can't put this statment in the while loop and this break is the only 
