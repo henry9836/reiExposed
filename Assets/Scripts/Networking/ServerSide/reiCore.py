@@ -62,8 +62,8 @@ class packetStruct:
 				self.item1 = int(self.data[4])
 				self.item2 = int(self.data[5])
 				self.item3 = int(self.data[6])
-				self.name = int(self.data[7])
-				self.time = int(self.data[8])
+				self.name = str(self.data[7])
+				self.time = float(self.data[8])
 
 				#check for incorrect values
 				if (self.curr < 10):

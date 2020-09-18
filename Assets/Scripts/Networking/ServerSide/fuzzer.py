@@ -14,13 +14,12 @@ def sendServer(data):
 	itemP2 = "2"
 	itemP3 = "3"
 	name = "FUZZERMAN"
-	time = "3600"
+	time = str(random.randint(1, 4000))
 	if randomMode:
 		currP = str(random.randint(-9999, 9999))
 		itemP1 = str(random.randint(-9999, 9999))
 		itemP2 = str(random.randint(-9999, 9999))
 		itemP3 = str(random.randint(-9999, 9999))
-		time = str(random.randint(1, 4000))
 	packet = "1" + SEPERATOR +"FUZZER" + SEPERATOR + data + SEPERATOR + currP + SEPERATOR + itemP1 + SEPERATOR + itemP2 + SEPERATOR + itemP3 + SEPERATOR + name + SEPERATOR + time
 	sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	sock.connect(server_address)
