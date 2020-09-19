@@ -8,6 +8,7 @@ public class Packager : MonoBehaviour
     public packagetosend sender;
     public Text message;
     public Text currency;
+    public Text nameField;
     public Button submitButton;
     public Button attachButton;
     public Image attachmentOneImage;
@@ -114,6 +115,7 @@ public class Packager : MonoBehaviour
 
         //Check for SQLi
         bool blacklisted = false;
+        bool blacklistedName = false;
         for (int i = 0; i < blacklist.Length; i++)
         {
             if (message.text.Contains(blacklist[i]))
@@ -121,11 +123,19 @@ public class Packager : MonoBehaviour
                 blacklisted = true;
                 break;
             }
+
+            if (nameField.text.Contains(blacklist[i]))
+            {
+                blacklistedName = true;
+                break;
+            }
         }
 
         //If passed SQLi checks
-        if (!blacklisted)
+        if (!blacklisted && !blacklistedName)
         {
+            nameField.color = originalCurrencyColor;
+
             //Check for valid input currenecy
             int userInputCurrency = 0;
             if (int.TryParse(currency.text, out userInputCurrency))
@@ -141,7 +151,17 @@ public class Packager : MonoBehaviour
                 }
             }
 
-            if ((message.text.Length > 0 && message.text.Length <= 230) && (int.Parse(currency.text) >= 0) && (int.Parse(currency.text) <= SaveSystemController.getIntValue("MythTraces")))
+            if (message.text.Length > 230)
+            {
+                message.color = Color.red;
+            }
+            if (nameField.text.Length > 30)
+            {
+                nameField.color = Color.red;
+            }
+
+
+            if ((nameField.text.Length > 0 && nameField.text.Length <= 60) && (message.text.Length > 0 && message.text.Length <= 230) && (int.Parse(currency.text) >= 0) && (int.Parse(currency.text) <= SaveSystemController.getIntValue("MythTraces")))
             {
                 submitButton.interactable = true;
             }
@@ -153,8 +173,16 @@ public class Packager : MonoBehaviour
         //Has a blacklisted character
         else
         {
+            if (blacklistedName)
+            {
+                nameField.color = Color.red;
+            }
+            else
+            {
+                message.color = Color.red;
+            }
             submitButton.interactable = false;
-            message.color = Color.red;
+
         }
     }
 
@@ -172,6 +200,8 @@ public class Packager : MonoBehaviour
         sender.dditem1 = (int)item1;
         sender.dditem2 = (int)item2;
         sender.dditem3 = (int)item3;
+        sender.ddname = nameField.text;
+        sender.ddtime = NetworkUtility.convertToTime(3600.0f);
 
         //Remove Items
         items.removeitemequipped(item1, false);
