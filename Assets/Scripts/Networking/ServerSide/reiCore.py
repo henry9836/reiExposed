@@ -175,7 +175,7 @@ def clientThread(conn):
 				print("Sent back package")
 			elif packet.type == PACKET.REQUEST_LEADERBOARD.value:
 				print("LEADERBOARD_REQUEST")
-				#to do logic get the top few and the ones around/above us
+				#to do logic get the top few and the ones around/above us, maybe a percentage
 				#send info back
 			else:
 				print("Unknown Package Type " + data[0])
