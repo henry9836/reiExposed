@@ -959,64 +959,71 @@ public class ThePhone : MonoBehaviour
     //if key app is opened
     public void keyopen()
     {
+
+
+        screen = phonestates.KEY;        
         //enable and disabe stuff
-        screen = phonestates.KEY;
         ThePhoneUI.transform.GetChild(2).gameObject.SetActive(false);
         ThePhoneUI.transform.GetChild(3).gameObject.SetActive(true);
 
         ThePhoneUI.transform.GetChild(0).GetComponent<Image>().sprite = BGkey;
 
-        GameObject[] clues = GameObject.FindGameObjectsWithTag("Clue");
-        List<GameObject> clue = new List<GameObject>() { };
-        List<bool> clueStates = new List<bool>() { };
+
+        clueCtrl.updateUI(ThePhoneUI.transform.GetChild(3).gameObject);
 
 
-        for (int i = 0; i < clues.Length; i++)
-        {
-            clue.Add(clues[i]);
-        }
 
-        //set clues to true or flase based on if the phot has been taken of them
+        //GameObject[] clues = GameObject.FindGameObjectsWithTag("Clue");
+        //List<GameObject> clue = new List<GameObject>() { };
+        //List<bool> clueStates = new List<bool>() { };
 
-        for (int i = 0; i < clue.Count; i++)
-        {
-            //string tmp = save.safeItem(clue[i].name + "[CLUE]", saveFile.types.STRING).tostring;
-            string tmp = SaveSystemController.getValue(clue[i].name + "[CLUE]");
-            if (tmp == "yes")
-            {
-                //Debug.Log(clue[i].name + "[CLUE]" + "    yesy");
 
-                clueStates.Add(true);
-            }
-            else
-            {
-                //Debug.Log(clue[i].name + "[CLUE]" + "    noy");
+        //for (int i = 0; i < clues.Length; i++)
+        //{
+        //    clue.Add(clues[i]);
+        //}
 
-                clueStates.Add(false);
-            }
-        }
+        ////set clues to true or flase based on if the phot has been taken of them
 
-        int truecount = 0;
+        //for (int i = 0; i < clue.Count; i++)
+        //{
+        //    //string tmp = save.safeItem(clue[i].name + "[CLUE]", saveFile.types.STRING).tostring;
+        //    string tmp = SaveSystemController.getValue(clue[i].name + "[CLUE]");
+        //    if (tmp == "yes")
+        //    {
+        //        //Debug.Log(clue[i].name + "[CLUE]" + "    yesy");
 
-        //UI feedback for results of above
-        Debug.Log(clueStates.Count);
-        for (int i = 0; i < clueStates.Count; i++)
-        {
-            if (clueStates[i] == true)
-            {
-                truecount++;
-                ThePhoneUI.transform.GetChild(3).GetChild(3).GetChild(0).GetChild(i).GetComponent<Image>().color = new Color(0.0f, 1.0f, 0.0f, 1.0f);
-            }
-            else
-            {
-                ThePhoneUI.transform.GetChild(3).GetChild(3).GetChild(0).GetChild(i).GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+        //        clueStates.Add(true);
+        //    }
+        //    else
+        //    {
+        //        //Debug.Log(clue[i].name + "[CLUE]" + "    noy");
 
-            }
-        }
+        //        clueStates.Add(false);
+        //    }
+        //}
 
-        string insert = truecount.ToString() + "/3";
-        ThePhoneUI.transform.GetChild(3).GetChild(4).GetChild(2).GetComponent<Text>().text = insert;
-        ThePhoneUI.transform.GetChild(3).GetChild(4).GetChild(1).GetComponent<Image>().fillAmount = (float)truecount / 3.0f;
+        //int truecount = 0;
+
+        ////UI feedback for results of above
+        //Debug.Log(clueStates.Count);
+        //for (int i = 0; i < clueStates.Count; i++)
+        //{
+        //    if (clueStates[i] == true)
+        //    {
+        //        truecount++;
+        //        ThePhoneUI.transform.GetChild(3).GetChild(3).GetChild(0).GetChild(i).GetComponent<Image>().color = new Color(0.0f, 1.0f, 0.0f, 1.0f);
+        //    }
+        //    else
+        //    {
+        //        ThePhoneUI.transform.GetChild(3).GetChild(3).GetChild(0).GetChild(i).GetComponent<Image>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+
+        //    }
+        //}
+
+        //string insert = truecount.ToString() + "/3";
+        //ThePhoneUI.transform.GetChild(3).GetChild(4).GetChild(2).GetComponent<Text>().text = insert;
+        //ThePhoneUI.transform.GetChild(3).GetChild(4).GetChild(1).GetComponent<Image>().fillAmount = (float)truecount / 3.0f;
 
     }
 
