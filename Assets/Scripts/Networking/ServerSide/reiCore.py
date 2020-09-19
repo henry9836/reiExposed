@@ -115,6 +115,10 @@ class packetStruct:
 				if (self.type == PACKET.REQUEST_LEADERBOARD.value):
 					self.chunksize = int(self.data[1])
 					self.offset = int(self.data[2])
+					if (self.chunksize <= 0):
+						self.chunksize = 1
+					elif (self.chunksize > 10):
+						self.chunksize = 10
 				elif (self.type == PACKET.REQUEST_USERRANK.value):
 					self.nameOfUser = str(self.data[1])
 			#Nothing Values
@@ -159,9 +163,6 @@ def decodeLeaderBoardPacket(element):
 	rank = element[0]
 	time = element[1]
 	name = element[2]
-
-	print(time)
-	print(str(time))
 
 	return str(rank) + USERSEPERATOR + str(time) + USERSEPERATOR + str(name)
 
