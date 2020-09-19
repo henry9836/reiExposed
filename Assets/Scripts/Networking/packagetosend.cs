@@ -107,7 +107,8 @@ public class packagetosend : MonoBehaviour
         ACK,
         PACKAGESEND,
         PACKAGERECIVE,
-        REQUESTLEADERBOARD
+        REQUESTLEADERBOARD,
+        REQUESTUSERRANK
     };
 
     public bool toPackage;
@@ -159,6 +160,10 @@ public class packagetosend : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Comma))
         {
             send(sendpackettypes.REQUESTLEADERBOARD);
+        }
+        else if (Input.GetKeyDown(KeyCode.Period))
+        {
+            send(sendpackettypes.REQUESTUSERRANK);
         }
 
         if (toPackage == true)
@@ -246,8 +251,15 @@ public class packagetosend : MonoBehaviour
                 }
             case sendpackettypes.REQUESTLEADERBOARD:
                 {
-                    ddmessage = "YourNameHere";
-                    package = new datadump((int)ddpackettype, ddmessage);
+                    string ddchunkSize = "10";
+                    string offsetFromStart = "0";
+                    package = new datadump((int)ddpackettype, ddchunkSize + "--" + offsetFromStart);
+                    break;
+                }
+            case sendpackettypes.REQUESTUSERRANK:
+                {
+                    string dduserName = "Anon";
+                    package = new datadump((int)ddpackettype, dduserName);
                     break;
                 }
             default:
@@ -296,14 +308,9 @@ public class packagetosend : MonoBehaviour
                     enemieDrops.Add(tmp);
                     break;
                 }
-            case sendpackettypes.REQUESTLEADERBOARD:
-                {
-                    Debug.Log("LEADERBOARD INFO: " + ((sendpackettypes)tmp.tpacketType).ToString() + " msg:" + tmp.tmessage);
-                    break;
-                }
             default:
                 {
-                    Debug.Log("invalid packet type");
+                    Debug.Log($"Invalid packet type {tmp.tpacketType} | {tmp.tmessage}");
                     break;
                 }
         }
@@ -357,7 +364,7 @@ public class packagetosend : MonoBehaviour
                 }
             default:
                 {
-                    Debug.Log("invalid packet type");
+                    Debug.Log($"Invalid packet type {thedata.tpacketType} | {resp}");
                     break;
                 }
         }
@@ -395,6 +402,7 @@ public class packagetosend : MonoBehaviour
                     thestring += dump.tpacketType + "--";
                     break;
                 }
+            case sendpackettypes.REQUESTUSERRANK:
             case sendpackettypes.REQUESTLEADERBOARD:
                 {
                     thestring += dump.tpacketType + "--" + dump.tmessage;

@@ -11,6 +11,7 @@ HOST = '' #All interfaces
 PORT = 27100
 MAXRECV = 8192 # 4*2048 (UTF-8 = 4 bytes each char)
 SEPERATOR = "--"
+USERSEPERATOR = "#"
 ERROR_GENERAL = -1
 
 #CONNECTION INFO
@@ -19,6 +20,7 @@ class PACKET(enum.Enum):
     PACKAGE_SEND = 1
     PACKAGE_RECIEVE = 2
     REQUEST_LEADERBOARD = 3
+    REQUEST_USERRANK = 4
 
 class packetStruct:
 	def __init__(self, input, db):
@@ -91,7 +93,7 @@ class packetStruct:
 					print("Msg Too Long")
 					self.type = ERROR_GENERAL #error value
 					return;
-			elif self.type == PACKET.REQUEST_LEADERBOARD.value:
+			elif self.type == PACKET.REQUEST_LEADERBOARD.value or self.type == PACKET.REQUEST_USERRANK.value:
 				#grab character blacklist
 				blacklistFile = open("blacklist.txt", 'r')
 				blacklist = blacklistFile.read().splitlines()
@@ -110,9 +112,13 @@ class packetStruct:
 							print("Null Value Found!")
 							self.type = ERROR_GENERAL #error value
 							return;
-				self.nameOfUser =  str(self.data[1])
+				if (self.type == PACKET.REQUEST_LEADERBOARD.value):
+					self.chunksize = int(self.data[1])
+					self.offset = int(self.data[2])
+				elif (self.type == PACKET.REQUEST_USERRANK.value):
+					self.nameOfUser = str(self.data[1])
 			#Nothing Values
-			elif self.type == PACKET.ACK.value or  self.type == PACKET.PACKAGE_RECIEVE.value:
+			elif self.type == PACKET.ACK.value or self.type == PACKET.PACKAGE_RECIEVE.value:
 				pass
 			else:
 				print("Unknown Packet Type {" + str(self.type) + "}")
@@ -137,6 +143,27 @@ def getPackage(_cursor):
 	q = "SELECT * FROM Packages ORDER BY RAND() LIMIT 1"
 	_cursor.execute(q)
 	return _cursor
+
+def getRankChunk(_cursor, CHUNKSIZE, OFFSET):
+	q = "SELECT ROW_NUMBER() OVER(ORDER BY TIME ASC) AS Ranking, TIME, NAME FROM Packages ORDER BY TIME ASC LIMIT " + str(CHUNKSIZE) + " OFFSET " + str(OFFSET)
+	_cursor.execute(q)
+	return _cursor
+
+def getUserRank(_cursor, NAME):
+	q = "SELECT * FROM (SELECT ROW_NUMBER() OVER(ORDER BY TIME ASC) AS Ranking, TIME, NAME FROM Packages)T WHERE NAME LIKE CONCAT('" + str(NAME) + "')"
+	_cursor.execute(q)
+	return _cursor
+
+def decodeLeaderBoardPacket(element):
+
+	rank = element[0]
+	time = element[1]
+	name = element[2]
+
+	print(time)
+	print(str(time))
+
+	return str(rank) + USERSEPERATOR + str(time) + USERSEPERATOR + str(name)
 
 def clientThread(conn):
 	#Connect To DB
@@ -175,8 +202,26 @@ def clientThread(conn):
 				print("Sent back package")
 			elif packet.type == PACKET.REQUEST_LEADERBOARD.value:
 				print("LEADERBOARD_REQUEST")
-				#to do logic get the top few and the ones around/above us, maybe a percentage
+				package = getRankChunk(cursor, packet.chunksize, packet.offset).fetchall();
+				print("PACKAGE INFO: ")
+				print(package)
+				#encode info
+				outdata = str(PACKET.REQUEST_LEADERBOARD.value)
+				for x in package:
+					outdata += SEPERATOR + decodeLeaderBoardPacket(x)
 				#send info back
+				conn.send(outdata.encode('utf-8', 'replace'))
+			elif packet.type == PACKET.REQUEST_USERRANK.value:
+				print("REQUEST_USERRANK\n data:")
+				userRankData = getUserRank(cursor, packet.nameOfUser).fetchone()
+				print(userRankData)
+				#decode
+				outdata = str(PACKET.REQUEST_USERRANK.value)
+				for x in userRankData:
+					outdata += SEPERATOR + str(x)
+				#send info back
+				conn.send(outdata.encode('utf-8', 'replace'))
+
 			else:
 				print("Unknown Package Type " + data[0])
 				conn.send(("0"+SEPERATOR+"UNKNOWN").encode('utf-8', 'replace'))
@@ -187,6 +232,7 @@ def clientThread(conn):
 		print("There was a problem with the request")
 	#disconnect
 	print("Disconnecting From Database...")
+	cursor.reset()
 	cursor.close()
 	db.close()
 	print("Terminating Connection...")
