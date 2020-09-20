@@ -89,11 +89,6 @@ public class Packager : MonoBehaviour
     private void FixedUpdate()
     {
 
-        if (Input.GetKeyDown(KeyCode.Semicolon))
-        {
-            Debug.Log(levelTime);
-        }
-
         if (Cursor.lockState != CursorLockMode.Confined || !Cursor.visible)
         {
             //Confine mouse
