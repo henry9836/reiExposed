@@ -9,6 +9,9 @@ public class resetPlayerAttacks : StateMachineBehaviour
     {
         animator.ResetTrigger("Attack");
         animator.SetBool("Attacking", false);
+        animator.SetBool("Stunned", false);
+        animator.SetBool("UsingItem", false);
+        animator.SetBool("Rolling", false);
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
