@@ -33,12 +33,14 @@ public class Packager : MonoBehaviour
                                 "0x",
                                 "\\" };
 
+    float levelTime = 3600.0f;
     Items items;
     Color originalMessageColor;
     Color originalCurrencyColor;
 
     private void Start()
     {
+        levelTime = Time.timeSinceLevelLoad;
         Cursor.visible = true;
         originalMessageColor = message.color;
         originalCurrencyColor = currency.color;
@@ -201,7 +203,7 @@ public class Packager : MonoBehaviour
         sender.dditem2 = (int)item2;
         sender.dditem3 = (int)item3;
         sender.ddname = nameField.text;
-        sender.ddtime = NetworkUtility.convertToTime(3600.0f);
+        sender.ddtime = NetworkUtility.convertToTime(levelTime);
 
         //Remove Items
         items.removeitemequipped(item1, false);
