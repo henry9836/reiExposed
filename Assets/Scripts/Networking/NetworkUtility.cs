@@ -4,9 +4,6 @@ using UnityEngine;
 
 public static class NetworkUtility
 {
-    
-    public static float levelTime = 0.0f;
-
     public static string convertToTime(float time)
     {
         int mins = Mathf.FloorToInt(time / 60.0f);

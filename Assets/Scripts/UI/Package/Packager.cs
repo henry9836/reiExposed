@@ -87,6 +87,8 @@ public class Packager : MonoBehaviour
     private void FixedUpdate()
     {
 
+
+
         if (Cursor.lockState != CursorLockMode.Confined || !Cursor.visible)
         {
             //Confine mouse
@@ -201,7 +203,7 @@ public class Packager : MonoBehaviour
         sender.dditem2 = (int)item2;
         sender.dditem3 = (int)item3;
         sender.ddname = nameField.text;
-        sender.ddtime = NetworkUtility.convertToTime(NetworkUtility.levelTime);
+        sender.ddtime = NetworkUtility.convertToTime(Time.timeSinceLevelLoad);
 
         //Remove Items
         items.removeitemequipped(item1, false);
