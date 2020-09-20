@@ -4,6 +4,8 @@ using UnityEngine;
 
 public static class NetworkUtility
 {
+    
+    public static float levelTime = 0.0f;
 
     public static string convertToTime(float time)
     {
