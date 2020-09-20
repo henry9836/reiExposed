@@ -18,9 +18,17 @@ public class traningDummy : MonoBehaviour
         if (other.CompareTag("PlayerAttackSurface"))
         {
             //thing got hit 
+            if (pc.gameObject.GetComponent<Animator>().GetBool("HeavyAttack"))
+            {
+                GameObject tmp = GameObject.Instantiate(damagedtext, other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position), Quaternion.identity);
+                tmp.transform.GetChild(0).GetComponent<Text>().text = pc.umbreallaHeavyDmg.ToString();
+            }
+            else
+            {
+                GameObject tmp = GameObject.Instantiate(damagedtext, other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position), Quaternion.identity);
+                tmp.transform.GetChild(0).GetComponent<Text>().text = pc.umbreallaDmg.ToString();
+            }
 
-            GameObject tmp = GameObject.Instantiate(damagedtext, other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position), Quaternion.identity);
-            tmp.transform.GetChild(0).GetComponent<Text>().text = pc.umbreallaDmg.ToString();
         }
     }
 }
