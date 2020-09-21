@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class readyShoot : StateMachineBehaviour
 {
-    public umbrella umbrella;
+    private umbrella umbrella;
     private bool once = false;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
