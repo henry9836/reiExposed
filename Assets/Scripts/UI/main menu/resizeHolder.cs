@@ -44,8 +44,6 @@ public class resizeHolder : MonoBehaviour
             this.transform.position -= new Vector3(0.0f, 70.0f, 0.0f);
         }
 
-        Debug.Log(this.GetComponent<RectTransform>().offsetMin.y);
-
         if ((this.GetComponent<RectTransform>().offsetMin.y > -830) && (delay > 1.0f))
         {
             canvas.GetComponent<packagetosend>().send(packagetosend.sendpackettypes.REQUESTLEADERBOARD, requestcount.ToString());
@@ -59,6 +57,7 @@ public class resizeHolder : MonoBehaviour
         }
 
         this.GetComponent<RectTransform>().sizeDelta = new Vector2(1000.0f, (140.0f * gameObject.transform.childCount) + (72.0f * 2.0f));
+        this.GetComponent<RectTransform>().localPosition = new Vector3(715.0f, this.GetComponent<RectTransform>().localPosition.y, 0.0f);
 
     }
 
