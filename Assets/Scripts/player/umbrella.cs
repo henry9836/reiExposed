@@ -56,6 +56,8 @@ public class umbrella : MonoBehaviour
     private bool latetest = false;
     private bool attackQueued = false;
     private float timerToHeavy = 0.0f;
+    private float phoneTimer = 0.0f;
+    private float phoneThreshold = 0.25f;
 
 
     public void clearHits()
@@ -101,7 +103,17 @@ public class umbrella : MonoBehaviour
 
     void Update()
     {
-        if (!animator.GetBool("Blocking"))
+
+        if (phoneLock)
+        {
+            phoneTimer = 0.0f;
+        }
+        else
+        {
+            phoneTimer += Time.deltaTime;
+        }
+
+        if (!animator.GetBool("Blocking") && (phoneTimer > phoneThreshold))
         {
             if (Input.GetMouseButtonUp(0))
             {
@@ -142,8 +154,10 @@ public class umbrella : MonoBehaviour
 
         VFX.GetComponent<VisualEffect>().SetFloat("timer", 0.0f);
 
+
+
         //for blocking / aiming down sight
-        if (!cooldown && !phoneLock)
+        if (!cooldown && !phoneLock && (phoneTimer > phoneThreshold))
         {
             //shoot
             if (Input.GetAxis("Fire2") > 0.5f)
