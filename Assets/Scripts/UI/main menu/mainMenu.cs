@@ -11,6 +11,7 @@ public class mainMenu : MonoBehaviour
     public GameObject cList;
     public GameObject MList;
     public GameObject SList;
+    public GameObject LList;
 
     private Vector3 Listtop;
     private Vector3 Listmid;
@@ -25,6 +26,7 @@ public class mainMenu : MonoBehaviour
         credits,
         menu,
         settings,
+        leaderboard,
     }
 
     public state theState = state.menu;
@@ -56,6 +58,8 @@ public class mainMenu : MonoBehaviour
         buttonenable(state.menu, false);
         buttonenable(state.credits, true);
         buttonenable(state.settings, false);
+        buttonenable(state.leaderboard, false);
+
 
         StartCoroutine(Down(theState, state.credits));
         theState = state.credits;
@@ -66,6 +70,8 @@ public class mainMenu : MonoBehaviour
         buttonenable(state.menu, true);
         buttonenable(state.credits, false);
         buttonenable(state.settings, false);
+        buttonenable(state.leaderboard, false);
+
 
         StartCoroutine(Down(theState, state.menu));
         theState = state.menu;
@@ -76,10 +82,24 @@ public class mainMenu : MonoBehaviour
         buttonenable(state.menu, false);
         buttonenable(state.credits, false);
         buttonenable(state.settings, true);
+        buttonenable(state.leaderboard, false);
+
 
         StartCoroutine(Down(theState, state.settings));
         theState = state.settings;
 
+    }
+
+    public void toleaderboard()
+    {
+        buttonenable(state.menu, false);
+        buttonenable(state.credits, false);
+        buttonenable(state.settings, false);
+        buttonenable(state.leaderboard, true);
+
+
+        StartCoroutine(Down(theState, state.leaderboard));
+        theState = state.leaderboard;
     }
     public void quit()
     {
@@ -143,6 +163,18 @@ public class mainMenu : MonoBehaviour
                     }
                     break;
                 }
+            case state.leaderboard:
+                {
+                    if (toonscreen)
+                    {
+                        LList.transform.position = Vector3.Lerp(Listtop + canvaspos, Listmid + canvaspos, completion);
+                    }
+                    else
+                    {
+                        LList.transform.position = Vector3.Lerp(Listmid + canvaspos, Listbot + canvaspos, completion);
+                    }
+                    break;
+                }
             default:
                 {
                     Debug.LogWarning("maine menu bad switch");
@@ -194,6 +226,18 @@ public class mainMenu : MonoBehaviour
                     else
                     {
                         SList.transform.GetChild(0).GetComponent<Button>().interactable = false;
+                    }
+                    break;
+                }
+            case state.leaderboard:
+                {
+                    if (enable)
+                    {
+                        LList.transform.GetChild(0).GetComponent<Button>().interactable = true;
+                    }
+                    else
+                    {
+                        LList.transform.GetChild(0).GetComponent<Button>().interactable = false;
                     }
                     break;
                 }
