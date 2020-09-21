@@ -145,6 +145,8 @@ public class packagetosend : MonoBehaviour
     private float timerThing = 0.0f;
     private int thingy = 0;
 
+    public GameObject leaderboard;
+
     void Start()
     {
         GameObject[] enemylist = GameObject.FindGameObjectsWithTag("Myth");
@@ -212,7 +214,9 @@ public class packagetosend : MonoBehaviour
         }
     }
     public void send(int type) { send((sendpackettypes)type); }
-    public void send(sendpackettypes type)
+
+    public void send(sendpackettypes type) { send(type, "NA"); }
+    public void send(sendpackettypes type, string sendoffset)
     {
         datadump package = new datadump();
         ddpackettype = type;
@@ -252,7 +256,7 @@ public class packagetosend : MonoBehaviour
             case sendpackettypes.REQUESTLEADERBOARD:
                 {
                     string ddchunkSize = "10";
-                    string offsetFromStart = "0";
+                    string offsetFromStart = sendoffset;
                     package = new datadump((int)ddpackettype, ddchunkSize + "--" + offsetFromStart);
                     break;
                 }
@@ -308,6 +312,71 @@ public class packagetosend : MonoBehaviour
                     enemieDrops.Add(tmp);
                     break;
                 }
+            case sendpackettypes.REQUESTLEADERBOARD:
+                {
+                    List<string> decoding = new List<string>() { };
+                    List<string> decodingsub = new List<string>() { };
+
+                    tmp.tmessage += "--";
+
+                    for (int i = 0; i < 10; i++)
+                    {
+
+                        if (tmp.tmessage.IndexOf("--") == -1)
+                        {
+                            decoding.Add(tmp.tmessage);
+                            break;
+                        }
+                        else
+                        {
+                            decoding.Add(tmp.tmessage.Substring(0, tmp.tmessage.IndexOf("--")));
+                            tmp.tmessage = tmp.tmessage.Substring(tmp.tmessage.IndexOf("--") + 2);
+                        }
+                    }
+
+                    for (int j = 0; j < 10; j++)
+                    {
+                        for (int i = 0; i < 3; i++)
+                        {
+                            if (decoding[j].IndexOf("#") == -1)
+                            {
+                                decodingsub.Add(decoding[j]);
+                                break;
+                            }
+                            else
+                            {
+                                decodingsub.Add(decoding[j].Substring(0, decoding[j].IndexOf("#")));
+                                decoding[j] = decoding[j].Substring(decoding[j].IndexOf("#") + 1);
+                            }
+                        }
+
+                        resizeHolder.listofLeaderboard.Add(new leader(decodingsub[0], decodingsub[2], decodingsub[1]));
+                        decodingsub = new List<string>() { };
+                    }
+                    break;
+                }
+            case sendpackettypes.REQUESTUSERRANK:
+                {
+                    List<string> decoding = new List<string>() { };
+                    tmp.tmessage += "--";
+
+                    for (int i = 0; i < 3; i++)
+                    {
+                        if (tmp.tmessage.IndexOf("--") == -1)
+                        {
+                            decoding.Add(tmp.tmessage);
+                            break;
+                        }
+                        else
+                        {
+                            decoding.Add(tmp.tmessage.Substring(0, tmp.tmessage.IndexOf("--")));
+                            tmp.tmessage = tmp.tmessage.Substring(tmp.tmessage.IndexOf("--") + 2);
+                        }
+                    }
+
+                    personalScore.PersonallistofLeaderboard.Add(new leader(decoding[0], decoding[2], decoding[1]));
+                    break;
+                }
             default:
                 {
                     Debug.Log($"Invalid packet type {tmp.tpacketType} | {tmp.tmessage}");
@@ -360,6 +429,16 @@ public class packagetosend : MonoBehaviour
                     thedata.titem2 = int.Parse(decoding[4]);
                     thedata.titem3 = int.Parse(resp);
 
+                    break;
+                }
+            case sendpackettypes.REQUESTLEADERBOARD:
+                {
+                    thedata.tmessage = resp;
+                    break;
+                }
+            case sendpackettypes.REQUESTUSERRANK:
+                {
+                    thedata.tmessage = resp;
                     break;
                 }
             default:
@@ -438,5 +517,6 @@ public class packagetosend : MonoBehaviour
         yield return new WaitForSeconds(3.0f);
         SceneManager.LoadScene(0);
     }
+
 
 }
