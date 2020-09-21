@@ -149,7 +149,7 @@ def getPackage(_cursor):
 	return _cursor
 
 def getRankChunk(_cursor, CHUNKSIZE, OFFSET):
-	q = "SELECT ROW_NUMBER() OVER(ORDER BY TIME ASC) AS Ranking, TIME, NAME FROM Packages ORDER BY TIME ASC LIMIT " + str(CHUNKSIZE) + " OFFSET " + str(OFFSET)
+	q = "SELECT ROW_NUMBER() OVER(ORDER BY TIME ASC) AS Ranking, TIME, NAME FROM Packages ORDER BY Ranking ASC LIMIT " + str(CHUNKSIZE) + " OFFSET " + str(OFFSET)
 	_cursor.execute(q)
 	return _cursor
 
