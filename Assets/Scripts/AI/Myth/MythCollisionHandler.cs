@@ -12,6 +12,8 @@ public class MythCollisionHandler : AICollisionHandler
 
     Animator animator;
     Animator playerAnimator;
+    umbrella playerUmbrella;
+    PlayerController playerCtrl;
     public float blockStaminaCost = 10.0f;
     [HideInInspector]
     public bool fullyBlocking = false;
@@ -34,6 +36,10 @@ public class MythCollisionHandler : AICollisionHandler
         animator = GetComponent<Animator>();
         audio = GetComponent<AudioSource>();
 
+        //Get Umbrella
+        playerUmbrella = aiObject.player.GetComponent<umbrella>();
+        playerCtrl = aiObject.player.GetComponent<PlayerController>();
+
         fullyBlocking = false;
     }
 
@@ -43,8 +49,19 @@ public class MythCollisionHandler : AICollisionHandler
         {
             if (aiObject.health > 0.0f)
             {
-                if (other.tag == "PlayerAttackSurface")
+                if (playerUmbrella.validDmg(gameObject))
                 {
+
+                    float dmg = playerCtrl.umbreallaDmg;
+
+                    if (playerAnimator.GetBool("HeavyAttack"))
+                    {
+                        dmg = playerCtrl.umbreallaHeavyDmg;
+                    }
+
+                    //Add onto player known attack
+                    playerUmbrella.targetsTouched.Add(gameObject);
+
                     //Passive
                     if (aiObject.currentMode == 1)
                     {
@@ -75,14 +92,20 @@ public class MythCollisionHandler : AICollisionHandler
                             }
                         }
                     }
+
+                    Debug.Log("No Block");
+
+                    Instantiate(hitVFX, transform.position, Quaternion.identity);
+
+                    animator.SetTrigger("Stun");
+
+                    aiObject.health -= dmg;
+
+
+                    GameObject tmp = GameObject.Instantiate(this.gameObject.GetComponent<AIObject>().damagedText, other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position), Quaternion.identity);
+                    tmp.transform.SetParent(this.transform, true);
+                    tmp.transform.GetChild(0).GetComponent<Text>().text = "-" + dmg.ToString("F0");
                 }
-
-                Debug.Log("No Block");
-
-                Instantiate(hitVFX, transform.position, Quaternion.identity);
-
-                animator.SetTrigger("Stun");
-                aiObject.health -= aiObject.playerCtrl.umbreallaDmg;
             }
         }
     }

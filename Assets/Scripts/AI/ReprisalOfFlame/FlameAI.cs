@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class FlameAI : AIObject
 {
@@ -11,6 +12,8 @@ public class FlameAI : AIObject
     private float closeAttackThreshold = 10.0f;
 
     private int AOEAttackElement = -1;
+
+    private Animator playerAnim;
 
     private int findAttack(string attack)
     {
@@ -23,6 +26,52 @@ public class FlameAI : AIObject
         }
 
         return -1;
+    }
+
+    //Used by collison handler
+    public void CollisonLogic(Collider other)
+    {
+        if (playerAnim == null)
+        {
+            playerAnim = other.transform.root.gameObject.GetComponent<Animator>();
+        }
+
+        revealAmount = 0.0f;
+
+        revealAmount = revealpersentobject.GetComponent<drawTest>().blackpersent;
+
+        revealAmount = startHealth * revealAmount;
+
+        float diff = (health - revealAmount);
+
+        float dmg;
+
+        if (playerAnim.GetBool("HeavyAttack"))
+        {
+            dmg = playerCtrl.umbreallaHeavyDmg;
+        }
+        else
+        {
+            dmg = playerCtrl.umbreallaDmg;
+        }
+
+        if (dmg < diff)
+        {
+            health -= dmg;
+            GameObject tmp = GameObject.Instantiate(damagedText, other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position), Quaternion.identity);
+            tmp.transform.SetParent(this.transform, true);
+            tmp.transform.GetChild(0).GetComponent<Text>().text = "-" + dmg.ToString("F0");
+
+        }
+        else
+        {
+            GameObject tmp = GameObject.Instantiate(damagedText, other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position), Quaternion.identity);
+            tmp.transform.SetParent(this.transform, true);
+            tmp.transform.GetChild(0).GetComponent<Text>().text = "-" + diff.ToString("F0");
+
+            health = revealAmount;
+
+        }
     }
 
     //Selects a random attack to use againest the player
@@ -112,4 +161,5 @@ public class FlameAI : AIObject
             bindAttack(fallbackAttack);
         }
     }
+
 }

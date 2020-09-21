@@ -27,7 +27,7 @@ public class upgradeUmbrella : MonoBehaviour
         "Increases the maximum range and damage at range.", //shotgun range
         "Tighter crosshair while standing still.", //ADS spread
         "Tighter crosshair while running.", //running spread
-        "Melee attack deals more damage.", //meelee damage
+        "Melee attacks deals more damage.", //meelee damage
         "A cheap, trusty, old fassioned shotgun shell.", //normal bullets
         "A new, flashy, explosive shotgun shell.", //secondary bullets
     };
@@ -350,6 +350,10 @@ public class upgradeUmbrella : MonoBehaviour
                     float value = 30.0f;  //base MEELEEat level 0 
                     value += level * 5.0f;
                     whackUmbrella.umbreallaDmg = value;
+
+                    float valueH = 50.0f;  //base MEELEEat level 0 
+                    valueH += level * 10.0f;
+                    whackUmbrella.umbreallaHeavyDmg = valueH;
 
                     //cost
 

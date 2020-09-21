@@ -33,6 +33,7 @@ public class QRCodeController : MonoBehaviour
     private bool alreadyTriggered = false;
     private MeshRenderer meshRenderer;
     private float timer = 0.0f;
+    private ClueController clueCtrl;
 
     private void Start()
     {
@@ -81,6 +82,9 @@ public class QRCodeController : MonoBehaviour
                 loreThree = GameObject.Find("txtClueLore3").GetComponent<Text>();
             }
         }
+
+        clueCtrl = GameObject.Find("GameManager").GetComponent<ClueController>();
+
     }
 
     private void Update()
@@ -89,6 +93,11 @@ public class QRCodeController : MonoBehaviour
         {
             meshRenderer.material.SetFloat("Vector1_9DEB93D9", timer);
             timer += Time.deltaTime;
+
+            if(addOnToLore)
+            {
+                clueCtrl.addOntoLore(hint);
+            }
 
             if (timer >= timeTillDestory)
             {
@@ -102,7 +111,7 @@ public class QRCodeController : MonoBehaviour
 
         if (!alreadyTriggered)
         {
-            //If it is an offline message or we did not connect to the database and our package is null
+            //If it is an offline message or we did not connect to the database or our package is null
             if (!useOnlineDatabase || packagetosend.enemieDrops.Count <= 0 || packagetosend.enemieDrops[0] == null) {
                 //Display hint
                 dropControl.manualMessage(hint, currency, (int)item1, (int)item2, (int)item3, hintImportant);
@@ -110,18 +119,19 @@ public class QRCodeController : MonoBehaviour
                 //Add hint to lore
                 if (addOnToLore)
                 {
-                    if (loreOne.text == "")
-                    {
-                        loreOne.text = hint;
-                    }
-                    else if (loreTwo.text == "")
-                    {
-                        loreTwo.text = hint;
-                    }
-                    else if (loreThree.text == "")
-                    {
-                        loreThree.text = hint;
-                    }
+                    //if (loreOne.text == "")
+                    //{
+                    //    loreOne.text = hint;
+                    //}
+                    //else if (loreTwo.text == "")
+                    //{
+                    //    loreTwo.text = hint;
+                    //}
+                    //else if (loreThree.text == "")
+                    //{
+                    //    loreThree.text = hint;
+                    //}
+                    clueCtrl.addOntoLore(hint);
                 }
             }
             //Else if we are an online message then

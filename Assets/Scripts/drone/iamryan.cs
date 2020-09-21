@@ -139,11 +139,8 @@ public class iamryan : MonoBehaviour
         {
             if ((source != null) && (destination != null))
             {
-                //Path.smoothDisable = !System.Convert.ToBoolean(save.safeItem("groupEnabled", saveFile.types.STRING).tostring);
                 Path.smoothDisable = SaveSystemController.getBoolValue("groupEnabled");
-                //Path.directionmovespeed = save.safeItem("rateofAnglechange", saveFile.types.FLOAT).tofloat;
                 Path.directionmovespeed = SaveSystemController.getFloatValue("rateofAnglechange");
-                //Path.movespeed = save.safeItem("movespeed", saveFile.types.FLOAT).tofloat;
                 Path.movespeed = SaveSystemController.getFloatValue("movespeed");
 
                 Path.movement();
@@ -163,12 +160,9 @@ public class iamryan : MonoBehaviour
         Path.startphysical = source;
         Path.finishphysical = destination;
 
-        //Path.stopnextto = System.Convert.ToBoolean(save.safeItem("stopnextto", saveFile.types.STRING).tostring);
         Path.stopnextto = SaveSystemController.getBoolValue("stopnextto");
-        //Path.recalculateEachStep = System.Convert.ToBoolean(save.safeItem("recalc", saveFile.types.STRING).tostring);
         Path.recalculateEachStep = SaveSystemController.getBoolValue("recalc");
 
-        //if (System.Convert.ToBoolean(save.safeItem("groupEnabled2", saveFile.types.STRING).tostring) == false) //static bounds
         if ((SaveSystemController.getBoolValue("groupEnabled2")) == false) //static bounds
         {
             Path.BBbounds = getbounds();
@@ -177,7 +171,6 @@ public class iamryan : MonoBehaviour
         {
             Vector3 middlepos = ((source.transform.position + destination.transform.position) / 2.0f);
             Vector3 extents = (destination.transform.position - source.transform.position);
-            //float edgesize = save.safeItem("dynamicedgesize", saveFile.types.FLOAT).tofloat;
             float edgesize = SaveSystemController.getFloatValue("dynamicedgesize");
             extents = new Vector3(Mathf.Abs(extents.x) + edgesize, Mathf.Abs(extents.y) + edgesize, Mathf.Abs(extents.z) + edgesize);
             Path.BBbounds = new Bounds(middlepos, extents);
@@ -190,7 +183,6 @@ public class iamryan : MonoBehaviour
 
         }
 
-        //Path.detail = save.safeItem("deets", saveFile.types.FLOAT).tofloat;
         Path.detail = SaveSystemController.getFloatValue("deets");
 
         Path.CalculatePath();
@@ -268,12 +260,6 @@ public class iamryan : MonoBehaviour
 
     public Bounds getbounds()
     {
-        //float cx = save.safeItem("testbounds.center.x", saveFile.types.FLOAT).tofloat;
-        //float cy = save.safeItem("testbounds.center.y", saveFile.types.FLOAT).tofloat;
-        //float cz = save.safeItem("testbounds.center.z", saveFile.types.FLOAT).tofloat;
-        //float sx = save.safeItem("testbounds.size.x", saveFile.types.FLOAT).tofloat / 2.0f;
-        //float sy = save.safeItem("testbounds.size.y", saveFile.types.FLOAT).tofloat / 2.0f;
-        //float sz = save.safeItem("testbounds.size.z", saveFile.types.FLOAT).tofloat / 2.0f;
 
         float cx = SaveSystemController.getFloatValue("testbounds.center.x");
         float cy = SaveSystemController.getFloatValue("testbounds.center.y");

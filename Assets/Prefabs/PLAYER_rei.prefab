@@ -2058,6 +2058,8 @@ MonoBehaviour:
   staminaToHeavyAttack: 5
   staminaBlock: 0
   umbreallaDmg: 20
+  umbreallaHeavyDmg: 50
+  knockDownThreshold: 15
   dead: 0
   maxcolor: {r: 1, g: 1, b: 1, a: 1}
   minColor: {r: 0, g: 0, b: 0, a: 0}
@@ -2230,7 +2232,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canfire: 0
   blockingStamina: 50
-  timeTillHeavyAttack: 0.2
+  timeTillHeavyAttack: 0.25
   cooldown: 0
   cooldowntime: 1
   cooldowntimer: 0
@@ -2253,6 +2255,7 @@ MonoBehaviour:
   VFX: {fileID: 1093250023}
   shotUI: {fileID: 0}
   phoneLock: 0
+  targetsTouched: []
   bulletSpread: 0.1
   bulletSpreadRunning: 0.165
   bulletSpreadADS: 0.08
