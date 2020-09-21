@@ -26,6 +26,8 @@ public class resizeHolder : MonoBehaviour
 
     public int requestcount = 0;
 
+    public float delay = 0.0f;
+
     void Start()
     {
         canvas.GetComponent<packagetosend>().send(packagetosend.sendpackettypes.REQUESTLEADERBOARD, requestcount.ToString());
@@ -39,12 +41,21 @@ public class resizeHolder : MonoBehaviour
         {
             create(listofLeaderboard[0]);
             listofLeaderboard.RemoveAt(0);
+            this.transform.position -= new Vector3(0.0f, 70.0f, 0.0f);
         }
 
-        if (Input.GetKeyDown(KeyCode.O))
+        Debug.Log(this.GetComponent<RectTransform>().offsetMin.y);
+
+        if ((this.GetComponent<RectTransform>().offsetMin.y > -830) && (delay > 1.0f))
         {
             canvas.GetComponent<packagetosend>().send(packagetosend.sendpackettypes.REQUESTLEADERBOARD, requestcount.ToString());
             requestcount += 10;
+            delay = 0.0f;
+        }
+
+        if (delay < 1.5f)
+        {
+            delay += Time.deltaTime;
         }
 
         this.GetComponent<RectTransform>().sizeDelta = new Vector2(1000.0f, (140.0f * gameObject.transform.childCount) + (72.0f * 2.0f));
