@@ -815,30 +815,13 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 600872604}
     - target: {fileID: 1601101144, guid: 5a30a0d94645c0641a73fd58224f0fcc, type: 3}
-      propertyPath: clueLore.Array.data[0]
-      value: "Carrying my life in this BOX... There is no justice in this world.
-        I\u2019m hurt, I\u2019m leaving\u2026 after I take you out."
-      objectReference: {fileID: 0}
-    - target: {fileID: 1601101144, guid: 5a30a0d94645c0641a73fd58224f0fcc, type: 3}
-      propertyPath: clueLore.Array.data[1]
-      value: "The BODY of Mizuya Company\u2019s CEO was found charred! Is this karma?!"
-      objectReference: {fileID: 0}
-    - target: {fileID: 1601101144, guid: 5a30a0d94645c0641a73fd58224f0fcc, type: 3}
-      propertyPath: clueLore.Array.data[2]
-      value: Businessman fired unjustly at MIZUYA COMPANY LTD
-      objectReference: {fileID: 0}
-    - target: {fileID: 1601101144, guid: 5a30a0d94645c0641a73fd58224f0fcc, type: 3}
       propertyPath: notification
       value: 
       objectReference: {fileID: 7827297848574941724}
     - target: {fileID: 1601101144, guid: 5a30a0d94645c0641a73fd58224f0fcc, type: 3}
-      propertyPath: sfx
+      propertyPath: overallNotification
       value: 
-      objectReference: {fileID: 1380369568}
-    - target: {fileID: 1601101144, guid: 5a30a0d94645c0641a73fd58224f0fcc, type: 3}
-      propertyPath: notificationSound
-      value: 
-      objectReference: {fileID: 8300000, guid: 28256be82bf3de14b9800a99e7568ea1, type: 3}
+      objectReference: {fileID: 1666392205}
     - target: {fileID: 1601101145, guid: 5a30a0d94645c0641a73fd58224f0fcc, type: 3}
       propertyPath: room.Array.data[0]
       value: 
@@ -6696,102 +6679,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 225011280}
   m_PrefabAsset: {fileID: 0}
---- !u!82 &1380369568
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1380369567}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 112
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!1001 &1450259118
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7755,6 +7642,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1635513602}
   m_CullTransparentMesh: 0
+--- !u!114 &1666392205 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1666392205, guid: ada5bee6243ddf04e96e40a6209bf7fd,
+    type: 3}
+  m_PrefabInstance: {fileID: 7827297848574941723}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1684174041
 GameObject:
   m_ObjectHideFlags: 0
@@ -10557,7 +10456,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 7827297848574941723}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 

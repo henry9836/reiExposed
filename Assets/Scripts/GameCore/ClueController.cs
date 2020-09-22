@@ -31,6 +31,7 @@ public class ClueController : MonoBehaviour
     public List<string> cluesNeededBossOne = new List<string>();
     public List<string> clueLore = new List<string>();
     public Image notification;
+    public Image overallNotification;
 
     [Header("Player")]
     public List<string> cluesCollected = new List<string>();
@@ -167,6 +168,7 @@ public class ClueController : MonoBehaviour
     public void notificationEvent()
     {
         notification.enabled = true;
+        overallNotification.enabled = true;
         sfx.PlayOneShot(notificationSound);
     }
 
