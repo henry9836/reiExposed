@@ -197,7 +197,7 @@ public class PlayerController : MonoBehaviour
                 else
                 {
                     //Spawn VFX
-                    Instantiate(hitVFX, transform.position, Quaternion.identity);
+                    Instantiate(hitVFX, GetComponent<Collider>().ClosestPointOnBounds(otherObject.transform.position), Quaternion.identity);
                 }
             }
             //If we are blocking

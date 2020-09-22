@@ -360,10 +360,60 @@ public class movementController : MonoBehaviour
             }
         }
 
-        //Move
-        if (!rolling && !attackMovementBlock)
+        //Strafing
+        if (animator.GetBool("Blocking"))
         {
-            ch.Move(moveDir * Time.deltaTime);
+            Vector3 theDir = Vector3.zero;
+            theDir += Vector3.up * Input.GetAxis("Vertical");
+            theDir += Vector3.right * Input.GetAxis("Horizontal");
+            theDir = theDir.normalized;
+
+            Debug.Log(theDir);
+
+            animator.SetBool("SRight", false);
+            animator.SetBool("SLeft", false);
+            animator.SetBool("SForward", false);
+            animator.SetBool("SBackward", false);
+
+            //Moving Animation
+            if (theDir.y > 0)
+            {
+                animator.SetBool("SForward", true);
+                animator.SetBool("Strafing", true);
+            }
+            else if (theDir.y < 0)
+            {
+                animator.SetBool("SBackward", true);
+                animator.SetBool("Strafing", true);
+            }
+            else if(theDir.x > 0)
+            {
+                animator.SetBool("SRight", true);
+                animator.SetBool("Strafing", true);
+            }
+            else if (theDir.x < 0)
+            {
+                animator.SetBool("SLeft", true);
+                animator.SetBool("Strafing", true);
+            }
+            else
+            {
+                animator.SetBool("Strafing", false);
+            }
+
+            //Move
+            if (!rolling && !attackMovementBlock)
+            {
+                ch.Move(moveDir * Time.deltaTime * 0.5f);
+            }
+        }
+        else
+        {
+            //Move
+            if (!rolling && !attackMovementBlock)
+            {
+                ch.Move(moveDir * Time.deltaTime);
+            }
         }
 
         //Stamina Block Timer

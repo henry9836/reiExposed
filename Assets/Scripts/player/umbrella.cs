@@ -49,13 +49,16 @@ public class umbrella : MonoBehaviour
 
 
     private movementController movement;
-    private PlayerController playercontrol;
+    [HideInInspector]
+    public PlayerController playercontrol;
     private Transform charModel;
     private GameObject cam;
     private Animator animator;
     private bool latetest = false;
     private bool attackQueued = false;
     private float timerToHeavy = 0.0f;
+    private float phoneTimer = 0.0f;
+    private float phoneThreshold = 0.25f;
 
 
     public void clearHits()
@@ -102,45 +105,60 @@ public class umbrella : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetMouseButtonUp(0))
+        if (phoneLock)
         {
-            if (timerToHeavy <= timeTillHeavyAttack) {
-                attackQueued = true;
-            }
-            timerToHeavy = 0.0f;
+            phoneTimer = 0.0f;
+        }
+        else
+        {
+            phoneTimer += Time.deltaTime;
         }
 
-        if (Input.GetMouseButton(0))
+        if (!animator.GetBool("Blocking") && (phoneTimer > phoneThreshold))
         {
-            timerToHeavy += Time.deltaTime;
-            if (timerToHeavy > timeTillHeavyAttack && !animator.GetBool("Attacking"))
+            if (Input.GetMouseButtonUp(0))
             {
-                attackQueued = true;
-            }
-        }
-
-        latetest = false;
-
-        if (attackQueued && !animator.GetBool("Blocking") && !animator.GetBool("Stunned") && !phoneLock)
-        {
-            if ((playercontrol.staminaAmount >= playercontrol.staminaToAttack && timerToHeavy <= timeTillHeavyAttack) || (playercontrol.staminaAmount >= playercontrol.staminaToHeavyAttack && timerToHeavy > timeTillHeavyAttack))
-            {
-                attackQueued = false;
-
-                animator.SetBool("Attack", true);
-
-                if (timerToHeavy > timeTillHeavyAttack)
+                if (timerToHeavy <= timeTillHeavyAttack)
                 {
-                    animator.SetBool("HeavyAttack", true);
+                    attackQueued = true;
                 }
+                timerToHeavy = 0.0f;
+            }
 
+            if (Input.GetMouseButton(0))
+            {
+                timerToHeavy += Time.deltaTime;
+                if (timerToHeavy > timeTillHeavyAttack && !animator.GetBool("Attacking"))
+                {
+                    attackQueued = true;
+                }
+            }
+
+            latetest = false;
+
+            if (attackQueued && !animator.GetBool("Blocking") && !animator.GetBool("Stunned") && !phoneLock)
+            {
+                if ((playercontrol.staminaAmount >= playercontrol.staminaToAttack && timerToHeavy <= timeTillHeavyAttack) || (playercontrol.staminaAmount >= playercontrol.staminaToHeavyAttack && timerToHeavy > timeTillHeavyAttack))
+                {
+                    attackQueued = false;
+
+                    animator.SetBool("Attack", true);
+
+                    if (timerToHeavy > timeTillHeavyAttack)
+                    {
+                        animator.SetBool("HeavyAttack", true);
+                    }
+
+                }
             }
         }
 
         VFX.GetComponent<VisualEffect>().SetFloat("timer", 0.0f);
 
+
+
         //for blocking / aiming down sight
-        if (!cooldown && !phoneLock)
+        if (!cooldown && !phoneLock && (phoneTimer > phoneThreshold))
         {
             //shoot
             if (Input.GetAxis("Fire2") > 0.5f)
@@ -184,7 +202,7 @@ public class umbrella : MonoBehaviour
             crosshair.transform.GetChild(1).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
             crosshair.transform.GetChild(2).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
             crosshair.transform.GetChild(3).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
-            animator.SetBool("Blocking", false);
+            //animator.SetBool("Blocking", false);
             //movement.attackMovementBlock = false;
             cooldowntimer += Time.deltaTime;
             if (cooldowntimer > cooldowntime)
@@ -289,7 +307,7 @@ public class umbrella : MonoBehaviour
                 animator.SetTrigger("Shoot");
                 ammo--;
                 SaveSystemController.updateValue("ammo", ammo);
-                
+
                 bang();
             }
             else if (ammocycle == 1 && ammoTwo > 0)
