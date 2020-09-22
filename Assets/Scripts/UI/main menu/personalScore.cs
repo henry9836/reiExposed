@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class personalScore : MonoBehaviour
@@ -9,12 +10,14 @@ public class personalScore : MonoBehaviour
     public bool serverRecord = true;
     public static List<leader> PersonallistofLeaderboard = new List<leader>() { };
 
+    private packagetosend sender;
 
     void Start()
     {
+        sender = canvas.GetComponent<packagetosend>();
         if (serverRecord)
         {
-            canvas.GetComponent<packagetosend>().send(packagetosend.sendpackettypes.REQUESTUSERRANK);
+            sender.send(packagetosend.sendpackettypes.REQUESTUSERRANK);
         }
         else
         {
@@ -54,4 +57,27 @@ public class personalScore : MonoBehaviour
             this.transform.GetChild(2).gameObject.GetComponent<Text>().text = lead.time;
         }
     }
+
+    public void submitScore()
+    {
+        //Build package
+        sender.ddID = "STEAM_0:0:98612737"; //TODO replace with propper steamID
+        sender.ddmessage = SaveSystemController.getValue("Package_Message");
+        sender.ddcurr = SaveSystemController.getIntValue("Package_Curr");
+        sender.dditem1 = SaveSystemController.getIntValue("Package_Item1");
+        sender.dditem2 = SaveSystemController.getIntValue("Package_Item2");
+        sender.dditem3 = SaveSystemController.getIntValue("Package_Item3");
+        sender.ddname = SaveSystemController.getValue("Package_Name");
+        sender.ddtime = SaveSystemController.getValue("Package_Time");
+
+        //Ship it to the server
+        sender.send(packagetosend.sendpackettypes.PACKAGESEND);
+
+        //Reset Save
+        SaveSystemController.Reset();
+
+        //Reload scene
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
 }

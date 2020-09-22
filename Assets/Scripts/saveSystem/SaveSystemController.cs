@@ -51,6 +51,11 @@ public static class SaveSystemController
         }
     }
 
+    public static void Reset()
+    {
+        Debug.Log("Reset Save File");
+    }
+
     //Load Data Thread
     static void loadDataFromDiskThread(System.Object stateInfo)
     {

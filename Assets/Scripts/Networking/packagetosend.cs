@@ -215,6 +215,12 @@ public class packagetosend : MonoBehaviour
             debugText.enabled = false;
         }
     }
+
+    public void submitScore(string name, string time)
+    {
+
+    }
+
     public void send(int type) { send((sendpackettypes)type); }
 
     public void send(sendpackettypes type) { send(type, "NA"); }
