@@ -22,6 +22,8 @@ public class ThePhone : MonoBehaviour
     public GameObject maincam;
     public GameObject camgrid;
     public Sprite emptyPhotoSpot;
+    public Image keyNotification;
+    public Image overallNotification;
 
     //henry
     public MythWorkerUnion myths;
@@ -461,6 +463,9 @@ public class ThePhone : MonoBehaviour
                 }
             case phonestates.KEY: // key page
                 {
+                    keyNotification.enabled = false;
+                    overallNotification.enabled = false;
+
                     if (Input.GetKeyDown(KeyCode.Tab) || Input.GetButtonDown("Pause")) // close
                     {
                         BackToMenu();

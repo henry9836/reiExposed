@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.UI;
 
 public class ClueController : MonoBehaviour
@@ -22,11 +23,15 @@ public class ClueController : MonoBehaviour
     public BossArenaController BossArenaControllerOne;
     public BossArenaController BossArenaControllerTwo;
     public BossArenaController BossArenaControllerThree;
+    public AudioSource sfx;
+    public AudioClip notificationSound;
 
 
     [Header("Setup")]
     public List<string> cluesNeededBossOne = new List<string>();
     public List<string> clueLore = new List<string>();
+    public Image notification;
+    public Image overallNotification;
 
     [Header("Player")]
     public List<string> cluesCollected = new List<string>();
@@ -37,13 +42,12 @@ public class ClueController : MonoBehaviour
     public bool bossThreeCollected = false;
     public bool qrFound = false;
 
-    int clueCollectedOne = 0;
+    public int clueCollectedOne = 0;
 
     private List<TraceController> traces = new List<TraceController>();
     private List<slot> slots = new List<slot>();
     private Image keyProgress;
     private Text keyProgressText;
-
 
     void Start()
     {        
@@ -120,6 +124,8 @@ public class ClueController : MonoBehaviour
         keyProgressText.text = $"{cluesCollected.Count}/3";
         keyProgress.fillAmount = cluesCollected.Count / 3.0f;
 
+        bool playSFX = false;
+
         //Update Slots
         for (int i = 0; i < slots.Count; i++)
         {
@@ -151,7 +157,7 @@ public class ClueController : MonoBehaviour
             for (int j = 0; j < clueLoreCollected.Count; j++)
             {
                 if (clueLoreCollected[j] == clueLore[i])
-                {
+                { 
                     slots[i].text.text = clueLoreCollected[j];
                 }
             }
@@ -159,6 +165,12 @@ public class ClueController : MonoBehaviour
 
     }
 
+    public void notificationEvent()
+    {
+        notification.enabled = true;
+        overallNotification.enabled = true;
+        sfx.PlayOneShot(notificationSound);
+    }
 
     IEnumerator clueCheckLoop()
     {
@@ -184,7 +196,7 @@ public class ClueController : MonoBehaviour
                             if (cluesNeededBossOne[j] == cluesCollected[i])
                             {
                                 //Add to counter if it matches
-                                clueCollectedOne++;
+                                clueCollectedOne++;//found trace first loop
                             }
                             yield return null;
                         }

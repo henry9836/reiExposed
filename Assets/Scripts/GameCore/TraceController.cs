@@ -7,6 +7,7 @@ public class TraceController : MonoBehaviour
 {
 
     public GameObject toDestory;
+    public ClueController clueCtrl;
     public List<Renderer> renderers = new List<Renderer>();
 
     private float timer = 0.0f;
@@ -40,6 +41,8 @@ public class TraceController : MonoBehaviour
         {
             toDestory = transform.root.gameObject;
         }
+
+        clueCtrl = GameObject.FindGameObjectWithTag("GameManager").GetComponent<ClueController>();
     }
 
     private void FixedUpdate()
@@ -62,5 +65,6 @@ public class TraceController : MonoBehaviour
     public void Trigger()
     {
         started = true;
+        clueCtrl.notificationEvent();
     }
 }
