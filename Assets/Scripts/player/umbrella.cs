@@ -49,7 +49,8 @@ public class umbrella : MonoBehaviour
 
 
     private movementController movement;
-    private PlayerController playercontrol;
+    [HideInInspector]
+    public PlayerController playercontrol;
     private Transform charModel;
     private GameObject cam;
     private Animator animator;
