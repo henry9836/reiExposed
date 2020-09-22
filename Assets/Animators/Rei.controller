@@ -334,6 +334,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 2
     m_ConditionEvent: SLeft
     m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: Strafing
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 5689248488753179737}
   m_Solo: 0
@@ -1107,6 +1110,9 @@ AnimatorStateTransition:
   - m_ConditionMode: 2
     m_ConditionEvent: SForward
     m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: Strafing
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 5689248488753179737}
   m_Solo: 0
@@ -1351,6 +1357,9 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 2
     m_ConditionEvent: SRight
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: Strafing
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 5689248488753179737}
@@ -1998,6 +2007,12 @@ AnimatorController:
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
   - m_Name: SBackward
+    m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 0}
+  - m_Name: Strafing
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -2651,6 +2666,9 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 2
     m_ConditionEvent: SBackward
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: Strafing
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 5689248488753179737}
@@ -3754,7 +3772,7 @@ AnimatorStateMachine:
     m_Position: {x: 600, y: 290, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 5689248488753179737}
-    m_Position: {x: 600, y: 120, z: 0}
+    m_Position: {x: 600, y: 110, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -8452222778303803713}
     m_Position: {x: 390, y: 40, z: 0}
