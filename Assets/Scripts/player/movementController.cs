@@ -363,29 +363,44 @@ public class movementController : MonoBehaviour
         //Strafing
         if (animator.GetBool("Blocking"))
         {
-            //Get Direction
-            if (moveDir.x != 0 || moveDir.z != 0)
-            {
-                //Moving To The Right
-                if (moveDir.x < 0)
-                {
-                    animator.SetTrigger("SRight");
-                }
-                else if (moveDir.x > 0)
-                {
-                    animator.SetTrigger("SLeft");
-                }
+            Vector3 theDir = Vector3.zero;
+            theDir += Vector3.up * Input.GetAxis("Vertical");
+            theDir += Vector3.right * Input.GetAxis("Horizontal");
+            theDir = theDir.normalized;
 
-                //Moving To The Right
-                if (moveDir.z < 0)
-                {
-                    animator.SetTrigger("SForward");
-                }
-                else if (moveDir.z > 0)
-                {
-                    animator.SetTrigger("SBackward");
-                }
+            Debug.Log(theDir);
+
+            animator.SetBool("SRight", false);
+            animator.SetBool("SLeft", false);
+            animator.SetBool("SForward", false);
+            animator.SetBool("SBackward", false);
+
+            //Moving Animation
+            if (theDir.y > 0)
+            {
+                animator.SetBool("SForward", true);
+                animator.SetBool("Strafing", true);
             }
+            else if (theDir.y < 0)
+            {
+                animator.SetBool("SBackward", true);
+                animator.SetBool("Strafing", true);
+            }
+            else if(theDir.x > 0)
+            {
+                animator.SetBool("SRight", true);
+                animator.SetBool("Strafing", true);
+            }
+            else if (theDir.x < 0)
+            {
+                animator.SetBool("SLeft", true);
+                animator.SetBool("Strafing", true);
+            }
+            else
+            {
+                animator.SetBool("Strafing", false);
+            }
+
             //Move
             if (!rolling && !attackMovementBlock)
             {
