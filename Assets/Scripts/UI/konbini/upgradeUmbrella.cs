@@ -15,7 +15,8 @@ public class upgradeUmbrella : MonoBehaviour
     public int shotgunBulletSpreadRunningLVL;
     public int meeleeDamageLVL;
 
-
+    private float startDmg = 20.0f;
+    private float startHeavyDmg = 80.0f;
 
     public GameObject umbrellaHolder;
 
@@ -121,6 +122,8 @@ public class upgradeUmbrella : MonoBehaviour
             SaveSystemController.updateValue("ammoTwo", umbrella.ammoTwo);
         }
 
+        startDmg = umbrella.playercontrol.umbreallaDmg;
+        startHeavyDmg = umbrella.playercontrol.umbreallaHeavyDmg;
 
         updateInteractable();
     }
@@ -347,11 +350,11 @@ public class upgradeUmbrella : MonoBehaviour
             case upgrading.MEELEE:
                 {
                     //value
-                    float value = 30.0f;  //base MEELEEat level 0 
+                    float value = startDmg;  //base MEELEEat level 0 
                     value += level * 5.0f;
                     whackUmbrella.umbreallaDmg = value;
 
-                    float valueH = 50.0f;  //base MEELEEat level 0 
+                    float valueH = startHeavyDmg;  //base MEELEEat level 0 
                     valueH += level * 10.0f;
                     whackUmbrella.umbreallaHeavyDmg = valueH;
 
