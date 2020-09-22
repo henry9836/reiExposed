@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Packager : MonoBehaviour
@@ -232,6 +233,13 @@ public class Packager : MonoBehaviour
         //Lock mouse
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        //Load into main menu
+        while (SaveSystemController.ioBusy)
+        {
+            Debug.Log("Waiting On Save System IO");
+        }
+        SceneManager.LoadScene(0);
 
         //Close packager
         gameObject.SetActive(false);
