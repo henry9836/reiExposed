@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 6.1624494, g: 12.541482, b: 28.609274, a: 1}
+  m_IndirectSpecularColor: {r: 6.162495, g: 12.541635, b: 28.614828, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -450,7 +450,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &197509121
 RectTransform:
   m_ObjectHideFlags: 0
@@ -485,7 +485,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.8584906, g: 0.25511748, b: 0.25511748, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -637,7 +637,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &325878901
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1796,7 +1796,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -2219,6 +2219,8 @@ MonoBehaviour:
   MList: {fileID: 82569595}
   SList: {fileID: 533069236}
   LList: {fileID: 874969430}
+  Warning: {fileID: 325878900}
+  notification: {fileID: 197509120}
   theState: 1
 --- !u!114 &798898288
 MonoBehaviour:
@@ -3082,7 +3084,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 871.8817, y: -314.48486}
+  m_AnchoredPosition: {x: 871.8817, y: -314.4853}
   m_SizeDelta: {x: 1424.2085, y: 752.6763}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &976355972
@@ -4582,7 +4584,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1497663433}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 798898287}
+        m_MethodName: forceQuit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1497663433
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4748,8 +4761,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1790686822}
   m_HandleRect: {fileID: 1790686821}
   m_Direction: 2
-  m_Value: -0.0000078942485
-  m_Size: 0.91782093
+  m_Value: 0
+  m_Size: 0.91782284
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4871,7 +4884,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1667928551}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 798898287}
+        m_MethodName: closeWarning
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1667928551
 MonoBehaviour:
   m_ObjectHideFlags: 0

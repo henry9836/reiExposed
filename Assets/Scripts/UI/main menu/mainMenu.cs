@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Steamworks.Data;
-using JetBrains.Annotations;
 
 public class mainMenu : MonoBehaviour
 {
@@ -12,6 +11,8 @@ public class mainMenu : MonoBehaviour
     public GameObject MList;
     public GameObject SList;
     public GameObject LList;
+    public GameObject Warning;
+    public GameObject notification;
 
     private Vector3 Listtop;
     private Vector3 Listmid;
@@ -20,6 +21,9 @@ public class mainMenu : MonoBehaviour
     private Vector3 canvaspos;
 
     float menuspeed = 1.5f;
+
+    bool loadedData = false;
+    bool packageWaiting = false;
 
     public enum state
     { 
@@ -101,7 +105,25 @@ public class mainMenu : MonoBehaviour
         StartCoroutine(Down(theState, state.leaderboard));
         theState = state.leaderboard;
     }
+
+    public void closeWarning()
+    {
+        Warning.SetActive(false);
+    }
+
     public void quit()
+    {
+        if (packageWaiting)
+        {
+            Warning.SetActive(true);
+        }
+        else
+        {
+            Application.Quit();
+        }
+    }
+
+    public void forceQuit()
     {
         Application.Quit();
     }
@@ -120,6 +142,20 @@ public class mainMenu : MonoBehaviour
 
 
         yield return null;
+    }
+
+    private void FixedUpdate()
+    {
+        //Loads notification on leaderboard
+        if (!loadedData)
+        {
+            if (SaveSystemController.readyForProcessing)
+            {
+                packageWaiting = (SaveSystemController.getBoolValue("PackagePending"));
+                notification.SetActive(true);
+                loadedData = true;
+            }
+        }
     }
 
     public void updatemenupos(state moving, bool toonscreen, float completion)
