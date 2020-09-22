@@ -56,8 +56,8 @@ public class resizeHolder : MonoBehaviour
             delay += Time.deltaTime;
         }
 
-        this.GetComponent<RectTransform>().sizeDelta = new Vector2(1000.0f, (140.0f * gameObject.transform.childCount) + (72.0f * 2.0f));
-        this.GetComponent<RectTransform>().localPosition = new Vector3(715.0f, this.GetComponent<RectTransform>().localPosition.y, 0.0f);
+        this.GetComponent<RectTransform>().sizeDelta = new Vector2(1600.0f, (140.0f * gameObject.transform.childCount) + (72.0f * 2.0f));
+        this.GetComponent<RectTransform>().localPosition = new Vector3(888.0f, this.GetComponent<RectTransform>().localPosition.y, 0.0f);
 
     }
 
