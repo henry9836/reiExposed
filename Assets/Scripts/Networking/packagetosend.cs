@@ -159,6 +159,7 @@ public class packagetosend : MonoBehaviour
 
     void Update()
     {
+#if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Comma))
         {
             send(sendpackettypes.REQUESTLEADERBOARD);
@@ -167,6 +168,7 @@ public class packagetosend : MonoBehaviour
         {
             send(sendpackettypes.REQUESTUSERRANK);
         }
+#endif
 
         if (toPackage == true)
         {
@@ -213,6 +215,12 @@ public class packagetosend : MonoBehaviour
             debugText.enabled = false;
         }
     }
+
+    public void submitScore(string name, string time)
+    {
+
+    }
+
     public void send(int type) { send((sendpackettypes)type); }
 
     public void send(sendpackettypes type) { send(type, "NA"); }
@@ -262,7 +270,12 @@ public class packagetosend : MonoBehaviour
                 }
             case sendpackettypes.REQUESTUSERRANK:
                 {
-                    string dduserName = "Anon";
+                    string name = SaveSystemController.getValue("Package_Name");
+                    if (name == "-1")
+                    {
+                        name = "Anon";
+                    }
+                    string dduserName = name;
                     package = new datadump((int)ddpackettype, dduserName);
                     break;
                 }
