@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class personalScore : MonoBehaviour
 {
     public GameObject canvas;
+    public Button submitButton;
     public bool serverRecord = true;
     public static List<leader> PersonallistofLeaderboard = new List<leader>() { };
 
@@ -34,6 +35,8 @@ public class personalScore : MonoBehaviour
                 this.transform.GetChild(2).gameObject.GetComponent<Text>().text = "";
             }
         }
+
+        submitButton.interactable = SaveSystemController.getBoolValue("PackagePending");
     }
 
     void Update()
@@ -60,24 +63,29 @@ public class personalScore : MonoBehaviour
 
     public void submitScore()
     {
-        //Build package
-        sender.ddID = "STEAM_0:0:98612737"; //TODO replace with propper steamID
-        sender.ddmessage = SaveSystemController.getValue("Package_Message");
-        sender.ddcurr = SaveSystemController.getIntValue("Package_Curr");
-        sender.dditem1 = SaveSystemController.getIntValue("Package_Item1");
-        sender.dditem2 = SaveSystemController.getIntValue("Package_Item2");
-        sender.dditem3 = SaveSystemController.getIntValue("Package_Item3");
-        sender.ddname = SaveSystemController.getValue("Package_Name");
-        sender.ddtime = SaveSystemController.getValue("Package_Time");
+        if (SaveSystemController.getBoolValue("PackagePending")) {
 
-        //Ship it to the server
-        sender.send(packagetosend.sendpackettypes.PACKAGESEND);
+            submitButton.interactable = false;
 
-        //Reset Save
-        SaveSystemController.Reset();
+            //Build package
+            sender.ddID = "STEAM_0:0:98612737"; //TODO replace with propper steamID
+            sender.ddmessage = SaveSystemController.getValue("Package_Message");
+            sender.ddcurr = SaveSystemController.getIntValue("Package_Curr");
+            sender.dditem1 = SaveSystemController.getIntValue("Package_Item1");
+            sender.dditem2 = SaveSystemController.getIntValue("Package_Item2");
+            sender.dditem3 = SaveSystemController.getIntValue("Package_Item3");
+            sender.ddname = SaveSystemController.getValue("Package_Name");
+            sender.ddtime = SaveSystemController.getValue("Package_Time");
 
-        //Reload scene
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            //Ship it to the server
+            sender.send(packagetosend.sendpackettypes.PACKAGESEND);
+
+            //Reset Save
+            SaveSystemController.Reset();
+
+            //Reload scene
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
     }
 
 }

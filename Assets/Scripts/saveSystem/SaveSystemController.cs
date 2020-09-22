@@ -11,6 +11,7 @@ public static class SaveSystemController
     private const string saveFile = "rei.sav";
     private const string IDFLAG = "#{ID}#";
     private const string VALFLAG = "#{VAL}#";
+    private const string SEPERATOR = "toCensor";
 
     public class entry
     {
@@ -35,6 +36,96 @@ public static class SaveSystemController
     public static bool ioBusy = false; //Used for telling user not to alt-f4
     public static bool loadedValues = false;
 
+    private static List<entry> tmpList = new List<entry>();
+
+    //Resets a save file
+    public static void Reset()
+    {
+        //Wait till we are allowed access to file
+        while (ioBusy)
+        {
+            Debug.Log("ioBusy");
+        }
+
+        //Set busy bit
+        ioBusy = true;
+        string nameOfuser = "";
+        if (SaveSystemController.getBoolValue("PackagePending"))
+        {
+            nameOfuser = SaveSystemController.getValue("Package_Name");
+        }
+        //Load default values
+        //Read all lines into array
+        tmpList.Clear();
+        string[] lines = File.ReadAllLines(saveFile);
+
+        bool nextValBreak = false;
+
+        //Decode until we hit the default values Seperator
+        for (int i = 0; i < lines.Length; i++)
+        {
+            //Is there a flag?
+            if (lines[i].Contains(IDFLAG))
+            {
+                //Add id
+                tmpList.Add(new entry(lines[i].Substring(IDFLAG.Length)));
+            }
+            else if (lines[i].Contains(VALFLAG))
+            {
+                //Set value of latest seen entry
+                tmpList[tmpList.Count - 1].value = lines[i].Substring(VALFLAG.Length);
+                if (nextValBreak)
+                {
+                    break;
+                }
+            }
+            else
+            {
+                Debug.LogWarning($"Unknown Line {lines[i]}");
+            }
+
+            if (lines[i].Contains(SEPERATOR))
+            {
+                nextValBreak = true;
+            }
+        }
+
+        //Delete Everything From File And Create a new one
+        File.Delete(saveFile);
+        saveInfomation.Clear();
+
+        //Populate the file with default values
+        //Create saveFile if it doesn't exist and Open for writing
+        StreamWriter writer = new StreamWriter(saveFile, false);
+
+        //For each entry in our save infomation overwrite file
+        for (int i = 0; i < tmpList.Count; i++)
+        {
+            writer.WriteLine(IDFLAG + tmpList[i].id);
+            writer.WriteLine(VALFLAG + tmpList[i].value);
+        }
+
+        //Add some money into player save
+        writer.WriteLine(IDFLAG + "MythTraces");
+        writer.WriteLine(VALFLAG + "500");
+        if (nameOfuser != "")
+        {
+            writer.WriteLine(IDFLAG + "Package_Name");
+            writer.WriteLine(VALFLAG + nameOfuser);
+        }
+
+        //Close writer
+        writer.Close();
+
+        //Reload
+        ioBusy = false;
+        readyForProcessing = false;
+        loadDataFromDisk();
+        tmpList.Clear();
+
+        Debug.Log("Reset Save File");
+    }
+
     //Loads data from savefile into saveInfomation
     public static void loadDataFromDisk() { loadDataFromDisk(saveFile); } 
     //Loads data from savefile into saveInfomation
@@ -51,10 +142,7 @@ public static class SaveSystemController
         }
     }
 
-    public static void Reset()
-    {
-        Debug.Log("Reset Save File");
-    }
+
 
     //Load Data Thread
     static void loadDataFromDiskThread(System.Object stateInfo)

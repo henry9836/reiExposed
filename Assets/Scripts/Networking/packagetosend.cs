@@ -270,14 +270,10 @@ public class packagetosend : MonoBehaviour
                 }
             case sendpackettypes.REQUESTUSERRANK:
                 {
-                    string name = "Anon";
-                    if (SaveSystemController.getBoolValue("PackagePending"))
+                    string name = SaveSystemController.getValue("Package_Name");
+                    if (name == "-1")
                     {
-                        name = SaveSystemController.getValue("Package_Name");
-                    }
-                    else
-                    {
-                        Debug.LogWarning("No Sav For Package Loading Default Value");
+                        name = "Anon";
                     }
                     string dduserName = name;
                     package = new datadump((int)ddpackettype, dduserName);
