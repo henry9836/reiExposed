@@ -144,6 +144,7 @@ GameObject:
   - component: {fileID: 1601101144}
   - component: {fileID: 1601101145}
   - component: {fileID: 1380369573}
+  - component: {fileID: 1380369568}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameManager
@@ -360,21 +361,25 @@ MonoBehaviour:
   BossArenaControllerOne: {fileID: 1601101145}
   BossArenaControllerTwo: {fileID: 0}
   BossArenaControllerThree: {fileID: 0}
+  sfx: {fileID: 1380369568}
+  notificationSound: {fileID: 8300000, guid: 28256be82bf3de14b9800a99e7568ea1, type: 3}
   cluesNeededBossOne:
   - myth_body
   - human
   - Building
   clueLore:
-  - "\u201CCarrying my life in this BOX... There is no justice in this world. I\u2019m
-    hurt, I\u2019m leaving\u2026 after I take you out.\u201D"
-  - "\u201CThe BODY of Mizuya Company\u2019s CEO was found charred! Is this karma?!\u201D"
-  - "\u201CBusinessman fired unjustly at MIZUYA COMPANY LTD\u201D"
+  - "Carrying my life in this BOX... There is no justice in this world. I\u2019m
+    hurt, I\u2019m leaving\u2026 after I take you out."
+  - "The BODY of Mizuya Company\u2019s CEO was found charred! Is this karma?!"
+  - Businessman fired unjustly at MIZUYA COMPANY LTD
+  notification: {fileID: 0}
   cluesCollected: []
   clueLoreCollected: []
   bossOneCollected: 0
   bossTwoCollected: 0
   bossThreeCollected: 0
   qrFound: 0
+  clueCollectedOne: 0
 --- !u!114 &1601101145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -417,3 +422,99 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   introUI: {fileID: 0}
   tabandscrollhelp: {fileID: 0}
+--- !u!82 &1380369568
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6758719851260491791}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 112
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
