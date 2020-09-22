@@ -152,7 +152,7 @@ public class mainMenu : MonoBehaviour
             if (SaveSystemController.readyForProcessing)
             {
                 packageWaiting = (SaveSystemController.getBoolValue("PackagePending"));
-                notification.SetActive(true);
+                notification.SetActive(packageWaiting);
                 loadedData = true;
             }
         }
