@@ -159,6 +159,7 @@ public class packagetosend : MonoBehaviour
 
     void Update()
     {
+#if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Comma))
         {
             send(sendpackettypes.REQUESTLEADERBOARD);
@@ -167,6 +168,7 @@ public class packagetosend : MonoBehaviour
         {
             send(sendpackettypes.REQUESTUSERRANK);
         }
+#endif
 
         if (toPackage == true)
         {
@@ -262,7 +264,16 @@ public class packagetosend : MonoBehaviour
                 }
             case sendpackettypes.REQUESTUSERRANK:
                 {
-                    string dduserName = "Anon";
+                    string name = "Anon";
+                    if (SaveSystemController.getBoolValue("PackagePending"))
+                    {
+                        name = SaveSystemController.getValue("Package_Name");
+                    }
+                    else
+                    {
+                        Debug.LogWarning("No Sav For Package Loading Default Value");
+                    }
+                    string dduserName = name;
                     package = new datadump((int)ddpackettype, dduserName);
                     break;
                 }
