@@ -360,10 +360,45 @@ public class movementController : MonoBehaviour
             }
         }
 
-        //Move
-        if (!rolling && !attackMovementBlock)
+        //Strafing
+        if (animator.GetBool("Blocking"))
         {
-            ch.Move(moveDir * Time.deltaTime);
+            //Get Direction
+            if (moveDir.x != 0 || moveDir.z != 0)
+            {
+                //Moving To The Right
+                if (moveDir.x < 0)
+                {
+                    animator.SetTrigger("SRight");
+                }
+                else if (moveDir.x > 0)
+                {
+                    animator.SetTrigger("SLeft");
+                }
+
+                //Moving To The Right
+                if (moveDir.z < 0)
+                {
+                    animator.SetTrigger("SForward");
+                }
+                else if (moveDir.z > 0)
+                {
+                    animator.SetTrigger("SBackward");
+                }
+            }
+            //Move
+            if (!rolling && !attackMovementBlock)
+            {
+                ch.Move(moveDir * Time.deltaTime * 0.5f);
+            }
+        }
+        else
+        {
+            //Move
+            if (!rolling && !attackMovementBlock)
+            {
+                ch.Move(moveDir * Time.deltaTime);
+            }
         }
 
         //Stamina Block Timer
