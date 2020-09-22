@@ -27,6 +27,7 @@ public class ClueController : MonoBehaviour
     [Header("Setup")]
     public List<string> cluesNeededBossOne = new List<string>();
     public List<string> clueLore = new List<string>();
+    public Image notification;
 
     [Header("Player")]
     public List<string> cluesCollected = new List<string>();
@@ -134,6 +135,12 @@ public class ClueController : MonoBehaviour
                 if (cluesCollected[j] == cluesNeededBossOne[i])
                 {
                     found = true;
+                    //found trace first loop
+                    if (slots[i].image.color != Color.green)
+                    {
+                        notification.enabled = true;
+                    }
+
                     slots[i].image.color = Color.green;
                 }
             }
@@ -152,6 +159,11 @@ public class ClueController : MonoBehaviour
             {
                 if (clueLoreCollected[j] == clueLore[i])
                 {
+                    //found trace first loop
+                    if (slots[i].text.text != clueLoreCollected[j])
+                    {
+                        notification.enabled = true;
+                    }
                     slots[i].text.text = clueLoreCollected[j];
                 }
             }
