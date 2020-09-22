@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Packager : MonoBehaviour
@@ -192,26 +193,38 @@ public class Packager : MonoBehaviour
     public void Submit()
     {
         //Build package
-        sender.ddID = "STEAM_0:0:98612737"; //TODO replace with propper steamID
-        sender.ddmessage = message.text;
-        sender.ddcurr = int.Parse(currency.text);
-        if (int.Parse(currency.text) < 100)
+        //sender.ddID = "STEAM_0:0:98612737"; //TODO replace with propper steamID
+        //sender.ddmessage = message.text;
+        int curr = int.Parse(currency.text);
+        if (curr < 100)
         {
-            sender.ddcurr += 100; //Whatever the user put in +100
+            curr += 100;
         }
-        sender.dditem1 = (int)item1;
-        sender.dditem2 = (int)item2;
-        sender.dditem3 = (int)item3;
-        sender.ddname = nameField.text;
-        sender.ddtime = NetworkUtility.convertToTime(levelTime);
+        //sender.ddcurr = curr;
+        //sender.dditem1 = (int)item1;
+        //sender.dditem2 = (int)item2;
+        //sender.dditem3 = (int)item3;
+        //sender.ddname = nameField.text;
+        //sender.ddtime = NetworkUtility.convertToTime(levelTime);
 
-        //Remove Items
-        items.removeitemequipped(item1, false);
-        items.removeitemequipped(item2, false);
-        items.removeitemequipped(item3, false);
+        ////Remove Items
+        //items.removeitemequipped(item1, false);
+        //items.removeitemequipped(item2, false);
+        //items.removeitemequipped(item3, false);
 
         //Send package
-        sender.send(1);
+        //sender.send(1);
+
+        //Save To File
+        SaveSystemController.updateValue("PackagePending", true);
+        SaveSystemController.updateValue("Package_STEAM_ID", "STEAM_0:0:98612737");
+        SaveSystemController.updateValue("Package_Message", message.text);
+        SaveSystemController.updateValue("Package_Curr", curr);
+        SaveSystemController.updateValue("Package_Item1", (int)item1);
+        SaveSystemController.updateValue("Package_Item2", (int)item2);
+        SaveSystemController.updateValue("Package_Item3", (int)item3);
+        SaveSystemController.updateValue("Package_Name", nameField.text);
+        SaveSystemController.updateValue("Package_Time", NetworkUtility.convertToTime(levelTime));
 
         //Remove MythTraces
         SaveSystemController.updateValue("MythTraces", SaveSystemController.getIntValue("MythTraces") - int.Parse(currency.text));
@@ -220,6 +233,13 @@ public class Packager : MonoBehaviour
         //Lock mouse
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        //Load into main menu
+        while (SaveSystemController.ioBusy)
+        {
+            Debug.Log("Waiting On Save System IO");
+        }
+        SceneManager.LoadScene(0);
 
         //Close packager
         gameObject.SetActive(false);
