@@ -218,7 +218,6 @@ public static class SaveSystemController
         {
             writer.WriteLine(IDFLAG + saveInfomation[i].id);
             writer.WriteLine(VALFLAG + saveInfomation[i].value);
-            writer.WriteLine("");
         }
 
         //Close writer
