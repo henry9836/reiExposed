@@ -132,6 +132,7 @@ public class QRCodeController : MonoBehaviour
                     //    loreThree.text = hint;
                     //}
                     clueCtrl.addOntoLore(hint);
+                    clueCtrl.notificationEvent();
                 }
             }
             //Else if we are an online message then
