@@ -194,11 +194,12 @@ public class Packager : MonoBehaviour
         //Build package
         sender.ddID = "STEAM_0:0:98612737"; //TODO replace with propper steamID
         sender.ddmessage = message.text;
-        sender.ddcurr = int.Parse(currency.text);
-        if (int.Parse(currency.text) < 100)
+        int curr = int.Parse(currency.text);
+        if (curr < 100)
         {
-            sender.ddcurr += 100; //Whatever the user put in +100
+            curr += 100;
         }
+        sender.ddcurr = curr;
         sender.dditem1 = (int)item1;
         sender.dditem2 = (int)item2;
         sender.dditem3 = (int)item3;
@@ -211,7 +212,18 @@ public class Packager : MonoBehaviour
         items.removeitemequipped(item3, false);
 
         //Send package
-        sender.send(1);
+        //sender.send(1);
+
+        //Save To File
+        SaveSystemController.updateValue("PackagePending", true);
+        SaveSystemController.updateValue("Package_STEAM_ID", "STEAM_0:0:98612737");
+        SaveSystemController.updateValue("Package_Message", message.text);
+        SaveSystemController.updateValue("Package_Curr", curr);
+        SaveSystemController.updateValue("Package_Item1", (int)item1);
+        SaveSystemController.updateValue("Package_Item2", (int)item2);
+        SaveSystemController.updateValue("Package_Item3", (int)item3);
+        SaveSystemController.updateValue("Package_Name", nameField.text);
+        SaveSystemController.updateValue("Package_Time", NetworkUtility.convertToTime(levelTime));
 
         //Remove MythTraces
         SaveSystemController.updateValue("MythTraces", SaveSystemController.getIntValue("MythTraces") - int.Parse(currency.text));
