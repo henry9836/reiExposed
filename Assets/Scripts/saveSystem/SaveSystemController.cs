@@ -17,8 +17,19 @@ public static class SaveSystemController
 
     public class entry
     {
+        enum TYPES
+        {
+            NONASSIGNED,
+            INT,
+            FLOAT,
+            STRING
+        }
+
         public string id = "Untitled";
         public string value = "-1";
+
+        private int offset = 95999; //Used to hide from memory searches
+        private TYPES type = TYPES.NONASSIGNED; 
 
         public entry(string _id)
         {
@@ -29,6 +40,113 @@ public static class SaveSystemController
         {
             id = _id;
             value = _val;
+        }
+
+        private void setup(string hint)
+        {
+            //ID the type of data we are using
+            int iNum;
+            float fNum;
+
+            if (int.TryParse(hint, out iNum))
+            {
+                //Apply Type
+                type = TYPES.INT;
+                
+                //Apply Offset
+                offset = UnityEngine.Random.Range(-9999, 9999);
+                value = (iNum + offset).ToString();
+            }
+            else if (float.TryParse(hint, out fNum))
+            {
+                //Apply Type
+                type = TYPES.FLOAT;
+
+                //Apply Offset
+                offset = UnityEngine.Random.Range(-9999, 9999);
+                value = (fNum + offset).ToString();
+            }
+            else
+            {
+                type = TYPES.STRING;
+            }
+        }
+
+        public void updateValue(string newVal)
+        {
+            //If first time adjusting
+            if (type == TYPES.NONASSIGNED)
+            {
+                setup(newVal);
+                return;
+            }
+
+            if (type == TYPES.INT)
+            {
+                //Get a new offset
+                offset = UnityEngine.Random.Range(-9999, 9999);
+
+                //Apply new value with new offset
+                value = (int.Parse(newVal) + offset).ToString();
+
+            }
+            else if (type == TYPES.FLOAT)
+            {
+                //Get a new offset
+                offset = UnityEngine.Random.Range(-9999, 9999);
+
+                //Apply new value with new offset
+                value = (float.Parse(newVal) + offset).ToString();
+            }
+            else
+            {
+                //Can't do much here
+                value = newVal;
+            }
+        }
+        public string getValue()
+        {
+            //If first time adjusting
+            if (type == TYPES.NONASSIGNED)
+            {
+                setup(value);
+            }
+
+            if (type == TYPES.INT)
+            {
+                //Get Value
+                int val = int.Parse(value);
+
+                //Remove offset
+                val -= offset;
+
+                //Get a new offset and apply it
+                offset = UnityEngine.Random.Range(-9999, 9999);
+                value = (val + offset).ToString();
+
+                //Return the value without the offset
+                return val.ToString();
+            }
+            else if (type == TYPES.FLOAT)
+            {
+                //Get Value
+                float val = float.Parse(value);
+
+                //Remove offset
+                val -= offset;
+
+                //Get a new offset and apply it
+                offset = UnityEngine.Random.Range(-9999, 9999);
+                value = (val + offset).ToString();
+
+                //Return the value without the offset
+                return val.ToString();
+            }
+            else
+            {
+                //Can't do much here
+                return value;
+            }
         }
 
     }
