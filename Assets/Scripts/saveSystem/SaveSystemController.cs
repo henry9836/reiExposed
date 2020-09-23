@@ -209,6 +209,12 @@ public static class SaveSystemController
         raw += getValue("ammoTwo");
         raw += getValue("PackagePending");
         raw += getValue("Package_Name");
+        raw += getValue("Package_STEAM_ID");
+        raw += getValue("Package_Message");
+        raw += getValue("Package_Curr");
+        raw += getValue("Package_Item1");
+        raw += getValue("Package_Item2");
+        raw += getValue("Package_Item3");
         raw += getValue("Package_Time");
 
         byte[] bytes = Encoding.Default.GetBytes(raw);

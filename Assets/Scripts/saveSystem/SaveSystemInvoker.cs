@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class SaveSystemInvoker : MonoBehaviour
 {
-
     bool checkedHash = false;
 
     private void Awake()
@@ -48,8 +47,15 @@ public class SaveSystemInvoker : MonoBehaviour
                 //CHEATS!!!!
                 Debug.LogError("CHEATER DETECTED!!!");
                 SaveSystemController.Reset();
-                Application.Quit();
+                StartCoroutine(delayKickOut());
             }
         }
     }
+
+    IEnumerator delayKickOut()
+    {
+        yield return new WaitForSeconds(5.0f);
+        Application.Quit();
+    }
+
 }
