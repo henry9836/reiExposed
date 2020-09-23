@@ -225,6 +225,7 @@ public class Packager : MonoBehaviour
         SaveSystemController.updateValue("Package_Item3", (int)item3);
         SaveSystemController.updateValue("Package_Name", nameField.text, true);
         SaveSystemController.updateValue("Package_Time", NetworkUtility.convertToTime(levelTime), true);
+        SaveSystemController.updateValue("Package_MAGIC", (SaveSystemController.calcCurrentHash(SaveSystemController.getValue("Package_Name") + SaveSystemController.getValue("Package_Time") + SaveSystemController.getValue("Package_Curr") + SaveSystemController.getValue("Package_Message") + SaveSystemController.getValue("Package_Item1") + SaveSystemController.getValue("Package_Item2") + SaveSystemController.getValue("Package_Item3")).ToString()), true);
 
         //Remove MythTraces
         SaveSystemController.updateValue("MythTraces", SaveSystemController.getIntValue("MythTraces") - int.Parse(currency.text));

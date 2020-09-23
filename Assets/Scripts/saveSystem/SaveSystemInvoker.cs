@@ -19,6 +19,14 @@ public class SaveSystemInvoker : MonoBehaviour
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Semicolon))
         {
+            Debug.Log($"LOADED HASH: {SaveSystemController.getValue("MAGIC")}");
+            for (int i = 0; i < SaveSystemController.saveInfomation.Count; i++)
+            {
+                if (SaveSystemController.saveInfomation[i].id == "MAGIC")
+                {
+                    Debug.Log(SaveSystemController.saveInfomation[i].type.ToString());
+                }
+            }
             Debug.Log(SaveSystemController.checkSaveValid());
             if (!SaveSystemController.checkSaveValid() && SaveSystemController.loadedValues)
             {

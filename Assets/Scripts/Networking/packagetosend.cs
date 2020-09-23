@@ -14,7 +14,7 @@ public class datadump
 
     }
 
-    public datadump(int pack, string ID, string msg, int curr, int itm1, int itm2, int itm3, string nam, string tim)
+    public datadump(int pack, string ID, string msg, int curr, int itm1, int itm2, int itm3, string nam, string tim, string has)
     {
         tpacketType = pack;
         tID = ID;
@@ -27,6 +27,7 @@ public class datadump
         titem3 = itm3;
         tName = nam;
         tTime = tim;
+        tHash = has;
     }
 
     public datadump(int pack, string msg)
@@ -49,6 +50,7 @@ public class datadump
     public int titem3;
     public string tName;
     public string tTime;
+    public string tHash;
 }
 
 public class multipass
@@ -76,6 +78,7 @@ public class multipass
         dditem3 = mpdatadump.titem3;
         ddName = mpdatadump.tName;
         ddTime = mpdatadump.tTime;
+        ddHash = mpdatadump.tHash;
     }
 
     public datadump mpdatadump;
@@ -95,6 +98,7 @@ public class multipass
     public int dditem3;
     public string ddName;
     public string ddTime;
+    public string ddHash;
 
 }
 
@@ -128,6 +132,7 @@ public class packagetosend : MonoBehaviour
     public int dditem3;
     public string ddname;
     public string ddtime; //String in seconds
+    public string ddhash; //Score Hash
 
     public GameObject usertextbox;
     public GameObject usercurr;
@@ -243,17 +248,7 @@ public class packagetosend : MonoBehaviour
                 }
             case sendpackettypes.PACKAGESEND:
                 {
-                    //Handled by Packager.cs now
-                    //ddID = "STEAM_0:0:98612737"; //TODO replace with propper steamID
-                    //ddmessage = usertextbox.GetComponent<Text>().text;
-                    //ddcurr = convert(usercurr.GetComponent<Text>().text);
-                    //dditem1 = convert(useritem1.GetComponent<Text>().text);
-                    //dditem2 = convert(useritem2.GetComponent<Text>().text);
-                    //dditem3 = convert(useritem3.GetComponent<Text>().text);
-
-                    package = new datadump((int)ddpackettype, ddID, ddmessage, ddcurr, dditem1, dditem2, dditem3, ddname, ddtime);
-
-
+                    package = new datadump((int)ddpackettype, ddID, ddmessage, ddcurr, dditem1, dditem2, dditem3, ddname, ddtime, ddhash);
                     break;
                 }
             case sendpackettypes.PACKAGERECIVE:
@@ -486,7 +481,8 @@ public class packagetosend : MonoBehaviour
                     thestring += dump.titem2 + "--";
                     thestring += dump.titem3 + "--";
                     thestring += dump.tName + "--";
-                    thestring += dump.tTime;
+                    thestring += dump.tTime + "--";
+                    thestring += dump.tHash;
                     break;
                 }
             case sendpackettypes.PACKAGERECIVE:
