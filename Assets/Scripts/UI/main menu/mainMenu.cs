@@ -35,10 +35,6 @@ public class mainMenu : MonoBehaviour
 
     public state theState = state.menu;
 
-    private void Awake()
-    {
-        SaveSystemController.loadDataFromDisk();
-    }
     void Start()
     {
         Cursor.lockState = CursorLockMode.None;

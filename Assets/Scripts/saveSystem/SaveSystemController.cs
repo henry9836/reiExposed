@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ public static class SaveSystemController
     private const string IDFLAG = "#{ID}#";
     private const string VALFLAG = "#{VAL}#";
     private const string SEPERATOR = "toCensor";
+    private const string HASHID = "MAGIC";
 
     public class entry
     {
@@ -37,6 +39,12 @@ public static class SaveSystemController
     public static bool loadedValues = false;
 
     private static List<entry> tmpList = new List<entry>();
+
+    //Creates a hash for the save file
+    public static void updateHash()
+    {
+        updateValue(HASHID, calcCurrentHash().ToString());
+    }
 
     //Generates a hash for validation
     public static ulong calcCurrentHash()
@@ -161,7 +169,11 @@ public static class SaveSystemController
         loadDataFromDisk();
         tmpList.Clear();
 
-        Debug.Log("Reset Save File");
+        //Create Hash
+        updateHash();
+        saveDataToDisk();
+
+        Debug.Log("Reset Save File Successfully");
     }
 
     //Loads data from savefile into saveInfomation
