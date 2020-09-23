@@ -17,7 +17,7 @@ public static class SaveSystemController
 
     public class entry
     {
-        enum TYPES
+        public enum TYPES
         {
             NONASSIGNED,
             INT,
@@ -27,9 +27,10 @@ public static class SaveSystemController
 
         public string id = "Untitled";
         public string value = "-1";
+        public TYPES type = TYPES.NONASSIGNED;
 
         private int offset = 95999; //Used to hide from memory searches
-        private TYPES type = TYPES.NONASSIGNED; 
+        private System.Random rng = new System.Random();
 
         public entry(string _id)
         {
@@ -52,9 +53,9 @@ public static class SaveSystemController
             {
                 //Apply Type
                 type = TYPES.INT;
-                
+
                 //Apply Offset
-                offset = UnityEngine.Random.Range(-9999, 9999);
+                offset = rng.Next(-9999, 9999);
                 value = (iNum + offset).ToString();
             }
             else if (float.TryParse(hint, out fNum))
@@ -63,13 +64,18 @@ public static class SaveSystemController
                 type = TYPES.FLOAT;
 
                 //Apply Offset
-                offset = UnityEngine.Random.Range(-9999, 9999);
+                offset = rng.Next(-9999, 9999);
                 value = (fNum + offset).ToString();
             }
             else
             {
                 type = TYPES.STRING;
             }
+        }
+
+        public void tick()
+        {
+            updateValue(value);
         }
 
         public void updateValue(string newVal)
@@ -84,7 +90,7 @@ public static class SaveSystemController
             if (type == TYPES.INT)
             {
                 //Get a new offset
-                offset = UnityEngine.Random.Range(-9999, 9999);
+                offset = rng.Next(-9999, 9999);
 
                 //Apply new value with new offset
                 value = (int.Parse(newVal) + offset).ToString();
@@ -93,7 +99,7 @@ public static class SaveSystemController
             else if (type == TYPES.FLOAT)
             {
                 //Get a new offset
-                offset = UnityEngine.Random.Range(-9999, 9999);
+                offset = rng.Next(-9999, 9999);
 
                 //Apply new value with new offset
                 value = (float.Parse(newVal) + offset).ToString();
@@ -121,7 +127,7 @@ public static class SaveSystemController
                 val -= offset;
 
                 //Get a new offset and apply it
-                offset = UnityEngine.Random.Range(-9999, 9999);
+                offset = rng.Next(-9999, 9999);
                 value = (val + offset).ToString();
 
                 //Return the value without the offset
@@ -136,7 +142,7 @@ public static class SaveSystemController
                 val -= offset;
 
                 //Get a new offset and apply it
-                offset = UnityEngine.Random.Range(-9999, 9999);
+                offset = rng.Next(-9999, 9999);
                 value = (val + offset).ToString();
 
                 //Return the value without the offset
@@ -173,7 +179,7 @@ public static class SaveSystemController
     //Creates a hash for the save file
     public static void updateHash()
     {
-        updateValue(HASHID, calcCurrentHash().ToString());
+        updateValue(HASHID, calcCurrentHash().ToString(), true);
     }
 
     //Generates a hash for validation
@@ -306,11 +312,11 @@ public static class SaveSystemController
         saveDataToDisk();
 
         //Verify
-        if (!checkSaveValid())
-        {
-            Debug.LogError("Reset Save File UnSuccessfully, trying again...");
-            Reset();
-        }
+        //if (!checkSaveValid())
+        //{
+        //    Debug.LogError("Reset Save File UnSuccessfully, trying again...");
+        //    Reset();
+        //}
 
         Debug.Log("Reset Save File Successfully");
     }
@@ -408,7 +414,7 @@ public static class SaveSystemController
         for (int i = 0; i < saveInfomation.Count; i++)
         {
             writer.WriteLine(IDFLAG + saveInfomation[i].id);
-            writer.WriteLine(VALFLAG + saveInfomation[i].value);
+            writer.WriteLine(VALFLAG + saveInfomation[i].getValue());
         }
 
         //Close writer
@@ -437,27 +443,44 @@ public static class SaveSystemController
     }
 
     //Update a value in our saveInfomation
-    public static void updateValue(string _id, bool _newValue) { updateValue(_id, _newValue.ToString()); }
+    public static void updateValue(string _id, bool _newValue) { updateValue(_id, _newValue.ToString(), false, false); }
     //Update a value in our saveInfomation
-    public static void updateValue(string _id, float _newValue) { updateValue(_id, _newValue.ToString()); }
+    public static void updateValue(string _id, float _newValue) { updateValue(_id, _newValue.ToString(), false, false); }
     //Update a value in our saveInfomation
-    public static void updateValue(string _id, int _newValue) { updateValue(_id, _newValue.ToString()); }
+    public static void updateValue(string _id, int _newValue) { updateValue(_id, _newValue.ToString(), false, false); }
 
     //Update a value in our saveInfomation
-    public static void updateValue(string _id, string _newValue)
+    public static void updateValue(string _id, string _newValue, bool overrideToString) { updateValue(_id, _newValue, overrideToString, false); }
+    public static void updateValue(string _id, string _newValue, bool overrideToString, bool overrideWait)
     {
 
         //wait till ready to process infomation
-        while (!readyForProcessing) { Debug.LogError("Waiting on save system to be ready for processing, have you loaded data from disk?"); }
+        while (!readyForProcessing && !overrideWait) { Debug.LogError("Waiting on save system to be ready for processing, have you loaded data from disk?"); }
+
+        bool valFound = false;
 
         //Find value
         for (int i = 0; i < saveInfomation.Count; i++)
         {
             if (saveInfomation[i].id == _id)
             {
-                saveInfomation[i].value = _newValue;
-                return;
+                if (overrideToString)
+                {
+                    saveInfomation[i].type = entry.TYPES.STRING;
+                }
+                saveInfomation[i].updateValue(_newValue);
+                valFound = true;
             }
+            else
+            {
+                //Crashes game to crash?
+                //saveInfomation[i].tick();
+            }
+        }
+
+        if (valFound)
+        {
+            return;
         }
 
         //save information is an empty list to start with so eveything will be appended
@@ -467,22 +490,30 @@ public static class SaveSystemController
     }
 
     //Get a value from our saveInfomation
-    public static string getValue(string _id)
+    public static string getValue(string _id) { return getValue(_id, false); }
+    public static string getValue(string _id, bool overrideWait)
     {
         //wait till ready to process infomation
-       while (!readyForProcessing) { Debug.LogError("Waiting on save system to be ready for processing, have you loaded data from disk?"); }
+       while (!readyForProcessing && !overrideWait) { Debug.LogError("Waiting on save system to be ready for processing, have you loaded data from disk?"); }
+
+        string valFound = "-1";
 
         //Find value
         for (int i = 0; i < saveInfomation.Count; i++)
         {
             if (saveInfomation[i].id == _id)
             {
-                return saveInfomation[i].value;
+                valFound = saveInfomation[i].getValue();
+            }
+            else
+            {
+                //Crashes game to crash?
+                //saveInfomation[i].tick();
             }
         }
 
-        //ERROR
-        return "-1";
+        //Exit
+        return valFound;
     }
 
     //Load data as int type
@@ -492,7 +523,7 @@ public static class SaveSystemController
        while (!readyForProcessing) { Debug.LogError("Waiting on save system to be ready for processing, have you loaded data from disk?"); }
 
         int result = -1;
-        if (int.TryParse(getValue(_id), out result))
+        if (int.TryParse(getValue(_id, false), out result))
         {
             return result;
         }
@@ -508,7 +539,7 @@ public static class SaveSystemController
        while (!readyForProcessing) { Debug.LogError("Waiting on save system to be ready for processing, have you loaded data from disk?"); }
 
         float result = -1.0f;
-        if (float.TryParse(getValue(_id), out result))
+        if (float.TryParse(getValue(_id, false), out result))
         {
             return result;
         }
@@ -524,7 +555,7 @@ public static class SaveSystemController
         while (!readyForProcessing) { Debug.LogError("Waiting on save system to be ready for processing, have you loaded data from disk?"); }
 
         bool result = false;
-        if (bool.TryParse(getValue(_id), out result))
+        if (bool.TryParse(getValue(_id, false), out result))
         {
             return result;
         }
