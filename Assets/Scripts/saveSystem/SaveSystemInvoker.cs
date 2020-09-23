@@ -1,50 +1,61 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 
 public class SaveSystemInvoker : MonoBehaviour
 {
+    bool checkedHash = false;
+
     private void Awake()
     {
         //Load this first for things to work
         SaveSystemController.loadDataFromDisk();
-
-        /*
-         * 
-         * EXAMPLES BELOW ON HOW TO USE
-         * 
-         */
-
-        return;
-
-        //Get Values
-        float one = SaveSystemController.getFloatValue("hahahahah");
-        float two = SaveSystemController.getFloatValue("funny funny");
-        one += 1.2f;
-        float three = one * two;
-        bool b = SaveSystemController.getBoolValue("Bool");
-        b = !b;
-        int i = SaveSystemController.getIntValue("Int");
-        i++;
-
-        //Update Info
-        SaveSystemController.updateValue("hahahahah", one);
-        SaveSystemController.updateValue("funny funny", two);
-        SaveSystemController.updateValue("funny funny123", three);
-        SaveSystemController.updateValue("Bool", b);
-        SaveSystemController.updateValue("Int", i);
-
-        //Save
-        StartCoroutine(delayed());
     }
 
-    //EXAMPLE ON HOW TO SAVE
-
-    IEnumerator delayed()
+    private void FixedUpdate()
     {
-        yield return new WaitForSeconds(1.0f);
-        //SaveSystemController.saveDataToDisk();
-        //Debug.Log("File written to!");
+#if UNITY_EDITOR
+        if (Input.GetKeyDown(KeyCode.Semicolon))
+        {
+            Debug.Log(SaveSystemController.checkSaveValid());
+            if (!SaveSystemController.checkSaveValid() && SaveSystemController.loadedValues)
+            {
+                //CHEATS!!!!
+                Debug.LogError("CHEATER DETECTED!!!");
+                SaveSystemController.Reset();
+                //SceneManager.LoadScene(0);
+            }
+            else
+            {
+                Debug.Log("No Cheats Detected :)");
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.Period))
+        {
+            Debug.Log(SaveSystemController.calcCurrentHash());
+        }
+#endif
+
+        //Ready to interface with and on the main menu
+        if (SaveSystemController.loadedValues && !checkedHash && (SceneManager.GetActiveScene().buildIndex == 0))
+        {
+            //Check Hash
+            if (!SaveSystemController.checkSaveValid())
+            {
+                //CHEATS!!!!
+                Debug.LogError("CHEATER DETECTED!!!");
+                SaveSystemController.Reset();
+                StartCoroutine(delayKickOut());
+            }
+        }
+    }
+
+    IEnumerator delayKickOut()
+    {
+        yield return new WaitForSeconds(5.0f);
+        Application.Quit();
     }
 
 }

@@ -901,7 +901,7 @@ public class ThePhone : MonoBehaviour
             {
                 if (!isQRCode)
                 {
-                    SaveSystemController.updateValue(cluename + "[CLUE]", "yes");
+                    SaveSystemController.updateValue(cluename + "[CLUE]", "yes", true);
                     clueCtrl.cluesCollected.Add(cluename);
                     SaveSystemController.saveDataToDisk();
                     clue[element].GetComponent<TraceController>().Trigger();

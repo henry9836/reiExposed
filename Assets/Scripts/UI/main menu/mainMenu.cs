@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Steamworks.Data;
-using JetBrains.Annotations;
 
 public class mainMenu : MonoBehaviour
 {
@@ -12,6 +11,8 @@ public class mainMenu : MonoBehaviour
     public GameObject MList;
     public GameObject SList;
     public GameObject LList;
+    public GameObject Warning;
+    public GameObject notification;
 
     private Vector3 Listtop;
     private Vector3 Listmid;
@@ -20,6 +21,9 @@ public class mainMenu : MonoBehaviour
     private Vector3 canvaspos;
 
     float menuspeed = 1.5f;
+
+    bool loadedData = false;
+    bool packageWaiting = false;
 
     public enum state
     { 
@@ -31,10 +35,6 @@ public class mainMenu : MonoBehaviour
 
     public state theState = state.menu;
 
-    private void Awake()
-    {
-        SaveSystemController.loadDataFromDisk();
-    }
     void Start()
     {
         Cursor.lockState = CursorLockMode.None;
@@ -47,9 +47,16 @@ public class mainMenu : MonoBehaviour
 
     public void play()
     {
-        SceneToLoadPersistant.sceneToLoadInto = 2;
-        SceneManager.LoadScene(1);
-        Cursor.visible = false;
+        if (SaveSystemController.loadedValues && SaveSystemController.checkSaveValid())
+        {
+            SceneToLoadPersistant.sceneToLoadInto = 2;
+            SceneManager.LoadScene(1);
+            Cursor.visible = false;
+        }
+        else if (SaveSystemController.loadedValues && !SaveSystemController.checkSaveValid())
+        {
+            Application.Quit();
+        }
     }
 
 
@@ -92,16 +99,41 @@ public class mainMenu : MonoBehaviour
 
     public void toleaderboard()
     {
-        buttonenable(state.menu, false);
-        buttonenable(state.credits, false);
-        buttonenable(state.settings, false);
-        buttonenable(state.leaderboard, true);
+        if (SaveSystemController.loadedValues && SaveSystemController.checkSaveValid())
+        {
+            buttonenable(state.menu, false);
+            buttonenable(state.credits, false);
+            buttonenable(state.settings, false);
+            buttonenable(state.leaderboard, true);
 
 
-        StartCoroutine(Down(theState, state.leaderboard));
-        theState = state.leaderboard;
+            StartCoroutine(Down(theState, state.leaderboard));
+            theState = state.leaderboard;
+        }
+        else if (SaveSystemController.loadedValues && !SaveSystemController.checkSaveValid())
+        {
+            Application.Quit();
+        }
     }
+
+    public void closeWarning()
+    {
+        Warning.SetActive(false);
+    }
+
     public void quit()
+    {
+        if (packageWaiting)
+        {
+            Warning.SetActive(true);
+        }
+        else
+        {
+            Application.Quit();
+        }
+    }
+
+    public void forceQuit()
     {
         Application.Quit();
     }
@@ -120,6 +152,20 @@ public class mainMenu : MonoBehaviour
 
 
         yield return null;
+    }
+
+    private void FixedUpdate()
+    {
+        //Loads notification on leaderboard
+        if (!loadedData)
+        {
+            if (SaveSystemController.readyForProcessing)
+            {
+                packageWaiting = (SaveSystemController.getBoolValue("PackagePending"));
+                notification.SetActive(packageWaiting);
+                loadedData = true;
+            }
+        }
     }
 
     public void updatemenupos(state moving, bool toonscreen, float completion)

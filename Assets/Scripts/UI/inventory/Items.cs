@@ -190,7 +190,7 @@ public class Items : MonoBehaviour
                     tmp.equippedpos = -1;
                 }
 
-                SaveSystemController.updateValue((int)toadd + "[ITEM]" + tmp.biginvinpos, tmp.biginvinpos + "$" + tmp.equippedpos);
+                SaveSystemController.updateValue((int)toadd + "[ITEM]" + tmp.biginvinpos, tmp.biginvinpos + "$" + tmp.equippedpos, true);
                 SaveSystemController.saveDataToDisk();
                 return true;
             }
@@ -217,7 +217,7 @@ public class Items : MonoBehaviour
             //equipped.Add(tmp);
             equipped.Add(biginvin[biginvinpos]);
 
-            SaveSystemController.updateValue((int)biginvin[biginvinpos].itemtype + "[ITEM]" + biginvin[biginvinpos].biginvinpos, biginvin[biginvinpos].biginvinpos + "$" + biginvin[biginvinpos].equippedpos);
+            SaveSystemController.updateValue((int)biginvin[biginvinpos].itemtype + "[ITEM]" + biginvin[biginvinpos].biginvinpos, biginvin[biginvinpos].biginvinpos + "$" + biginvin[biginvinpos].equippedpos, true);
             //SaveSystemController.updateValue((int)tmp.itemtype + "[ITEM]" + tmp.biginvinpos, tmp.biginvinpos + "$" + tmp.equippedpos);
 
             SaveSystemController.saveDataToDisk();
@@ -260,7 +260,7 @@ public class Items : MonoBehaviour
 
         for (int i = 0; i < equipped.Count; i++)
         {
-            SaveSystemController.updateValue((int)equipped[i].itemtype + "[ITEM]" + equipped[i].biginvinpos, equipped[i].biginvinpos + "$" + i);
+            SaveSystemController.updateValue((int)equipped[i].itemtype + "[ITEM]" + equipped[i].biginvinpos, equipped[i].biginvinpos + "$" + i, true);
         }
 
         SaveSystemController.saveDataToDisk();
@@ -530,7 +530,7 @@ public class Items : MonoBehaviour
 
         for (int i = 0; i < biginvin.Count; i++)
         {
-            SaveSystemController.updateValue((int)biginvin[i].itemtype + "[ITEM]" + i, i + "$" + biginvin[i].equippedpos);
+            SaveSystemController.updateValue((int)biginvin[i].itemtype + "[ITEM]" + i, i + "$" + biginvin[i].equippedpos, true);
         }
 
         SaveSystemController.saveDataToDisk();
