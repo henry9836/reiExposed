@@ -40,6 +40,18 @@ public static class SaveSystemController
 
     private static List<entry> tmpList = new List<entry>();
 
+    //Checks if the save file matches the currentHash
+    public static bool checkSaveValid()
+    {
+        ulong hash = calcCurrentHash();
+        if (getValue(HASHID) == "-1")
+        {
+            Debug.LogWarning("Hash not found/loaded!");
+            return false;
+        }
+        return (hash == ulong.Parse(getValue(HASHID)));
+    }
+
     //Creates a hash for the save file
     public static void updateHash()
     {
@@ -70,8 +82,6 @@ public static class SaveSystemController
         raw += getValue("Package_Time");
 
         byte[] bytes = Encoding.Default.GetBytes(raw);
-
-        Debug.Log($"L: {bytes.Length}");
 
         for (int i = 0; i < bytes.Length; i++)
         {
@@ -172,6 +182,13 @@ public static class SaveSystemController
         //Create Hash
         updateHash();
         saveDataToDisk();
+
+        //Verify
+        if (!checkSaveValid())
+        {
+            Debug.LogError("Reset Save File UnSuccessfully, trying again...");
+            Reset();
+        }
 
         Debug.Log("Reset Save File Successfully");
     }

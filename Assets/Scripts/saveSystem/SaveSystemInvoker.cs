@@ -16,7 +16,12 @@ public class SaveSystemInvoker : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Semicolon))
         {
-            SaveSystemController.Reset();
+            Debug.Log(SaveSystemController.checkSaveValid());
+            if (!SaveSystemController.checkSaveValid() && SaveSystemController.loadedValues)
+            {
+                //CHEATS!!!!
+                SaveSystemController.Reset();
+            }
         }
     }
 #endif
