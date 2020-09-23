@@ -263,6 +263,8 @@ public static class SaveSystemController
     //Saves current state of saveInfomation to save file
     public static void saveDataToDisk(string filePath)
     {
+        //Update Hash With Our Current Changes
+        updateHash();
         //Queue A Thread Task
         ThreadPool.QueueUserWorkItem(saveDataToDiskThread, filePath);
     }
