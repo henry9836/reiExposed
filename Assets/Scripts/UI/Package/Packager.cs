@@ -217,14 +217,14 @@ public class Packager : MonoBehaviour
 
         //Save To File
         SaveSystemController.updateValue("PackagePending", true);
-        SaveSystemController.updateValue("Package_STEAM_ID", "STEAM_0:0:98612737");
-        SaveSystemController.updateValue("Package_Message", message.text);
+        SaveSystemController.updateValue("Package_STEAM_ID", "STEAM_0:0:98612737", true);
+        SaveSystemController.updateValue("Package_Message", message.text, true);
         SaveSystemController.updateValue("Package_Curr", curr);
         SaveSystemController.updateValue("Package_Item1", (int)item1);
         SaveSystemController.updateValue("Package_Item2", (int)item2);
         SaveSystemController.updateValue("Package_Item3", (int)item3);
-        SaveSystemController.updateValue("Package_Name", nameField.text);
-        SaveSystemController.updateValue("Package_Time", NetworkUtility.convertToTime(levelTime));
+        SaveSystemController.updateValue("Package_Name", nameField.text, true);
+        SaveSystemController.updateValue("Package_Time", NetworkUtility.convertToTime(levelTime), true);
 
         //Remove MythTraces
         SaveSystemController.updateValue("MythTraces", SaveSystemController.getIntValue("MythTraces") - int.Parse(currency.text));
