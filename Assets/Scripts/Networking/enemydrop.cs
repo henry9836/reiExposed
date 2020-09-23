@@ -85,7 +85,7 @@ public class enemydrop : MonoBehaviour
 
     public void manualMessage(string message, int curr, int item1, int item2, int item3, bool important)
     {
-        datadump tmp = new datadump(2, important.ToString(), message, curr, item1, item2, item3, "Anon", NetworkUtility.convertToTime(3600.0f));
+        datadump tmp = new datadump(2, important.ToString(), message, curr, item1, item2, item3, "Anon", NetworkUtility.convertToTime(3600.0f), "100");
         packagetosend.enemieDrops.Insert(0, tmp);
         clientcencorship.messages.Insert(0, message);
         messagesToShow++;
