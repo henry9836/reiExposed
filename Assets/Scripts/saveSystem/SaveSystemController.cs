@@ -31,6 +31,8 @@ public static class SaveSystemController
 
         private int offset = 95999; //Used to hide from memory searches
         private System.Random rng = new System.Random();
+        private int tmpI = 0;
+        private float tmpF = 0.0f;
 
         public entry(string _id)
         {
@@ -46,26 +48,24 @@ public static class SaveSystemController
         private void setup(string hint)
         {
             //ID the type of data we are using
-            int iNum;
-            float fNum;
 
-            if (int.TryParse(hint, out iNum))
+            if (int.TryParse(hint, out tmpI))
             {
                 //Apply Type
                 type = TYPES.INT;
 
                 //Apply Offset
                 offset = rng.Next(-9999, 9999);
-                value = (iNum + offset).ToString();
+                value = (tmpI + offset).ToString();
             }
-            else if (float.TryParse(hint, out fNum))
+            else if (float.TryParse(hint, out tmpF))
             {
                 //Apply Type
                 type = TYPES.FLOAT;
 
                 //Apply Offset
                 offset = rng.Next(-9999, 9999);
-                value = (fNum + offset).ToString();
+                value = (tmpF + offset).ToString();
             }
             else
             {
@@ -121,32 +121,32 @@ public static class SaveSystemController
             if (type == TYPES.INT)
             {
                 //Get Value
-                int val = int.Parse(value);
+                int tmpI = int.Parse(value);
 
                 //Remove offset
-                val -= offset;
+                tmpI -= offset;
 
                 //Get a new offset and apply it
                 offset = rng.Next(-9999, 9999);
-                value = (val + offset).ToString();
+                value = (tmpI + offset).ToString();
 
                 //Return the value without the offset
-                return val.ToString();
+                return tmpI.ToString();
             }
             else if (type == TYPES.FLOAT)
             {
                 //Get Value
-                float val = float.Parse(value);
+                float tmpF = float.Parse(value);
 
                 //Remove offset
-                val -= offset;
+                tmpF -= offset;
 
                 //Get a new offset and apply it
                 offset = rng.Next(-9999, 9999);
-                value = (val + offset).ToString();
+                value = (tmpF + offset).ToString();
 
                 //Return the value without the offset
-                return val.ToString();
+                return tmpF.ToString();
             }
             else
             {

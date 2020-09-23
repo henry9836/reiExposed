@@ -46,9 +46,9 @@ public class SaveSystemInvoker : MonoBehaviour
             if (!SaveSystemController.checkSaveValid())
             {
                 //CHEATS!!!!
-                //Debug.LogError("CHEATER DETECTED!!!");
-                //SaveSystemController.Reset();
-                //SceneManager.LoadScene(0);
+                Debug.LogError("CHEATER DETECTED!!!");
+                SaveSystemController.Reset();
+                SceneManager.LoadScene(0);
             }
         }
     }
