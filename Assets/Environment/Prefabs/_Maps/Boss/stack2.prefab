@@ -9,6 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 463580725051679074}
+  - component: {fileID: 4832100268218181659}
+  - component: {fileID: 4612597545696002014}
   m_Layer: 0
   m_Name: stack2
   m_TagString: Untagged
@@ -49,6 +51,36 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -21.67, z: 0}
+--- !u!136 &4832100268218181659
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 463580725051679075}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 143.421
+  m_Height: 866.1606
+  m_Direction: 1
+  m_Center: {x: -35.622974, y: 286.46298, z: 6.6783433}
+--- !u!208 &4612597545696002014
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 463580725051679075}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 0
+  m_Extents: {x: 143.421, y: 433.0803, z: 143.421}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: -35.62297, y: 286.463, z: 6.678343}
+  m_TimeToStationary: 0.5
 --- !u!1001 &463580724735696081
 PrefabInstance:
   m_ObjectHideFlags: 0
