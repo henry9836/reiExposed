@@ -15,6 +15,9 @@ public static class SaveSystemController
     private const string SEPERATOR = "toCensor";
     private const string HASHID = "MAGIC";
 
+
+    private static System.Random rng = new System.Random();
+
     public class entry
     {
         public enum TYPES
@@ -30,7 +33,6 @@ public static class SaveSystemController
         public TYPES type = TYPES.NONASSIGNED;
 
         private int offset = 95999; //Used to hide from memory searches
-        private System.Random rng = new System.Random();
         private int tmpI = 0;
         private float tmpF = 0.0f;
 
@@ -240,6 +242,10 @@ public static class SaveSystemController
         }
         //Load default values
         //Read all lines into array
+        for (int i = 0; i < tmpList.Count; i++)
+        {
+            tmpList[i] = null;
+        }
         tmpList.Clear();
         string[] lines = File.ReadAllLines(saveFile);
 
@@ -276,6 +282,10 @@ public static class SaveSystemController
 
         //Delete Everything From File And Create a new one
         File.Delete(saveFile);
+        for (int i = 0; i < saveInfomation.Count; i++)
+        {
+            saveInfomation[i] = null;
+        }
         saveInfomation.Clear();
 
         //Populate the file with default values
@@ -300,6 +310,8 @@ public static class SaveSystemController
 
         //Close writer
         writer.Close();
+        writer = null;
+        lines = null;
 
         //Reload
         ioBusy = false;
@@ -419,6 +431,7 @@ public static class SaveSystemController
 
         //Close writer
         writer.Close();
+        writer = null;
 
         //Unset busy bit
         ioBusy = false;

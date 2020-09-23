@@ -48,7 +48,7 @@ public class SaveSystemInvoker : MonoBehaviour
                 //CHEATS!!!!
                 Debug.LogError("CHEATER DETECTED!!!");
                 SaveSystemController.Reset();
-                SceneManager.LoadScene(0);
+                Application.Quit();
             }
         }
     }
