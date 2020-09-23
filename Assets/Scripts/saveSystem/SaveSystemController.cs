@@ -63,10 +63,14 @@ public static class SaveSystemController
     {
         ulong hash = 1;
 
-        //Spread values out more evenly, is a prime number to avoid collisons
+        //Spread values out more evenly, mod is a prime number to avoid collisons
         ulong mod = 2147483647;
+        //Make a big number
         ulong mul = 99643;
-        int chunkSize = 4;
+
+        //We were using a chunksize but that was letting too much modifiation through
+        //int chunkSize = 4;
+        int chunkSize = 1; 
 
         string raw = "";
         raw += getValue("MythTraces");
