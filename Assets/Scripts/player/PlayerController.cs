@@ -94,6 +94,16 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+#if UNITY_EDITOR
+
+        if (Input.GetKeyDown(KeyCode.Semicolon))
+        {
+            Debug.Log(SaveSystemController.checkSaveValid());
+            Debug.Log(SaveSystemController.calcCurrentHash());
+        }
+
+#endif
+
         uiupdate();
 
         if (!staminaBlock) {
