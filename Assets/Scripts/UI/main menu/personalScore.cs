@@ -76,6 +76,7 @@ public class personalScore : MonoBehaviour
             sender.dditem3 = SaveSystemController.getIntValue("Package_Item3");
             sender.ddname = SaveSystemController.getValue("Package_Name");
             sender.ddtime = SaveSystemController.getValue("Package_Time");
+            sender.ddhash = SaveSystemController.getValue("Package_MAGIC");
 
             //Ship it to the server
             sender.send(packagetosend.sendpackettypes.PACKAGESEND);
