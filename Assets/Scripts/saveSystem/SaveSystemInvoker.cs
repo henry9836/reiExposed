@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class SaveSystemInvoker : MonoBehaviour
 {
@@ -9,4 +10,14 @@ public class SaveSystemInvoker : MonoBehaviour
         //Load this first for things to work
         SaveSystemController.loadDataFromDisk();
     }
+
+#if UNITY_EDITOR
+    private void FixedUpdate()
+    {
+        if (Input.GetKeyDown(KeyCode.Semicolon))
+        {
+            SaveSystemController.Reset();
+        }
+    }
+#endif
 }
