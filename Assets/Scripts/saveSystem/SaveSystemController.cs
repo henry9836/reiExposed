@@ -38,6 +38,44 @@ public static class SaveSystemController
 
     private static List<entry> tmpList = new List<entry>();
 
+    //Generates a hash for validation
+    public static ulong calcCurrentHash()
+    {
+        ulong hash = 1;
+
+        //Spread values out more evenly, is a prime number to avoid collisons
+        ulong mod = 2147483647;
+        ulong mul = 99643;
+        int chunkSize = 4;
+
+        string raw = "";
+        raw += getValue("MythTraces");
+        raw += getValue("shotgunDamageLVL");
+        raw += getValue("shotgunRangeLVL");
+        raw += getValue("shotgunBulletSpreadADSLVL");
+        raw += getValue("shotgunBulletSpreadRunningLVL");
+        raw += getValue("meeleeDamageLVL");
+        raw += getValue("ammo");
+        raw += getValue("ammoTwo");
+        raw += getValue("PackagePending");
+        raw += getValue("Package_Name");
+        raw += getValue("Package_Time");
+
+        byte[] bytes = Encoding.Default.GetBytes(raw);
+
+        Debug.Log($"L: {bytes.Length}");
+
+        for (int i = 0; i < bytes.Length; i++)
+        {
+            if (i % chunkSize == 0)
+            {
+                hash += ulong.Parse(bytes[i].ToString()) * mul;
+            }
+        }
+
+        return hash % mod;
+    }
+
     //Resets a save file
     public static void Reset()
     {
