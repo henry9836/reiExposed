@@ -2,6 +2,7 @@ from _thread import *
 import mysql.connector
 import socket
 import enum
+import numpy as np
 
 #init
 dbUsername = ""
@@ -22,7 +23,33 @@ class PACKET(enum.Enum):
     REQUEST_LEADERBOARD = 3
     REQUEST_USERRANK = 4
 
+#Get Hash Value
+def getHash(name, time, item1, item2, item3, curr, msg):
+	print("C BUILD")
+	challenge = (str(name) + str(time) + str(curr) + str(msg) + str(item1) + str(item2) + str(item3))
+	
+	print("NUM BUILD")
+	hash = np.uint64(1)
+	mod = np.uint64(2147483647)
+	mul = np.uint64(99643)
+
+	chunksize = 1
+	
+	print("ENCODE BUILD")
+	bytesArray = challenge.encode()
+
+	print(bytes)
+	
+	print("FOR BUILD")
+	for i in range(len(bytesArray)):
+		if i % chunksize == 0:
+			hash += np.uint64(str(bytesArray[i])) * mul
+	
+	print("Ret magic")
+	return str(hash % mod)
+
 class packetStruct:
+
 	def __init__(self, input, db):
 		try:
 			self.data = input.split(SEPERATOR)
@@ -38,7 +65,6 @@ class packetStruct:
 
 			#setup packet depending on type of packet
 			if self.type == PACKET.PACKAGE_SEND.value:
-
 				#grab character blacklist
 				blacklistFile = open("blacklist.txt", 'r')
 				blacklist = blacklistFile.read().splitlines()
@@ -67,6 +93,7 @@ class packetStruct:
 				self.item3 = int(self.data[6])
 				self.name = str(self.data[7])
 				self.time = str(self.data[8])
+				self.magic = str(self.data[9])
 
 				#check for incorrect values
 				if (self.curr < 10):
@@ -91,6 +118,18 @@ class packetStruct:
 					return;
 				elif (len(self.msg) > 230):
 					print("Msg Too Long")
+					self.type = ERROR_GENERAL #error value
+					return;
+
+				#Check Hash
+				print("Doign the maigc test")
+				self.challenge = getHash(self.name, self.time, self.item1, self.item2, self.item3, self.curr, self.msg)
+				print("Done.")
+
+				if (self.challenge == self.magic):
+					print("Magic matches!")
+				else:
+					print("Bad Magic")
 					self.type = ERROR_GENERAL #error value
 					return;
 			elif self.type == PACKET.REQUEST_LEADERBOARD.value or self.type == PACKET.REQUEST_USERRANK.value:

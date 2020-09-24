@@ -2,8 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public static class SaveSystemController
 {
@@ -12,11 +14,28 @@ public static class SaveSystemController
     private const string IDFLAG = "#{ID}#";
     private const string VALFLAG = "#{VAL}#";
     private const string SEPERATOR = "toCensor";
+    private const string HASHID = "MAGIC";
+
+
+    private static System.Random rng = new System.Random();
 
     public class entry
     {
+        public enum TYPES
+        {
+            NONASSIGNED,
+            INT,
+            FLOAT,
+            STRING
+        }
+
         public string id = "Untitled";
         public string value = "-1";
+        public TYPES type = TYPES.NONASSIGNED;
+
+        private int offset = 95999; //Used to hide from memory searches
+        private int tmpI = 0;
+        private float tmpF = 0.0f;
 
         public entry(string _id)
         {
@@ -29,6 +48,117 @@ public static class SaveSystemController
             value = _val;
         }
 
+        private void setup(string hint)
+        {
+            //ID the type of data we are using
+
+            if (int.TryParse(hint, out tmpI))
+            {
+                //Apply Type
+                type = TYPES.INT;
+
+                //Apply Offset
+                offset = rng.Next(-9999, 9999);
+                value = (tmpI + offset).ToString();
+            }
+            else if (float.TryParse(hint, out tmpF))
+            {
+                //Apply Type
+                type = TYPES.FLOAT;
+
+                //Apply Offset
+                offset = rng.Next(-9999, 9999);
+                value = (tmpF + offset).ToString();
+            }
+            else
+            {
+                type = TYPES.STRING;
+            }
+        }
+
+        public void tick()
+        {
+            updateValue(value);
+        }
+
+        public void updateValue(string newVal)
+        {
+
+            //If first time adjusting
+            if (type == TYPES.NONASSIGNED)
+            {
+                setup(newVal);
+                return;
+            }
+
+            if (type == TYPES.INT)
+            {
+                //Get a new offset
+                offset = rng.Next(-9999, 9999);
+
+                //Apply new value with new offset
+                value = (int.Parse(newVal) + offset).ToString();
+
+            }
+            else if (type == TYPES.FLOAT)
+            {
+                //Get a new offset
+                offset = rng.Next(-9999, 9999);
+
+                //Apply new value with new offset
+                value = (float.Parse(newVal) + offset).ToString();
+            }
+            else
+            {
+                //Can't do much here
+                value = newVal;
+            }
+        }
+        public string getValue()
+        {
+            //If first time adjusting
+            if (type == TYPES.NONASSIGNED)
+            {
+                setup(value);
+            }
+
+            if (type == TYPES.INT)
+            {
+                //Get Value
+                int tmpI = int.Parse(value);
+
+                //Remove offset
+                tmpI -= offset;
+
+                //Get a new offset and apply it
+                offset = rng.Next(-9999, 9999);
+                value = (tmpI + offset).ToString();
+
+                //Return the value without the offset
+                return tmpI.ToString();
+            }
+            else if (type == TYPES.FLOAT)
+            {
+                //Get Value
+                float tmpF = float.Parse(value);
+
+                //Remove offset
+                tmpF -= offset;
+
+                //Get a new offset and apply it
+                offset = rng.Next(-9999, 9999);
+                value = (tmpF + offset).ToString();
+
+                //Return the value without the offset
+                return tmpF.ToString();
+            }
+            else
+            {
+                //Can't do much here
+                return value;
+            }
+        }
+
     }
 
     public static List<entry> saveInfomation = new List<entry>();
@@ -37,6 +167,75 @@ public static class SaveSystemController
     public static bool loadedValues = false;
 
     private static List<entry> tmpList = new List<entry>();
+
+    //Checks if the save file matches the currentHash
+    public static bool checkSaveValid()
+    {
+        ulong hash = calcCurrentHash();
+        if (getValue(HASHID) == "-1")
+        {
+            Debug.LogWarning("Hash not found/loaded!");
+            return false;
+        }
+        return (hash == ulong.Parse(getValue(HASHID)));
+    }
+
+    //Creates a hash for the save file
+    public static void updateHash()
+    {
+        updateValue(HASHID, calcCurrentHash().ToString(), true);
+    }
+
+    //Generates a hash for validation
+    public static ulong calcCurrentHash() {
+
+        string input = "";
+        input += getValue("MythTraces");
+        input += getValue("shotgunDamageLVL");
+        input += getValue("shotgunRangeLVL");
+        input += getValue("shotgunBulletSpreadADSLVL");
+        input += getValue("shotgunBulletSpreadRunningLVL");
+        input += getValue("meeleeDamageLVL");
+        input += getValue("ammo");
+        input += getValue("ammoTwo");
+        input += getValue("PackagePending");
+        input += getValue("Package_Name");
+        input += getValue("Package_STEAM_ID");
+        input += getValue("Package_Message");
+        input += getValue("Package_Curr");
+        input += getValue("Package_Item1");
+        input += getValue("Package_Item2");
+        input += getValue("Package_Item3");
+        input += getValue("Package_Time");
+        input += getValue("Package_MAGIC");
+
+        return calcCurrentHash(input); 
+    }
+    public static ulong calcCurrentHash(string input)
+    {
+        ulong hash = 1;
+
+        //Spread values out more evenly, mod is a prime number to avoid collisons
+        ulong mod = 2147483647;
+        //Make a big number
+        ulong mul = 99643;
+
+        //We were using a chunksize but that was letting too much modifiation through
+        //int chunkSize = 4;
+        int chunkSize = 1; 
+
+        byte[] bytes = Encoding.Default.GetBytes(input);
+
+        for (int i = 0; i < bytes.Length; i++)
+        {
+            if (i % chunkSize == 0)
+            {
+                hash += ulong.Parse(bytes[i].ToString()) * mul;
+            }
+        }
+
+        return hash % mod;
+    }
 
     //Resets a save file
     public static void Reset()
@@ -56,6 +255,10 @@ public static class SaveSystemController
         }
         //Load default values
         //Read all lines into array
+        for (int i = 0; i < tmpList.Count; i++)
+        {
+            tmpList[i] = null;
+        }
         tmpList.Clear();
         string[] lines = File.ReadAllLines(saveFile);
 
@@ -92,6 +295,10 @@ public static class SaveSystemController
 
         //Delete Everything From File And Create a new one
         File.Delete(saveFile);
+        for (int i = 0; i < saveInfomation.Count; i++)
+        {
+            saveInfomation[i] = null;
+        }
         saveInfomation.Clear();
 
         //Populate the file with default values
@@ -116,14 +323,24 @@ public static class SaveSystemController
 
         //Close writer
         writer.Close();
+        writer = null;
+        lines = null;
+        for (int i = 0; i < tmpList.Count; i++)
+        {
+            tmpList[i] = null;
+        }
+        tmpList.Clear();
 
         //Reload
         ioBusy = false;
         readyForProcessing = false;
         loadDataFromDisk();
-        tmpList.Clear();
 
-        Debug.Log("Reset Save File");
+        //Create Hash
+        updateHash();
+        saveDataToDisk();
+
+        Debug.Log("Reset Save File Successfully");
     }
 
     //Loads data from savefile into saveInfomation
@@ -177,6 +394,10 @@ public static class SaveSystemController
             {
                 //Set value of latest seen entry
                 saveInfomation[saveInfomation.Count - 1].value = lines[i].Substring(VALFLAG.Length);
+                if (lines[i - 1].Contains(HASHID))
+                {
+                    saveInfomation[saveInfomation.Count - 1].type = entry.TYPES.STRING;
+                }
             }
             else
             {
@@ -196,6 +417,8 @@ public static class SaveSystemController
     //Saves current state of saveInfomation to save file
     public static void saveDataToDisk(string filePath)
     {
+        //Update Hash With Our Current Changes
+        updateHash();
         //Queue A Thread Task
         ThreadPool.QueueUserWorkItem(saveDataToDiskThread, filePath);
     }
@@ -217,11 +440,12 @@ public static class SaveSystemController
         for (int i = 0; i < saveInfomation.Count; i++)
         {
             writer.WriteLine(IDFLAG + saveInfomation[i].id);
-            writer.WriteLine(VALFLAG + saveInfomation[i].value);
+            writer.WriteLine(VALFLAG + saveInfomation[i].getValue());
         }
 
         //Close writer
         writer.Close();
+        writer = null;
 
         //Unset busy bit
         ioBusy = false;
@@ -246,27 +470,45 @@ public static class SaveSystemController
     }
 
     //Update a value in our saveInfomation
-    public static void updateValue(string _id, bool _newValue) { updateValue(_id, _newValue.ToString()); }
+    public static void updateValue(string _id, bool _newValue) { updateValue(_id, _newValue.ToString(), false, false); }
     //Update a value in our saveInfomation
-    public static void updateValue(string _id, float _newValue) { updateValue(_id, _newValue.ToString()); }
+    public static void updateValue(string _id, float _newValue) { updateValue(_id, _newValue.ToString(), false, false); }
     //Update a value in our saveInfomation
-    public static void updateValue(string _id, int _newValue) { updateValue(_id, _newValue.ToString()); }
+    public static void updateValue(string _id, int _newValue) { updateValue(_id, _newValue.ToString(), false, false); }
 
     //Update a value in our saveInfomation
-    public static void updateValue(string _id, string _newValue)
+    public static void updateValue(string _id, string _newValue, bool overrideToString) { updateValue(_id, _newValue, overrideToString, false); }
+    public static void updateValue(string _id, string _newValue, bool overrideToString, bool overrideWait)
     {
 
         //wait till ready to process infomation
-        while (!readyForProcessing) { Debug.LogError("Waiting on save system to be ready for processing, have you loaded data from disk?"); }
+        while (!readyForProcessing && !overrideWait) { Debug.LogError("Waiting on save system to be ready for processing, have you loaded data from disk?"); }
+
+        bool valFound = false;
 
         //Find value
         for (int i = 0; i < saveInfomation.Count; i++)
         {
             if (saveInfomation[i].id == _id)
             {
-                saveInfomation[i].value = _newValue;
-                return;
+                if (overrideToString)
+                {
+                    Debug.Log($"CREATED A OVERRIDE OBJECT: {saveInfomation[i].id}");
+                    saveInfomation[i].type = entry.TYPES.STRING;
+                }
+                saveInfomation[i].updateValue(_newValue);
+                valFound = true;
             }
+            else
+            {
+                //Crashes game to crash?
+                //saveInfomation[i].tick();
+            }
+        }
+
+        if (valFound)
+        {
+            return;
         }
 
         //save information is an empty list to start with so eveything will be appended
@@ -276,22 +518,30 @@ public static class SaveSystemController
     }
 
     //Get a value from our saveInfomation
-    public static string getValue(string _id)
+    public static string getValue(string _id) { return getValue(_id, false); }
+    public static string getValue(string _id, bool overrideWait)
     {
         //wait till ready to process infomation
-       while (!readyForProcessing) { Debug.LogError("Waiting on save system to be ready for processing, have you loaded data from disk?"); }
+       while (!readyForProcessing && !overrideWait) { Debug.LogError("Waiting on save system to be ready for processing, have you loaded data from disk?"); }
+
+        string valFound = "-1";
 
         //Find value
         for (int i = 0; i < saveInfomation.Count; i++)
         {
             if (saveInfomation[i].id == _id)
             {
-                return saveInfomation[i].value;
+                valFound = saveInfomation[i].getValue();
+            }
+            else
+            {
+                //Crashes game to crash?
+                //saveInfomation[i].tick();
             }
         }
 
-        //ERROR
-        return "-1";
+        //Exit
+        return valFound;
     }
 
     //Load data as int type
@@ -301,7 +551,7 @@ public static class SaveSystemController
        while (!readyForProcessing) { Debug.LogError("Waiting on save system to be ready for processing, have you loaded data from disk?"); }
 
         int result = -1;
-        if (int.TryParse(getValue(_id), out result))
+        if (int.TryParse(getValue(_id, false), out result))
         {
             return result;
         }
@@ -317,7 +567,7 @@ public static class SaveSystemController
        while (!readyForProcessing) { Debug.LogError("Waiting on save system to be ready for processing, have you loaded data from disk?"); }
 
         float result = -1.0f;
-        if (float.TryParse(getValue(_id), out result))
+        if (float.TryParse(getValue(_id, false), out result))
         {
             return result;
         }
@@ -333,7 +583,7 @@ public static class SaveSystemController
         while (!readyForProcessing) { Debug.LogError("Waiting on save system to be ready for processing, have you loaded data from disk?"); }
 
         bool result = false;
-        if (bool.TryParse(getValue(_id), out result))
+        if (bool.TryParse(getValue(_id, false), out result))
         {
             return result;
         }
@@ -342,4 +592,5 @@ public static class SaveSystemController
             return false;
         }
     }
+
 }

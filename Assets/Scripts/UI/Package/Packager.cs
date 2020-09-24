@@ -217,14 +217,15 @@ public class Packager : MonoBehaviour
 
         //Save To File
         SaveSystemController.updateValue("PackagePending", true);
-        SaveSystemController.updateValue("Package_STEAM_ID", "STEAM_0:0:98612737");
-        SaveSystemController.updateValue("Package_Message", message.text);
+        SaveSystemController.updateValue("Package_STEAM_ID", "STEAM_0:0:98612737", true);
+        SaveSystemController.updateValue("Package_Message", message.text, true);
         SaveSystemController.updateValue("Package_Curr", curr);
         SaveSystemController.updateValue("Package_Item1", (int)item1);
         SaveSystemController.updateValue("Package_Item2", (int)item2);
         SaveSystemController.updateValue("Package_Item3", (int)item3);
-        SaveSystemController.updateValue("Package_Name", nameField.text);
-        SaveSystemController.updateValue("Package_Time", NetworkUtility.convertToTime(levelTime));
+        SaveSystemController.updateValue("Package_Name", nameField.text, true);
+        SaveSystemController.updateValue("Package_Time", NetworkUtility.convertToTime(levelTime), true);
+        SaveSystemController.updateValue("Package_MAGIC", (SaveSystemController.calcCurrentHash(SaveSystemController.getValue("Package_Name") + SaveSystemController.getValue("Package_Time") + SaveSystemController.getValue("Package_Curr") + SaveSystemController.getValue("Package_Message") + SaveSystemController.getValue("Package_Item1") + SaveSystemController.getValue("Package_Item2") + SaveSystemController.getValue("Package_Item3")).ToString()), true);
 
         //Remove MythTraces
         SaveSystemController.updateValue("MythTraces", SaveSystemController.getIntValue("MythTraces") - int.Parse(currency.text));

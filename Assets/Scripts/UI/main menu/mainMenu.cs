@@ -35,10 +35,6 @@ public class mainMenu : MonoBehaviour
 
     public state theState = state.menu;
 
-    private void Awake()
-    {
-        SaveSystemController.loadDataFromDisk();
-    }
     void Start()
     {
         Cursor.lockState = CursorLockMode.None;
@@ -51,9 +47,16 @@ public class mainMenu : MonoBehaviour
 
     public void play()
     {
-        SceneToLoadPersistant.sceneToLoadInto = 2;
-        SceneManager.LoadScene(1);
-        Cursor.visible = false;
+        if (SaveSystemController.loadedValues && SaveSystemController.checkSaveValid())
+        {
+            SceneToLoadPersistant.sceneToLoadInto = 2;
+            SceneManager.LoadScene(1);
+            Cursor.visible = false;
+        }
+        else if (SaveSystemController.loadedValues && !SaveSystemController.checkSaveValid())
+        {
+            Application.Quit();
+        }
     }
 
 
@@ -96,14 +99,21 @@ public class mainMenu : MonoBehaviour
 
     public void toleaderboard()
     {
-        buttonenable(state.menu, false);
-        buttonenable(state.credits, false);
-        buttonenable(state.settings, false);
-        buttonenable(state.leaderboard, true);
+        if (SaveSystemController.loadedValues && SaveSystemController.checkSaveValid())
+        {
+            buttonenable(state.menu, false);
+            buttonenable(state.credits, false);
+            buttonenable(state.settings, false);
+            buttonenable(state.leaderboard, true);
 
 
-        StartCoroutine(Down(theState, state.leaderboard));
-        theState = state.leaderboard;
+            StartCoroutine(Down(theState, state.leaderboard));
+            theState = state.leaderboard;
+        }
+        else if (SaveSystemController.loadedValues && !SaveSystemController.checkSaveValid())
+        {
+            Application.Quit();
+        }
     }
 
     public void closeWarning()
