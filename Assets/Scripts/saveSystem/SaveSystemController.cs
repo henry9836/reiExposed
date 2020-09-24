@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public static class SaveSystemController
 {
@@ -339,13 +340,6 @@ public static class SaveSystemController
         updateHash();
         saveDataToDisk();
 
-        //Verify
-        //if (!checkSaveValid())
-        //{
-        //    Debug.LogError("Reset Save File UnSuccessfully, trying again...");
-        //    Reset();
-        //}
-
         Debug.Log("Reset Save File Successfully");
     }
 
@@ -598,4 +592,5 @@ public static class SaveSystemController
             return false;
         }
     }
+
 }
