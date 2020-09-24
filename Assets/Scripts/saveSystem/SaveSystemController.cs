@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public static class SaveSystemController
 {
@@ -82,6 +83,7 @@ public static class SaveSystemController
 
         public void updateValue(string newVal)
         {
+
             //If first time adjusting
             if (type == TYPES.NONASSIGNED)
             {
@@ -185,7 +187,31 @@ public static class SaveSystemController
     }
 
     //Generates a hash for validation
-    public static ulong calcCurrentHash()
+    public static ulong calcCurrentHash() {
+
+        string input = "";
+        input += getValue("MythTraces");
+        input += getValue("shotgunDamageLVL");
+        input += getValue("shotgunRangeLVL");
+        input += getValue("shotgunBulletSpreadADSLVL");
+        input += getValue("shotgunBulletSpreadRunningLVL");
+        input += getValue("meeleeDamageLVL");
+        input += getValue("ammo");
+        input += getValue("ammoTwo");
+        input += getValue("PackagePending");
+        input += getValue("Package_Name");
+        input += getValue("Package_STEAM_ID");
+        input += getValue("Package_Message");
+        input += getValue("Package_Curr");
+        input += getValue("Package_Item1");
+        input += getValue("Package_Item2");
+        input += getValue("Package_Item3");
+        input += getValue("Package_Time");
+        input += getValue("Package_MAGIC");
+
+        return calcCurrentHash(input); 
+    }
+    public static ulong calcCurrentHash(string input)
     {
         ulong hash = 1;
 
@@ -198,26 +224,7 @@ public static class SaveSystemController
         //int chunkSize = 4;
         int chunkSize = 1; 
 
-        string raw = "";
-        raw += getValue("MythTraces");
-        raw += getValue("shotgunDamageLVL");
-        raw += getValue("shotgunRangeLVL");
-        raw += getValue("shotgunBulletSpreadADSLVL");
-        raw += getValue("shotgunBulletSpreadRunningLVL");
-        raw += getValue("meeleeDamageLVL");
-        raw += getValue("ammo");
-        raw += getValue("ammoTwo");
-        raw += getValue("PackagePending");
-        raw += getValue("Package_Name");
-        raw += getValue("Package_STEAM_ID");
-        raw += getValue("Package_Message");
-        raw += getValue("Package_Curr");
-        raw += getValue("Package_Item1");
-        raw += getValue("Package_Item2");
-        raw += getValue("Package_Item3");
-        raw += getValue("Package_Time");
-
-        byte[] bytes = Encoding.Default.GetBytes(raw);
+        byte[] bytes = Encoding.Default.GetBytes(input);
 
         for (int i = 0; i < bytes.Length; i++)
         {
@@ -318,23 +325,20 @@ public static class SaveSystemController
         writer.Close();
         writer = null;
         lines = null;
+        for (int i = 0; i < tmpList.Count; i++)
+        {
+            tmpList[i] = null;
+        }
+        tmpList.Clear();
 
         //Reload
         ioBusy = false;
         readyForProcessing = false;
         loadDataFromDisk();
-        tmpList.Clear();
 
         //Create Hash
         updateHash();
         saveDataToDisk();
-
-        //Verify
-        //if (!checkSaveValid())
-        //{
-        //    Debug.LogError("Reset Save File UnSuccessfully, trying again...");
-        //    Reset();
-        //}
 
         Debug.Log("Reset Save File Successfully");
     }
@@ -390,6 +394,10 @@ public static class SaveSystemController
             {
                 //Set value of latest seen entry
                 saveInfomation[saveInfomation.Count - 1].value = lines[i].Substring(VALFLAG.Length);
+                if (lines[i - 1].Contains(HASHID))
+                {
+                    saveInfomation[saveInfomation.Count - 1].type = entry.TYPES.STRING;
+                }
             }
             else
             {
@@ -485,6 +493,7 @@ public static class SaveSystemController
             {
                 if (overrideToString)
                 {
+                    Debug.Log($"CREATED A OVERRIDE OBJECT: {saveInfomation[i].id}");
                     saveInfomation[i].type = entry.TYPES.STRING;
                 }
                 saveInfomation[i].updateValue(_newValue);
@@ -583,4 +592,5 @@ public static class SaveSystemController
             return false;
         }
     }
+
 }
