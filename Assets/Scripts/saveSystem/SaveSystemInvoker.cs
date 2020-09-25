@@ -11,6 +11,7 @@ public class SaveSystemInvoker : MonoBehaviour
     private void Awake()
     {
         //Load this first for things to work
+        Debug.Log("ENTERED SCENE: " + SceneManager.GetActiveScene().buildIndex.ToString());
         SaveSystemController.loadDataFromDisk();
     }
 
@@ -19,45 +20,22 @@ public class SaveSystemInvoker : MonoBehaviour
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Semicolon))
         {
-            Debug.Log($"LOADED HASH: {SaveSystemController.getValue("MAGIC")}");
-            for (int i = 0; i < SaveSystemController.saveInfomation.Count; i++)
-            {
-                if (SaveSystemController.saveInfomation[i].id == "MAGIC")
-                {
-                    Debug.Log(SaveSystemController.saveInfomation[i].type.ToString());
-                }
-            }
-            Debug.Log(SaveSystemController.checkSaveValid());
-            if (!SaveSystemController.checkSaveValid() && SaveSystemController.loadedValues)
-            {
-                //CHEATS!!!!
-                Debug.LogError("CHEATER DETECTED!!!");
-                SaveSystemController.Reset();
-                //SceneManager.LoadScene(0);
-            }
-            else
-            {
-                Debug.Log("No Cheats Detected :)");
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.Period))
-        {
-            Debug.Log(SaveSystemController.calcCurrentHash());
+            SaveSystemController.Reset();
         }
 #endif
 
         //Ready to interface with and on the main menu
-        if (SaveSystemController.loadedValues && !checkedHash && (SceneManager.GetActiveScene().buildIndex == 0))
-        {
-            //Check Hash
-            if (!SaveSystemController.checkSaveValid())
-            {
-                //CHEATS!!!!
-                Debug.LogError("CHEATER DETECTED!!!");
-                SaveSystemController.Reset();
-                StartCoroutine(delayKickOut());
-            }
-        }
+        //if (SaveSystemController.loadedValues && !checkedHash && (SceneManager.GetActiveScene().buildIndex == 0))
+        //{
+        //    //Check Hash
+        //    if (!SaveSystemController.checkSaveValid())
+        //    {
+        //        //CHEATS!!!!
+        //        Debug.LogError("CHEATER DETECTED!!!");
+        //        SaveSystemController.Reset();
+        //        StartCoroutine(delayKickOut());
+        //    }
+        //}
     }
 
     IEnumerator delayKickOut()
