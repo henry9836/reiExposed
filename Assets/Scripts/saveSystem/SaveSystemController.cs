@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading;
 using UnityEngine;
@@ -240,6 +241,8 @@ public static class SaveSystemController
     //Resets a save file
     public static void Reset()
     {
+        Debug.Log("RESET CALLED!!!");
+
         //Wait till we are allowed access to file
         while (ioBusy)
         {
@@ -255,11 +258,9 @@ public static class SaveSystemController
         }
         //Load default values
         //Read all lines into array
-        for (int i = 0; i < tmpList.Count; i++)
-        {
-            tmpList[i] = null;
-        }
-        tmpList.Clear();
+        tmpList = null;
+        tmpList = new List<entry>();
+
         string[] lines = File.ReadAllLines(saveFile);
 
         bool nextValBreak = false;
@@ -295,11 +296,8 @@ public static class SaveSystemController
 
         //Delete Everything From File And Create a new one
         File.Delete(saveFile);
-        for (int i = 0; i < saveInfomation.Count; i++)
-        {
-            saveInfomation[i] = null;
-        }
-        saveInfomation.Clear();
+        saveInfomation = null;
+        saveInfomation = new List<entry>();
 
         //Populate the file with default values
         //Create saveFile if it doesn't exist and Open for writing
@@ -323,13 +321,7 @@ public static class SaveSystemController
 
         //Close writer
         writer.Close();
-        writer = null;
-        lines = null;
-        for (int i = 0; i < tmpList.Count; i++)
-        {
-            tmpList[i] = null;
-        }
-        tmpList.Clear();
+        tmpList = null;
 
         //Reload
         ioBusy = false;
@@ -337,7 +329,6 @@ public static class SaveSystemController
         loadDataFromDisk();
 
         //Create Hash
-        updateHash();
         saveDataToDisk();
 
         Debug.Log("Reset Save File Successfully");
