@@ -25,17 +25,17 @@ public class SaveSystemInvoker : MonoBehaviour
 #endif
 
         //Ready to interface with and on the main menu
-        //if (SaveSystemController.loadedValues && !checkedHash && (SceneManager.GetActiveScene().buildIndex == 0))
-        //{
-        //    //Check Hash
-        //    if (!SaveSystemController.checkSaveValid())
-        //    {
-        //        //CHEATS!!!!
-        //        Debug.LogError("CHEATER DETECTED!!!");
-        //        SaveSystemController.Reset();
-        //        StartCoroutine(delayKickOut());
-        //    }
-        //}
+        if (SaveSystemController.loadedValues && !checkedHash && (SceneManager.GetActiveScene().buildIndex == 0))
+        {
+            //Check Hash
+            if (!SaveSystemController.checkSaveValid())
+            {
+                //CHEATS!!!!
+                Debug.LogError("CHEATER DETECTED!!!");
+                SaveSystemController.Reset();
+                StartCoroutine(delayKickOut());
+            }
+        }
     }
 
     IEnumerator delayKickOut()

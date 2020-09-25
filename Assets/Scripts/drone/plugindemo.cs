@@ -37,8 +37,8 @@ public class plugindemo : MonoBehaviour
             float dist = Vector3.Distance(drone.transform.position, destinaitons[currdestination].transform.position);
             dist = Mathf.Sqrt((dist + 2));
             dist = Mathf.Clamp(dist, 2, 10);
-            SaveSystemController.updateValue("dynamicedgesize", dist * 10.0f);
-            SaveSystemController.updateValue("deets", dist);
+            SaveSystemController.updateValue("dynamicedgesize", (dist * 10.0f).ToString(), true);
+            SaveSystemController.updateValue("deets", (dist).ToString(), true);
         }
     }
 
