@@ -12,6 +12,7 @@ public class camMove : MonoBehaviour
         ITEM,
         UMBRELLA,
         STORAGE,
+        EXTRA,
     }
 
     public void move(locations to)

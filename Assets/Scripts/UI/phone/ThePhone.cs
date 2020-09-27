@@ -21,6 +21,7 @@ public class ThePhone : MonoBehaviour
     public GameObject canvas;
     public GameObject maincam;
     public GameObject camgrid;
+    public GameObject konbini;
     public Sprite emptyPhotoSpot;
     public Image keyNotification;
     public Image overallNotification;
@@ -85,7 +86,8 @@ public class ThePhone : MonoBehaviour
         maincam = GameObject.Find("Main Camera");
         myths = GameObject.FindGameObjectWithTag("GameManager").GetComponent<MythWorkerUnion>();
         drone = GameObject.Find("Save&Dronemanage").GetComponent<plugindemo>();
-        clueCtrl = GameObject.FindGameObjectWithTag("GameManager").GetComponent<ClueController>();       
+        clueCtrl = GameObject.FindGameObjectWithTag("GameManager").GetComponent<ClueController>();
+        konbini.transform.GetChild(4).gameObject.GetComponent<wallpapEqu>().init();
     }
     void Update()
     {
