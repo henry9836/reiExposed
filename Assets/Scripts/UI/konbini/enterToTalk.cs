@@ -67,7 +67,7 @@ public class enterToTalk : MonoBehaviour
             biginvinstorage.GetComponent<slot>().itemchange();
             rei.transform.GetChild(0).GetChild(0).GetChild(0).GetChild(0).gameObject.SetActive(false);
             konobiniCam.SetActive(true);
-            konbiniUI.transform.GetChild(5).GetComponent<pageManager>().ShopPage();
+            konbiniUI.transform.GetChild(6).GetComponent<pageManager>().ShopPage();
         }
         else
         {

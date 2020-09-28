@@ -65,6 +65,12 @@ public class TraceController : MonoBehaviour
     public void Trigger()
     {
         started = true;
+
+        if (!clueCtrl)
+        {
+            clueCtrl = GameObject.FindGameObjectWithTag("GameManager").GetComponent<ClueController>();
+        }
+
         clueCtrl.notificationEvent();
     }
 }
