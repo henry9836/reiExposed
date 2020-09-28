@@ -4,10 +4,27 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.HighDefinition;
+using UnityEngine.SceneManagement;
 
 public class gammaAdjust : MonoBehaviour
 {
     public Volume post;
+
+    private void Start()
+    {
+        if (SaveSystemController.getBoolValue("notFirstPlay"))
+        {
+            SceneManager.LoadScene(1);
+        }
+    }
+
+    public void setGamma()
+    {
+        SaveSystemController.updateValue("Gamma", this.GetComponent<Slider>().value);
+        SaveSystemController.saveDataToDisk();
+        SceneManager.LoadScene(1);
+    }
+
     public void updateValue()
     {        
         LiftGammaGain tmp;
