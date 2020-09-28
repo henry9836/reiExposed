@@ -12,10 +12,7 @@ public class gammaAdjust : MonoBehaviour
 
     private void Start()
     {
-        if (SaveSystemController.getBoolValue("notFirstPlay"))
-        {
-            SceneManager.LoadScene(1);
-        }
+        
     }
 
     public void setGamma()
