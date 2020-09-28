@@ -47,6 +47,7 @@ public class SaveSystemInvoker : MonoBehaviour
                     SceneManager.LoadScene(1);
                 }
             }
+            //We have checked the hash we don't need to check it again
             checkedHash = true;
         }
     }
