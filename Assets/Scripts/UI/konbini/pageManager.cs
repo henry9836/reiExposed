@@ -7,6 +7,7 @@ public class pageManager : MonoBehaviour
     public GameObject shopPage;
     public GameObject storagePage;
     public GameObject umbrellaUpgrade;
+    public GameObject extraPage;
     public GameObject selectedUI;
     public List<Vector2> positions = new List<Vector2>() { };
     private Vector2 canvaspos = new Vector2 (0.0f, 0.0f);
@@ -31,6 +32,8 @@ public class pageManager : MonoBehaviour
         shopPage.SetActive(false);
         storagePage.SetActive(true);
         umbrellaUpgrade.SetActive(false);
+        extraPage.SetActive(false);
+
         selectedUI.GetComponent<RectTransform>().localPosition = positions[1] + canvaspos;
         if (current != camMove.locations.STORAGE)
         {
@@ -47,6 +50,8 @@ public class pageManager : MonoBehaviour
         shopPage.SetActive(true);
         storagePage.SetActive(false);
         umbrellaUpgrade.SetActive(false);
+        extraPage.SetActive(false);
+
         selectedUI.GetComponent<RectTransform>().localPosition = positions[0] + canvaspos;
         if (current != camMove.locations.ITEM)
         {
@@ -63,6 +68,8 @@ public class pageManager : MonoBehaviour
         shopPage.SetActive(false);
         storagePage.SetActive(false);
         umbrellaUpgrade.SetActive(true);
+        extraPage.SetActive(false);
+
         selectedUI.GetComponent<RectTransform>().localPosition = positions[2] + canvaspos;
         if (current != camMove.locations.UMBRELLA)
         {
@@ -70,6 +77,22 @@ public class pageManager : MonoBehaviour
             current = camMove.locations.UMBRELLA;
         }
         stlyeBG.SetActive(false);
+
+    }
+
+    public void ExtraPage()
+    {
+        shopPage.SetActive(false);
+        storagePage.SetActive(false);
+        umbrellaUpgrade.SetActive(false);
+        extraPage.SetActive(true);
+        selectedUI.GetComponent<RectTransform>().localPosition = positions[3] + canvaspos;
+        if (current != camMove.locations.EXTRA)
+        {
+            konobinicam.GetComponent<camMove>().move(camMove.locations.EXTRA);
+            current = camMove.locations.EXTRA;
+        }
+        stlyeBG.SetActive(true);
 
     }
 
