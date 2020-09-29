@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using Steamworks.Data;
+using UnityEngine.Rendering;
+
+using UnityEngine.Rendering.HighDefinition;
+
 
 public class mainMenu : MonoBehaviour
 {
@@ -24,6 +27,8 @@ public class mainMenu : MonoBehaviour
 
     bool loadedData = false;
     bool packageWaiting = false;
+    public Volume post;
+
 
     public enum state
     { 
@@ -43,14 +48,20 @@ public class mainMenu : MonoBehaviour
         Listtop = new Vector3(0.0f, this.gameObject.GetComponent<RectTransform>().rect.height, 0.0f);
         Listmid = new Vector3(0.0f, 0.0f, 0.0f);
         Listbot = new Vector3(0.0f, -this.gameObject.GetComponent<RectTransform>().rect.height, 0.0f);
+
+        LiftGammaGain tmp;
+        if (post.profile.TryGet(out tmp))
+        {
+            tmp.gamma.value = new Vector4(0.0f, 0.0f, 0.0f, SaveSystemController.getFloatValue("Gamma"));
+        }
     }
 
     public void play()
     {
         if (SaveSystemController.loadedValues && SaveSystemController.checkSaveValid())
         {
-            SceneToLoadPersistant.sceneToLoadInto = 2;
-            SceneManager.LoadScene(3);
+            SceneToLoadPersistant.sceneToLoadInto = 3;
+            SceneManager.LoadScene(1);
             Cursor.visible = false;
         }
         else if (SaveSystemController.loadedValues && !SaveSystemController.checkSaveValid())
@@ -59,6 +70,13 @@ public class mainMenu : MonoBehaviour
         }
     }
 
+    public void openBrightness()
+    {
+        SceneToLoadPersistant.sceneToLoadInto = 0;
+        SceneManager.LoadScene(1);
+        managerofPlay.playintro = false;
+        managerofPlay.playGamma = true;
+    }
 
     public void tocredits()
     {
