@@ -50,7 +50,7 @@ public class mainMenu : MonoBehaviour
         if (SaveSystemController.loadedValues && SaveSystemController.checkSaveValid())
         {
             SceneToLoadPersistant.sceneToLoadInto = 2;
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene(3);
             Cursor.visible = false;
         }
         else if (SaveSystemController.loadedValues && !SaveSystemController.checkSaveValid())
