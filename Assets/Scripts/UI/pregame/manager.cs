@@ -12,7 +12,9 @@ public static class managerofPlay
 
 public class manager : MonoBehaviour
 {
-    public List<GameObject> brightness;
+    public List<Text> brightnessText;
+    public List<GameObject> brightnessimage;
+
     public GameObject videoplayer;
     public bool waitforvideo = true;
 
@@ -58,11 +60,37 @@ public class manager : MonoBehaviour
         if (managerofPlay.playGamma == true)
         {
             videoplayer.SetActive(false);
+            this.GetComponent<AudioSource>().Play();
 
-            for (int i = 0; i < brightness.Count; i++)
+            for (float i = 0.0f; i < 1.0f; i += Time.deltaTime)
             {
-                brightness[i].gameObject.SetActive(true);
+                for (int j = 0; j < brightnessText.Count; j++)
+                {
+                    Color tmp = brightnessText[j].color;
+                    brightnessText[j].color = new Color(tmp.r, tmp.g, tmp.b, i);
+                }
+
+                for (int j = 0; j < brightnessimage.Count; j++)
+                {
+                    Color tmp = brightnessimage[j].GetComponent<Image>().color;
+                    brightnessimage[j].GetComponent<Image>().color = new Color(tmp.r, tmp.g, tmp.b, i);
+                }
+
+                yield return null;
             }
+
+            for (int j = 0; j < brightnessText.Count; j++)
+            {
+                Color tmp = brightnessText[j].color;
+                brightnessText[j].color = new Color(tmp.r, tmp.g, tmp.b, 1.0f);
+            }
+
+            for (int j = 0; j < brightnessimage.Count; j++)
+            {
+                Color tmp = brightnessimage[j].GetComponent<Image>().color;
+                brightnessimage[j].GetComponent<Image>().color = new Color(tmp.r, tmp.g, tmp.b, 1.0f);
+            }
+
         }
 
 
