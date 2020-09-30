@@ -10,15 +10,12 @@ public class gammaAdjust : MonoBehaviour
 {
     public Volume post;
 
-    private void Start()
-    {
-        
-    }
-
     public void setGamma()
     {
         SaveSystemController.updateValue("Gamma", this.GetComponent<Slider>().value);
         SaveSystemController.saveDataToDisk();
+
+        SceneToLoadPersistant.sceneToLoadInto = 2;
         SceneManager.LoadScene(1);
     }
 

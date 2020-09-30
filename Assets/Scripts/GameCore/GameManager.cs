@@ -2,19 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
+using UnityEngine.Rendering.HighDefinition;
+
 
 public class GameManager : MonoBehaviour
 {
-
     public AIObject boss;
     public UnityEvent GameOverEvent;
     public GameObject rei;
+    public Volume post; 
 
 
     private void Start()
     {
         boss = GameObject.FindGameObjectWithTag("Boss").GetComponent<AIObject>();
+
+        LiftGammaGain tmp;
+        if (post.profile.TryGet(out tmp))
+        {
+            tmp.gamma.value = new Vector4(0.0f, 0.0f, 0.0f, SaveSystemController.getFloatValue("Gamma"));
+        }
     }
 
     public void GameOver()
