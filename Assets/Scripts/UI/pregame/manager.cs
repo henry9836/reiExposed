@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
+using UnityEngine.SceneManagement;
 
 public static class managerofPlay
 {
@@ -56,7 +57,7 @@ public class manager : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
         }
 
-       
+
         if (managerofPlay.playGamma == true)
         {
             videoplayer.SetActive(false);
@@ -91,6 +92,11 @@ public class manager : MonoBehaviour
                 brightnessimage[j].GetComponent<Image>().color = new Color(tmp.r, tmp.g, tmp.b, 1.0f);
             }
 
+        }
+        else
+        {
+            SceneToLoadPersistant.sceneToLoadInto = 2;
+            SceneManager.LoadScene(1);
         }
 
 
