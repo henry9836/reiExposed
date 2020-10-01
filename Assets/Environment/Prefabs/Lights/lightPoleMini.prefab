@@ -24,7 +24,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3058706443526789193}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -94.42, y: 31, z: 15.75}
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_Children:
@@ -68,6 +68,7 @@ GameObject:
   - component: {fileID: 1656793109269234348}
   - component: {fileID: 3043241021842714490}
   - component: {fileID: 5085718244534703564}
+  - component: {fileID: 2702919511898611864}
   m_Layer: 0
   m_Name: lightPoleMini_lod1
   m_TagString: Untagged
@@ -137,6 +138,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!65 &2702919511898611864
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6659136521585901501}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 23.382559, y: 63.07624, z: 23.382559}
+  m_Center: {x: 0, y: 31.53812, z: 0}
 --- !u!1 &7179922282616662172
 GameObject:
   m_ObjectHideFlags: 0
@@ -342,8 +356,8 @@ Light:
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 8445.876
-  m_Range: 13.5
-  m_SpotAngle: 150.7
+  m_Range: 6.3
+  m_SpotAngle: 179
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
@@ -380,7 +394,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 2
   m_LightShadowCasterMode: 2
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -413,9 +427,9 @@ MonoBehaviour:
   m_Intensity: 47.746483
   m_EnableSpotReflector: 0
   m_LuxAtDistance: 13.3
-  m_InnerSpotPercent: 70.4
+  m_InnerSpotPercent: 0
   m_LightDimmer: 1
-  m_VolumetricDimmer: 0.58
+  m_VolumetricDimmer: 1.11
   m_LightUnit: 2
   m_FadeDistance: 10000
   m_AffectDiffuse: 1
