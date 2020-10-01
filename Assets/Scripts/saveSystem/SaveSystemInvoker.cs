@@ -43,8 +43,8 @@ public class SaveSystemInvoker : MonoBehaviour
                 //If we have played the game before
                 if (SaveSystemController.getBoolValue("notFirstPlay"))
                 {
-                    Debug.Log("Hash Passed Loading into the game...");
-                    SceneManager.LoadScene(1);
+                    //Debug.Log("Hash Passed Loading into the game...");
+                    //SceneManager.LoadScene(2);
                 }
             }
             //We have checked the hash we don't need to check it again
