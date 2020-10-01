@@ -42,12 +42,17 @@ public class mainMenu : MonoBehaviour
 
     void Start()
     {
+
+        Debug.Log("My canvas height is: " + this.gameObject.GetComponent<RectTransform>().rect.height.ToString());
+
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         canvaspos = new Vector3(this.gameObject.GetComponent<RectTransform>().anchoredPosition.x, this.gameObject.GetComponent<RectTransform>().anchoredPosition.y, 0.0f);
-        Listtop = new Vector3(0.0f, this.gameObject.GetComponent<RectTransform>().rect.height, 0.0f);
+        //Listtop = new Vector3(0.0f, this.gameObject.GetComponent<RectTransform>().rect.height, 0.0f);
+        Listtop = new Vector3(0.0f, Screen.height, 0.0f);
         Listmid = new Vector3(0.0f, 0.0f, 0.0f);
-        Listbot = new Vector3(0.0f, -this.gameObject.GetComponent<RectTransform>().rect.height, 0.0f);
+        //Listbot = new Vector3(0.0f, -this.gameObject.GetComponent<RectTransform>().rect.height, 0.0f);
+        Listbot = new Vector3(0.0f, -Screen.height, 0.0f);
 
         LiftGammaGain tmp;
         if (post.profile.TryGet(out tmp))

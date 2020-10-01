@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 public static class managerofPlay
 {
@@ -11,10 +12,11 @@ public static class managerofPlay
 
 public class manager : MonoBehaviour
 {
-    public List<GameObject> brightness;
-    public GameObject logo;
-    public GameObject text;
+    public List<Text> brightnessText;
+    public List<GameObject> brightnessimage;
 
+    public GameObject videoplayer;
+    public bool waitforvideo = true;
 
 
     void Start()
@@ -31,6 +33,7 @@ public class manager : MonoBehaviour
             }
         }
 
+        videoplayer.GetComponent<VideoPlayer>().loopPointReached += CheckOver;
 
         StartCoroutine(logic());
 
@@ -42,51 +45,63 @@ public class manager : MonoBehaviour
     {
         if (managerofPlay.playintro == true)
         {
-            for (float i = 0.0f; i < 1.0f; i += Time.deltaTime)
-            {
-                logo.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, i);
-                yield return null;
-            }
-            logo.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            videoplayer.SetActive(true);
 
+            while (waitforvideo)
+            {
+                yield return new WaitForEndOfFrame();
+            }
+
+            
             yield return new WaitForSeconds(0.5f);
-
-            for (float i = 0.0f; i < 1.0f; i += Time.deltaTime)
-            {
-                text.GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, i);
-                yield return null;
-            }
-            text.GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-
-
-
-
-            yield return new WaitForSeconds(1.5f);
-
-            for (float i = 1.0f; i > 0.0f; i -= Time.deltaTime)
-            {
-                logo.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, i);
-                text.GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, i);
-                yield return null;
-            }
-            logo.GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
-            text.GetComponent<Text>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
-
-            yield return new WaitForSeconds(1.0f);
-
         }
 
        
         if (managerofPlay.playGamma == true)
         {
-            for (int i = 0; i < brightness.Count; i++)
+            videoplayer.SetActive(false);
+            this.GetComponent<AudioSource>().Play();
+
+            for (float i = 0.0f; i < 1.0f; i += Time.deltaTime)
             {
-                brightness[i].gameObject.SetActive(true);
+                for (int j = 0; j < brightnessText.Count; j++)
+                {
+                    Color tmp = brightnessText[j].color;
+                    brightnessText[j].color = new Color(tmp.r, tmp.g, tmp.b, i);
+                }
+
+                for (int j = 0; j < brightnessimage.Count; j++)
+                {
+                    Color tmp = brightnessimage[j].GetComponent<Image>().color;
+                    brightnessimage[j].GetComponent<Image>().color = new Color(tmp.r, tmp.g, tmp.b, i);
+                }
+
+                yield return null;
             }
+
+            for (int j = 0; j < brightnessText.Count; j++)
+            {
+                Color tmp = brightnessText[j].color;
+                brightnessText[j].color = new Color(tmp.r, tmp.g, tmp.b, 1.0f);
+            }
+
+            for (int j = 0; j < brightnessimage.Count; j++)
+            {
+                Color tmp = brightnessimage[j].GetComponent<Image>().color;
+                brightnessimage[j].GetComponent<Image>().color = new Color(tmp.r, tmp.g, tmp.b, 1.0f);
+            }
+
         }
 
 
         yield return null;
     }
+
+    void CheckOver(UnityEngine.Video.VideoPlayer vp)
+    {
+        waitforvideo = false;
+    }
+
+
 
 }
