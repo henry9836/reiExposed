@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.Video;
 using UnityEngine.SceneManagement;
 
+//Keep track of game state
 public static class managerofPlay
 {
     public static bool playintro = true;
@@ -22,28 +23,38 @@ public class manager : MonoBehaviour
 
     void Start()
     {
-        if (managerofPlay.playGamma == false)
+        Debug.Log($"P: {managerofPlay.playintro}, S: {SaveSystemController.getBoolValue("notFirstPlay")}");
+        //If this is a launch
+        if (managerofPlay.playintro)
         {
+            //If this the first time we are playing?
             if (SaveSystemController.getBoolValue("notFirstPlay"))
             {
+                //We have played before so set the gamma controls to hidden
                 managerofPlay.playGamma = false;
             }
             else
             {
+                //We haven't played before so set the gamma controls to visible
                 managerofPlay.playGamma = true;
             }
+        }
+        //If we went here through settings
+        else
+        {
+            managerofPlay.playGamma = true;
         }
 
         videoplayer.GetComponent<VideoPlayer>().loopPointReached += CheckOver;
 
         StartCoroutine(logic());
-
-
     }
 
 
     public IEnumerator logic()
     {
+
+        //Play the video and wait till finished
         if (managerofPlay.playintro == true)
         {
             videoplayer.SetActive(true);
@@ -57,7 +68,10 @@ public class manager : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
         }
 
+        Debug.Log("Video Ended");
+        Debug.Log($"{managerofPlay.playGamma} || {managerofPlay.playintro}");
 
+        //Show gamma settings
         if (managerofPlay.playGamma == true)
         {
             videoplayer.SetActive(false);
