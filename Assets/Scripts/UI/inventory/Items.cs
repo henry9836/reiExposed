@@ -267,35 +267,35 @@ public class Items : MonoBehaviour
             case 1: //Random Health Effect
                 {
                     HealthEffector(amp);
-                    Debug.Log("🦆 Health");
+                    Debug.Log("[DUCK] Health");
                     break;
                 }
             case 2: //Random Damage Applier
                 {
                     StartCoroutine(ApplyTimedEffect(AllItems.DAMAGEBUFF, amp, time));
-                    Debug.Log("🦆 Damage");
+                    Debug.Log("[DUCK] Damage");
                     break;
                 }
             case 3: //Random Stamina Applier
                 {
                     StartCoroutine(ApplyTimedEffect(AllItems.STAMINABUFF, amp, time));
-                    Debug.Log("🦆 Stamina");
+                    Debug.Log("[DUCK] Stamina");
                     break;
                 }
             case 4: //Movement Stamina Applier
                 {
                     StartCoroutine(ApplyTimedEffect(AllItems.MOVEBUFF, amp, time));
-                    Debug.Log("🦆 Movement");
+                    Debug.Log("[DUCK] Movement");
                     break;
                 }
             default:
                 {
-                    Debug.LogWarning("🦆 No Duck Behaviour Set up");
+                    Debug.LogWarning("[DUCK] No Duck Behaviour Set up");
                     break;
                 }
         }
     }
-
+    
     //Timed effects
     IEnumerator ApplyTimedEffect(AllItems item, float percentToChange, float amountOfTimeToApply)
     {
@@ -307,17 +307,22 @@ public class Items : MonoBehaviour
                     float before = player.umbreallaDmg;
                     float result = before * percentToChange;
 
+                    float beforeH = player.umbreallaHeavyDmg;
+                    float resultH = beforeH * percentToChange;
+
                     float beforegun = player.transform.GetComponent<umbrella>().MaxDamage;
                     float resultgun = beforegun * percentToChange;
                     //Apply
                     player.umbreallaDmg += result;
+                    player.umbreallaHeavyDmg += resultH;
                     player.transform.GetComponent<umbrella>().MaxDamage += resultgun;
                     //Wait
                     yield return new WaitForSeconds(amountOfTimeToApply);
                     //Unapply
                     player.umbreallaDmg -= result;
                     player.transform.GetComponent<umbrella>().MaxDamage -= resultgun;
-                    Debug.Log("🦆 Removed Damage");
+                    player.umbreallaHeavyDmg -= resultH;
+                    Debug.Log("[DUCK] Removed Damage");
                     break;
                 }
             case AllItems.STAMINABUFF:
@@ -331,7 +336,7 @@ public class Items : MonoBehaviour
                     yield return new WaitForSeconds(amountOfTimeToApply);
                     //Unapply
                     player.staminaRegenSpeed -= result;
-                    Debug.Log("🦆 Removed Stamina");
+                    Debug.Log("[DUCK] Removed Stamina");
                     break;
                 }
             case AllItems.MOVEBUFF:
@@ -345,7 +350,7 @@ public class Items : MonoBehaviour
                     yield return new WaitForSeconds(amountOfTimeToApply);
                     //Unapply
                     movement.moveSpeed -= result;
-                    Debug.Log("🦆 Removed Movement");
+                    Debug.Log("[DUCK] Removed Movement");
                     break;
                 }
             default:
@@ -395,7 +400,7 @@ public class Items : MonoBehaviour
                 case AllItems.STAMINABUFF:
                     {
                         //Regen faster stamina for time
-                        StartCoroutine(ApplyTimedEffect(AllItems.STAMINABUFF, 0.20f, 25.0f));
+                        StartCoroutine(ApplyTimedEffect(AllItems.STAMINABUFF, 0.25f, 25.0f));
                         break;
                     }
                 case AllItems.MOVEBUFF:
