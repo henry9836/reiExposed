@@ -16,6 +16,8 @@ public class singleItem
 public class Items : MonoBehaviour
 {
     public List<Sprite> images = new List<Sprite> { };
+    public List<groupPartcle> particleGroups = new List<groupPartcle>();
+
     //on biginvin
     public slot slotsref;
 
@@ -266,6 +268,20 @@ public class Items : MonoBehaviour
         {
             case 1: //Random Health Effect
                 {
+                    //VFX
+                    if (amp > 25.0f)
+                    {
+                        particleGroups[(int)AllItems.HEALTHBUFF].Play();
+                    }
+                    else if(amp > 0.0f)
+                    {
+                        particleGroups[(int)AllItems.HEALTHBUFF_SMALL].Play();
+                    }
+                    else
+                    {
+                        particleGroups[(int)AllItems.HEALTHDEBUFF_SMALL].Play();
+                    }
+
                     HealthEffector(amp);
                     Debug.Log("[DUCK] Health");
                     break;
@@ -303,6 +319,17 @@ public class Items : MonoBehaviour
         {
             case AllItems.DAMAGEBUFF:
                 {
+                    //VFX
+                    if (percentToChange > 0.0f)
+                    {
+                        particleGroups[(int)AllItems.DAMAGEBUFF].Play();
+                    }
+                    else
+                    {
+                        //Hard coded 
+                        particleGroups[0].Play();
+                    }
+
                     //Calc
                     float before = player.umbreallaDmg;
                     float result = before * percentToChange;
@@ -322,11 +349,33 @@ public class Items : MonoBehaviour
                     player.umbreallaDmg -= result;
                     player.transform.GetComponent<umbrella>().MaxDamage -= resultgun;
                     player.umbreallaHeavyDmg -= resultH;
+
+                    //VFX
+                    if (percentToChange > 0.0f)
+                    {
+                        particleGroups[(int)AllItems.DAMAGEBUFF].Stop();
+                    }
+                    else
+                    {
+                        //Hard coded 
+                        particleGroups[0].Stop();
+                    }
+
                     Debug.Log("[DUCK] Removed Damage");
                     break;
                 }
             case AllItems.STAMINABUFF:
                 {
+                    //VFX
+                    if (percentToChange > 0.0f)
+                    {
+                        particleGroups[(int)AllItems.STAMINABUFF].Play();
+                    }
+                    else
+                    {
+                        //Hard coded 
+                        particleGroups[8].Play();
+                    }
                     //Calc
                     float before = player.staminaRegenSpeed;
                     float result = before * percentToChange;
@@ -337,10 +386,36 @@ public class Items : MonoBehaviour
                     //Unapply
                     player.staminaRegenSpeed -= result;
                     Debug.Log("[DUCK] Removed Stamina");
+
+                    //VFX
+                    if (percentToChange > 0.0f)
+                    {
+                        particleGroups[(int)AllItems.STAMINABUFF].Stop();
+                    }
+                    else
+                    {
+                        //Hard coded 
+                        particleGroups[8].Stop();
+                    }
+
                     break;
                 }
             case AllItems.MOVEBUFF:
                 {
+                    //VFX
+                    if (percentToChange >= 20.0f)
+                    {
+                        particleGroups[(int)AllItems.MOVEBUFF].Play();
+                    }
+                    if (percentToChange > 0.0f)
+                    {
+                        particleGroups[(int)AllItems.MOVEBUFF_SMALL].Play();
+                    }
+                    else
+                    {
+                        //Hard coded 
+                        particleGroups[(int)AllItems.MOVEDEBUFF].Play();
+                    }
                     //Calc
                     float before = movement.moveSpeed;
                     float result = before * percentToChange;
@@ -350,6 +425,23 @@ public class Items : MonoBehaviour
                     yield return new WaitForSeconds(amountOfTimeToApply);
                     //Unapply
                     movement.moveSpeed -= result;
+
+                    //VFX
+                    if (percentToChange >= 20.0f)
+                    {
+                        particleGroups[(int)AllItems.MOVEBUFF].Stop();
+                    }
+                    if (percentToChange > 0.0f)
+                    {
+                        particleGroups[(int)AllItems.MOVEBUFF_SMALL].Stop();
+                    }
+                    else
+                    {
+                        //Hard coded 
+                        particleGroups[(int)AllItems.MOVEDEBUFF].Stop();
+                    }
+
+
                     Debug.Log("[DUCK] Removed Movement");
                     break;
                 }
@@ -375,18 +467,24 @@ public class Items : MonoBehaviour
                     break;
                 case AllItems.HEALTHDEBUFF_SMALL:
                     {
+                        //VFX
+                        particleGroups[(int)toremove.itemtype].Play();
                         //hurt a bit
                         HealthEffector(-0.05f);
                         break;
                     }
                 case AllItems.HEALTHBUFF:
                     {
+                        //VFX
+                        particleGroups[(int)toremove.itemtype].Play();
                         //heal a lot
                         HealthEffector(0.25f);
                         break;
                     }
                 case AllItems.HEALTHBUFF_SMALL:
                     {
+                        //VFX
+                        particleGroups[(int)toremove.itemtype].Play();
                         //heal
                         HealthEffector(0.10f);
                         break;
