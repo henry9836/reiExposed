@@ -27,7 +27,6 @@ public class movementController : MonoBehaviour
     public float timeToUnblock = 0.5f;
     public float staminaCostSprint = 2.0f;
     public float staminaCostRoll = 30.0f;
-    public float staminaCostJump = 30.0f;
 
     [Header("Body Parts")]
     public GameObject charcterModel;
@@ -81,6 +80,9 @@ public class movementController : MonoBehaviour
     private float unblockTimer = 0.0f;
     private float rollSpeed = 0.0f;
 
+    private bool disallowPlayerFromStamina = false;
+    private bool allowOverrideToStaminaRegen = false;
+
     private void Start()
     {
         initalPosition = transform.position;
@@ -114,7 +116,6 @@ public class movementController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         //Reset movedir
         moveDir = new Vector3(moveDir.x * 0.0f, moveDir.y * 1.0f, moveDir.z * 0.0f);
 
@@ -182,7 +183,7 @@ public class movementController : MonoBehaviour
         }
 
         //Rolling Mechanic
-        if (Input.GetButtonDown("Roll") && !rolling && !animator.GetBool("UsingItem") && !animator.GetBool("Stunned"))
+        if (Input.GetButtonDown("Roll") && !rolling && !animator.GetBool("UsingItem") && !animator.GetBool("Stunned") && !disallowPlayerFromStamina)
         {
             //Check stamina
             if (staminaCostRoll <= pc.staminaAmount)
@@ -250,7 +251,7 @@ public class movementController : MonoBehaviour
         }
 
         //Sprint
-        else if (Input.GetButton("Sprint") && isOnGround && !rolling && !sprintLock && !animator.GetBool("UsingItem") && !animator.GetBool("Stunned") && ((moveDir.x != 0) && (moveDir.z != 0)) && (pc.CheckStamina() >= staminaCostSprint * Time.deltaTime))
+        else if (Input.GetButton("Sprint") && isOnGround && !rolling && !sprintLock && !animator.GetBool("UsingItem") && !animator.GetBool("Stunned") && ((moveDir.x != 0) && (moveDir.z != 0)) && (pc.CheckStamina() >= staminaCostSprint * Time.deltaTime) && !disallowPlayerFromStamina)
         {
              //move a little more
 
@@ -417,8 +418,24 @@ public class movementController : MonoBehaviour
             }
         }
 
-        //Stamina Block Timer
-        if ((rolling || sprinting || attackMovementBlock || sprintLock || animator.GetBool("Attack")))
+       
+
+        //Reset stamina blocker if the player is not using it
+        if (!Input.GetButton("Sprint") && !Input.GetButton("Roll"))
+        {
+            disallowPlayerFromStamina = false;
+            allowOverrideToStaminaRegen = true;
+        }
+        //Check if we have used too much stamina if so stop the user from using stamina so they can regen
+        else if ((pc.CheckStamina() < staminaCostSprint * Time.deltaTime) || (pc.CheckStamina() < staminaCostRoll * Time.deltaTime))
+        {
+            disallowPlayerFromStamina = true;
+            allowOverrideToStaminaRegen = false;
+        }
+
+        //Stamina Block Timer used to regen stamina
+        //Reset timer and wait for user to stop using their button unless they are blocked as they cannot use their buttons
+        if ((rolling || sprinting || attackMovementBlock || sprintLock || animator.GetBool("Attack")) && !disallowPlayerFromStamina && !allowOverrideToStaminaRegen)
         {
             unblockTimer = 0.0f;
         }
@@ -430,7 +447,7 @@ public class movementController : MonoBehaviour
         //Stamina Block
         pc.staminaBlock = (unblockTimer < timeToUnblock);
 
-        //Sprinting lock
+        //Sprinting lock reset
         if (sprintLock && !Input.GetButton("Sprint"))
         {
             sprintLock = false;
