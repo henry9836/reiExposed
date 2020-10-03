@@ -174,7 +174,8 @@ public class movementController : MonoBehaviour
             moveDir += camParent.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed));
             moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed));
         }
-        else
+        //If using an itme
+        else if (animator.GetBool("UsingItem"))
         {
             moveDir += camParent.transform.forward * ((Input.GetAxis("Vertical") * useItemMoveSpeed));
             moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * useItemMoveSpeed));

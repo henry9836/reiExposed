@@ -360,6 +360,7 @@ public class ThePhone : MonoBehaviour
                         if (!playerAnimator.GetBool("UsingItem"))
                         {
                             playerAnimator.SetTrigger("UseItem");
+                            playerAnimator.SetBool("UsingItem", true);
                             amazonshop(amazonselected);
                         }
                     }
