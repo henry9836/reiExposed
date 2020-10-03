@@ -146,9 +146,8 @@ public class movementController : MonoBehaviour
         moveDirCam += camParent.transform.right * Input.GetAxis("Horizontal");
         moveDirCam = moveDirCam.normalized;
 
-
         //Rotate towards movement in relation to cam direction
-        if (moveDirCam != Vector3.zero && !rolling && !strafemode && (!attackMovementBlock || canTurnDuringAttack) && !animator.GetBool("Stunned"))
+        if (moveDirCam != Vector3.zero && !rolling && !strafemode && (!attackMovementBlock || canTurnDuringAttack) && !animator.GetBool("Stunned") && !animator.GetBool("Blocking"))
         {
 
             //Get cam rotation
@@ -160,6 +159,7 @@ public class movementController : MonoBehaviour
             //Offset rotation to movement direction
             //Offset target
             Vector3 offset = new Vector3(camParent.transform.position.x + (moveDirCam.x * 10.0f), charcterModel.transform.position.y, camParent.transform.position.z + (moveDirCam.z * 10.0f));
+
 
             //Offset rotation
             targetRot = Quaternion.LookRotation((offset - charcterModel.transform.position).normalized);
