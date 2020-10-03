@@ -13,9 +13,15 @@ public class groupPartcle : MonoBehaviour
         {
             if (!particles[i].isPlaying) {
                 particles[i].Play();
-                if (GetComponent<AudioSource>() != null) {
+                if (GetComponent<AudioSource>().clip != null) {
                     GetComponent<AudioSource>().Play();
                 }
+            }
+            else
+            {
+                //Restart
+                particles[i].Stop();
+                particles[i].Play();
             }
         }
     }
