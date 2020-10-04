@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 756421456631516801}
   - component: {fileID: 756421456631516800}
-  - component: {fileID: 756421456631516802}
+  - component: {fileID: 627668144}
   m_Layer: 0
   m_Name: Sky and Fog Volume
   m_TagString: Untagged
@@ -49,7 +49,7 @@ MonoBehaviour:
   blendDistance: 0
   weight: 1
   sharedProfile: {fileID: 11400000, guid: 76b7b82b13f9aba438000ba8f32ac2fc, type: 2}
---- !u!114 &756421456631516802
+--- !u!114 &627668144
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -58,10 +58,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 756421456631516807}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2c6051caab2ed54fa51b6039aba00c1, type: 3}
+  m_Script: {fileID: 11500000, guid: 1552d9979af75764a9b44d61a5d0f646, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movement: {fileID: 0}
+  followThePlayer: 1
+  startHeight: -5
+  startMaxHeight: 60
 --- !u!1 &756421456893321068
 GameObject:
   m_ObjectHideFlags: 0
