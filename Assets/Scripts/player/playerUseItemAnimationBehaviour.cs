@@ -4,23 +4,19 @@ using UnityEngine;
 
 public class playerUseItemAnimationBehaviour : StateMachineBehaviour
 {
-
-    float useTimer = 0.0f;
-    float useThreshold = 2.0f;
+    [Range(0.0f, 1.0f)]
+    public float useThreshold = 0.95f;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         animator.SetBool("UsingItem", true);
-        useTimer = 0.0f;
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        useTimer += Time.deltaTime;
-
-        if (useTimer > useThreshold)
+        if (stateInfo.normalizedTime > useThreshold)
         {
             animator.SetBool("UsingItem", false);
         }

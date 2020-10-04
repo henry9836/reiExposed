@@ -43,8 +43,9 @@ public class fireBallController : MonoBehaviour
 
             if (other.tag == "Player")
             {
+                //If the player isn't blocking
                 if (!other.gameObject.GetComponent<umbrella>().ISBLockjing) {
-                    other.gameObject.GetComponent<PlayerController>().health -= damage;
+                    other.gameObject.GetComponent<PlayerController>().EffectHeatlh(-damage);
                     other.gameObject.GetComponent<umbrella>().cooldown = true;
                 }
 
