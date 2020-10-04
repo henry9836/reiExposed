@@ -24,8 +24,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3058706443526789193}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -94.42, y: 31, z: 15.75}
+  m_LocalRotation: {x: -0, y: -0.7071063, z: -0, w: -0.7071073}
+  m_LocalPosition: {x: -44.5, y: 31, z: 31}
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_Children:
   - {fileID: 5118024214916469180}
@@ -33,7 +33,7 @@ Transform:
   - {fileID: 1656793109269234348}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 450, z: 0}
 --- !u!205 &3058706443526789194
 LODGroup:
   m_ObjectHideFlags: 0
@@ -48,14 +48,16 @@ LODGroup:
   m_AnimateCrossFading: 1
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.19480625
-    fadeTransitionWidth: 0
-    renderers:
-    - renderer: {fileID: 7066518161469495158}
-  - screenRelativeHeight: 0.0075562503
+  - screenRelativeHeight: 0.0774
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 5085718244534703564}
+    - renderer: {fileID: 2557226089992412253}
+  - screenRelativeHeight: 0.0075562503
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 7066518161469495158}
+    - renderer: {fileID: 2557226089992412253}
   m_Enabled: 1
 --- !u!1 &6659136521585901501
 GameObject:
@@ -355,8 +357,8 @@ Light:
   m_Type: 0
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 8445.876
-  m_Range: 6.3
+  m_Intensity: 19303.857
+  m_Range: 3.56
   m_SpotAngle: 179
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -402,7 +404,7 @@ Light:
   m_UseColorTemperature: 1
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
-  m_ShadowRadius: 0
+  m_ShadowRadius: 0.28
   m_ShadowAngle: 0
 --- !u!114 &7785530043351971066
 MonoBehaviour:
@@ -424,12 +426,12 @@ MonoBehaviour:
   m_PointlightHDType: 0
   m_SpotLightShape: 0
   m_AreaLightShape: 0
-  m_Intensity: 47.746483
+  m_Intensity: 5.9
   m_EnableSpotReflector: 0
-  m_LuxAtDistance: 13.3
-  m_InnerSpotPercent: 0
+  m_LuxAtDistance: 57.2
+  m_InnerSpotPercent: 34.3
   m_LightDimmer: 1
-  m_VolumetricDimmer: 1.11
+  m_VolumetricDimmer: 0.93
   m_LightUnit: 2
   m_FadeDistance: 10000
   m_AffectDiffuse: 1
@@ -438,7 +440,7 @@ MonoBehaviour:
   m_ShapeWidth: 0.5
   m_ShapeHeight: 0.5
   m_AspectRatio: 1
-  m_ShapeRadius: 0
+  m_ShapeRadius: 0.28
   m_SoftnessScale: 1
   m_UseCustomSpotLightShadowCone: 0
   m_CustomSpotLightShadowCone: 30
