@@ -6,6 +6,9 @@ using UnityEngine.Rendering.HighDefinition;
 
 public class deleteParticle : MonoBehaviour
 {
+
+    public List<AudioClip> explodeSounds = new List<AudioClip>();
+
     private float timer = 25.0f;
 
     private float effectpersent;
@@ -14,6 +17,8 @@ public class deleteParticle : MonoBehaviour
 
     void Start()
     {
+        GetComponent<AudioSource>().clip = explodeSounds[Random.Range(0, explodeSounds.Count)];
+        GetComponent<AudioSource>().Play();
         effectsref = GameObject.Find("Scene PostProcess");
         StartCoroutine(effects());
     }
