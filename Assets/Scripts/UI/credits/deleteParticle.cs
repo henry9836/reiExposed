@@ -17,6 +17,13 @@ public class deleteParticle : MonoBehaviour
 
     void Start()
     {
+        GameObject manager = GameObject.Find("Canvas");
+
+        if (manager.GetComponent<creditsManager>().score % 10 == 0)
+        {
+            StartCoroutine(manager.GetComponent<creditsManager>().scorepading());
+        }
+
         GetComponent<AudioSource>().clip = explodeSounds[Random.Range(0, explodeSounds.Count)];
         GetComponent<AudioSource>().Play();
         effectsref = GameObject.Find("Scene PostProcess");

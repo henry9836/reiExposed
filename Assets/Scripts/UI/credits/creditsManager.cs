@@ -37,9 +37,11 @@ public class creditsManager : MonoBehaviour
 
     public float speed;
 
+    private NoRepeatSFX nSFX;
 
     void Start()
     {
+        nSFX = GameObject.Find("SFX").GetComponent<NoRepeatSFX>();
         decode(dump);
         StartCoroutine(action());
     }
@@ -169,4 +171,36 @@ public class creditsManager : MonoBehaviour
     }
 
 
+    public IEnumerator scorepading()
+    {
+        speed *= 1.5f;
+        nSFX.Play();
+        Text textref = scoreRef.GetComponent<Text>();
+
+        for (int j = 0; j < 3; j++)
+        {
+            for (float i = 0.0f; i < 1.0f; i += Time.deltaTime * 10.0f)
+            {
+                textref.color = Color.Lerp(Color.white, Color.green, i);
+
+                yield return null;
+            }
+
+            textref.fontSize = 80;
+            textref.color = Color.red;
+
+            for (float i = 1.0f; i > 0.0f; i -= Time.deltaTime * 10.0f)
+            {
+                textref.color = Color.Lerp(Color.white, Color.green, i);
+
+                yield return null;
+            }
+
+            textref.fontSize = 74;
+            textref.color = Color.white;
+        }
+
+        yield return null;
+
+    }
 }

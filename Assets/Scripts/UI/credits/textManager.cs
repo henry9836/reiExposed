@@ -13,7 +13,6 @@ public class textManager : MonoBehaviour
     public GameObject particles;
     public Transform hand;
     public Camera cam;
-    //public AudioSource audio;
     
 
     private void Start()
@@ -42,10 +41,6 @@ public class textManager : MonoBehaviour
         manager.GetComponent<creditsManager>().score += 1;
         manager.GetComponent<creditsManager>().scoreRef.GetComponent<Text>().text = "Score:" + manager.GetComponent<creditsManager>().score.ToString();
 
-        if (manager.GetComponent<creditsManager>().score % 10 == 0)
-        {
-            StartCoroutine(scorepading());
-        }
 
         GameObject tmp = GameObject.Instantiate(particles, Vector3.zero, Quaternion.identity);
         tmp.transform.parent = this.transform.parent;
@@ -58,35 +53,7 @@ public class textManager : MonoBehaviour
 
 
 
-    public IEnumerator scorepading()
-    {
-        manager.GetComponent<creditsManager>().speed *= 1.5f;
-        //GetComponent<AudioSource>().Play();
-        GameObject.Find("SFX").GetComponent<NoRepeatSFX>().Play();
-        Text textref = manager.GetComponent<creditsManager>().scoreRef.GetComponent<Text>();
 
-        for (float i = 0.0f; i < 1.0f; i += Time.deltaTime * 2.0f)
-        {
-            textref.fontSize = (int)Mathf.Lerp(74, 108, i);
-            textref.color = Color.Lerp(Color.white, Color.red, i);
-
-            yield return null;
-        }
-        textref.fontSize = 108;
-        textref.color = Color.red;
-
-        for (float i = 1.0f; i > 0.0f; i -= Time.deltaTime * 2.0f)
-        {
-            textref.fontSize = (int)Mathf.Lerp(74, 108, i);
-            textref.color = Color.Lerp(Color.white, Color.red, i);
-
-            yield return null;
-        }
-        textref.fontSize = 74;
-        textref.color = Color.white;
-
-        yield return null;
-    }
 
 
 
