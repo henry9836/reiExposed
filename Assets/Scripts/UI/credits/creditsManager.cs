@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.AI;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
 
 public class creditsManager : MonoBehaviour
 {
@@ -36,14 +38,61 @@ public class creditsManager : MonoBehaviour
     public float timeBig;
 
     public float speed;
+    public float speeddif;
 
     private NoRepeatSFX nSFX;
+
+    public GameObject ecsref;
+    private float ecsammount = 0.0f;
+    private float esctimer = 0.0f;
+    public float escBlock;
+    private bool esconce = false;
+
+    public GameObject blackfade;
 
     void Start()
     {
         nSFX = GameObject.Find("SFX").GetComponent<NoRepeatSFX>();
         decode(dump);
         StartCoroutine(action());
+    }
+
+    void Update()
+    {
+        esctimer += Time.deltaTime;
+
+        if (esctimer > escBlock)
+        {
+            if (esconce == false)
+            {
+                esconce = true;
+                ecsref.SetActive(true);
+            }
+
+            if (Input.GetKey(KeyCode.Escape))
+            {
+                ecsammount += Time.deltaTime;
+                ecsref.GetComponent<Image>().fillAmount = ecsammount;
+                if (ecsammount >= 1.0f)
+                {
+                    StartCoroutine(returntomenu());
+                }
+            }
+            else
+            {
+                if (ecsammount > 0.0f)
+                {
+                    ecsammount -= Time.deltaTime;
+                    ecsref.GetComponent<Image>().fillAmount = ecsammount;
+                }
+                else if (ecsammount < 0.0f)
+                {
+                    ecsammount = 0.0f;
+                }
+
+            }
+        }
+
     }
 
     public void decode(string all)
@@ -135,7 +184,7 @@ public class creditsManager : MonoBehaviour
             {
                 case textType.TEXT:
                     {
-                        for (float i = 0.0f; i < timeNormal; i += Time.deltaTime)
+                        for (float i = 0.0f; i < timeNormal * (speeddif / speed); i += Time.deltaTime)
                         {
                             yield return new WaitForEndOfFrame();
                         }
@@ -143,7 +192,7 @@ public class creditsManager : MonoBehaviour
                     }
                 case textType.HEADER:
                     {
-                        for (float i = 0.0f; i < timeHeader; i += Time.deltaTime)
+                        for (float i = 0.0f; i < timeHeader * (speeddif / speed); i += Time.deltaTime)
                         {
                             yield return new WaitForEndOfFrame();
                         }
@@ -151,7 +200,7 @@ public class creditsManager : MonoBehaviour
                     }
                 case textType.TITLE:
                     {
-                        for (float i = 0.0f; i < timeTitle; i += Time.deltaTime)
+                        for (float i = 0.0f; i < timeTitle * (speeddif / speed); i += Time.deltaTime)
                         {
                             yield return new WaitForEndOfFrame();
                         }
@@ -167,13 +216,18 @@ public class creditsManager : MonoBehaviour
             yield return null;
         }
 
+        Debug.Log("done");
+
+        yield return new WaitForSeconds(5.0f);
+        StartCoroutine(returntomenu());
+
         yield return null;
     }
 
 
     public IEnumerator scorepading()
     {
-        speed *= 1.5f;
+        speed *= 1.1f;
         nSFX.Play();
         Text textref = scoreRef.GetComponent<Text>();
 
@@ -203,4 +257,21 @@ public class creditsManager : MonoBehaviour
         yield return null;
 
     }
+
+
+    public IEnumerator returntomenu()
+    {
+        for (float i = 0.0f; i < 1.0f; i += Time.deltaTime)
+        {
+            blackfade.GetComponent<Image>().color = Color.Lerp(new Color(0.0f, 0.0f, 0.0f, 0.0f), new Color(0.0f, 0.0f, 0.0f, 1.0f), i);
+            yield return null;
+        }
+
+        blackfade.GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 1.0f);
+        SceneToLoadPersistant.sceneToLoadInto = 2;
+        SceneManager.LoadScene(1);
+        yield return null;
+    }
+
+
 }
