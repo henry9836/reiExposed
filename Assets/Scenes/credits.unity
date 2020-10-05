@@ -427,6 +427,7 @@ GameObject:
   - component: {fileID: 834364621}
   - component: {fileID: 834364623}
   - component: {fileID: 834364622}
+  - component: {fileID: 834364624}
   m_Layer: 5
   m_Name: score
   m_TagString: Untagged
@@ -450,8 +451,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.00020218, y: 461}
-  m_SizeDelta: {x: 585.49976, y: 55.650726}
+  m_AnchoredPosition: {x: 0.00020218, y: 426.8}
+  m_SizeDelta: {x: 585.49976, y: 123.979385}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &834364622
 MonoBehaviour:
@@ -473,12 +474,12 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 48f47daf780f6924eb9187827127efdc, type: 3}
-    m_FontSize: 39
+    m_FontSize: 74
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
-    m_MaxSize: 40
-    m_Alignment: 1
+    m_MinSize: 7
+    m_MaxSize: 108
+    m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -493,6 +494,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 834364620}
   m_CullTransparentMesh: 0
+--- !u!114 &834364624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 834364620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
+  m_EffectDistance: {x: 1, y: 1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &843645538
 GameObject:
   m_ObjectHideFlags: 0
@@ -1281,12 +1297,13 @@ MonoBehaviour:
     type: 3}
   prefabTextTitle: {fileID: 6379976280746477289, guid: effb1a03a9075f444987d2abd3ad0aeb,
     type: 3}
-  dump: H#Team Leader--N#Henry Oliver--H#UI Director--N#Vaughan Webb--N#Xin Yin Lee--H#Creative
-    Director--N#Darren Yu--H#Art Director--N#Darren Yu--H#Lighting and Effects Technical
-    Directors--N#Darren Yu--N#Xin Yin Lee--N#Lucille Liu--T#Production--H#Project
-    Manager--N#Henry Oliver--T#Programming--H#Lead Programmer--N#Henry Oliver--H#Network
-    Programmers--N#Henry Oliver--N#Vaughan Webb--H#Programmers--N#Vaughn Webb--N#Henry
-    Oliver--H#AI Programmer--N#Henry Oliver--H#UI Programmer--N#Vaughan--
+  dump: T#@reiExposed--T#Sleep Deficiency Studio--H#Team Leader--N#Henry Oliver--N#--H#UI
+    Director--N#Vaughan Webb--N#Xin Yin Lee--N#--H#Creative Director--N#Darren Yu--N#--H#Art
+    Director--N#Darren Yu--N#--H#Lighting and Effects Technical Directors--N#--N#Darren
+    Yu--N#Xin Yin Lee--N#Lucille Liu--N#--T#Production--H#Project Manager--N#Henry
+    Oliver--N#--T#Programming--H#Lead Programmer--N#Henry Oliver--N#--H#Network Programmers--N#Henry
+    Oliver--N#Vaughan Webb--N#--H#Programmers--N#Vaughn Webb--N#Henry Oliver--N#--H#AI
+    Programmer--N#Henry Oliver--N#--H#UI Programmer--N#Vaughan--
   textlist: []
   type: 
   score: 0

@@ -29,6 +29,15 @@ public class creditsManager : MonoBehaviour
     public int score = 0;
     public GameObject scoreRef;
 
+
+    public float timeNormal;
+    public float timeHeader;
+    public float timeTitle;
+    public float timeBig;
+
+    public float speed;
+
+
     void Start()
     {
         decode(dump);
@@ -124,7 +133,7 @@ public class creditsManager : MonoBehaviour
             {
                 case textType.TEXT:
                     {
-                        for (float i = 0.0f; i < 1.5f; i += Time.deltaTime)
+                        for (float i = 0.0f; i < timeNormal; i += Time.deltaTime)
                         {
                             yield return new WaitForEndOfFrame();
                         }
@@ -132,7 +141,7 @@ public class creditsManager : MonoBehaviour
                     }
                 case textType.HEADER:
                     {
-                        for (float i = 0.0f; i < 2.0f; i += Time.deltaTime)
+                        for (float i = 0.0f; i < timeHeader; i += Time.deltaTime)
                         {
                             yield return new WaitForEndOfFrame();
                         }
@@ -140,7 +149,7 @@ public class creditsManager : MonoBehaviour
                     }
                 case textType.TITLE:
                     {
-                        for (float i = 0.0f; i < 3.5f; i += Time.deltaTime)
+                        for (float i = 0.0f; i < timeTitle; i += Time.deltaTime)
                         {
                             yield return new WaitForEndOfFrame();
                         }
