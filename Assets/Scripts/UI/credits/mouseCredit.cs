@@ -23,10 +23,14 @@ public class mouseCredit : MonoBehaviour
     {
         Vector2 mousePos = Input.mousePosition;
 
-        Vector3 result = cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, cam.nearClipPlane));
+        Vector3 result = cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, 6.0f));
 
-        mouseCursor.transform.position = new Vector3(result.x, result.y, 97.0f);
+        mouseCursor.transform.position = new Vector3(result.x, result.y, 6.0f);
 
+        if (Input.GetMouseButton(0))
+        {
+            Debug.Log($"MP: {Input.mousePosition} | GP: {mouseCursor.transform.position}");
+        }
 
     }
 
