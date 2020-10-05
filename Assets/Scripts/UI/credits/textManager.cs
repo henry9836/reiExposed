@@ -61,7 +61,8 @@ public class textManager : MonoBehaviour
     public IEnumerator scorepading()
     {
         manager.GetComponent<creditsManager>().speed *= 1.5f;
-        //audio.Play();
+        //GetComponent<AudioSource>().Play();
+        GameObject.Find("SFX").GetComponent<NoRepeatSFX>().Play();
         Text textref = manager.GetComponent<creditsManager>().scoreRef.GetComponent<Text>();
 
         for (float i = 0.0f; i < 1.0f; i += Time.deltaTime * 2.0f)
