@@ -49,7 +49,7 @@ public class AIVFXEvent : StateMachineBehaviour
     {
         if (vfxObj != null)
         {
-            vfxObj.StopAll();
+            vfxObj.Stop();
         }
     }
 
