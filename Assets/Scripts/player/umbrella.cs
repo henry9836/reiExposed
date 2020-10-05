@@ -24,8 +24,9 @@ public class umbrella : MonoBehaviour
     public GameObject umbeaalBone;
     public GameObject boss;
     public AudioSource audio;
-    public GameObject VFX;
     public GameObject shotUI;
+    public MultipleVFXHandler aimVFX;
+    public ParticleSystem shootVFX;
     public bool phoneLock = false;
     [HideInInspector]
     public List<GameObject> targetsTouched = new List<GameObject>();
@@ -161,10 +162,6 @@ public class umbrella : MonoBehaviour
             }
         }
 
-        VFX.GetComponent<VisualEffect>().SetFloat("timer", 0.0f);
-
-
-
         //for blocking / aiming down sight
         if (!cooldown && !phoneLock && (phoneTimer > phoneThreshold))
         {
@@ -181,6 +178,7 @@ public class umbrella : MonoBehaviour
                 }
                 else
                 {
+                    aimVFX.Stop();
                     movement.strafemode = false;
                     shotUI.SetActive(false);
                     crosshair.transform.GetChild(0).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
@@ -192,6 +190,7 @@ public class umbrella : MonoBehaviour
             }
             else
             {
+                aimVFX.Stop();
                 movement.strafemode = false;
                 shotUI.SetActive(false);
                 crosshair.transform.GetChild(0).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
@@ -205,6 +204,7 @@ public class umbrella : MonoBehaviour
         }
         else
         {
+            aimVFX.Stop();
             shotUI.SetActive(false);
             crosshair.transform.GetChild(0).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
             crosshair.transform.GetChild(1).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
@@ -237,6 +237,8 @@ public class umbrella : MonoBehaviour
     //currently blocking
     void blocking()
     {
+        aimVFX.Play();
+
         movement.strafemode = true;
 
         RaycastHit hit;
@@ -283,7 +285,6 @@ public class umbrella : MonoBehaviour
     void firemode()
     {
         latetest = true;
-
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
@@ -341,6 +342,7 @@ public class umbrella : MonoBehaviour
     //shoot
     void bang()
     {
+        shootVFX.Play();
         //shake
         Vector3 passTargetPos = new Vector3(0.0f, 0.1f, -0.3f);
         float passOverallSpeed = 3.0f;
