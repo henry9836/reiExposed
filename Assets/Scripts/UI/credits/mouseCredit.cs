@@ -13,6 +13,7 @@ public class mouseCredit : MonoBehaviour
 
     RectTransform rect;
     public float zPos = 0.0f;
+    public AudioSource audio;
 
     //float xOff = 0.0f;
     //float yOff = 0.0f;
@@ -63,6 +64,11 @@ public class mouseCredit : MonoBehaviour
         {
             //Debug.Log($"MP: {Input.mousePosition} | GP: {mouseCursor.transform.position} | VP: {cam.ScreenToViewportPoint(Input.mousePosition)} ||| {xOff}:{yOff}");
             mouseCursor.transform.localPosition += new Vector3(0.0f, 0.0f, 1.0f) * 10.0f;
+            //Play the tap sfx only once
+            if (Input.GetMouseButtonDown(0))
+            {
+                audio.Play();
+            }
         }
 
     }
