@@ -39,7 +39,7 @@ public class textManager : MonoBehaviour
         Vector3 cursorOnCanvas = cam.ScreenToViewportPoint(Input.mousePosition);
 
         manager.GetComponent<creditsManager>().score += 1;
-        manager.GetComponent<creditsManager>().scoreRef.GetComponent<Text>().text = "Score:" + manager.GetComponent<creditsManager>().score.ToString();
+        manager.GetComponent<creditsManager>().scoreRef.GetComponent<Text>().text = "Score: " + manager.GetComponent<creditsManager>().score.ToString();
 
 
         GameObject tmp = GameObject.Instantiate(particles, Vector3.zero, Quaternion.identity);
