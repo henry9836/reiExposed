@@ -1,29 +1,35 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+
 
 public class mouseCredit : MonoBehaviour
 {
     public Canvas parentCanvas;
-    public Image mouseCursor;
+    public GameObject mouseCursor;
+    public Camera cam;
+
 
     public void Start()
     {
         Cursor.visible = false;
+        cam = GameObject.Find("Camera").GetComponent<Camera>();
     }
 
 
     public void Update()
     {
-        Vector2 movePos;
+        Vector2 mousePos = Input.mousePosition;
 
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(parentCanvas.transform as RectTransform, Input.mousePosition, parentCanvas.worldCamera, out movePos);
+        Vector3 result = cam.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, cam.nearClipPlane));
 
-        Vector3 mousePos = parentCanvas.transform.TransformPoint(movePos);
+        mouseCursor.transform.position = new Vector3(result.x, result.y, 97.0f);
 
-        mouseCursor.transform.position = mousePos;
 
-        transform.position = mousePos;
     }
+
+
+
 }

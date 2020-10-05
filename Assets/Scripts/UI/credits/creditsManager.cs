@@ -1,18 +1,87 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.AI;
 using UnityEngine.UI;
 
 public class creditsManager : MonoBehaviour
 {
+    public enum textType
+    { 
+        TEXT,
+        HEADER,
+        TITLE,
+    }
+
     public GameObject textParent;
     public GameObject prefabText;
-    public List<string> textlist;
+    public GameObject prefabTextHeader;
+    public GameObject prefabTextTitle;
 
+    [TextArea(15, 20)]
+    public string dump;
+
+    [HideInInspector]
+    public List<string> textlist;
+    [HideInInspector]
+    public List<textType> type;
+
+    public int score = 0;
+    public GameObject scoreRef;
 
     void Start()
     {
+        decode(dump);
         StartCoroutine(action());
+    }
+
+    public void decode(string all)
+    {
+        List<string> decoding = new List<string>() { };
+
+        while (true)
+        {
+            if (all.IndexOf("--") == -1)
+            {
+                break;
+            }
+            else
+            {
+                decoding.Add(all.Substring(0, all.IndexOf("--")));
+                all = all.Substring(all.IndexOf("--") + 2);
+            }
+        }
+
+        for (int i = 0; i < decoding.Count; i++)
+        {
+            string ty = decoding[i].Substring(0, 1);
+            textlist.Add(decoding[i].Substring(2, decoding[i].Length - 2));
+
+            Debug.Log(ty + "  " + textlist[i]);
+
+            switch (ty)
+            {
+                case "T":
+                    {
+                        type.Add(textType.TITLE);
+                        break;
+                    }
+                case "H":
+                    {
+                        type.Add(textType.HEADER);
+                        break;
+                    }
+                case "N":
+                    {
+                        type.Add(textType.TEXT);
+                        break;
+                    }
+                default:
+                    {
+                        break;
+                    }
+            }
+        }
     }
 
 
@@ -20,22 +89,75 @@ public class creditsManager : MonoBehaviour
     {
         for (int j = 0; j < textlist.Count; j++)
         {
-            for (float i = 0.0f; i < 2.0f; i += Time.deltaTime)
-            {
+            GameObject tmp = null;
 
-                yield return new WaitForEndOfFrame();
+            switch (type[j])
+            {
+                case textType.TEXT:
+                    {
+                        tmp = GameObject.Instantiate(prefabText);
+                        break;
+                    }
+                case textType.HEADER:
+                    {
+                        tmp = GameObject.Instantiate(prefabTextHeader);
+                        break;
+                    }
+                case textType.TITLE:
+                    {
+                        tmp = GameObject.Instantiate(prefabTextTitle);
+                        break;
+                    }
+                default:
+                    {
+                        Debug.Log("somthing wrogn with text type");
+                        break;
+                    }
             }
 
-            GameObject tmp = GameObject.Instantiate(prefabText);
             tmp.transform.SetParent(textParent.transform);
             tmp.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
             tmp.transform.localPosition = new Vector3(0.0f, 0.0f, 0.0f);
             tmp.GetComponent<Text>().text = textlist[j];
 
+            switch (type[j])
+            {
+                case textType.TEXT:
+                    {
+                        for (float i = 0.0f; i < 1.5f; i += Time.deltaTime)
+                        {
+                            yield return new WaitForEndOfFrame();
+                        }
+                        break;
+                    }
+                case textType.HEADER:
+                    {
+                        for (float i = 0.0f; i < 2.0f; i += Time.deltaTime)
+                        {
+                            yield return new WaitForEndOfFrame();
+                        }
+                        break;
+                    }
+                case textType.TITLE:
+                    {
+                        for (float i = 0.0f; i < 3.5f; i += Time.deltaTime)
+                        {
+                            yield return new WaitForEndOfFrame();
+                        }
+                        break;
+                    }
+                default:
+                    {
+                        break;
+                    }
+            }
+
+
             yield return null;
         }
 
-
         yield return null;
     }
+
+
 }
