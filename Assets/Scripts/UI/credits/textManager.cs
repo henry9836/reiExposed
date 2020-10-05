@@ -13,6 +13,9 @@ public class textManager : MonoBehaviour
     public Transform hand;
     public Camera cam;
 
+
+    
+
     private void Start()
     {
         manager = GameObject.Find("Canvas");
@@ -33,15 +36,18 @@ public class textManager : MonoBehaviour
 
         manager.GetComponent<creditsManager>().score += 1;
         manager.GetComponent<creditsManager>().scoreRef.GetComponent<Text>().text = "Score:" + manager.GetComponent<creditsManager>().score.ToString();
-        //GameObject tmp = GameObject.Instantiate(particles, this.transform.position, Quaternion.identity);
         GameObject tmp = GameObject.Instantiate(particles, Vector3.zero, Quaternion.identity);
         tmp.transform.parent = this.transform.parent;
-        //tmp.transform.parent = null;
         tmp.transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
         tmp.transform.position = Vector3.zero;
-        tmp.transform.localPosition = new Vector3((manager.GetComponent<RectTransform>().rect.width * (cursorOnCanvas.x - 0.5f)), manager.GetComponent<RectTransform>().rect.height * (cursorOnCanvas.y + 0.07f), this.transform.position.z);
+        tmp.transform.localPosition = new Vector3((manager.GetComponent<RectTransform>().rect.width * (cursorOnCanvas.x - 0.52f)), manager.GetComponent<RectTransform>().rect.height * (cursorOnCanvas.y + 0.07f), this.transform.position.z);
+
         Destroy(this.gameObject);
     }
+
+
+
+
 
 
 
