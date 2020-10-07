@@ -72,38 +72,42 @@ public class AIChase : StateMachineBehaviour
             wrongAttackChosenTimer = 0.0f;
         }
 
-        //If we are too far from the player to attack go to player
-        if (Vector3.Distance(ai.transform.position, player.position) > attack.rangeForAttack.y)
+        //If we can see the player
+        if (tracker.canSeePlayer())
         {
-            movement.goToPosition(getBestPositionForAttack());
-            animator.SetBool("Attacking", false);
-        }
-        //Too close to attack pick new attack!
-        //else if (Vector3.Distance(ai.transform.position, player.position) < attack.rangeForAttack.x)
-        //{
-        //    attacked = false;
-        //    movement.stopMovement();
-        //    //ai.selectAttack();
-        //    attack = ai.getSelectedAttack();
-        //    animator.SetBool("Attacking", false);
-        //}
-        //Close enough to attack
-        else
-        {
-            //Go to the in between location for attack
-            //movement.goToPosition(getBestPositionForAttack());
-            //Can we see the player?
-            if (tracker.canSeePlayer()) {
-
+            //If we are too far from the player to attack go to player
+            if ((Vector3.Distance(ai.transform.position, player.position) > attack.rangeForAttack.y))
+            {
+                movement.setOverride(AIMovement.OVERRIDE.NO_OVERRIDE);
+                movement.goToPosition(getBestPositionForAttack());
+                animator.SetBool("Attacking", false);
+            }
+            //Too close to attack pick new attack!
+            else if (Vector3.Distance(ai.transform.position, player.position) < attack.rangeForAttack.x)
+            {
+                movement.setOverride(AIMovement.OVERRIDE.NO_OVERRIDE);
+                attacked = false;
+                movement.stopMovement();
+                ai.selectAttack();
+                attack = ai.getSelectedAttack();
+                animator.SetBool("Attacking", false);
+            }
+            //Close enough to attack
+            else
+            {
                 //If there is enough stamina
-                if (ai.stamina >= attack.statminaNeeded) {
+                if (ai.stamina >= attack.statminaNeeded)
+                {
                     //Do we need to face player to attack, if so do we use an override if so 
                     //then compare to override other if we are using an overrride use default 
                     //settings or if we don't care about facing the player
                     if ((attack.mustFacePlayer && tracker.isFacingPlayer() && !attack.overrideTrackingVisionCone) || !attack.mustFacePlayer || (attack.mustFacePlayer && tracker.isFacingPlayer(attack.facePlayerThreshold) && attack.overrideTrackingVisionCone))
                     {
                         //ATTACK
-                        movement.stopMovement();
+
+                        //movement.stopMovement();
+                        movement.setOverride(AIMovement.OVERRIDE.MOVE_OVERRIDE);
+
                         if (!attacked)
                         {
                             ai.stamina -= attack.statminaNeeded;
@@ -114,10 +118,17 @@ public class AIChase : StateMachineBehaviour
                     }
                     else
                     {
+                        //If we cannot see the player go to the last spot we saw them
+                        movement.setOverride(AIMovement.OVERRIDE.NO_OVERRIDE);
                         movement.goToPosition(tracker.lastSeenPos);
                     }
                 }
             }
+        }
+        //If we cannot see the player go to the last spot we saw them (done in the movement script)
+        else
+        {
+            movement.setOverride(AIMovement.OVERRIDE.NO_OVERRIDE);
         }
     }
 

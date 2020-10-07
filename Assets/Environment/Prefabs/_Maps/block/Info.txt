@@ -1,0 +1,20 @@
+Block prefab blocks players path, can be unlocked by photographing the back of it
+
+BLOCKED:
+Starts out like this. uses redMaterial for the sides and the backDecal object is an UNLOCK prompt.
+
+Also, particleStop is playing (the particles act as the wall collider that actually stops the player)
+
+UNLOCKING:
+When the player photos the back, the prefab in general turns green and plays an animation.
+
+redMaterial becomes greenMaterial (sides turning green)
+particleStop becomes particleUnlocked (particle turning green)
+
+The backDecal should play a material called Unlocked, you can find it in the same folder as the rest of the materials for the decals. 
+It has a GIF, though idk how to play it. Theres also a MOV version in the same folder as the GIF source if that helps.
+
+After the GIF finishes playing, the decals and particles are permanently disabled, the player can pass through
+
+UNLOCKED:
+Permanent state after being unlocked. Only the sides are left, as greenMaterial.

@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 2115222240}
   - component: {fileID: 1808168116}
   m_Layer: 16
-  m_Name: Canvas
+  m_Name: Health
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -710,13 +710,15 @@ GameObject:
   - component: {fileID: 7594778056846417552}
   - component: {fileID: 5955476373735586614}
   - component: {fileID: 1082281662348365926}
+  - component: {fileID: 6992123814082180060}
+  - component: {fileID: 7517250343826841489}
   - component: {fileID: 2748742149242710479}
   - component: {fileID: 603137669717844803}
   - component: {fileID: 8675320988976945444}
-  - component: {fileID: 6992123814082180060}
   - component: {fileID: 3265642449226392436}
   - component: {fileID: 1073530266}
   - component: {fileID: 5065461637857560352}
+  - component: {fileID: 6304462207376808971}
   m_Layer: 16
   m_Name: Myth
   m_TagString: Myth
@@ -1014,6 +1016,72 @@ MonoBehaviour:
   allowedModeEight: 0
   allowedModeNine: 0
   allowedModeTen: 0
+--- !u!114 &6992123814082180060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 986330608656297324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 084cb613cb9443d4a8936dade09221ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackName: Ranged Attack
+  damage: 5
+  statminaNeeded: 5
+  damageOnlyOnce: 1
+  bodyPartsUsedInAttack: 0
+  mustFacePlayer: 1
+  overrideTrackingVisionCone: 0
+  facePlayerThreshold: 0.75
+  rangeForAttack: {x: 10, y: 20}
+  triggerName: RangeAttack
+  effect: 1
+  allowedModeOne: 1
+  allowedModeTwo: 0
+  allowedModeThree: 0
+  allowedModeFour: 0
+  allowedModeFive: 0
+  allowedModeSix: 0
+  allowedModeSeven: 0
+  allowedModeEight: 0
+  allowedModeNine: 0
+  allowedModeTen: 0
+--- !u!114 &7517250343826841489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 986330608656297324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 084cb613cb9443d4a8936dade09221ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackName: Block
+  damage: 0
+  statminaNeeded: 5
+  damageOnlyOnce: 1
+  bodyPartsUsedInAttack: 7
+  mustFacePlayer: 1
+  overrideTrackingVisionCone: 0
+  facePlayerThreshold: 0.75
+  rangeForAttack: {x: 0, y: 10}
+  triggerName: Block
+  effect: 0
+  allowedModeOne: 1
+  allowedModeTwo: 1
+  allowedModeThree: 0
+  allowedModeFour: 0
+  allowedModeFive: 0
+  allowedModeSix: 0
+  allowedModeSeven: 0
+  allowedModeEight: 0
+  allowedModeNine: 0
+  allowedModeTen: 0
 --- !u!136 &2748742149242710479
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1058,39 +1126,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &6992123814082180060
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 986330608656297324}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 084cb613cb9443d4a8936dade09221ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attackName: Ranged Attack
-  damage: 5
-  statminaNeeded: 5
-  damageOnlyOnce: 1
-  bodyPartsUsedInAttack: 0
-  mustFacePlayer: 1
-  overrideTrackingVisionCone: 0
-  facePlayerThreshold: 0.75
-  rangeForAttack: {x: 10, y: 20}
-  triggerName: RangeAttack
-  effect: 1
-  allowedModeOne: 1
-  allowedModeTwo: 0
-  allowedModeThree: 0
-  allowedModeFour: 0
-  allowedModeFive: 0
-  allowedModeSix: 0
-  allowedModeSeven: 0
-  allowedModeEight: 0
-  allowedModeNine: 0
-  allowedModeTen: 0
 --- !u!114 &3265642449226392436
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1222,6 +1257,21 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &6304462207376808971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 986330608656297324}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d757b79b764f4924091cda3812ad9466, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debugMode: 1
+  spawnAbove: 3.5
+  debugUI: {fileID: 627260628027668403, guid: d9cd73732df081141bb0702898d75add, type: 3}
 --- !u!1 &1129430613784877214
 GameObject:
   m_ObjectHideFlags: 0
@@ -2851,6 +2901,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 5
   damageOnce: 0
+  effect: 1
 --- !u!1 &4971228206001581575
 GameObject:
   m_ObjectHideFlags: 0
@@ -2942,6 +2993,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 5
   damageOnce: 0
+  effect: 1
 --- !u!1 &4998534906245304472
 GameObject:
   m_ObjectHideFlags: 0
