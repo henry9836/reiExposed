@@ -7,15 +7,26 @@ public class playerStunBehaviour : StateMachineBehaviour
     [Range(0.0f, 1.0f)]
     public float exitTrigger = 0.95f;
 
+    umbrella umbrella;
+
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {;
+    {
+
+        if (umbrella == null)
+        {
+            umbrella = animator.gameObject.GetComponent<umbrella>();
+        }
+
         animator.ResetTrigger("KnockDown");
         animator.ResetTrigger("Stun");
         animator.ResetTrigger("KnockBack");
         animator.SetBool("Stunned", true);
 
         animator.SetInteger("StunToUse", Random.Range(0, 3));
+
+        //Disable our hitbox
+        umbrella.Hitbox(false);
 
     }
 

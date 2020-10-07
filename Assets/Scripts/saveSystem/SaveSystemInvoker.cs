@@ -23,7 +23,6 @@ public class SaveSystemInvoker : MonoBehaviour
             SaveSystemController.Reset();
         }
 #endif
-        Debug.Log($"{SaveSystemController.loadedValues} && {!checkedHash} && {(SceneManager.GetActiveScene().buildIndex == 0)}");
 
         //Ready to interface with and on the main menu
         if (SaveSystemController.loadedValues && !checkedHash && (SceneManager.GetActiveScene().buildIndex == 0))

@@ -36,7 +36,8 @@ public class AITracker : MonoBehaviour
     public float informOverrideTime = 3.0f;
     private Animator animator;
     private AIInformer informer;
-
+    private bool lostPlayer;
+    private bool aniatorCalled;
 
     public Vector3 estimateNewPosition()
     {
@@ -83,6 +84,7 @@ public class AITracker : MonoBehaviour
     {
         ai = GetComponent<AIObject>();
         player = ai.player;
+        lostPlayer = false;
 
         if (target == null)
         {
@@ -117,6 +119,8 @@ public class AITracker : MonoBehaviour
             animator.SetBool("CanSeePlayer", true);
 
             //Reset
+            lostPlayer = false;
+            aniatorCalled = false;
             lostPlayerTimer = 0.0f;
             animator.SetBool("LosingPlayer", false);
             animator.ResetTrigger("LostPlayer");
@@ -125,14 +129,22 @@ public class AITracker : MonoBehaviour
             informer.Inform();
         }
         //Losing Player
-        else if (lostPlayerTimer > 1.0f)
+        else if (lostPlayerTimer > 1.0f && !lostPlayer)
         {
+            //Trick seek to start
+            if (!aniatorCalled)
+            {
+                animator.SetTrigger("Inform");
+                aniatorCalled = true;
+            }
+
             animator.SetBool("LosingPlayer", true);
             animator.SetBool("CanSeePlayer", false);
 
             if (lostPlayerTimer >= timeTillLostPlayer)
             {
                 animator.SetTrigger("LostPlayer");
+                lostPlayer = true;
             }
 
         }
