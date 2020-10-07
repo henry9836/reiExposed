@@ -43,7 +43,6 @@ public class mythHPbar : MonoBehaviour
         {
             float dist = (startfadingdist - Vector3.Distance(player.transform.position, this.gameObject.transform.position)) / (finfadingdist - startfadingdist);
             float opacity = Mathf.Clamp(dist, 0.0f, 1.0f);
-            Debug.Log(opacity);
 
 
             foreground.color = new Color(foreground.color.r, foreground.color.g, foreground.color.b, opacity);
