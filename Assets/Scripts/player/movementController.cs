@@ -51,6 +51,7 @@ public class movementController : MonoBehaviour
 
     //Sounds
     public List<AudioClip> dashSounds = new List<AudioClip>();
+    public List<AudioClip> Footsteps = new List<AudioClip>();
     private AudioSource audio;
 
     private PlayerController pc;
@@ -359,6 +360,10 @@ public class movementController : MonoBehaviour
                 }
 
                 animator.SetBool("Running", true);
+                if (!audio.isPlaying)
+                {
+                    audio.PlayOneShot(Footsteps[Random.Range(0, Footsteps.Count)]);
+                }
             }
         }
 
