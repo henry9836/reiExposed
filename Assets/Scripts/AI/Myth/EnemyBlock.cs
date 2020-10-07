@@ -7,8 +7,11 @@ public class EnemyBlock : StateMachineBehaviour
 
     Transform player;
     MythCollisionHandler collHandler;
+    AIMovement movementCtrl;
+    AITracker tracker;
 
-    float fullBlockTime = 0.5f;
+    public Vector2 fullBlockTimeRange = new Vector2(1.0f, 10.0f);
+    float fullBlockTime = 1.0f;
     float blockTimeout = 1.0f;
     float blocktimer = 0.0f;
 
@@ -18,6 +21,8 @@ public class EnemyBlock : StateMachineBehaviour
         if (player == null)
         {
             player = GameObject.FindGameObjectWithTag("Player").transform;
+            movementCtrl = animator.gameObject.GetComponent<AIMovement>();
+            tracker = animator.gameObject.GetComponent<AITracker>();
         }
 
         animator.gameObject.GetComponent<AIMovement>().stopMovement();
@@ -25,6 +30,12 @@ public class EnemyBlock : StateMachineBehaviour
         animator.ResetTrigger("Block");
 
         collHandler = animator.gameObject.GetComponent<MythCollisionHandler>();
+
+        fullBlockTime = Random.Range(fullBlockTimeRange.x, fullBlockTimeRange.y);
+
+        movementCtrl.setOverride(AIMovement.OVERRIDE.NO_OVERRIDE);
+        movementCtrl.setOverride(AIMovement.OVERRIDE.MOVE_OVERRIDE);
+
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -32,15 +43,18 @@ public class EnemyBlock : StateMachineBehaviour
     {
         //Handle Timeout
         blocktimer += Time.deltaTime;
-        if (blockTimeout < blocktimer)
+
+        //If we are not facing the player turn to face player
+        if (!tracker.isFacingPlayer())
         {
-            animator.ResetTrigger("Block");
-            animator.SetBool("Blocking", false);
+            movementCtrl.goToPosition(tracker.lastSeenPos);
         }
 
         if (blocktimer > fullBlockTime)
         {
             collHandler.fullyBlocking = true;
+            animator.ResetTrigger("Block");
+            animator.SetBool("Blocking", false);
         }
 
         //If player is away stop blocking
@@ -57,6 +71,7 @@ public class EnemyBlock : StateMachineBehaviour
         collHandler.fullyBlocking = false;
         animator.SetBool("Blocking", false);
         blocktimer = 0.0f;
+        movementCtrl.setOverride(AIMovement.OVERRIDE.NO_OVERRIDE);
     }
 
 }
