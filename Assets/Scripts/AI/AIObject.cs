@@ -79,25 +79,32 @@ public class AIObject : MonoBehaviour
                 //We are within range for an attack
                 if (attacks[i].rangeForAttack.y >= distance)
                 {
-                    //If we have enough stamina for the attack
-                    if (attacks[i].statminaNeeded <= stamina)
-                    {
-                        //If we didn't use this attack before
-                        if (i != lastUsedAttack)
+                    //If we are not too close for the attack
+                    if (attacks[i].rangeForAttack.x <= distance) {
+                        //If we have enough stamina for the attack
+                        if (attacks[i].statminaNeeded <= stamina)
                         {
-                            validAttacks.Add(i);
+                            //If we didn't use this attack before
+                            if (i != lastUsedAttack)
+                            {
+                                validAttacks.Add(i);
+                                continue;
+                            }
                         }
                     }
                 }
+
+                //FALLBACK IF WE COULDN'T ATTACK, FINDS THE BEST POSSIBLE ATTACK ACCORDING TO OUR DISTANCE
+
                 //record attack if it closer than the last closest attack
-                else if (distance - attacks[i].rangeForAttack.y < closestAttack)
+                if (Mathf.Abs(attacks[i].rangeForAttack.y - distance) < closestAttack)
                 {   
                     //If we have enough stamina for the attack
                     if (attacks[i].statminaNeeded <= stamina)
                     {
                         if (i != lastUsedAttack)
                         {
-                            closestAttack = distance - attacks[i].rangeForAttack.y;
+                            closestAttack = Mathf.Abs(attacks[i].rangeForAttack.y - distance);
                             fallbackAttack = i;
                         }
                     }

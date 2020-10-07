@@ -46,7 +46,9 @@ public class EnemyBlock : StateMachineBehaviour
         //If we are not facing the player turn to face player
         if (!tracker.isFacingPlayer())
         {
-            movementCtrl.goToPosition(tracker.lastSeenPos);
+            //movementCtrl.goToPosition(tracker.lastSeenPos);
+            animator.ResetTrigger("Block");
+            animator.SetBool("Blocking", false);
         }
 
         if (blocktimer > fullBlockTime)

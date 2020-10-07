@@ -61,8 +61,6 @@ public class umbrella : MonoBehaviour
     private float timerToHeavy = 0.0f;
     private float phoneTimer = 0.0f;
     private float phoneThreshold = 0.25f;
-
-
     public void clearHits()
     {
         targetsTouched.Clear();

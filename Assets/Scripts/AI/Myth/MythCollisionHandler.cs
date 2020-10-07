@@ -97,6 +97,9 @@ public class MythCollisionHandler : AICollisionHandler
                         //Add onto player known attack
                         playerUmbrella.targetsTouched.Add(gameObject);
 
+                        //We now know the player's postion so inform tracker
+                        tracker.lastSeenPos = playerTransform.position;
+
                         //Visible feedback
                         Instantiate(hitVFX, transform.position, Quaternion.identity);
                         animator.SetTrigger("Stun");
