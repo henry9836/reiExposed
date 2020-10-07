@@ -16,34 +16,10 @@ public class singleItem
 public class Items : MonoBehaviour
 {
     public List<Sprite> images = new List<Sprite> { };
+    public List<groupPartcle> particleGroups = new List<groupPartcle>();
+
     //on biginvin
     public slot slotsref;
-
-
-    //public enum AllItems
-    //{ 
-    //    NONE,
-    //    PLUSSPEED,
-    //    MINUSSPEED,
-    //    PLUSHEALH,
-    //    MINUSHEALTH,
-    //};
-
-
-    //BAD NAMING...
-    //public enum AllItems
-    //{
-    //    NONE,
-    //    DUCK,
-    //    GOOD5HP,
-    //    GOOD10HP,
-    //    DOUBLEDAMAGE,
-    //    DOUBLESTAMINAREGEN,
-    //    MOVESPEED1POINT5,
-    //    MOVESPEED0POINT75,
-    //    LOSE5HP,
-    //};
-
 
     public enum AllItems
     {
@@ -75,20 +51,9 @@ public class Items : MonoBehaviour
             biginvin.Add(null);
         }
 
-        //Debug.Log(SaveSystemController.saveInfomation.Count);
-
         StartCoroutine(loaditems());
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         movement = player.GetComponent<movementController>();
-        ////////////////////demo/////////////////////
-        //for (int i = 0; i < 52; i++)
-        //{
-        //    gaineditem(AllItems.PLUSHEALH);
-        //}
-        //removeitembiginvin(0, false);
-        //gaineditem(AllItems.PLUSSPEED);
-        //slotsref.itemchange();
-
     }
 
     IEnumerator loaditems() {
@@ -209,16 +174,10 @@ public class Items : MonoBehaviour
         {
             //set equipped pos
             biginvin[biginvinpos].equippedpos = equipped.Count;
-            //Redudent
-            //tmp.equippedpos = equipped.Count;
             biginvin[biginvinpos].equipped = true;
-            //Redudent
-            //tmp.equipped = true;
-            //equipped.Add(tmp);
             equipped.Add(biginvin[biginvinpos]);
 
             SaveSystemController.updateValue((int)biginvin[biginvinpos].itemtype + "[ITEM]" + biginvin[biginvinpos].biginvinpos, biginvin[biginvinpos].biginvinpos + "$" + biginvin[biginvinpos].equippedpos, true);
-            //SaveSystemController.updateValue((int)tmp.itemtype + "[ITEM]" + tmp.biginvinpos, tmp.biginvinpos + "$" + tmp.equippedpos);
 
             SaveSystemController.saveDataToDisk();
         }
@@ -240,11 +199,6 @@ public class Items : MonoBehaviour
         {
             equipped[i].equippedpos--;
         }
-
-        //for (int i = test; i < equipped.Count - 1; i++)
-        //{
-        //    biginvin[equipped[i].biginvinpos].equippedpos--;
-        //}
 
         for (int i = 0; i < SaveSystemController.saveInfomation.Count; i++)
         {
@@ -303,47 +257,61 @@ public class Items : MonoBehaviour
     //Applies a random effect
     void DuckBehaviour()
     {
-        int coin = 1;
+        //Get ampiltude to use
+        float amp = Random.Range(-0.3f, 0.3f);
 
-        if (Random.Range(0, 2) == 1)
-        {
-            coin = -1;
-        }
+        //Get a random time to apply effect
+        float time = Random.Range(10.0f, 45.0f);
 
+        //pick a random effect
         switch (Random.Range(1, 5))
         {
             case 1: //Random Health Effect
                 {
-                    HealthEffector(Random.Range(-0.25f, 0.25f));
-                    Debug.Log("🦆 Health");
+                    //VFX
+                    if (amp > 25.0f)
+                    {
+                        particleGroups[(int)AllItems.HEALTHBUFF].Play();
+                    }
+                    else if(amp > 0.0f)
+                    {
+                        particleGroups[(int)AllItems.HEALTHBUFF_SMALL].Play();
+                    }
+                    else
+                    {
+                        particleGroups[(int)AllItems.HEALTHDEBUFF_SMALL].Play();
+                    }
+
+                    HealthEffector(amp);
+                    Debug.Log("[DUCK] Health");
                     break;
                 }
             case 2: //Random Damage Applier
                 {
-                    StartCoroutine(ApplyTimedEffect(AllItems.DAMAGEBUFF, Random.Range(0.15f, 0.25f) * coin, Random.Range(3.0f, 6.0f)));
-                    Debug.Log("🦆 Damage");
+                    StartCoroutine(ApplyTimedEffect(AllItems.DAMAGEBUFF, amp, time));
+                    Debug.Log("[DUCK] Damage");
                     break;
                 }
             case 3: //Random Stamina Applier
                 {
-                    StartCoroutine(ApplyTimedEffect(AllItems.STAMINABUFF, Random.Range(0.15f, 0.25f) * coin, Random.Range(3.0f, 6.0f)));
-                    Debug.Log("🦆 Stamina");
+                    StartCoroutine(ApplyTimedEffect(AllItems.STAMINABUFF, amp, time));
+                    Debug.Log("[DUCK] Stamina");
                     break;
                 }
             case 4: //Movement Stamina Applier
                 {
-                    StartCoroutine(ApplyTimedEffect(AllItems.MOVEBUFF, Random.Range(0.15f, 0.25f) * coin, Random.Range(3.0f, 6.0f)));
-                    Debug.Log("🦆 Movement");
+                    StartCoroutine(ApplyTimedEffect(AllItems.MOVEBUFF, amp, time));
+                    Debug.Log("[DUCK] Movement");
                     break;
                 }
             default:
                 {
-                    Debug.LogWarning("🦆 No Duck Behaviour Set up");
+                    Debug.LogWarning("[DUCK] No Duck Behaviour Set up");
                     break;
                 }
         }
     }
-
+    
     //Timed effects
     IEnumerator ApplyTimedEffect(AllItems item, float percentToChange, float amountOfTimeToApply)
     {
@@ -351,25 +319,63 @@ public class Items : MonoBehaviour
         {
             case AllItems.DAMAGEBUFF:
                 {
+                    //VFX
+                    if (percentToChange > 0.0f)
+                    {
+                        particleGroups[(int)AllItems.DAMAGEBUFF].Play();
+                    }
+                    else
+                    {
+                        //Hard coded 
+                        particleGroups[0].Play();
+                    }
+
                     //Calc
                     float before = player.umbreallaDmg;
                     float result = before * percentToChange;
+
+                    float beforeH = player.umbreallaHeavyDmg;
+                    float resultH = beforeH * percentToChange;
 
                     float beforegun = player.transform.GetComponent<umbrella>().MaxDamage;
                     float resultgun = beforegun * percentToChange;
                     //Apply
                     player.umbreallaDmg += result;
+                    player.umbreallaHeavyDmg += resultH;
                     player.transform.GetComponent<umbrella>().MaxDamage += resultgun;
                     //Wait
                     yield return new WaitForSeconds(amountOfTimeToApply);
                     //Unapply
                     player.umbreallaDmg -= result;
                     player.transform.GetComponent<umbrella>().MaxDamage -= resultgun;
-                    Debug.Log("🦆 Removed Damage");
+                    player.umbreallaHeavyDmg -= resultH;
+
+                    //VFX
+                    if (percentToChange > 0.0f)
+                    {
+                        particleGroups[(int)AllItems.DAMAGEBUFF].Stop();
+                    }
+                    else
+                    {
+                        //Hard coded 
+                        particleGroups[0].Stop();
+                    }
+
+                    Debug.Log("[DUCK] Removed Damage");
                     break;
                 }
             case AllItems.STAMINABUFF:
                 {
+                    //VFX
+                    if (percentToChange > 0.0f)
+                    {
+                        particleGroups[(int)AllItems.STAMINABUFF].Play();
+                    }
+                    else
+                    {
+                        //Hard coded 
+                        particleGroups[8].Play();
+                    }
                     //Calc
                     float before = player.staminaRegenSpeed;
                     float result = before * percentToChange;
@@ -379,11 +385,37 @@ public class Items : MonoBehaviour
                     yield return new WaitForSeconds(amountOfTimeToApply);
                     //Unapply
                     player.staminaRegenSpeed -= result;
-                    Debug.Log("🦆 Removed Stamina");
+                    Debug.Log("[DUCK] Removed Stamina");
+
+                    //VFX
+                    if (percentToChange > 0.0f)
+                    {
+                        particleGroups[(int)AllItems.STAMINABUFF].Stop();
+                    }
+                    else
+                    {
+                        //Hard coded 
+                        particleGroups[8].Stop();
+                    }
+
                     break;
                 }
             case AllItems.MOVEBUFF:
                 {
+                    //VFX
+                    if (percentToChange >= 20.0f)
+                    {
+                        particleGroups[(int)AllItems.MOVEBUFF].Play();
+                    }
+                    if (percentToChange > 0.0f)
+                    {
+                        particleGroups[(int)AllItems.MOVEBUFF_SMALL].Play();
+                    }
+                    else
+                    {
+                        //Hard coded 
+                        particleGroups[(int)AllItems.MOVEDEBUFF].Play();
+                    }
                     //Calc
                     float before = movement.moveSpeed;
                     float result = before * percentToChange;
@@ -393,7 +425,24 @@ public class Items : MonoBehaviour
                     yield return new WaitForSeconds(amountOfTimeToApply);
                     //Unapply
                     movement.moveSpeed -= result;
-                    Debug.Log("🦆 Removed Movement");
+
+                    //VFX
+                    if (percentToChange >= 20.0f)
+                    {
+                        particleGroups[(int)AllItems.MOVEBUFF].Stop();
+                    }
+                    if (percentToChange > 0.0f)
+                    {
+                        particleGroups[(int)AllItems.MOVEBUFF_SMALL].Stop();
+                    }
+                    else
+                    {
+                        //Hard coded 
+                        particleGroups[(int)AllItems.MOVEDEBUFF].Stop();
+                    }
+
+
+                    Debug.Log("[DUCK] Removed Movement");
                     break;
                 }
             default:
@@ -418,50 +467,56 @@ public class Items : MonoBehaviour
                     break;
                 case AllItems.HEALTHDEBUFF_SMALL:
                     {
+                        //VFX
+                        particleGroups[(int)toremove.itemtype].Play();
                         //hurt a bit
                         HealthEffector(-0.05f);
                         break;
                     }
                 case AllItems.HEALTHBUFF:
                     {
+                        //VFX
+                        particleGroups[(int)toremove.itemtype].Play();
                         //heal a lot
                         HealthEffector(0.25f);
                         break;
                     }
                 case AllItems.HEALTHBUFF_SMALL:
                     {
+                        //VFX
+                        particleGroups[(int)toremove.itemtype].Play();
                         //heal
-                        HealthEffector(0.05f);
+                        HealthEffector(0.10f);
                         break;
                     }
                 case AllItems.DAMAGEBUFF:
                     {
                         //Higher damage for time
-                        StartCoroutine(ApplyTimedEffect(AllItems.DAMAGEBUFF, 0.15f, 15.0f));
+                        StartCoroutine(ApplyTimedEffect(AllItems.DAMAGEBUFF, 0.25f, 25.0f));
                         break;
                     }
                 case AllItems.STAMINABUFF:
                     {
                         //Regen faster stamina for time
-                        StartCoroutine(ApplyTimedEffect(AllItems.STAMINABUFF, 0.15f, 15.0f));
+                        StartCoroutine(ApplyTimedEffect(AllItems.STAMINABUFF, 0.25f, 25.0f));
                         break;
                     }
                 case AllItems.MOVEBUFF:
                     {
                         //Faster movement for time
-                        StartCoroutine(ApplyTimedEffect(AllItems.MOVEBUFF, 0.15f, 15.0f));
+                        StartCoroutine(ApplyTimedEffect(AllItems.MOVEBUFF, 0.20f, 45.0f));
                         break;
                     }
                 case AllItems.MOVEBUFF_SMALL:
                     {
                         //Faster movement for time
-                        StartCoroutine(ApplyTimedEffect(AllItems.MOVEBUFF, 0.15f, 7.0f));
+                        StartCoroutine(ApplyTimedEffect(AllItems.MOVEBUFF, 0.15f, 25.0f));
                         break;
                     }
                 case AllItems.MOVEDEBUFF:
                     {
                         //Slower movement for time
-                        StartCoroutine(ApplyTimedEffect(AllItems.MOVEBUFF, -0.15f, 15.0f));
+                        StartCoroutine(ApplyTimedEffect(AllItems.MOVEBUFF, -0.20f, 25.0f));
                         break;
                     }
                 case AllItems.DUCK:

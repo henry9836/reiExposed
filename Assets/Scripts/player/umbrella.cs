@@ -24,8 +24,9 @@ public class umbrella : MonoBehaviour
     public GameObject umbeaalBone;
     public GameObject boss;
     public AudioSource audio;
-    public GameObject VFX;
     public GameObject shotUI;
+    public MultipleVFXHandler aimVFX;
+    public ParticleSystem shootVFX;
     public bool phoneLock = false;
     [HideInInspector]
     public List<GameObject> targetsTouched = new List<GameObject>();
@@ -56,6 +57,7 @@ public class umbrella : MonoBehaviour
     private Animator animator;
     private bool latetest = false;
     private bool attackQueued = false;
+    private bool lastAttackHeavy = false;
     private float timerToHeavy = 0.0f;
     private float phoneTimer = 0.0f;
     private float phoneThreshold = 0.25f;
@@ -105,6 +107,7 @@ public class umbrella : MonoBehaviour
     void Update()
     {
 
+        //Prevent transiton to block/attack from exiting the phone
         if (phoneLock)
         {
             phoneTimer = 0.0f;
@@ -114,21 +117,26 @@ public class umbrella : MonoBehaviour
             phoneTimer += Time.deltaTime;
         }
 
+        //Attack Queuing
         if (!animator.GetBool("Blocking") && (phoneTimer > phoneThreshold))
         {
+            //On release
             if (Input.GetMouseButtonUp(0))
             {
                 if (timerToHeavy <= timeTillHeavyAttack)
                 {
                     attackQueued = true;
                 }
+                lastAttackHeavy = false;
                 timerToHeavy = 0.0f;
             }
 
+            //On Hold
             if (Input.GetMouseButton(0))
             {
+                //If user has held the button down enough trigger heavy attack
                 timerToHeavy += Time.deltaTime;
-                if (timerToHeavy > timeTillHeavyAttack && !animator.GetBool("Attacking"))
+                if (timerToHeavy > timeTillHeavyAttack && !animator.GetBool("Attacking") && !lastAttackHeavy)
                 {
                     attackQueued = true;
                 }
@@ -144,18 +152,15 @@ public class umbrella : MonoBehaviour
 
                     animator.SetBool("Attack", true);
 
-                    if (timerToHeavy > timeTillHeavyAttack)
+                    if (timerToHeavy > timeTillHeavyAttack && !lastAttackHeavy)
                     {
                         animator.SetBool("HeavyAttack", true);
+                        lastAttackHeavy = true;
                     }
 
                 }
             }
         }
-
-        VFX.GetComponent<VisualEffect>().SetFloat("timer", 0.0f);
-
-
 
         //for blocking / aiming down sight
         if (!cooldown && !phoneLock && (phoneTimer > phoneThreshold))
@@ -173,6 +178,7 @@ public class umbrella : MonoBehaviour
                 }
                 else
                 {
+                    aimVFX.Stop();
                     movement.strafemode = false;
                     shotUI.SetActive(false);
                     crosshair.transform.GetChild(0).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
@@ -184,6 +190,7 @@ public class umbrella : MonoBehaviour
             }
             else
             {
+                aimVFX.Stop();
                 movement.strafemode = false;
                 shotUI.SetActive(false);
                 crosshair.transform.GetChild(0).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
@@ -197,6 +204,7 @@ public class umbrella : MonoBehaviour
         }
         else
         {
+            aimVFX.Stop();
             shotUI.SetActive(false);
             crosshair.transform.GetChild(0).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
             crosshair.transform.GetChild(1).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
@@ -229,6 +237,8 @@ public class umbrella : MonoBehaviour
     //currently blocking
     void blocking()
     {
+        aimVFX.Play();
+
         movement.strafemode = true;
 
         RaycastHit hit;
@@ -275,7 +285,6 @@ public class umbrella : MonoBehaviour
     void firemode()
     {
         latetest = true;
-
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
@@ -333,6 +342,7 @@ public class umbrella : MonoBehaviour
     //shoot
     void bang()
     {
+        shootVFX.Play();
         //shake
         Vector3 passTargetPos = new Vector3(0.0f, 0.1f, -0.3f);
         float passOverallSpeed = 3.0f;

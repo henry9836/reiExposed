@@ -359,7 +359,8 @@ public class ThePhone : MonoBehaviour
                     {
                         if (!playerAnimator.GetBool("UsingItem"))
                         {
-                            playerAnimator.SetTrigger("UseItem");
+                            playerAnimator.SetTrigger("UsePhone");
+                            playerAnimator.SetBool("UsingItem", true);
                             amazonshop(amazonselected);
                         }
                     }
