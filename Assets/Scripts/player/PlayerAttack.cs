@@ -133,7 +133,7 @@ public class PlayerAttack : StateMachineBehaviour
 
             //Search in the area we would end up
             Vector3 adjustedPos = (characterTrans.position + ((characterTrans.forward * movementSpeed) * 0.5f));
-            // Cast a sphere wrapping character controller 10 meters forward
+            // Cast a sphere wrapping character controller a bit forward
             // to see if it is about to hit anything.
             RaycastHit[] hits = Physics.SphereCastAll(adjustedPos, movementSpeed * 0.5f, characterTrans.forward, movementSpeed, enemyObjectList);
             if (hits.Length > 0)

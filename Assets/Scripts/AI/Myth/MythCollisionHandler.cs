@@ -56,11 +56,33 @@ public class MythCollisionHandler : AICollisionHandler
                 //If we can be currently damaged
                 if (playerUmbrella.validDmg(gameObject))
                 {
-                    //If we are currently not blocking or we are blocking but the player is hitting us in the back
-                    if (!animator.GetBool("Blocking") || (animator.GetBool("Blocking") && !tracker.isFacingPlayer()))
+                    //If we are currently blocking and we are facing the player
+                    if (animator.GetBool("Blocking") && tracker.isFacingPlayer())
+                    {
+
+                        //Stun player and go into attack mode
+                        //Block
+                        playerAnim.SetTrigger("Stun");
+
+                        //Play vfx
+                        Instantiate(blockVFX, playerTransform.position, Quaternion.identity);
+
+                        //Play block sfx
+                        audioSrc.PlayOneShot(blockSounds[Random.Range(0, blockSounds.Count)]);
+
+                        //maybe we will stop blocking maybe we won't :)
+                        int coin = Random.Range(0, 10);
+                        if (coin > 5)
+                        {
+                            //Stop blocking
+                            animator.ResetTrigger("Block");
+                            animator.SetBool("Blocking", false);
+                        }
+                    }
+                    //We are not blocking
+                    else
                     {
                         //Recieve damage and get stunned
-
                         //Get damage value
                         float dmg = playerCtrl.umbreallaDmg;
 
@@ -82,23 +104,6 @@ public class MythCollisionHandler : AICollisionHandler
                         GameObject tmp = GameObject.Instantiate(this.gameObject.GetComponent<AIObject>().damagedText, other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position), Quaternion.identity);
                         tmp.transform.SetParent(this.transform, true);
                         tmp.transform.GetChild(0).GetComponent<Text>().text = "-" + dmg.ToString("F0");
-                    }
-                    //We are blocking
-                    else
-                    {
-                        //Stun player and go into attack mode
-                        //Block
-                        playerAnim.SetTrigger("Stun");
-
-                        //Play vfx
-                        Instantiate(blockVFX, playerTransform.position, Quaternion.identity);
-
-                        //Play block sfx
-                        audioSrc.PlayOneShot(blockSounds[Random.Range(0, blockSounds.Count)]);
-
-                        //Stop blocking
-                        animator.ResetTrigger("Block");
-                        animator.SetBool("Blocking", false);
                     }
                 }
             }

@@ -12,7 +12,6 @@ public class EnemyBlock : StateMachineBehaviour
 
     public Vector2 fullBlockTimeRange = new Vector2(1.0f, 10.0f);
     float fullBlockTime = 1.0f;
-    float blockTimeout = 1.0f;
     float blocktimer = 0.0f;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
@@ -60,7 +59,7 @@ public class EnemyBlock : StateMachineBehaviour
         //If player is away stop blocking
         if (Vector3.Distance(player.position, animator.transform.position) > 5.0f)
         {
-            blocktimer = blockTimeout;
+            blocktimer = fullBlockTime;
         }
 
     }
@@ -70,6 +69,8 @@ public class EnemyBlock : StateMachineBehaviour
     {
         collHandler.fullyBlocking = false;
         animator.SetBool("Blocking", false);
+        animator.SetBool("Attacking", false);
+        animator.ResetTrigger("Block");
         blocktimer = 0.0f;
         movementCtrl.setOverride(AIMovement.OVERRIDE.NO_OVERRIDE);
     }
