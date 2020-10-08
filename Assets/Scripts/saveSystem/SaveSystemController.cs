@@ -257,6 +257,12 @@ public static class SaveSystemController
         {
             nameOfuser = SaveSystemController.getValue("Package_Name");
         }
+        float gammaValue = getFloatValue("Gamma");
+        if (gammaValue == -1.0f)
+        {
+            gammaValue = 0.0f;
+        }
+
         //Load default values
         //Read all lines into array
         tmpList = null;
@@ -328,6 +334,9 @@ public static class SaveSystemController
         ioBusy = false;
         readyForProcessing = false;
         loadDataFromDisk();
+
+        //Restore Gamma
+        updateValue("Gamma", gammaValue);
 
         //Create Hash
         saveDataToDisk();
