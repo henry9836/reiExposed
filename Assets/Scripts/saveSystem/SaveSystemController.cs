@@ -339,7 +339,7 @@ public static class SaveSystemController
         updateValue("Gamma", gammaValue);
 
         //Create Hash
-        saveDataToDisk();
+        saveDataToDisk(true);
 
         Debug.Log("Reset Save File Successfully");
     }
