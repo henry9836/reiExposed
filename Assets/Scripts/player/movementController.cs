@@ -272,6 +272,12 @@ public class movementController : MonoBehaviour
              animator.SetBool("Sprinting", true);
              animator.SetBool("Running", false);
 
+            //Audio
+            if (!audio.isPlaying)
+            {
+                audio.PlayOneShot(Footsteps[Random.Range(2, 5)]);
+            }
+
 
             //camshake
             shakeTimer += Time.deltaTime;
@@ -362,7 +368,7 @@ public class movementController : MonoBehaviour
                 animator.SetBool("Running", true);
                 if (!audio.isPlaying)
                 {
-                    audio.PlayOneShot(Footsteps[Random.Range(0, Footsteps.Count)]);
+                    audio.PlayOneShot(Footsteps[Random.Range(0, 2)]);
                 }
             }
         }
