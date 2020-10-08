@@ -23,8 +23,6 @@ public static class NetworkUtility
         string strMins = mins.ToString();
         string strSecs = secs.ToString();
 
-
         return strHours + ":" + strMins + ":" + strSecs;
-
     }
 }

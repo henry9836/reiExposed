@@ -19,6 +19,7 @@ public static class SaveSystemController
 
 
     private static System.Random rng = new System.Random();
+    private static float lastCheckTime = 0.0f;
 
     public class entry
     {
@@ -402,12 +403,43 @@ public static class SaveSystemController
         readyForProcessing = true;
     }
 
+    public static float getCurrentTime()
+    {
+        //Update Our Time
+        float oldTime = getFloatValue("Package_Time");
+        float newTime = Time.timeSinceLevelLoad;
+
+        //Offset time to our current time since last time we saved
+        if (lastCheckTime <= Time.timeSinceLevelLoad)
+        {
+            newTime = newTime - lastCheckTime;
+        }
+        lastCheckTime = Time.timeSinceLevelLoad;
+
+
+        if (oldTime == -1.0f)
+        {
+            oldTime = 0.0f;
+        }
+        //Append value
+        newTime += oldTime;
+        updateValue("Package_Time", newTime);
+
+        return newTime;
+    }
 
     //Saves current state of saveInfomation to save file
-    public static void saveDataToDisk() { saveDataToDisk(saveFile); }
+    public static void saveDataToDisk() { saveDataToDisk(saveFile, false); }
     //Saves current state of saveInfomation to save file
-    public static void saveDataToDisk(string filePath)
+    public static void saveDataToDisk(bool overrideTime) { saveDataToDisk(saveFile, overrideTime); }
+    //Saves current state of saveInfomation to save file
+    public static void saveDataToDisk(string filePath, bool overrideTime)
     {
+        if (!overrideTime)
+        {
+            //Update our time
+            getCurrentTime();
+        }
         //Update Hash With Our Current Changes
         updateHash();
         //Queue A Thread Task
