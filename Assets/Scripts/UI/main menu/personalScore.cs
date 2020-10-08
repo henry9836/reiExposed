@@ -32,7 +32,13 @@ public class personalScore : MonoBehaviour
             {
                 this.transform.GetChild(0).gameObject.GetComponent<Text>().text = "You haven't beaten the boss yet";
                 this.transform.GetChild(1).gameObject.GetComponent<Text>().text = "";
-                this.transform.GetChild(2).gameObject.GetComponent<Text>().text = "";
+                if (SaveSystemController.getFloatValue("Package_Time") == -1.0f) {
+                    this.transform.GetChild(2).gameObject.GetComponent<Text>().text = "";
+                }
+                else
+                {
+                    this.transform.GetChild(2).gameObject.GetComponent<Text>().text = NetworkUtility.convertToTime(SaveSystemController.getFloatValue("Package_Time"));
+                }
             }
         }
 
