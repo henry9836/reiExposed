@@ -31,6 +31,12 @@ public class pauseMenu : MonoBehaviour
 
     public Settings sett;
 
+    //Sounds
+    public AudioClip PausedSound;
+    public AudioClip MenuSift;
+    public AudioClip MenuSelect;
+    private AudioSource audio;
+
 
     void Start()  
     {
@@ -41,6 +47,8 @@ public class pauseMenu : MonoBehaviour
         smoketop = new Vector3(0.0f, this.gameObject.GetComponent<RectTransform>().rect.height, 0.0f);
         canvaspos = new Vector3(this.gameObject.GetComponent<RectTransform>().anchoredPosition.x, this.gameObject.GetComponent<RectTransform>().anchoredPosition.y, 0.0f);
         camMove = GameObject.Find("camParent");
+
+        audio = GetComponent<AudioSource>();
 
         GameObject.FindGameObjectWithTag("Player").transform.GetChild(0).GetComponent<cameraControler>().mouseSensitivity = AdjusterInfo.calcSlider(SaveSystemController.getFloatValue("mouseSensitivity"));
         sett.tocencor = SaveSystemController.getBoolValue("toCensor");
@@ -87,8 +95,7 @@ public class pauseMenu : MonoBehaviour
 
         if (paused == true)
         {
-
-
+            audio.PlayOneShot(PausedSound);
             for (int i = 0; i < pauseitems.Count; i++)
             {
                 pauseitems[i].SetActive(true);
@@ -101,6 +108,9 @@ public class pauseMenu : MonoBehaviour
 
             smokeblow = smokin();
             StartCoroutine(smokeblow);
+
+            //Audio
+
         }
         else
         {
