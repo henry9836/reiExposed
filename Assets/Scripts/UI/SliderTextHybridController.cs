@@ -88,14 +88,14 @@ public class SliderTextHybridController : MonoBehaviour
 
                 }
 
-                SaveSystemController.updateValue("mouseSensitivity", slider.value);
+                SaveSystemController.updateValue("mouseSensitivity", slider.value.ToString(), true);
 
                 break;
             }
             case TYPE.AUDIO:
             {
                 AudioListener.volume = AdjusterInfo.calcSlider(slider.value) / 10.0f;
-                SaveSystemController.updateValue("volume", slider.value);
+                SaveSystemController.updateValue("volume", slider.value.ToString(), true);
 
                 break;
             }
