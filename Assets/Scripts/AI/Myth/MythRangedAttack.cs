@@ -52,7 +52,7 @@ public class MythRangedAttack : StateMachineBehaviour
             if (timeBetweenTimer >= timeBetweenSpawns)
             {
                 GameObject tmp = Instantiate(projectile, projectileFireLoc.position, Quaternion.identity);
-                tmp.transform.LookAt(player.position + (Vector3.up * 0.5f));
+                tmp.transform.LookAt(player.position + (Vector3.up * 1.0f));
                 tmp.GetComponent<fireBallController>().behaviour = behaviour;
                 timeBetweenTimer = 0.0f;
                 spawnCounter++;
