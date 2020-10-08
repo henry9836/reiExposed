@@ -26,7 +26,7 @@ public class personalScore : MonoBehaviour
                 //Load from save
                 this.transform.GetChild(0).gameObject.GetComponent<Text>().text = "Unranked";
                 this.transform.GetChild(1).gameObject.GetComponent<Text>().text = SaveSystemController.getValue("Package_Name");
-                this.transform.GetChild(2).gameObject.GetComponent<Text>().text = SaveSystemController.getValue("Package_Time");
+                this.transform.GetChild(2).gameObject.GetComponent<Text>().text = NetworkUtility.convertToTime(SaveSystemController.getFloatValue("Package_Time"));
             }
             else
             {

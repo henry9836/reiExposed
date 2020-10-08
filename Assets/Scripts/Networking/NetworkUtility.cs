@@ -23,6 +23,22 @@ public static class NetworkUtility
         string strMins = mins.ToString();
         string strSecs = secs.ToString();
 
+        string formatSec = strSecs.Substring(0, strSecs.IndexOf("."));
+
+        //Nicer formatting
+        if (strHours.Length < 2)
+        {
+            strHours = "0" + strHours;
+        }
+        if (strMins.Length < 2)
+        {
+            strMins = "0" + strMins;
+        }
+        if (formatSec.Length < 2)
+        {
+            strSecs = "0" + strSecs;
+        }
+
         return strHours + ":" + strMins + ":" + strSecs;
     }
 }
