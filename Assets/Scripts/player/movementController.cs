@@ -183,7 +183,7 @@ public class movementController : MonoBehaviour
             moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * useItemMoveSpeed));
 
             //Audio
-            if (!audio.isPlaying)
+            if (!audio.isPlaying && animator.GetCurrentAnimatorStateInfo(0).IsName("ConsumeWalk"))
             {
                 audio.PlayOneShot(Footsteps[4]);
             }
