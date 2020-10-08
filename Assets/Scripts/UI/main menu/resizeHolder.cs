@@ -67,6 +67,9 @@ public class resizeHolder : MonoBehaviour
         tmp.transform.parent = this.transform;
         tmp.transform.GetChild(0).gameObject.GetComponent<Text>().text = lead.position;
         tmp.transform.GetChild(1).gameObject.GetComponent<Text>().text = lead.name;
-        tmp.transform.GetChild(2).gameObject.GetComponent<Text>().text = lead.time;
+        Debug.Log(lead.time);
+        Debug.Log(float.Parse(lead.time));
+        Debug.Log(NetworkUtility.convertToTime(float.Parse(lead.time)));
+        tmp.transform.GetChild(2).gameObject.GetComponent<Text>().text = NetworkUtility.convertToTime(float.Parse(lead.time));
     }
 }
