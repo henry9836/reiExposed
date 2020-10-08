@@ -176,11 +176,17 @@ public class movementController : MonoBehaviour
             moveDir += camParent.transform.forward * ((Input.GetAxis("Vertical") * moveSpeed));
             moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * moveSpeed));
         }
-        //If using an itme
+        //If using an item
         else if (animator.GetBool("UsingItem"))
         {
             moveDir += camParent.transform.forward * ((Input.GetAxis("Vertical") * useItemMoveSpeed));
             moveDir += camParent.transform.right * ((Input.GetAxis("Horizontal") * useItemMoveSpeed));
+
+            //Audio
+            if (!audio.isPlaying)
+            {
+                audio.PlayOneShot(Footsteps[4]);
+            }
         }
 
         //Rolling Mechanic
@@ -272,6 +278,12 @@ public class movementController : MonoBehaviour
              animator.SetBool("Sprinting", true);
              animator.SetBool("Running", false);
 
+            //Audio
+            if (!audio.isPlaying)
+            {
+                audio.PlayOneShot(Footsteps[Random.Range(2, 5)]);
+            }
+
 
             //camshake
             shakeTimer += Time.deltaTime;
@@ -362,7 +374,7 @@ public class movementController : MonoBehaviour
                 animator.SetBool("Running", true);
                 if (!audio.isPlaying)
                 {
-                    audio.PlayOneShot(Footsteps[Random.Range(0, Footsteps.Count)]);
+                    audio.PlayOneShot(Footsteps[Random.Range(0, 2)]);
                 }
             }
         }
@@ -413,6 +425,13 @@ public class movementController : MonoBehaviour
             {
                 ch.Move(moveDir * Time.deltaTime * 0.5f);
             }
+
+            //Audio
+            if (animator.GetBool("Strafing") && !audio.isPlaying)
+            {
+                audio.PlayOneShot(Footsteps[4]);
+            }
+
         }
         else
         {
