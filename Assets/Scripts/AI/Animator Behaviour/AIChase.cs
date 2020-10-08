@@ -105,7 +105,6 @@ public class AIChase : StateMachineBehaviour
                     {
                         //ATTACK
 
-                        //movement.stopMovement();
                         movement.setOverride(AIMovement.OVERRIDE.MOVE_OVERRIDE);
 
                         if (!attacked)

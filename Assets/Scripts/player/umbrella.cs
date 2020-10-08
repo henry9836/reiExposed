@@ -59,10 +59,10 @@ public class umbrella : MonoBehaviour
     private bool attackQueued = false;
     private bool lastAttackHeavy = false;
     private float timerToHeavy = 0.0f;
-    private float phoneTimer = 0.0f;
-    private float phoneThreshold = 0.25f;
-
-
+    [HideInInspector]
+    public float phoneTimer = 0.0f;
+    [HideInInspector]
+    public float phoneThreshold = 0.25f;
     public void clearHits()
     {
         targetsTouched.Clear();
