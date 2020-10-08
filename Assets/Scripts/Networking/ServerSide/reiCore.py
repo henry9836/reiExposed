@@ -85,14 +85,23 @@ class packetStruct:
 							return;
 
 				#assign values
+				print("ID")
 				self.ID = str(self.data[1])
+				print("msg")
 				self.msg = str(self.data[2])
+				print("curr")
 				self.curr = int(self.data[3])
+				print("item1")
 				self.item1 = int(self.data[4])
+				print("item2")
 				self.item2 = int(self.data[5])
+				print("item3")
 				self.item3 = int(self.data[6])
+				print("name")
 				self.name = str(self.data[7])
-				self.time = str(self.data[8])
+				print("time")
+				self.time = float(self.data[8])
+				print("magic")
 				self.magic = str(self.data[9])
 
 				#check for incorrect values
@@ -114,6 +123,10 @@ class packetStruct:
 					return;
 				elif (len(self.name) > 30):
 					print("Name Too Long")
+					self.type = ERROR_GENERAL #error value
+					return;
+				elif (self.time < 0):
+					print("Invalid Time")
 					self.type = ERROR_GENERAL #error value
 					return;
 				elif (len(self.msg) > 230):
@@ -175,11 +188,13 @@ class packetStruct:
 #CREATE A ENTRY
 def createPackage(packet, _cursor, _db):
 	#INSERT into Packages (ID, MSG, ATTACH1, ATTACH2, ATTACH3, NAME, TIME) VALUES ("FUZZER", "TEST", 1, 1, 1, "FUZZERNOTREALLY", "01:23:45.678900")
+	print("Creating Package...")
 	q = "INSERT INTO Packages (ID, MSG, CURR, ATTACH1, ATTACH2, ATTACH3, NAME, TIME) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
 	v = (packet.ID, packet.msg, packet.curr, packet.item1, packet.item2, packet.item3, packet.name, packet.time);
 	_cursor.execute(q, v)
 	#save changes
 	_db.commit()
+	print("Created Package")
 
 #GET A RANDOM ENTRY
 def getPackage(_cursor):
