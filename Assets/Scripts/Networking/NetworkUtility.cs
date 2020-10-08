@@ -45,7 +45,7 @@ public static class NetworkUtility
         }
         else if (strSecs.Length < 2)
         {
-            strSecs = "0" + strSecs;
+            strSecs = "0" + strSecs + ".0";
         }
 
         //Cut off the end of the seconds so it's not so long
