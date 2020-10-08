@@ -25,8 +25,8 @@ public class Items : MonoBehaviour
     {
         NONE,
         HEALTHDEBUFF_SMALL,
-        HEALTHBUFF,
         HEALTHBUFF_SMALL,
+        HEALTHBUFF,
         DAMAGEBUFF,
         STAMINABUFF,
         MOVEBUFF,
