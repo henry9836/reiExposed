@@ -43,7 +43,6 @@ public class droneteleport : MonoBehaviour
     IEnumerator delayedLoad()
     {
         SaveSystemController.saveDataToDisk();
-        yield return new WaitForSeconds(3.0f);
         while (SaveSystemController.ioBusy)
         {
             Debug.Log("Waiting On Save System IO");

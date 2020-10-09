@@ -230,8 +230,6 @@ public class Packager : MonoBehaviour
 
     IEnumerator delayedExit()
     {
-        yield return new WaitForSeconds(3.0f);
-
         //Load into main menu
         while (SaveSystemController.ioBusy)
         {

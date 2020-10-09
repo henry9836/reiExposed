@@ -161,7 +161,6 @@ public class pauseMenu : MonoBehaviour
     IEnumerator leaveScene(int scene)
     {
         SaveSystemController.saveDataToDisk();
-        yield return new WaitForSeconds(2.0f);
         //Wait on io
         while (SaveSystemController.ioBusy)
         {
