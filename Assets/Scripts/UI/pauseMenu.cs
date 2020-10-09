@@ -100,6 +100,7 @@ public class pauseMenu : MonoBehaviour
             {
                 pauseitems[i].SetActive(true);
             }
+
             Cursor.visible = true;
 
             Cursor.lockState = CursorLockMode.None;
@@ -120,6 +121,12 @@ public class pauseMenu : MonoBehaviour
             {
                 pauseitems[i].SetActive(false);
             }
+
+            for (int i = 0; i < settingsItem.Count; i++)
+            {
+                settingsItem[i].SetActive(false);
+            }
+
             Cursor.visible = false;
 
             Cursor.lockState = CursorLockMode.Locked;
@@ -148,8 +155,9 @@ public class pauseMenu : MonoBehaviour
 
     public void menu()
     {
-        Cursor.visible = true;
+        SaveSystemController.saveDataToDisk();
 
+        Cursor.visible = true;
         Time.timeScale = 1.0f;
         paused = !paused;
         SceneToLoadPersistant.sceneToLoadInto = 2;
@@ -161,16 +169,15 @@ public class pauseMenu : MonoBehaviour
     {
         if (settinged)
         {
-            //settingsapply.GetComponent<Settings>().apply();
             settinged = false;
             SaveSystemController.saveDataToDisk();
-            for (int i = 0; i < pauseitems.Count; i++)
-            {
-                pauseitems[i].SetActive(true);
-            }
             for (int i = 0; i < settingsItem.Count; i++)
             {
                 settingsItem[i].SetActive(false);
+            }
+            for (int i = 0; i < pauseitems.Count; i++)
+            {
+                pauseitems[i].SetActive(true);
             }
         }
         else
