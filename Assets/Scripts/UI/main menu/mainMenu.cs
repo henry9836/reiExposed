@@ -131,6 +131,13 @@ public class mainMenu : MonoBehaviour
         Warning.SetActive(false);
     }
 
+    public void resetsave()
+    {
+        SaveSystemController.Reset();
+        SceneToLoadPersistant.sceneToLoadInto = 0;
+        SceneManager.LoadScene(1);
+    }
+
     public void quit()
     {
         if (packageWaiting)
