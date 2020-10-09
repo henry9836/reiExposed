@@ -71,12 +71,12 @@ public class MythCollisionHandler : AICollisionHandler
                         audioSrc.PlayOneShot(blockSounds[Random.Range(0, blockSounds.Count)]);
 
                         //maybe we will stop blocking maybe we won't :)
-                        int coin = Random.Range(0, 10);
-                        if (coin > 5)
+                        //Whack randomly
+                        int coin = Random.Range(0, 11);
+                        if (coin >= 5)
                         {
-                            //Stop blocking
-                            animator.ResetTrigger("Block");
-                            animator.SetBool("Blocking", false);
+                            animator.SetTrigger("Whack");
+                            aiObject.bindAttack("Whack");
                         }
                     }
                     //We are not blocking

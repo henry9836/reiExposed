@@ -135,13 +135,13 @@ public class pauseMenu : MonoBehaviour
 
     public void loadLVL1()
     {
-        Cursor.visible = false;
+        SaveSystemController.saveDataToDisk();
 
+        Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         Time.timeScale = 1.0f;
         paused = !paused;
         SceneToLoadPersistant.sceneToLoadInto = SceneManager.GetActiveScene().buildIndex;
-
         SceneManager.LoadScene(1);
 
     }
