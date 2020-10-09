@@ -155,8 +155,9 @@ public class pauseMenu : MonoBehaviour
 
     public void menu()
     {
-        Cursor.visible = true;
+        SaveSystemController.saveDataToDisk();
 
+        Cursor.visible = true;
         Time.timeScale = 1.0f;
         paused = !paused;
         SceneToLoadPersistant.sceneToLoadInto = 2;
@@ -168,7 +169,6 @@ public class pauseMenu : MonoBehaviour
     {
         if (settinged)
         {
-            //settingsapply.GetComponent<Settings>().apply();
             settinged = false;
             SaveSystemController.saveDataToDisk();
             for (int i = 0; i < settingsItem.Count; i++)

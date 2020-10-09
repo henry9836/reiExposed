@@ -243,10 +243,10 @@ public class Packager : MonoBehaviour
         {
             Debug.Log("Waiting On Save System IO");
         }
-        //Load into the main menu
-        SceneManager.LoadScene(2);
 
-        //Close packager
-        gameObject.SetActive(false);
+        //Load into the credits
+        SceneToLoadPersistant.sceneToLoadInto = 4;
+        SceneManager.LoadScene(1);
+
     }
 }
