@@ -41,7 +41,8 @@ public class Packager : MonoBehaviour
 
     private void Start()
     {
-        levelTime = Time.timeSinceLevelLoad;
+        //Get level time
+        levelTime = SaveSystemController.getCurrentTime();
         Cursor.visible = true;
         originalMessageColor = message.color;
         originalCurrencyColor = currency.color;
@@ -224,12 +225,14 @@ public class Packager : MonoBehaviour
         SaveSystemController.updateValue("Package_Item2", (int)item2);
         SaveSystemController.updateValue("Package_Item3", (int)item3);
         SaveSystemController.updateValue("Package_Name", nameField.text, true);
-        SaveSystemController.updateValue("Package_Time", NetworkUtility.convertToTime(levelTime), true);
+        SaveSystemController.updateValue("Package_Time", levelTime);
         SaveSystemController.updateValue("Package_MAGIC", (SaveSystemController.calcCurrentHash(SaveSystemController.getValue("Package_Name") + SaveSystemController.getValue("Package_Time") + SaveSystemController.getValue("Package_Curr") + SaveSystemController.getValue("Package_Message") + SaveSystemController.getValue("Package_Item1") + SaveSystemController.getValue("Package_Item2") + SaveSystemController.getValue("Package_Item3")).ToString()), true);
 
         //Remove MythTraces
         SaveSystemController.updateValue("MythTraces", SaveSystemController.getIntValue("MythTraces") - int.Parse(currency.text));
-        SaveSystemController.saveDataToDisk();
+
+        //Override the time save
+        SaveSystemController.saveDataToDisk(true);
 
         //Lock mouse
         Cursor.lockState = CursorLockMode.Locked;
@@ -240,7 +243,8 @@ public class Packager : MonoBehaviour
         {
             Debug.Log("Waiting On Save System IO");
         }
-        SceneManager.LoadScene(0);
+        //Load into the main menu
+        SceneManager.LoadScene(2);
 
         //Close packager
         gameObject.SetActive(false);
