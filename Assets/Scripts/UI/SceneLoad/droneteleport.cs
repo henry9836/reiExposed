@@ -8,7 +8,6 @@ public class droneteleport : MonoBehaviour
 {
     public GameObject UIelement;
     public bool standing = false;
-    public int scene = 2;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -36,7 +35,8 @@ public class droneteleport : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
             {
-                SceneToLoadPersistant.sceneToLoadInto = scene;
+                SaveSystemController.saveDataToDisk();
+                SceneToLoadPersistant.sceneToLoadInto = SceneManager.GetActiveScene().buildIndex;
                 SceneManager.LoadScene(1);
             }
         }

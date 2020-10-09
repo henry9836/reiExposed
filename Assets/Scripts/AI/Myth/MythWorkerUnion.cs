@@ -13,8 +13,18 @@ public class MythWorkerUnion : MonoBehaviour
     private int amountOfMythsAlive = 0;
     private float checkTime = 5.0f;
     private float checkTimer = 0.0f;
+    private List<AITracker> trackers = new List<AITracker>();
 
-
+    public void overrideTracking(bool mode)
+    {
+        for (int i = 0; i < trackers.Count; i++)
+        {
+            if (trackers[i] != null)
+            {
+                trackers[i].overrideTracking(mode);
+            }
+        }
+    }
     public bool allDead()
     {
         for (int i = 0; i < mythControllers.Count - 1; i++)
@@ -36,6 +46,7 @@ public class MythWorkerUnion : MonoBehaviour
         {
             mythObjects.Add(myths[i]);
             mythControllers.Add(myths[i].GetComponent<MythModeSwitcher>());
+            trackers.Add(myths[i].GetComponent<AITracker>());
         }
 
         amountOfMythsAlive = mythControllers.Count;
@@ -86,33 +97,6 @@ public class MythWorkerUnion : MonoBehaviour
             checkTimer = 0.0f;
         }
     }
-
-    //public void ISeeThePlayer(int workerID)
-    //{
-    //    //Get Inform Range
-    //    float range = mythControllers[workerID].informRange;
-    //    Vector3 informerPos = mythObjects[workerID].transform.position;
-
-    //    //For all mythobjects within range of our worker inform of player position
-    //    for (int i = 0; i < mythObjects.Count; i++)
-    //    {
-    //        if (i == workerID)
-    //        {
-    //            continue;
-    //        }
-    //        else
-    //        {
-    //            //Check distance
-    //            if (Vector3.Distance(informerPos, mythObjects[i].transform.position) <= range)
-    //            {
-    //                //Inform of player position
-    //                mythControllers[i].lastKnownPlayerPosition = mythControllers[workerID].lastKnownPlayerPosition;
-    //                mythControllers[i].animator.SetBool("AttackMode", true);
-    //            }
-    //        }
-    //    }
-
-    //}
 
 
 }
