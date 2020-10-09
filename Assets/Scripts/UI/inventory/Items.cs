@@ -498,25 +498,25 @@ public class Items : MonoBehaviour
                 case AllItems.STAMINABUFF:
                     {
                         //Regen faster stamina for time
-                        StartCoroutine(ApplyTimedEffect(AllItems.STAMINABUFF, 0.25f, 25.0f));
+                        StartCoroutine(ApplyTimedEffect(AllItems.STAMINABUFF, 0.25f, 45.0f));
                         break;
                     }
                 case AllItems.MOVEBUFF:
                     {
                         //Faster movement for time
-                        StartCoroutine(ApplyTimedEffect(AllItems.MOVEBUFF, 0.20f, 45.0f));
+                        StartCoroutine(ApplyTimedEffect(AllItems.MOVEBUFF, 0.05f, 120.0f));
                         break;
                     }
                 case AllItems.MOVEBUFF_SMALL:
                     {
                         //Faster movement for time
-                        StartCoroutine(ApplyTimedEffect(AllItems.MOVEBUFF, 0.15f, 25.0f));
+                        StartCoroutine(ApplyTimedEffect(AllItems.MOVEBUFF, 0.3f, 10.0f));
                         break;
                     }
                 case AllItems.MOVEDEBUFF:
                     {
                         //Slower movement for time
-                        StartCoroutine(ApplyTimedEffect(AllItems.MOVEBUFF, -0.20f, 25.0f));
+                        StartCoroutine(ApplyTimedEffect(AllItems.MOVEBUFF, -0.30f, 15.0f));
                         break;
                     }
                 case AllItems.DUCK:
