@@ -38,6 +38,13 @@ public class AITracker : MonoBehaviour
     private AIInformer informer;
     private bool lostPlayer;
     private bool aniatorCalled;
+    private bool trackingOverride = false;
+
+    //Reset all tracking so that we can leave the player alone
+    public void overrideTracking(bool mode)
+    {
+        trackingOverride = mode;
+    }
 
     public Vector3 estimateNewPosition()
     {
@@ -103,49 +110,60 @@ public class AITracker : MonoBehaviour
     }
 
     private void FixedUpdate()
-    {
+    {            
         //Timer
         lostPlayerTimer += Time.deltaTime;
         informOverrideTimer += Time.deltaTime;
 
-        //Can We See Player
-        if (canSeePlayer() || (informOverrideTimer < informOverrideTime))
-        {
-            //Update Infomation About Player
-            lastSeenPos = player.transform.position;
-            lastSeenDir = playerModel.forward.normalized;
+        //If we have no override
+        if (!trackingOverride) {
 
-            animator.SetBool("CanSeePlayer", true);
 
-            //Reset
-            lostPlayer = false;
-            aniatorCalled = false;
-            lostPlayerTimer = 0.0f;
-            animator.SetBool("LosingPlayer", false);
-            animator.ResetTrigger("LostPlayer");
+            //Can We See Player
+            if (canSeePlayer() || (informOverrideTimer < informOverrideTime))
+            {
+                //Update Infomation About Player
+                lastSeenPos = player.transform.position;
+                lastSeenDir = playerModel.forward.normalized;
 
-            //Inform
-            informer.Inform();
+                animator.SetBool("CanSeePlayer", true);
+
+                //Reset
+                lostPlayer = false;
+                aniatorCalled = false;
+                lostPlayerTimer = 0.0f;
+                animator.SetBool("LosingPlayer", false);
+                animator.ResetTrigger("LostPlayer");
+
+                //Inform
+                informer.Inform();
+            }
+            //Losing Player
+            else if (lostPlayerTimer > 1.0f && !lostPlayer)
+            {
+                //Trick seek to start
+                if (!aniatorCalled)
+                {
+                    animator.SetTrigger("Inform");
+                    aniatorCalled = true;
+                }
+
+                animator.SetBool("LosingPlayer", true);
+                animator.SetBool("CanSeePlayer", false);
+
+                if (lostPlayerTimer >= timeTillLostPlayer)
+                {
+                    animator.SetTrigger("LostPlayer");
+                    lostPlayer = true;
+                }
+
+            }
         }
-        //Losing Player
-        else if (lostPlayerTimer > 1.0f && !lostPlayer)
+        else
         {
-            //Trick seek to start
-            if (!aniatorCalled)
-            {
-                animator.SetTrigger("Inform");
-                aniatorCalled = true;
-            }
-
-            animator.SetBool("LosingPlayer", true);
-            animator.SetBool("CanSeePlayer", false);
-
-            if (lostPlayerTimer >= timeTillLostPlayer)
-            {
-                animator.SetTrigger("LostPlayer");
-                lostPlayer = true;
-            }
-
+            predictedPlayerPos = ai.movement.initalPosition;
+            lastSeenDir = Vector3.zero;
+            lastSeenPos = ai.movement.initalPosition;
         }
 
     }
