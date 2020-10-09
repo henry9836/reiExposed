@@ -24,6 +24,7 @@ public class mouseCredit : MonoBehaviour
         cam = GameObject.Find("Camera").GetComponent<Camera>();
         rect = GameObject.Find("Canvas").GetComponent<RectTransform>();
         zPos = mouseCursor.transform.position.z;
+        zPos = -37.3f; //looks better here tbh
     }
 
 
