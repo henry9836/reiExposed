@@ -238,6 +238,14 @@ public class Packager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
+        StartCoroutine(delayedExit());
+
+    }
+
+    IEnumerator delayedExit()
+    {
+        yield return new WaitForSeconds(2.0f);
+
         //Load into main menu
         while (SaveSystemController.ioBusy)
         {
@@ -247,6 +255,6 @@ public class Packager : MonoBehaviour
         //Load into the credits
         SceneToLoadPersistant.sceneToLoadInto = 4;
         SceneManager.LoadScene(1);
-
     }
+
 }
