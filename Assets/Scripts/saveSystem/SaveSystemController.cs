@@ -179,6 +179,7 @@ public static class SaveSystemController
             Debug.LogWarning("Hash not found/loaded!");
             return false;
         }
+        Debug.Log($"HASH CALC: {hash} | HASH FILE: {ulong.Parse(getValue(HASHID))}");
         return (hash == ulong.Parse(getValue(HASHID)));
     }
 

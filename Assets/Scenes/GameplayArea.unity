@@ -39,7 +39,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 6.162495, g: 12.541635, b: 28.614828, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1033,13 +1033,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1371280964, guid: 5a30a0d94645c0641a73fd58224f0fcc, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 26.961336
-      objectReference: {fileID: 0}
     - target: {fileID: 1371280967, guid: 5a30a0d94645c0641a73fd58224f0fcc, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1380369573, guid: 5a30a0d94645c0641a73fd58224f0fcc, type: 3}
       propertyPath: introUI
@@ -1123,6 +1119,41 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2653941783852341396, guid: 5a30a0d94645c0641a73fd58224f0fcc,
+        type: 3}
+      propertyPath: onStay.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2653941783852341396, guid: 5a30a0d94645c0641a73fd58224f0fcc,
+        type: 3}
+      propertyPath: onStay.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2653941783852341396, guid: 5a30a0d94645c0641a73fd58224f0fcc,
+        type: 3}
+      propertyPath: onStay.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2653941783852341396, guid: 5a30a0d94645c0641a73fd58224f0fcc,
+        type: 3}
+      propertyPath: onStay.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1380369573}
+    - target: {fileID: 2653941783852341396, guid: 5a30a0d94645c0641a73fd58224f0fcc,
+        type: 3}
+      propertyPath: onStay.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: overrideTracking
+      objectReference: {fileID: 0}
+    - target: {fileID: 2653941783852341396, guid: 5a30a0d94645c0641a73fd58224f0fcc,
+        type: 3}
+      propertyPath: onStay.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 2653941783852341396, guid: 5a30a0d94645c0641a73fd58224f0fcc,
+        type: 3}
+      propertyPath: onStay.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5925815583771674298, guid: 5a30a0d94645c0641a73fd58224f0fcc,
         type: 3}
@@ -6918,6 +6949,18 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 225011280}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1380369573 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7478237402947967803, guid: 5a30a0d94645c0641a73fd58224f0fcc,
+    type: 3}
+  m_PrefabInstance: {fileID: 225011280}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1380369567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3916edcc4209d71408a05d059d8118e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1449189769
 GameObject:
   m_ObjectHideFlags: 0
@@ -11681,6 +11724,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 27721951139884002, guid: d8ef9ca7654d06a4eb67d09e18556cd0,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 27721951316160695, guid: d8ef9ca7654d06a4eb67d09e18556cd0,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 139114786828476123, guid: d8ef9ca7654d06a4eb67d09e18556cd0,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -11956,6 +12009,21 @@ PrefabInstance:
       propertyPath: m_NavMeshLayer
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6640191301523173269, guid: d8ef9ca7654d06a4eb67d09e18556cd0,
+        type: 3}
+      propertyPath: m_Convex
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6640191301816890560, guid: d8ef9ca7654d06a4eb67d09e18556cd0,
+        type: 3}
+      propertyPath: m_Convex
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6969987015327661090, guid: d8ef9ca7654d06a4eb67d09e18556cd0,
+        type: 3}
+      propertyPath: m_Convex
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7202582223983422740, guid: d8ef9ca7654d06a4eb67d09e18556cd0,
         type: 3}
       propertyPath: m_StaticEditorFlags
@@ -12101,6 +12169,11 @@ PrefabInstance:
       propertyPath: phoneCtrl
       value: 
       objectReference: {fileID: 160894799}
+    - target: {fileID: 4059565761304736567, guid: 994d49ae87f46a441ae4af7dde8c1f46,
+        type: 3}
+      propertyPath: health
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 4533981090127729755, guid: 994d49ae87f46a441ae4af7dde8c1f46,
         type: 3}
       propertyPath: healthBar
