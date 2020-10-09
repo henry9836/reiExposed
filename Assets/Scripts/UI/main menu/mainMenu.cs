@@ -110,20 +110,27 @@ public class mainMenu : MonoBehaviour
 
     public void toleaderboard()
     {
-        if (SaveSystemController.loadedValues && SaveSystemController.checkSaveValid())
-        {
-            buttonenable(state.menu, false);
-            buttonenable(state.settings, false);
-            buttonenable(state.leaderboard, true);
+        buttonenable(state.menu, false);
+        buttonenable(state.settings, false);
+        buttonenable(state.leaderboard, true);
 
 
-            StartCoroutine(Down(theState, state.leaderboard));
-            theState = state.leaderboard;
-        }
-        else if (SaveSystemController.loadedValues && !SaveSystemController.checkSaveValid())
-        {
-            Application.Quit();
-        }
+        StartCoroutine(Down(theState, state.leaderboard));
+        theState = state.leaderboard;
+        //if (SaveSystemController.loadedValues && SaveSystemController.checkSaveValid())
+        //{
+        //    buttonenable(state.menu, false);
+        //    buttonenable(state.settings, false);
+        //    buttonenable(state.leaderboard, true);
+
+
+        //    StartCoroutine(Down(theState, state.leaderboard));
+        //    theState = state.leaderboard;
+        //}
+        //else if (SaveSystemController.loadedValues && !SaveSystemController.checkSaveValid())
+        //{
+        //    Application.Quit();
+        //}
     }
 
     public void closeWarning()
