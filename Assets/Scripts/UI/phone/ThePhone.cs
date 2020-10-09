@@ -88,6 +88,9 @@ public class ThePhone : MonoBehaviour
     //Animator
     private Animator playerAnimator;
 
+    public int amazonHPCost;
+    public int amazonUwuberCost;
+
 
     void Start()
     {
@@ -636,6 +639,10 @@ public class ThePhone : MonoBehaviour
         ThePhoneUI.transform.GetChild(4).gameObject.SetActive(true);
         //currency.Yen = save.safeItem("MythTraces", saveFile.types.INT).toint;
 
+        ThePhoneUI.transform.GetChild(4).GetChild(0).GetChild(2).GetComponent<Text>().text = amazonHPCost.ToString() + "¥";
+        ThePhoneUI.transform.GetChild(4).GetChild(1).GetChild(2).GetComponent<Text>().text = amazonUwuberCost.ToString() + "¥";
+
+
         ThePhoneUI.transform.GetChild(4).GetChild(3).GetComponent<Text>().text = SaveSystemController.getIntValue("MythTraces") + "¥";
         ThePhoneUI.transform.GetChild(0).GetComponent<Image>().sprite = BGamazon;
 
@@ -702,33 +709,37 @@ public class ThePhone : MonoBehaviour
     //buy item
     public void amazonshop(int item)
     {
+
+
+        //amazonHPCost;
+        //amazonUwuberCost;
+
+
         //mroe then enough to buy
-        if (SaveSystemController.getIntValue("MythTraces") >= 100)
-        {
+
             //buy HPpack
-            if (item == 0)
+        if (item == 0)
+        {
+            if (SaveSystemController.getIntValue("MythTraces") >= amazonHPCost)
             {
-
-                //save.saveitem("MythTraces", currency.Yen);
-                SaveSystemController.updateValue("MythTraces", SaveSystemController.getIntValue("MythTraces") - 100);
-
+                SaveSystemController.updateValue("MythTraces", SaveSystemController.getIntValue("MythTraces") - amazonHPCost);
                 drone.todrop = 0;
                 drone.deliver();
             }
-            else if (item == 1) // buy uber drone
-            {
-                //save.saveitem("MythTraces", currency.Yen);
-                SaveSystemController.updateValue("MythTraces", SaveSystemController.getIntValue("MythTraces") - 100);
 
+        }
+        else if (item == 1) // buy uber drone
+        {
+            if (SaveSystemController.getIntValue("MythTraces") >= amazonUwuberCost)
+            {
+                SaveSystemController.updateValue("MythTraces", SaveSystemController.getIntValue("MythTraces") - amazonUwuberCost);
                 drone.todrop = 999;
                 drone.deliver();
             }
 
-            //grey out or somthing
-            //ThePhoneUI.transform.GetChild(4).GetChild(1).GetComponent<Button>().interactable = false;
         }
         else
-        {
+        { 
             //grey out or somthing
             //ThePhoneUI.transform.GetChild(4).GetChild(1).GetComponent<Button>().interactable = true;
         }
