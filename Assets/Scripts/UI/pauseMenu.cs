@@ -142,25 +142,34 @@ public class pauseMenu : MonoBehaviour
 
     public void loadLVL1()
     {
-        SaveSystemController.saveDataToDisk();
-
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         Time.timeScale = 1.0f;
         paused = !paused;
-        SceneToLoadPersistant.sceneToLoadInto = SceneManager.GetActiveScene().buildIndex;
-        SceneManager.LoadScene(1);
-
+        StartCoroutine(leaveScene(SceneManager.GetActiveScene().buildIndex));
     }
 
     public void menu()
     {
-        SaveSystemController.saveDataToDisk();
-
         Cursor.visible = true;
         Time.timeScale = 1.0f;
         paused = !paused;
-        SceneToLoadPersistant.sceneToLoadInto = 2;
+
+        StartCoroutine(leaveScene(2));
+    }
+
+    IEnumerator leaveScene(int scene)
+    {
+        SaveSystemController.saveDataToDisk();
+        yield return new WaitForSeconds(2.0f);
+        //Wait on io
+        while (SaveSystemController.ioBusy)
+        {
+            Debug.Log("Waiting On Save System IO");
+            yield return null;
+        }
+
+        SceneToLoadPersistant.sceneToLoadInto = scene;
         SceneManager.LoadScene(1);
 
     }

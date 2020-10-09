@@ -35,10 +35,22 @@ public class droneteleport : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
             {
-                SaveSystemController.saveDataToDisk();
-                SceneToLoadPersistant.sceneToLoadInto = SceneManager.GetActiveScene().buildIndex;
-                SceneManager.LoadScene(1);
+                StartCoroutine(delayedLoad());
             }
         }
+    }
+
+    IEnumerator delayedLoad()
+    {
+        SaveSystemController.saveDataToDisk();
+        yield return new WaitForSeconds(3.0f);
+        while (SaveSystemController.ioBusy)
+        {
+            Debug.Log("Waiting On Save System IO");
+            yield return null;
+        }
+
+        SceneToLoadPersistant.sceneToLoadInto = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(1);
     }
 }
