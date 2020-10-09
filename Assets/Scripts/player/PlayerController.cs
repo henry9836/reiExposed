@@ -257,7 +257,7 @@ public class PlayerController : MonoBehaviour
         }
         deathUI[0].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 1.0f);
 
-        float half = SaveSystemController.getFloatValue("MythTraces") / 2.0f;
+        int half = Mathf.RoundToInt(SaveSystemController.getFloatValue("MythTraces") * 0.5f);
         SaveSystemController.updateValue("MythTraces", half);
         SaveSystemController.saveDataToDisk();
 
