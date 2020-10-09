@@ -58,8 +58,7 @@ public class AITracker : MonoBehaviour
         else 
         { 
             RaycastHit hit;
-            //if (Physics.Raycast(eyes.position, (playerTargetNode.position - eyes.position).normalized, out hit, maxSpotDistance, visionObsctcles))
-            if (Physics.Raycast(eyes.position, (playerTargetNode.position - eyes.position).normalized, out hit, Mathf.Infinity, visionObsctcles))
+            if (Physics.Raycast(eyes.position, (playerTargetNode.position - eyes.position).normalized, out hit, maxSpotDistance, visionObsctcles))
             {
                 if (hit.collider.tag == "PlayerTargetNode")
                 {
