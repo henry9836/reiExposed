@@ -164,6 +164,7 @@ public class AITracker : MonoBehaviour
             predictedPlayerPos = ai.movement.initalPosition;
             lastSeenDir = Vector3.zero;
             lastSeenPos = ai.movement.initalPosition;
+            ai.movement.goToPosition(predictedPlayerPos);
         }
 
     }
