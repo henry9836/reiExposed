@@ -96,20 +96,24 @@ public static class SaveSystemController
 
             if (type == TYPES.INT)
             {
+                int.TryParse(newVal, out tmpI);
+
                 //Get a new offset
                 offset = rng.Next((int)offsetRange.x, (int)offsetRange.y);
 
                 //Apply new value with new offset
-                value = (int.Parse(newVal) + offset).ToString();
+                value = (tmpI + offset).ToString();
 
             }
             else if (type == TYPES.FLOAT)
             {
+                float.TryParse(newVal, out tmpF);
+
                 //Get a new offset
                 offset = rng.Next((int)offsetRange.x, (int)offsetRange.y);
 
                 //Apply new value with new offset
-                value = (float.Parse(newVal) + (float)offset).ToString();
+                value = (tmpF + (float)offset).ToString();
             }
             else
             {
@@ -128,7 +132,7 @@ public static class SaveSystemController
             if (type == TYPES.INT)
             {
                 //Get Value
-                int tmpI = int.Parse(value);
+                int.TryParse(value, out tmpI);
 
                 //Remove offset
                 tmpI -= offset;
@@ -143,7 +147,7 @@ public static class SaveSystemController
             else if (type == TYPES.FLOAT)
             {
                 //Get Value
-                float tmpF = float.Parse(value);
+                float.TryParse(value, out tmpF);
 
                 //Remove offset
                 tmpF -= offset;
