@@ -17,9 +17,10 @@ public static class SaveSystemController
     private const string SEPERATOR = "toCensor";
     private const string HASHID = "THEBIGONE";
 
-
     private static System.Random rng = new System.Random();
     private static float lastCheckTime = 0.0f;
+    //private static Vector2 offsetRange = new Vector2(-9999, 9999);
+    private static Vector2 offsetRange = new Vector2(999, 999);
 
     public class entry
     {
@@ -60,7 +61,7 @@ public static class SaveSystemController
                 type = TYPES.INT;
 
                 //Apply Offset
-                offset = rng.Next(-9999, 9999);
+                offset = rng.Next((int)offsetRange.x, (int)offsetRange.y);
                 value = (tmpI + offset).ToString();
             }
             else if (float.TryParse(hint, out tmpF))
@@ -69,8 +70,8 @@ public static class SaveSystemController
                 type = TYPES.FLOAT;
 
                 //Apply Offset
-                offset = rng.Next(-9999, 9999);
-                value = (tmpF + offset).ToString();
+                offset = rng.Next((int)offsetRange.x, (int)offsetRange.y);
+                value = (tmpF + (float)offset).ToString();
             }
             else
             {
@@ -96,7 +97,7 @@ public static class SaveSystemController
             if (type == TYPES.INT)
             {
                 //Get a new offset
-                offset = rng.Next(-9999, 9999);
+                offset = rng.Next((int)offsetRange.x, (int)offsetRange.y);
 
                 //Apply new value with new offset
                 value = (int.Parse(newVal) + offset).ToString();
@@ -105,10 +106,10 @@ public static class SaveSystemController
             else if (type == TYPES.FLOAT)
             {
                 //Get a new offset
-                offset = rng.Next(-9999, 9999);
+                offset = rng.Next((int)offsetRange.x, (int)offsetRange.y);
 
                 //Apply new value with new offset
-                value = (float.Parse(newVal) + offset).ToString();
+                value = (float.Parse(newVal) + (float)offset).ToString();
             }
             else
             {
@@ -133,7 +134,7 @@ public static class SaveSystemController
                 tmpI -= offset;
 
                 //Get a new offset and apply it
-                offset = rng.Next(-9999, 9999);
+                offset = rng.Next((int)offsetRange.x, (int)offsetRange.y);
                 value = (tmpI + offset).ToString();
 
                 //Return the value without the offset
@@ -148,7 +149,7 @@ public static class SaveSystemController
                 tmpF -= offset;
 
                 //Get a new offset and apply it
-                offset = rng.Next(-9999, 9999);
+                offset = rng.Next((int)offsetRange.x, (int)offsetRange.y);
                 value = (tmpF + offset).ToString();
 
                 //Return the value without the offset
