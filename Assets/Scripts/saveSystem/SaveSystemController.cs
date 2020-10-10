@@ -19,8 +19,7 @@ public static class SaveSystemController
 
     private static System.Random rng = new System.Random();
     private static float lastCheckTime = 0.0f;
-    //private static Vector2 offsetRange = new Vector2(-9999, 9999);
-    private static Vector2 offsetRange = new Vector2(999, 999);
+    private static Vector2 offsetRange = new Vector2(-9999, 9999);
 
     public class entry
     {
@@ -412,6 +411,10 @@ public static class SaveSystemController
                 //Set value of latest seen entry
                 saveInfomation[saveInfomation.Count - 1].value = lines[i].Substring(VALFLAG.Length);
                 if (lines[i - 1].Contains(HASHID))
+                {
+                    saveInfomation[saveInfomation.Count - 1].type = entry.TYPES.STRING;
+                }
+                else if(lines[i - 1].Contains("Package_Time")) //Because float inaccuracy is wack yo
                 {
                     saveInfomation[saveInfomation.Count - 1].type = entry.TYPES.STRING;
                 }
