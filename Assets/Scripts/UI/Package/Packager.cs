@@ -194,27 +194,11 @@ public class Packager : MonoBehaviour
     public void Submit()
     {
         //Build package
-        //sender.ddID = "STEAM_0:0:98612737"; //TODO replace with propper steamID
-        //sender.ddmessage = message.text;
         int curr = int.Parse(currency.text);
         if (curr < 100)
         {
             curr += 100;
         }
-        //sender.ddcurr = curr;
-        //sender.dditem1 = (int)item1;
-        //sender.dditem2 = (int)item2;
-        //sender.dditem3 = (int)item3;
-        //sender.ddname = nameField.text;
-        //sender.ddtime = NetworkUtility.convertToTime(levelTime);
-
-        ////Remove Items
-        //items.removeitemequipped(item1, false);
-        //items.removeitemequipped(item2, false);
-        //items.removeitemequipped(item3, false);
-
-        //Send package
-        //sender.send(1);
 
         //Save To File
         SaveSystemController.updateValue("PackagePending", true);
@@ -231,6 +215,8 @@ public class Packager : MonoBehaviour
         //Remove MythTraces
         SaveSystemController.updateValue("MythTraces", SaveSystemController.getIntValue("MythTraces") - int.Parse(currency.text));
 
+        Debug.Log("EXCEPTED HASH:" + SaveSystemController.calcCurrentHash());
+
         //Override the time save
         SaveSystemController.saveDataToDisk(true);
 
@@ -238,15 +224,25 @@ public class Packager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
+        StartCoroutine(delayedExit());
+
+    }
+
+    IEnumerator delayedExit()
+    {
         //Load into main menu
         while (SaveSystemController.ioBusy)
         {
             Debug.Log("Waiting On Save System IO");
+            yield return null;
         }
-        //Load into the main menu
-        SceneManager.LoadScene(2);
 
-        //Close packager
-        gameObject.SetActive(false);
+        Debug.Log("NEW HASH:" + SaveSystemController.calcCurrentHash());
+        SaveSystemController.checkSaveValid();
+
+        //Load into the credits
+        SceneToLoadPersistant.sceneToLoadInto = 4;
+        SceneManager.LoadScene(1);
     }
+
 }

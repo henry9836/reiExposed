@@ -15,7 +15,7 @@ public static class SaveSystemController
     private const string IDFLAG = "#{ID}#";
     private const string VALFLAG = "#{VAL}#";
     private const string SEPERATOR = "toCensor";
-    private const string HASHID = "MAGIC";
+    private const string HASHID = "THEBIGONE";
 
 
     private static System.Random rng = new System.Random();
@@ -173,18 +173,27 @@ public static class SaveSystemController
     //Checks if the save file matches the currentHash
     public static bool checkSaveValid()
     {
+        while (!readyForProcessing && !ioBusy) { Debug.LogError("Waiting on save system to be ready for processing, have you loaded data from disk?"); }
+
+        Debug.Log("I know of " + saveInfomation.Count.ToString() + " values!");
+
         ulong hash = calcCurrentHash();
+        ulong fileHash = ulong.Parse(getValue(HASHID));
+
         if (getValue(HASHID) == "-1")
         {
             Debug.LogWarning("Hash not found/loaded!");
             return false;
         }
-        return (hash == ulong.Parse(getValue(HASHID)));
+        Debug.Log($"HASH CALC: {hash} | HASH FILE: {fileHash}");
+        return (hash == fileHash);
     }
 
     //Creates a hash for the save file
     public static void updateHash()
     {
+        while (!readyForProcessing && !ioBusy) { Debug.LogError("Waiting on save system to be ready for processing, have you loaded data from disk?"); }
+
         updateValue(HASHID, calcCurrentHash().ToString(), true);
     }
 
@@ -215,6 +224,8 @@ public static class SaveSystemController
     }
     public static ulong calcCurrentHash(string input)
     {
+        while (!readyForProcessing) { Debug.LogError("Waiting on save system to be ready for processing, have you loaded data from disk?"); }
+
         ulong hash = 1;
 
         //Spread values out more evenly, mod is a prime number to avoid collisons
@@ -489,7 +500,7 @@ public static class SaveSystemController
     {
 
         //wait till ready to process infomation
-       while (!readyForProcessing) { Debug.LogError("Waiting on save system to be ready for processing, have you loaded data from disk?"); }
+        while (!readyForProcessing) { Debug.LogError("Waiting on save system to be ready for processing, have you loaded data from disk?"); }
 
         for (int i = 0; i < saveInfomation.Count; i++)
         {
