@@ -11,17 +11,26 @@ public class GenericTriggerEventBox : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        onEnter.Invoke();
+        if (other.tag == "Player")
+        {
+            onEnter.Invoke();
+        }
     }
 
     private void OnTriggerStay(Collider other)
     {
-        onStay.Invoke();
+        if (other.tag == "Player")
+        {
+            onStay.Invoke();
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        onExit.Invoke();
+        if (other.tag == "Player")
+        {
+            onExit.Invoke();
+        }
     }
 
 }

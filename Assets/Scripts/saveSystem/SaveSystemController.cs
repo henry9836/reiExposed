@@ -15,11 +15,11 @@ public static class SaveSystemController
     private const string IDFLAG = "#{ID}#";
     private const string VALFLAG = "#{VAL}#";
     private const string SEPERATOR = "toCensor";
-    private const string HASHID = "MAGIC";
-
+    private const string HASHID = "THEBIGONE";
 
     private static System.Random rng = new System.Random();
     private static float lastCheckTime = 0.0f;
+    private static Vector2 offsetRange = new Vector2(-9999, 9999);
 
     public class entry
     {
@@ -60,7 +60,7 @@ public static class SaveSystemController
                 type = TYPES.INT;
 
                 //Apply Offset
-                offset = rng.Next(-9999, 9999);
+                offset = rng.Next((int)offsetRange.x, (int)offsetRange.y);
                 value = (tmpI + offset).ToString();
             }
             else if (float.TryParse(hint, out tmpF))
@@ -69,8 +69,8 @@ public static class SaveSystemController
                 type = TYPES.FLOAT;
 
                 //Apply Offset
-                offset = rng.Next(-9999, 9999);
-                value = (tmpF + offset).ToString();
+                offset = rng.Next((int)offsetRange.x, (int)offsetRange.y);
+                value = (tmpF + (float)offset).ToString();
             }
             else
             {
@@ -95,20 +95,24 @@ public static class SaveSystemController
 
             if (type == TYPES.INT)
             {
+                int.TryParse(newVal, out tmpI);
+
                 //Get a new offset
-                offset = rng.Next(-9999, 9999);
+                offset = rng.Next((int)offsetRange.x, (int)offsetRange.y);
 
                 //Apply new value with new offset
-                value = (int.Parse(newVal) + offset).ToString();
+                value = (tmpI + offset).ToString();
 
             }
             else if (type == TYPES.FLOAT)
             {
+                float.TryParse(newVal, out tmpF);
+
                 //Get a new offset
-                offset = rng.Next(-9999, 9999);
+                offset = rng.Next((int)offsetRange.x, (int)offsetRange.y);
 
                 //Apply new value with new offset
-                value = (float.Parse(newVal) + offset).ToString();
+                value = (tmpF + (float)offset).ToString();
             }
             else
             {
@@ -127,13 +131,13 @@ public static class SaveSystemController
             if (type == TYPES.INT)
             {
                 //Get Value
-                int tmpI = int.Parse(value);
+                int.TryParse(value, out tmpI);
 
                 //Remove offset
                 tmpI -= offset;
 
                 //Get a new offset and apply it
-                offset = rng.Next(-9999, 9999);
+                offset = rng.Next((int)offsetRange.x, (int)offsetRange.y);
                 value = (tmpI + offset).ToString();
 
                 //Return the value without the offset
@@ -142,13 +146,13 @@ public static class SaveSystemController
             else if (type == TYPES.FLOAT)
             {
                 //Get Value
-                float tmpF = float.Parse(value);
+                float.TryParse(value, out tmpF);
 
                 //Remove offset
                 tmpF -= offset;
 
                 //Get a new offset and apply it
-                offset = rng.Next(-9999, 9999);
+                offset = rng.Next((int)offsetRange.x, (int)offsetRange.y);
                 value = (tmpF + offset).ToString();
 
                 //Return the value without the offset
@@ -173,18 +177,27 @@ public static class SaveSystemController
     //Checks if the save file matches the currentHash
     public static bool checkSaveValid()
     {
+        while (!readyForProcessing && !ioBusy) { Debug.LogError("Waiting on save system to be ready for processing, have you loaded data from disk?"); }
+
+        Debug.Log("I know of " + saveInfomation.Count.ToString() + " values!");
+
         ulong hash = calcCurrentHash();
+        ulong fileHash = ulong.Parse(getValue(HASHID));
+
         if (getValue(HASHID) == "-1")
         {
             Debug.LogWarning("Hash not found/loaded!");
             return false;
         }
-        return (hash == ulong.Parse(getValue(HASHID)));
+        Debug.Log($"HASH CALC: {hash} | HASH FILE: {fileHash}");
+        return (hash == fileHash);
     }
 
     //Creates a hash for the save file
     public static void updateHash()
     {
+        while (!readyForProcessing && !ioBusy) { Debug.LogError("Waiting on save system to be ready for processing, have you loaded data from disk?"); }
+
         updateValue(HASHID, calcCurrentHash().ToString(), true);
     }
 
@@ -215,6 +228,8 @@ public static class SaveSystemController
     }
     public static ulong calcCurrentHash(string input)
     {
+        while (!readyForProcessing) { Debug.LogError("Waiting on save system to be ready for processing, have you loaded data from disk?"); }
+
         ulong hash = 1;
 
         //Spread values out more evenly, mod is a prime number to avoid collisons
@@ -399,6 +414,10 @@ public static class SaveSystemController
                 {
                     saveInfomation[saveInfomation.Count - 1].type = entry.TYPES.STRING;
                 }
+                else if(lines[i - 1].Contains("Package_Time")) //Because float inaccuracy is wack yo
+                {
+                    saveInfomation[saveInfomation.Count - 1].type = entry.TYPES.STRING;
+                }
             }
             else
             {
@@ -489,7 +508,7 @@ public static class SaveSystemController
     {
 
         //wait till ready to process infomation
-       while (!readyForProcessing) { Debug.LogError("Waiting on save system to be ready for processing, have you loaded data from disk?"); }
+        while (!readyForProcessing) { Debug.LogError("Waiting on save system to be ready for processing, have you loaded data from disk?"); }
 
         for (int i = 0; i < saveInfomation.Count; i++)
         {
