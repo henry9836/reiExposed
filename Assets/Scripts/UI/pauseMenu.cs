@@ -100,6 +100,7 @@ public class pauseMenu : MonoBehaviour
             {
                 pauseitems[i].SetActive(true);
             }
+
             Cursor.visible = true;
 
             Cursor.lockState = CursorLockMode.None;
@@ -120,6 +121,12 @@ public class pauseMenu : MonoBehaviour
             {
                 pauseitems[i].SetActive(false);
             }
+
+            for (int i = 0; i < settingsItem.Count; i++)
+            {
+                settingsItem[i].SetActive(false);
+            }
+
             Cursor.visible = false;
 
             Cursor.lockState = CursorLockMode.Locked;
@@ -136,23 +143,32 @@ public class pauseMenu : MonoBehaviour
     public void loadLVL1()
     {
         Cursor.visible = false;
-
         Cursor.lockState = CursorLockMode.Locked;
         Time.timeScale = 1.0f;
         paused = !paused;
-        SceneToLoadPersistant.sceneToLoadInto = SceneManager.GetActiveScene().buildIndex;
-
-        SceneManager.LoadScene(1);
-
+        StartCoroutine(leaveScene(SceneManager.GetActiveScene().buildIndex));
     }
 
     public void menu()
     {
         Cursor.visible = true;
-
         Time.timeScale = 1.0f;
         paused = !paused;
-        SceneToLoadPersistant.sceneToLoadInto = 2;
+
+        StartCoroutine(leaveScene(2));
+    }
+
+    IEnumerator leaveScene(int scene)
+    {
+        SaveSystemController.saveDataToDisk();
+        //Wait on io
+        while (SaveSystemController.ioBusy)
+        {
+            Debug.Log("Waiting On Save System IO");
+            yield return null;
+        }
+
+        SceneToLoadPersistant.sceneToLoadInto = scene;
         SceneManager.LoadScene(1);
 
     }
@@ -161,16 +177,15 @@ public class pauseMenu : MonoBehaviour
     {
         if (settinged)
         {
-            //settingsapply.GetComponent<Settings>().apply();
             settinged = false;
             SaveSystemController.saveDataToDisk();
-            for (int i = 0; i < pauseitems.Count; i++)
-            {
-                pauseitems[i].SetActive(true);
-            }
             for (int i = 0; i < settingsItem.Count; i++)
             {
                 settingsItem[i].SetActive(false);
+            }
+            for (int i = 0; i < pauseitems.Count; i++)
+            {
+                pauseitems[i].SetActive(true);
             }
         }
         else

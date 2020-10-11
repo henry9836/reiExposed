@@ -37,23 +37,27 @@ public class fireBallController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (canDie && (((1 << other.gameObject.layer) & hittableSurfaces) != 0))
+        if (other.tag != "Myth")
         {
-            Instantiate(hitVFX, transform.position, Quaternion.identity);
-
-            if (other.tag == "Player")
+            if (canDie && (((1 << other.gameObject.layer) & hittableSurfaces) != 0))
             {
-                //If the player isn't blocking
-                if (!other.gameObject.GetComponent<umbrella>().ISBLockjing) {
-                    other.gameObject.GetComponent<PlayerController>().EffectHeatlh(-damage);
-                    other.gameObject.GetComponent<umbrella>().cooldown = true;
+                Instantiate(hitVFX, transform.position, Quaternion.identity);
+
+                if (other.tag == "Player")
+                {
+                    //If the player isn't blocking
+                    if (!other.gameObject.GetComponent<umbrella>().ISBLockjing)
+                    {
+                        other.gameObject.GetComponent<PlayerController>().EffectHeatlh(-damage);
+                        other.gameObject.GetComponent<umbrella>().cooldown = true;
+                    }
+
+                    //make myth agro
+                    behaviour.switchMode(2);
+
                 }
-
-                //make myth agro
-                behaviour.switchMode(2);
-
+                Destroy(gameObject);
             }
-            Destroy(gameObject);
         }
     }
 

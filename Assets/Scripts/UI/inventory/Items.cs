@@ -44,6 +44,11 @@ public class Items : MonoBehaviour
     PlayerController player;
     movementController movement;
 
+
+    public GameObject activepowerupsUIref;
+    public GameObject inuseItemPrefab;
+    public List<Sprite> effectIcon;
+
     void Start()
     {
         for (int i = 0; i < 50; ++i)
@@ -319,15 +324,23 @@ public class Items : MonoBehaviour
         {
             case AllItems.DAMAGEBUFF:
                 {
+                    GameObject tmp = GameObject.Instantiate(inuseItemPrefab, activepowerupsUIref.transform);
+                    tmp.transform.GetChild(0).GetComponent<Image>().sprite = effectIcon[0];
+                    tmp.transform.GetChild(0).GetComponent<Image>().preserveAspect = true;
+
                     //VFX
                     if (percentToChange > 0.0f)
                     {
                         particleGroups[(int)AllItems.DAMAGEBUFF].Play();
+                        tmp.GetComponent<Image>().color = Color.green;
+
                     }
                     else
                     {
                         //Hard coded 
                         particleGroups[0].Play();
+                        tmp.GetComponent<Image>().color = Color.red;
+
                     }
 
                     //Calc
@@ -343,8 +356,16 @@ public class Items : MonoBehaviour
                     player.umbreallaDmg += result;
                     player.umbreallaHeavyDmg += resultH;
                     player.transform.GetComponent<umbrella>().MaxDamage += resultgun;
+
+
                     //Wait
-                    yield return new WaitForSeconds(amountOfTimeToApply);
+                    for (float i = 0.0f; i < amountOfTimeToApply; i += Time.deltaTime)
+                    {
+                        tmp.GetComponent<Image>().fillAmount = 1.0f - (i / amountOfTimeToApply);
+                        yield return null;
+                    }
+                    Destroy(tmp);
+
                     //Unapply
                     player.umbreallaDmg -= result;
                     player.transform.GetComponent<umbrella>().MaxDamage -= resultgun;
@@ -366,23 +387,37 @@ public class Items : MonoBehaviour
                 }
             case AllItems.STAMINABUFF:
                 {
+                    GameObject tmp = GameObject.Instantiate(inuseItemPrefab, activepowerupsUIref.transform);
+                    tmp.transform.GetChild(0).GetComponent<Image>().sprite = effectIcon[2];
+                    tmp.transform.GetChild(0).GetComponent<Image>().preserveAspect = true;
+
                     //VFX
                     if (percentToChange > 0.0f)
                     {
                         particleGroups[(int)AllItems.STAMINABUFF].Play();
+                        tmp.GetComponent<Image>().color = Color.green;
                     }
                     else
                     {
                         //Hard coded 
                         particleGroups[8].Play();
+                        tmp.GetComponent<Image>().color = Color.red;
+
                     }
                     //Calc
                     float before = player.staminaRegenSpeed;
                     float result = before * percentToChange;
                     //Apply
                     player.staminaRegenSpeed += result;
+
+
                     //Wait
-                    yield return new WaitForSeconds(amountOfTimeToApply);
+                    for (float i = 0.0f; i < amountOfTimeToApply; i += Time.deltaTime)
+                    {
+                        tmp.GetComponent<Image>().fillAmount = 1.0f - (i / amountOfTimeToApply);
+                        yield return null;
+                    }
+                    Destroy(tmp);
                     //Unapply
                     player.staminaRegenSpeed -= result;
                     Debug.Log("[DUCK] Removed Stamina");
@@ -402,27 +437,42 @@ public class Items : MonoBehaviour
                 }
             case AllItems.MOVEBUFF:
                 {
+                    GameObject tmp = GameObject.Instantiate(inuseItemPrefab, activepowerupsUIref.transform);
+                    tmp.transform.GetChild(0).GetComponent<Image>().sprite = effectIcon[1];
+                    tmp.transform.GetChild(0).GetComponent<Image>().preserveAspect = true;
+                    tmp.transform.GetChild(0).localScale = new Vector3(0.75f, 0.75f, 0.75f);
+
                     //VFX
                     if (percentToChange >= 20.0f)
                     {
                         particleGroups[(int)AllItems.MOVEBUFF].Play();
+                        tmp.GetComponent<Image>().color = Color.green;
                     }
                     if (percentToChange > 0.0f)
                     {
                         particleGroups[(int)AllItems.MOVEBUFF_SMALL].Play();
+                        tmp.GetComponent<Image>().color = Color.green;
                     }
                     else
                     {
                         //Hard coded 
                         particleGroups[(int)AllItems.MOVEDEBUFF].Play();
+                        tmp.GetComponent<Image>().color = Color.red;
                     }
                     //Calc
                     float before = movement.moveSpeed;
                     float result = before * percentToChange;
                     //Apply
                     movement.moveSpeed += result;
+
+
                     //Wait
-                    yield return new WaitForSeconds(amountOfTimeToApply);
+                    for (float i = 0.0f; i < amountOfTimeToApply; i += Time.deltaTime)
+                    {
+                        tmp.GetComponent<Image>().fillAmount = 1.0f - (i / amountOfTimeToApply);
+                        yield return null;
+                    }
+                    Destroy(tmp);
                     //Unapply
                     movement.moveSpeed -= result;
 
@@ -498,25 +548,25 @@ public class Items : MonoBehaviour
                 case AllItems.STAMINABUFF:
                     {
                         //Regen faster stamina for time
-                        StartCoroutine(ApplyTimedEffect(AllItems.STAMINABUFF, 0.25f, 25.0f));
+                        StartCoroutine(ApplyTimedEffect(AllItems.STAMINABUFF, 0.25f, 45.0f));
                         break;
                     }
                 case AllItems.MOVEBUFF:
                     {
                         //Faster movement for time
-                        StartCoroutine(ApplyTimedEffect(AllItems.MOVEBUFF, 0.20f, 45.0f));
+                        StartCoroutine(ApplyTimedEffect(AllItems.MOVEBUFF, 0.05f, 120.0f));
                         break;
                     }
                 case AllItems.MOVEBUFF_SMALL:
                     {
                         //Faster movement for time
-                        StartCoroutine(ApplyTimedEffect(AllItems.MOVEBUFF, 0.15f, 25.0f));
+                        StartCoroutine(ApplyTimedEffect(AllItems.MOVEBUFF, 0.3f, 10.0f));
                         break;
                     }
                 case AllItems.MOVEDEBUFF:
                     {
                         //Slower movement for time
-                        StartCoroutine(ApplyTimedEffect(AllItems.MOVEBUFF, -0.20f, 25.0f));
+                        StartCoroutine(ApplyTimedEffect(AllItems.MOVEBUFF, -0.30f, 15.0f));
                         break;
                     }
                 case AllItems.DUCK:

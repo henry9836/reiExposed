@@ -9,6 +9,7 @@ public class EnemyBlock : StateMachineBehaviour
     MythCollisionHandler collHandler;
     AIMovement movementCtrl;
     AITracker tracker;
+    AIObject ai;
 
     public Vector2 fullBlockTimeRange = new Vector2(1.0f, 10.0f);
     float fullBlockTime = 1.0f;
@@ -22,6 +23,7 @@ public class EnemyBlock : StateMachineBehaviour
             player = GameObject.FindGameObjectWithTag("Player").transform;
             movementCtrl = animator.gameObject.GetComponent<AIMovement>();
             tracker = animator.gameObject.GetComponent<AITracker>();
+            ai = animator.gameObject.GetComponent<AIObject>();
         }
 
         animator.gameObject.GetComponent<AIMovement>().stopMovement();
@@ -56,6 +58,13 @@ public class EnemyBlock : StateMachineBehaviour
             collHandler.fullyBlocking = true;
             animator.ResetTrigger("Block");
             animator.SetBool("Blocking", false);
+            //Whack randomly
+            int coin = Random.Range(0, 11);
+            if (coin >= 5)
+            {
+                animator.SetTrigger("Whack");
+                ai.bindAttack("Whack");
+            }
         }
 
         //If player is away stop blocking
