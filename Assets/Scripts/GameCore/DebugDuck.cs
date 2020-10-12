@@ -35,6 +35,7 @@ public class DebugDuck : MonoBehaviour
                 "setTime - sets time\n" +
                 "setCurr - sets currency\n" +
                 "setMsg - sets message\n" +
+                "setMoney - sets amount of money\n" +
                 "setItem1 - sets item1\n" +
                 "setItem2 - sets item2\n" +
                 "setItem3 - sets item3\n" +
@@ -114,36 +115,49 @@ public class DebugDuck : MonoBehaviour
             {
                 string tmp = input.text.Substring(input.text.IndexOf(" ") + 1);
                 SaveSystemController.updateValue("Package_Name", tmp, true);
+                print($"Set Package_Name to {SaveSystemController.getValue("Package_Name")}");
             }
             else if (input.text.Contains("setTime"))
             {
                 string tmp = input.text.Substring(input.text.IndexOf(" ") + 1);
                 SaveSystemController.updateValue("Package_Time", float.Parse(tmp));
+                print($"Set Package_Time to {SaveSystemController.getValue("Package_Time")}");
+            }
+            else if (input.text.Contains("setMoney"))
+            {
+                string tmp = input.text.Substring(input.text.IndexOf(" ") + 1);
+                SaveSystemController.updateValue("MythTraces", int.Parse(tmp));
+                print($"Set MythTraces to {SaveSystemController.getValue("MythTraces")}");
             }
             else if (input.text.Contains("setCurr"))
             {
                 string tmp = input.text.Substring(input.text.IndexOf(" ") + 1);
                 SaveSystemController.updateValue("Package_Curr", int.Parse(tmp));
+                print($"Set Package_Curr to {SaveSystemController.getValue("Package_Curr")}");
             }
             else if (input.text.Contains("setMsg"))
             {
                 string tmp = input.text.Substring(input.text.IndexOf(" ") + 1);
                 SaveSystemController.updateValue("Package_Message", tmp, true);
+                print($"Set Package_Message to {SaveSystemController.getValue("Package_Message")}");
             }
             else if (input.text.Contains("setItem1"))
             {
                 string tmp = input.text.Substring(input.text.IndexOf(" ") + 1);
                 SaveSystemController.updateValue("Package_Item1", int.Parse(tmp));
+                print($"Set Package_Item1 to {SaveSystemController.getValue("Package_Item1")}");
             }
             else if (input.text.Contains("setItem2"))
             {
                 string tmp = input.text.Substring(input.text.IndexOf(" ") + 1);
                 SaveSystemController.updateValue("Package_Item2", int.Parse(tmp));
+                print($"Set Package_Item2 to {SaveSystemController.getValue("Package_Item2")}");
             }
             else if (input.text.Contains("setItem3"))
             {
                 string tmp = input.text.Substring(input.text.IndexOf(" ") + 1);
                 SaveSystemController.updateValue("Package_Item3", int.Parse(tmp));
+                print($"Set Package_Item3 to {SaveSystemController.getValue("Package_Item3")}");
             }
             else
             {
