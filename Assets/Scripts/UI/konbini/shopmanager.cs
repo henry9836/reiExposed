@@ -18,6 +18,7 @@ public class shopmanager : MonoBehaviour
 
     public Items canvasitems;
 
+
     void Start()
     {
         selectitem(8);
