@@ -28,13 +28,13 @@ public class StorageManager : MonoBehaviour
                         }
                     case Items.AllItems.HEALTHBUFF:
                         {
-                            phonestarage.transform.GetChild(i).GetComponent<Image>().sprite = itemsref.GetComponent<Items>().images[2];
+                            phonestarage.transform.GetChild(i).GetComponent<Image>().sprite = itemsref.GetComponent<Items>().images[3];
 
                             break;
                         }
                     case Items.AllItems.HEALTHBUFF_SMALL:
                         {
-                            phonestarage.transform.GetChild(i).GetComponent<Image>().sprite = itemsref.GetComponent<Items>().images[3];
+                            phonestarage.transform.GetChild(i).GetComponent<Image>().sprite = itemsref.GetComponent<Items>().images[2];
 
                             break;
                         }
