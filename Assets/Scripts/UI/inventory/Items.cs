@@ -190,8 +190,8 @@ public class Items : MonoBehaviour
 
     public void upequipItem(int biginvinpos)
     {
-
         int test = biginvin[biginvinpos].equippedpos;
+
         for (int i = test; i < equipped.Count - 1; i++)
         {
             equipped[i] = equipped[i + 1];
@@ -200,7 +200,7 @@ public class Items : MonoBehaviour
         biginvin[biginvinpos].equipped = false;
         biginvin[biginvinpos].equippedpos = -1;
 
-        for (int i = test; i < equipped.Count - 1; i++)
+        for (int i = test; i < equipped.Count; i++)
         {
             equipped[i].equippedpos--;
         }
