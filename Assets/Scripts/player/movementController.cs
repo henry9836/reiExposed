@@ -279,10 +279,10 @@ public class movementController : MonoBehaviour
              animator.SetBool("Running", false);
 
             //Audio
-            if (!audio.isPlaying)
-            {
-                audio.PlayOneShot(Footsteps[Random.Range(2, 5)]);
-            }
+            //if (!audio.isPlaying)
+            //{
+            //    audio.PlayOneShot(Footsteps[Random.Range(2, 5)]);
+            //}
 
 
             //camshake
@@ -372,10 +372,10 @@ public class movementController : MonoBehaviour
                 }
 
                 animator.SetBool("Running", true);
-                if (!audio.isPlaying)
-                {
-                    audio.PlayOneShot(Footsteps[Random.Range(0, 2)]);
-                }
+                //if (!audio.isPlaying)
+                //{
+                //    audio.PlayOneShot(Footsteps[Random.Range(0, 2)]);
+                //}
             }
         }
 
