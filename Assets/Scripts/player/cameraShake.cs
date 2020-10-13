@@ -96,7 +96,7 @@ public class cameraShake : MonoBehaviour
                     if (timer > 1.0f)
                     {
                         timer = 0.0f;
-                        passTargetRot = new Vector3(Random.Range(5.0f, -5.0f), Random.Range(5.0f, -5.0f), Random.Range(5.0f, -5.0f));
+                        passTargetRot = new Vector3(Random.Range(10.0f, -10.0f), Random.Range(10.0f, -10.0f), Random.Range(10.0f, -10.0f));
                         passOverallSpeed = Random.Range(0.1f, 0.5f);
                         passTargetPos = new Vector3(Random.Range(0.2f, -0.2f), Random.Range(0.2f, -0.2f), Random.Range(0.2f, -0.2f));
                         addOperation(passTargetPos, passTargetRot, passOverallSpeed);
