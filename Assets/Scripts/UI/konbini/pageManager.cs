@@ -65,6 +65,8 @@ public class pageManager : MonoBehaviour
 
     public void umbrellaPage()
     {
+        GameObject.Find("PLAYER_rei").GetComponent<upgradeUmbrella>().updateInteractable();
+
         shopPage.SetActive(false);
         storagePage.SetActive(false);
         umbrellaUpgrade.SetActive(true);
