@@ -31,8 +31,9 @@ public class pauseMenu : MonoBehaviour
 
     public Settings sett;
 
-    //Sounds
+    //Audio
     public AudioClip PausedSound;
+    public AudioClip ResumeSound;
     public AudioClip MenuSift;
     public AudioClip MenuSelect;
     private AudioSource audio;
@@ -110,12 +111,11 @@ public class pauseMenu : MonoBehaviour
             smokeblow = smokin();
             StartCoroutine(smokeblow);
 
-            //Audio
 
         }
         else
         {
-
+            audio.PlayOneShot(ResumeSound);
 
             for (int i = 0; i < pauseitems.Count; i++)
             {

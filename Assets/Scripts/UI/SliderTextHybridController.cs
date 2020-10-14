@@ -69,7 +69,7 @@ public class SliderTextHybridController : MonoBehaviour
         if (flagSlider)
         {
             //Update text to match slider
-            text.text = currSlider.ToString();
+            text.text = currSlider.ToString("F2");
 
         }
         else if (flagText)

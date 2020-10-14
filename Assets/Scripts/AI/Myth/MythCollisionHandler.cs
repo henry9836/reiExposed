@@ -8,6 +8,7 @@ public class MythCollisionHandler : AICollisionHandler
 {
     public GameObject blockVFX;
     public GameObject hitVFX;
+    public List<AudioClip> hurtSounds = new List<AudioClip>();
     public List<AudioClip> blockSounds = new List<AudioClip>();
 
     Animator animator;
@@ -102,6 +103,7 @@ public class MythCollisionHandler : AICollisionHandler
 
                         //Visible feedback
                         Instantiate(hitVFX, transform.position, Quaternion.identity);
+                        audioSrc.PlayOneShot(hurtSounds[Random.Range(0, hurtSounds.Count)]);
                         animator.SetTrigger("Stun");
 
                         GameObject tmp = GameObject.Instantiate(this.gameObject.GetComponent<AIObject>().damagedText, other.gameObject.GetComponent<Collider>().ClosestPointOnBounds(transform.position), Quaternion.identity);
