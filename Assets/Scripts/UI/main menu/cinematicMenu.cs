@@ -14,11 +14,50 @@ public class cinematicMenu : MonoBehaviour
     public float center = 0.0f;
     public Vector3 targetoffset;
 
+    [Header("rotate on these axis")]
+    public bool x;
+    public bool y;
+    public bool z;
+
 
     void Update()
     {
         theta += (Time.deltaTime * speed);
-        Cam.GetComponent<Transform>().localPosition = new Vector3(Mathf.Sin(theta) * circleSize, height, Mathf.Cos(theta) * circleSize) + rotateabout.transform.position; 
+        Vector3 newpos = Vector3.zero;
+        if (x == true)
+        {
+            newpos += new Vector3(Mathf.Sin(theta) * circleSize, 0, 0);
+        }
+        else
+        {
+            newpos += new Vector3(height, 0, 0);
+        }
+
+        if (y == true)
+        {
+            if (x == true)
+            {
+                newpos += new Vector3(0, Mathf.Cos(theta) * circleSize, 0);
+            }
+            else
+            {
+                newpos += new Vector3(0, Mathf.Sin(theta) * circleSize, 0);
+            }
+        }
+        else
+        {
+            newpos += new Vector3(0, height, 0);
+        }
+
+        if (z == true)
+        {
+            newpos += new Vector3(0, 0, Mathf.Cos(theta) * circleSize);
+        }
+        else
+        {
+            newpos += new Vector3(0, 0, height);
+        }
+        Cam.GetComponent<Transform>().localPosition = newpos + rotateabout.transform.position; 
 
         Cam.transform.LookAt(new Vector3(target.transform.localPosition.x + targetoffset.x, target.transform.localPosition.y + targetoffset.y, target.transform.localPosition.z + targetoffset.z), Vector3.up);
         Cam.transform.Rotate(0.0f, center, 0.0f);
