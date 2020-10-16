@@ -85,6 +85,7 @@ public class PlayerController : MonoBehaviour
         if (health <= 0.0f)
         {
             gameObject.GetComponent<Animator>().SetTrigger("Death");
+            gameObject.GetComponent<Animator>().SetBool("DeathOverride", true);
             dead = true;
             audio.PlayOneShot(deathSound);
             StartCoroutine(death());
