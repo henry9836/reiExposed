@@ -82,7 +82,7 @@ public class movementController : MonoBehaviour
     private float rollSpeed = 0.0f;
 
     private bool disallowPlayerFromStamina = false;
-    private bool allowOverrideToStaminaRegen = false;
+    private bool staminaBlockState = false;
 
     private void Start()
     {
@@ -156,7 +156,7 @@ public class movementController : MonoBehaviour
             Vector3 camRot = camParent.transform.rotation.eulerAngles;
 
             //Rotate character model to match cam
-            charcterModel.transform.rotation = camParent.transform.rotation; ;
+            charcterModel.transform.rotation = camParent.transform.rotation;
 
             //Offset rotation to movement direction
             //Offset target
@@ -166,6 +166,7 @@ public class movementController : MonoBehaviour
             //Offset rotation
             targetRot = Quaternion.LookRotation((offset - charcterModel.transform.position).normalized);
             Vector3 targetDir = (offset - charcterModel.transform.position).normalized;
+
             //Rotation
             charcterModel.transform.LookAt(offset, Vector3.up);
 
@@ -203,9 +204,20 @@ public class movementController : MonoBehaviour
                     //If we hit something then only roll to just before the object we hit
                     tmpRollDistance = hit.distance - 1.0f;
                 }
-                //Roll in the forward direction of model
-                targetRollPosition = transform.position + (charcterModel.transform.forward * tmpRollDistance);
-                beforeRollPosition = transform.position;
+
+                //Roll depending on input
+                if (moveDirCam == Vector3.zero)
+                {
+                    //Roll in the forward direction of model
+                    targetRollPosition = transform.position + (charcterModel.transform.forward * tmpRollDistance);
+                    beforeRollPosition = transform.position;
+                }
+                else
+                {
+                    //Roll in forward direction of input
+                    beforeRollPosition = transform.position;
+                    targetRollPosition = transform.position + (moveDirCam * tmpRollDistance);
+                }
 
                 //Reset timer
                 rollTimer = 0.0f;
@@ -232,6 +244,35 @@ public class movementController : MonoBehaviour
         //Lerp between start roll and end roll pos if we are rolling
         if (rolling)
         {
+
+            //Allow rotation change for slow input
+            if ((rollTimer / rollTime) < 0.4f) {
+                //If there is input
+                if (moveDirCam != Vector3.zero)
+                {
+                    Debug.Log("Roll ADJUST");
+                    //Get cam rotation
+                    Vector3 camRot = camParent.transform.rotation.eulerAngles;
+
+                    //Rotate character model to match cam
+                    charcterModel.transform.rotation = camParent.transform.rotation;
+
+                    //Offset rotation to movement direction
+                    //Offset target
+                    Vector3 offset = new Vector3(camParent.transform.position.x + (moveDirCam.x * 10.0f), charcterModel.transform.position.y, camParent.transform.position.z + (moveDirCam.z * 10.0f));
+
+
+                    //Offset rotation
+                    targetRot = Quaternion.LookRotation((offset - charcterModel.transform.position).normalized);
+                    Vector3 targetDir = (offset - charcterModel.transform.position).normalized;
+
+                    //Rotation
+                    charcterModel.transform.LookAt(offset, Vector3.up);
+
+                    //Get new target position to go to
+                    targetRollPosition = beforeRollPosition + (moveDirCam * tmpRollDistance);
+                }
+            }
 
             //Move towards roll target
             Vector3 dir = (targetRollPosition - beforeRollPosition).normalized;
@@ -442,24 +483,24 @@ public class movementController : MonoBehaviour
             }
         }
 
-       
+
+        //Get states that would block stamina regen
+        staminaBlockState = (rolling || sprinting || attackMovementBlock || sprintLock || animator.GetBool("Attack"));
 
         //Reset stamina blocker if the player is not using it
-        if (!Input.GetButton("Sprint") && !Input.GetButton("Roll"))
+        if (!Input.GetButton("Sprint") && !Input.GetButton("Roll") && !staminaBlockState)
         {
             disallowPlayerFromStamina = false;
-            allowOverrideToStaminaRegen = true;
         }
         //Check if we have used too much stamina if so stop the user from using stamina so they can regen
         else if ((pc.CheckStamina() < staminaCostSprint * Time.deltaTime) || (pc.CheckStamina() < staminaCostRoll * Time.deltaTime))
         {
             disallowPlayerFromStamina = true;
-            allowOverrideToStaminaRegen = false;
         }
 
         //Stamina Block Timer used to regen stamina
         //Reset timer and wait for user to stop using their button unless they are blocked as they cannot use their buttons
-        if ((rolling || sprinting || attackMovementBlock || sprintLock || animator.GetBool("Attack")) && !disallowPlayerFromStamina && !allowOverrideToStaminaRegen)
+        if (staminaBlockState && !disallowPlayerFromStamina)
         {
             unblockTimer = 0.0f;
         }
