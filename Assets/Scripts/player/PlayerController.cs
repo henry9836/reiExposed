@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
     public float staminaRegenSpeed = 1.0f;
     public float staminaToAttack = 5.0f;
     public float staminaToHeavyAttack = 15.0f;
-    [HideInInspector]
+    //[HideInInspector]
     public bool staminaBlock = false;
 
     [Header("Combat")]
