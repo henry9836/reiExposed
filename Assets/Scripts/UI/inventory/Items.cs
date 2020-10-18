@@ -49,6 +49,8 @@ public class Items : MonoBehaviour
     public GameObject inuseItemPrefab;
     public List<Sprite> effectIcon;
 
+    public GameObject camshake;
+
     void Start()
     {
         for (int i = 0; i < 50; ++i)
@@ -190,8 +192,8 @@ public class Items : MonoBehaviour
 
     public void upequipItem(int biginvinpos)
     {
-
         int test = biginvin[biginvinpos].equippedpos;
+
         for (int i = test; i < equipped.Count - 1; i++)
         {
             equipped[i] = equipped[i + 1];
@@ -200,7 +202,7 @@ public class Items : MonoBehaviour
         biginvin[biginvinpos].equipped = false;
         biginvin[biginvinpos].equippedpos = -1;
 
-        for (int i = test; i < equipped.Count - 1; i++)
+        for (int i = test; i < equipped.Count; i++)
         {
             equipped[i].equippedpos--;
         }
@@ -464,14 +466,39 @@ public class Items : MonoBehaviour
                     float result = before * percentToChange;
                     //Apply
                     movement.moveSpeed += result;
-
-
-                    //Wait
-                    for (float i = 0.0f; i < amountOfTimeToApply; i += Time.deltaTime)
+                    if (percentToChange > 0.0f)
                     {
-                        tmp.GetComponent<Image>().fillAmount = 1.0f - (i / amountOfTimeToApply);
-                        yield return null;
+                        for (float i = 0.0f; i < amountOfTimeToApply; i += Time.deltaTime)
+                        {
+                            tmp.GetComponent<Image>().fillAmount = 1.0f - (i / amountOfTimeToApply);
+                            yield return null;
+                        }
                     }
+                    else
+                    {
+                        float tmptimer = 0.0f;
+                        //Wait
+                        for (float i = 0.0f; i < amountOfTimeToApply; i += Time.deltaTime)
+                        {
+                            if (amountOfTimeToApply - i > 4.0f)
+                            {
+                                tmptimer += Time.deltaTime;
+                                if (tmptimer > 1.0f)
+                                {
+                                    tmptimer = 0.0f;
+                                    Vector3 passTargetRot = new Vector3(Random.Range(10.0f, -10.0f), Random.Range(10.0f, -10.0f), Random.Range(10.0f, -10.0f));
+                                    float passOverallSpeed = Random.Range(0.2f, 0.5f);
+                                    Vector3 passTargetPos = new Vector3(Random.Range(0.2f, -0.2f), Random.Range(0.2f, -0.2f), Random.Range(0.2f, -0.2f));
+                                    camshake.GetComponent<cameraShake>().addOperation(passTargetPos, passTargetRot, passOverallSpeed);
+                                }
+                            }
+
+                            tmp.GetComponent<Image>().fillAmount = 1.0f - (i / amountOfTimeToApply);
+                            yield return null;
+                        }
+                    }
+
+
                     Destroy(tmp);
                     //Unapply
                     movement.moveSpeed -= result;

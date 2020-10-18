@@ -17,7 +17,6 @@ public class footstepSFXHandler : MonoBehaviour
         {
             if (other.tag == "Untagged")
             {
-                Debug.Log($"AUDIO: {other.name} | {timeSinceLastInvoke}");
                 audio.PlayOneShot(stepSounds[Random.Range(0, stepSounds.Count)]);
             }
         }

@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
     public float staminaRegenSpeed = 1.0f;
     public float staminaToAttack = 5.0f;
     public float staminaToHeavyAttack = 15.0f;
-    [HideInInspector]
+    //[HideInInspector]
     public bool staminaBlock = false;
 
     [Header("Combat")]
@@ -85,6 +85,7 @@ public class PlayerController : MonoBehaviour
         if (health <= 0.0f)
         {
             gameObject.GetComponent<Animator>().SetTrigger("Death");
+            gameObject.GetComponent<Animator>().SetBool("DeathOverride", true);
             dead = true;
             audio.PlayOneShot(deathSound);
             StartCoroutine(death());

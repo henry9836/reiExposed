@@ -55,6 +55,8 @@ public class slot : MonoBehaviour
 
     public void onclick(Object self)
     {
+
+        Debug.Log("test");
         GameObject test = (GameObject)self;
         int test2 = test.gameObject.GetComponent<slotno>().slotnumber;
         singleItem tmp = null;
