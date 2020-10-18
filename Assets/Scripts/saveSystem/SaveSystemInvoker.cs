@@ -17,14 +17,6 @@ public class SaveSystemInvoker : MonoBehaviour
 
     private void FixedUpdate()
     {
-#if UNITY_EDITOR
-        if (Input.GetKeyDown(KeyCode.Semicolon))
-        {
-            SaveSystemController.Reset();
-        }
-#endif
-        Debug.Log($"{SaveSystemController.loadedValues} && {!checkedHash} && {(SceneManager.GetActiveScene().buildIndex == 0)}");
-
         //Ready to interface with and on the main menu
         if (SaveSystemController.loadedValues && !checkedHash && (SceneManager.GetActiveScene().buildIndex == 0))
         {
@@ -50,6 +42,14 @@ public class SaveSystemInvoker : MonoBehaviour
             //We have checked the hash we don't need to check it again
             checkedHash = true;
         }
+
+#if UNITY_EDITOR || DEVELOPMENT_BUILD
+        if (Input.GetKeyDown(KeyCode.F12))
+        {
+            SceneManager.LoadScene(5);
+        }
+#endif
+
     }
 
     IEnumerator delayKickOut()

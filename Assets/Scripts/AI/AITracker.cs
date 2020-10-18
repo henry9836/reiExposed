@@ -36,7 +36,15 @@ public class AITracker : MonoBehaviour
     public float informOverrideTime = 3.0f;
     private Animator animator;
     private AIInformer informer;
+    private bool lostPlayer;
+    private bool aniatorCalled;
+    private bool trackingOverride = false;
 
+    //Reset all tracking so that we can leave the player alone
+    public void overrideTracking(bool mode)
+    {
+        trackingOverride = mode;
+    }
 
     public Vector3 estimateNewPosition()
     {
@@ -57,8 +65,7 @@ public class AITracker : MonoBehaviour
         else 
         { 
             RaycastHit hit;
-            //if (Physics.Raycast(eyes.position, (playerTargetNode.position - eyes.position).normalized, out hit, maxSpotDistance, visionObsctcles))
-            if (Physics.Raycast(eyes.position, (playerTargetNode.position - eyes.position).normalized, out hit, Mathf.Infinity, visionObsctcles))
+            if (Physics.Raycast(eyes.position, (playerTargetNode.position - eyes.position).normalized, out hit, maxSpotDistance, visionObsctcles))
             {
                 if (hit.collider.tag == "PlayerTargetNode")
                 {
@@ -83,6 +90,7 @@ public class AITracker : MonoBehaviour
     {
         ai = GetComponent<AIObject>();
         player = ai.player;
+        lostPlayer = false;
 
         if (target == null)
         {
@@ -102,39 +110,61 @@ public class AITracker : MonoBehaviour
     }
 
     private void FixedUpdate()
-    {
+    {            
         //Timer
         lostPlayerTimer += Time.deltaTime;
         informOverrideTimer += Time.deltaTime;
 
-        //Can We See Player
-        if (canSeePlayer() || (informOverrideTimer < informOverrideTime))
-        {
-            //Update Infomation About Player
-            lastSeenPos = player.transform.position;
-            lastSeenDir = playerModel.forward.normalized;
+        //If we have no override
+        if (!trackingOverride) {
 
-            animator.SetBool("CanSeePlayer", true);
 
-            //Reset
-            lostPlayerTimer = 0.0f;
-            animator.SetBool("LosingPlayer", false);
-            animator.ResetTrigger("LostPlayer");
-
-            //Inform
-            informer.Inform();
-        }
-        //Losing Player
-        else if (lostPlayerTimer > 1.0f)
-        {
-            animator.SetBool("LosingPlayer", true);
-            animator.SetBool("CanSeePlayer", false);
-
-            if (lostPlayerTimer >= timeTillLostPlayer)
+            //Can We See Player
+            if (canSeePlayer() || (informOverrideTimer < informOverrideTime))
             {
-                animator.SetTrigger("LostPlayer");
-            }
+                //Update Infomation About Player
+                lastSeenPos = player.transform.position;
+                lastSeenDir = playerModel.forward.normalized;
 
+                animator.SetBool("CanSeePlayer", true);
+
+                //Reset
+                lostPlayer = false;
+                aniatorCalled = false;
+                lostPlayerTimer = 0.0f;
+                animator.SetBool("LosingPlayer", false);
+                animator.ResetTrigger("LostPlayer");
+
+                //Inform
+                informer.Inform();
+            }
+            //Losing Player
+            else if (lostPlayerTimer > 1.0f && !lostPlayer)
+            {
+                //Trick seek to start
+                if (!aniatorCalled)
+                {
+                    animator.SetTrigger("Inform");
+                    aniatorCalled = true;
+                }
+
+                animator.SetBool("LosingPlayer", true);
+                animator.SetBool("CanSeePlayer", false);
+
+                if (lostPlayerTimer >= timeTillLostPlayer)
+                {
+                    animator.SetTrigger("LostPlayer");
+                    lostPlayer = true;
+                }
+
+            }
+        }
+        else
+        {
+            predictedPlayerPos = ai.movement.initalPosition;
+            lastSeenDir = Vector3.zero;
+            lastSeenPos = ai.movement.initalPosition;
+            ai.movement.goToPosition(predictedPlayerPos);
         }
 
     }

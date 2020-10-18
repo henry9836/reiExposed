@@ -13,7 +13,7 @@ using System.Data.SqlTypes;
 //public class photo
 public class ThePhone : MonoBehaviour
 {
-    //refrances
+    //references
     private plugindemo drone;
     public GameObject ThePhoneUI;
     public GameObject rei;
@@ -38,8 +38,6 @@ public class ThePhone : MonoBehaviour
     public int amazonselected;
     private float shortcutTime = 0.35f;
     public float shortcutTimer = 0.0f;
-
-
 
     //swap BG based on current screen
     public Sprite BGnormal;
@@ -76,13 +74,31 @@ public class ThePhone : MonoBehaviour
 
     public phonestates screen;
 
+    //Audio
+    public AudioClip MenuSift;
+    public AudioClip MenuSelect;
+    public AudioClip MenuBack;
+    public AudioClip CameraOut;
+    public AudioClip CameraMode;
+    public AudioClip OrderDrone;
+    public AudioClip PhoneOn;
+    public AudioClip PhoneOff;
+    private AudioSource audio;
+
+    //Animator
     private Animator playerAnimator;
+
+    public int amazonHPCost;
+    public int amazonUwuberCost;
+
+
     void Start()
     {
         screen = phonestates.NONE;
         rei = GameObject.FindGameObjectWithTag("Player");
         playerAnimator = rei.GetComponent<Animator>();
         canvas = this.gameObject;
+        audio = GetComponent<AudioSource>();
         maincam = GameObject.Find("Main Camera");
         myths = GameObject.FindGameObjectWithTag("GameManager").GetComponent<MythWorkerUnion>();
         drone = GameObject.Find("Save&Dronemanage").GetComponent<plugindemo>();
@@ -100,6 +116,7 @@ public class ThePhone : MonoBehaviour
                     {
                         if (Input.GetKeyDown(KeyCode.Tab))
                         {
+                            audio.PlayOneShot(PhoneOn);
                             openingephone(true);
                         }
                     }
@@ -112,6 +129,7 @@ public class ThePhone : MonoBehaviour
                     {
                         if (Input.GetKeyDown(KeyCode.Tab))
                         {
+                            audio.PlayOneShot(CameraOut);
                             thecamera();
                             break;
                         }
@@ -123,6 +141,7 @@ public class ThePhone : MonoBehaviour
                     float scroll = Input.GetAxis("Mouse ScrollWheel");
                     if (scroll > 0.0f)
                     {
+                        audio.PlayOneShot(MenuSift);
                         selected -= 1;
 
                         if (drone.candeliver == true)
@@ -137,6 +156,7 @@ public class ThePhone : MonoBehaviour
                     }
                     else if (scroll < 0.0f)
                     {
+                        audio.PlayOneShot(MenuSift);
                         selected += 1;
 
                         if (drone.candeliver == true)
@@ -150,7 +170,7 @@ public class ThePhone : MonoBehaviour
                         }
                     }
 
-                    //scroling UI selected
+                    //scrolling UI selected
                     if (prev != selected)
                     {
                         slotno oldslot = ThePhoneUI.transform.GetChild(2).GetChild(0).GetChild(prev).GetComponent<slotno>();
@@ -178,21 +198,25 @@ public class ThePhone : MonoBehaviour
                         {
                             case (0):
                                 {
+                                    audio.PlayOneShot(MenuSelect);
                                     inventoryopen();
                                     break;
                                 }
                             case (1):
                                 {
+                                    audio.PlayOneShot(CameraOut);
                                     thecamera();
                                     break;
                                 }
                             case (2):
                                 {
+                                    audio.PlayOneShot(MenuSelect);
                                     keyopen();
                                     break;
                                 }
                             case (3):
                                 {
+                                    audio.PlayOneShot(MenuSelect);
                                     amazon();
                                     break;
                                 }
@@ -210,6 +234,10 @@ public class ThePhone : MonoBehaviour
                     }
                     else if (Input.GetMouseButtonDown(1)) // RMB goes back 1 or in this case closes it aswell
                     {
+                        if (camMode == false | scanbossmode == false)
+                        {
+                            audio.PlayOneShot(PhoneOff);
+                        }
                         openingephone(false);
                     }
                     break;
@@ -235,6 +263,7 @@ public class ThePhone : MonoBehaviour
 
                     if (Input.GetKeyDown(KeyCode.Q))
                     {
+                        audio.PlayOneShot(CameraMode);
                         scanbossmode = !scanbossmode;
                     }
 
@@ -303,6 +332,7 @@ public class ThePhone : MonoBehaviour
 
                     if (Input.GetKeyDown(KeyCode.Tab) || Input.GetButtonDown("Pause")) // close phone
                     {
+                        audio.PlayOneShot(PhoneOff);
                         float test = rei.transform.GetChild(0).rotation.eulerAngles.y;
                         Quaternion facing = Quaternion.Euler(0, test, 0);
 
@@ -334,11 +364,13 @@ public class ThePhone : MonoBehaviour
                     float scroll = Input.GetAxis("Mouse ScrollWheel");
                     if (scroll > 0.0f)
                     {
+                        audio.PlayOneShot(MenuSift);
                         amazonselected -= 1;
                         //ThePhoneUI.transform.GetChild(5).gameObject.GetComponent<eqitems>().itemchange();
                     }
                     else if (scroll < 0.0f)
                     {
+                        audio.PlayOneShot(MenuSift);
                         amazonselected += 1;
                         //ThePhoneUI.transform.GetChild(5).gameObject.GetComponent<eqitems>().itemchange();
                     }
@@ -357,6 +389,7 @@ public class ThePhone : MonoBehaviour
                     //perchance item
                     if (Input.GetMouseButtonDown(0))
                     {
+                        audio.PlayOneShot(OrderDrone);
                         if (!playerAnimator.GetBool("UsingItem"))
                         {
                             playerAnimator.SetTrigger("UsePhone");
@@ -404,6 +437,7 @@ public class ThePhone : MonoBehaviour
                     float scroll = Input.GetAxis("Mouse ScrollWheel");
                     if (scroll > 0.0f)
                     {
+                        audio.PlayOneShot(MenuSift);
                         itemselected -= 1;
                         ThePhoneUI.transform.GetChild(5).gameObject.GetComponent<eqitems>().itemchange();
 
@@ -411,6 +445,7 @@ public class ThePhone : MonoBehaviour
                     }
                     else if (scroll < 0.0f)
                     {
+                        audio.PlayOneShot(MenuSift);
                         itemselected += 1;
                         ThePhoneUI.transform.GetChild(5).gameObject.GetComponent<eqitems>().itemchange();
 
@@ -604,6 +639,10 @@ public class ThePhone : MonoBehaviour
         ThePhoneUI.transform.GetChild(4).gameObject.SetActive(true);
         //currency.Yen = save.safeItem("MythTraces", saveFile.types.INT).toint;
 
+        ThePhoneUI.transform.GetChild(4).GetChild(0).GetChild(2).GetComponent<Text>().text = amazonHPCost.ToString() + "¥";
+        ThePhoneUI.transform.GetChild(4).GetChild(1).GetChild(2).GetComponent<Text>().text = amazonUwuberCost.ToString() + "¥";
+
+
         ThePhoneUI.transform.GetChild(4).GetChild(3).GetComponent<Text>().text = SaveSystemController.getIntValue("MythTraces") + "¥";
         ThePhoneUI.transform.GetChild(0).GetComponent<Image>().sprite = BGamazon;
 
@@ -625,7 +664,12 @@ public class ThePhone : MonoBehaviour
     //returns to the main menu from anywhere so needs to be robust
     public void BackToMenu()
     {
-        //disbale and enable UI stuff
+        if ((camMode == false) || (scanbossmode == false))
+        {
+            audio.PlayOneShot(MenuBack);
+        }
+            
+        //disable and enable UI stuff
         screen = phonestates.HOME;
 
         ThePhoneUI.SetActive(true);
@@ -665,33 +709,37 @@ public class ThePhone : MonoBehaviour
     //buy item
     public void amazonshop(int item)
     {
+
+
+        //amazonHPCost;
+        //amazonUwuberCost;
+
+
         //mroe then enough to buy
-        if (SaveSystemController.getIntValue("MythTraces") >= 100)
-        {
+
             //buy HPpack
-            if (item == 0)
+        if (item == 0)
+        {
+            if (SaveSystemController.getIntValue("MythTraces") >= amazonHPCost)
             {
-
-                //save.saveitem("MythTraces", currency.Yen);
-                SaveSystemController.updateValue("MythTraces", SaveSystemController.getIntValue("MythTraces") - 100);
-
+                SaveSystemController.updateValue("MythTraces", SaveSystemController.getIntValue("MythTraces") - amazonHPCost);
                 drone.todrop = 0;
                 drone.deliver();
             }
-            else if (item == 1) // buy uber drone
-            {
-                //save.saveitem("MythTraces", currency.Yen);
-                SaveSystemController.updateValue("MythTraces", SaveSystemController.getIntValue("MythTraces") - 100);
 
+        }
+        else if (item == 1) // buy uber drone
+        {
+            if (SaveSystemController.getIntValue("MythTraces") >= amazonUwuberCost)
+            {
+                SaveSystemController.updateValue("MythTraces", SaveSystemController.getIntValue("MythTraces") - amazonUwuberCost);
                 drone.todrop = 999;
                 drone.deliver();
             }
 
-            //grey out or somthing
-            //ThePhoneUI.transform.GetChild(4).GetChild(1).GetComponent<Button>().interactable = false;
         }
         else
-        {
+        { 
             //grey out or somthing
             //ThePhoneUI.transform.GetChild(4).GetChild(1).GetComponent<Button>().interactable = true;
         }

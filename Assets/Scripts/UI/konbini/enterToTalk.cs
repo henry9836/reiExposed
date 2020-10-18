@@ -51,7 +51,8 @@ public class enterToTalk : MonoBehaviour
     {
         if (isOpen == true)
         {
-            
+            rei.GetComponent<PlayerController>().health = rei.GetComponent<PlayerController>().maxHealth;
+
             BGkonobini.GetComponent<AudioSource>().Play();
             BGmusic.GetComponent<MusicPlayer>().StartNone();
             BGmusic.GetComponent<MusicPlayer>().Pause();

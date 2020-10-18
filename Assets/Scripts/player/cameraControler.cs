@@ -66,7 +66,7 @@ public class cameraControler : MonoBehaviour
         pitchValueAdj = Mathf.DeltaAngle(camPivot.transform.localRotation.eulerAngles.x, 360.0f - maxPitchUp) / -(maxPitchUp + maxPitchDown);
         zOffset = Mathf.Lerp(2.0f, maxDistance, distCurve.Evaluate(pitchValueAdj));
 
-        if ((Input.GetAxis("Fire2") > 0.5f) && (cooldownlock == false) && !rei.GetComponent<umbrella>().phoneLock)
+        if ((Input.GetAxis("Fire2") > 0.5f) && (cooldownlock == false) && !rei.GetComponent<umbrella>().phoneLock && (rei.GetComponent<umbrella>().phoneTimer > rei.GetComponent<umbrella>().phoneThreshold))
         {
             if (FOVonce == true)
             {

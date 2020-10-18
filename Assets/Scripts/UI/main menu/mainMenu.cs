@@ -10,7 +10,6 @@ using UnityEngine.Rendering.HighDefinition;
 
 public class mainMenu : MonoBehaviour
 {
-    public GameObject cList;
     public GameObject MList;
     public GameObject SList;
     public GameObject LList;
@@ -32,7 +31,6 @@ public class mainMenu : MonoBehaviour
 
     public enum state
     { 
-        credits,
         menu,
         settings,
         leaderboard,
@@ -48,10 +46,8 @@ public class mainMenu : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         canvaspos = new Vector3(this.gameObject.GetComponent<RectTransform>().anchoredPosition.x, this.gameObject.GetComponent<RectTransform>().anchoredPosition.y, 0.0f);
-        //Listtop = new Vector3(0.0f, this.gameObject.GetComponent<RectTransform>().rect.height, 0.0f);
         Listtop = new Vector3(0.0f, Screen.height, 0.0f);
         Listmid = new Vector3(0.0f, 0.0f, 0.0f);
-        //Listbot = new Vector3(0.0f, -this.gameObject.GetComponent<RectTransform>().rect.height, 0.0f);
         Listbot = new Vector3(0.0f, -Screen.height, 0.0f);
 
         LiftGammaGain tmp;
@@ -83,22 +79,15 @@ public class mainMenu : MonoBehaviour
         managerofPlay.playGamma = true;
     }
 
-    public void tocredits()
+    public void openCredits()
     {
-        buttonenable(state.menu, false);
-        buttonenable(state.credits, true);
-        buttonenable(state.settings, false);
-        buttonenable(state.leaderboard, false);
-
-
-        StartCoroutine(Down(theState, state.credits));
-        theState = state.credits;
-
+        SceneToLoadPersistant.sceneToLoadInto = 4;
+        SceneManager.LoadScene(1);
     }
+
     public void tomenu()
     {
         buttonenable(state.menu, true);
-        buttonenable(state.credits, false);
         buttonenable(state.settings, false);
         buttonenable(state.leaderboard, false);
 
@@ -110,7 +99,6 @@ public class mainMenu : MonoBehaviour
     public void tosettings()
     {
         buttonenable(state.menu, false);
-        buttonenable(state.credits, false);
         buttonenable(state.settings, true);
         buttonenable(state.leaderboard, false);
 
@@ -122,26 +110,39 @@ public class mainMenu : MonoBehaviour
 
     public void toleaderboard()
     {
-        if (SaveSystemController.loadedValues && SaveSystemController.checkSaveValid())
-        {
-            buttonenable(state.menu, false);
-            buttonenable(state.credits, false);
-            buttonenable(state.settings, false);
-            buttonenable(state.leaderboard, true);
+        buttonenable(state.menu, false);
+        buttonenable(state.settings, false);
+        buttonenable(state.leaderboard, true);
 
 
-            StartCoroutine(Down(theState, state.leaderboard));
-            theState = state.leaderboard;
-        }
-        else if (SaveSystemController.loadedValues && !SaveSystemController.checkSaveValid())
-        {
-            Application.Quit();
-        }
+        StartCoroutine(Down(theState, state.leaderboard));
+        theState = state.leaderboard;
+        //if (SaveSystemController.loadedValues && SaveSystemController.checkSaveValid())
+        //{
+        //    buttonenable(state.menu, false);
+        //    buttonenable(state.settings, false);
+        //    buttonenable(state.leaderboard, true);
+
+
+        //    StartCoroutine(Down(theState, state.leaderboard));
+        //    theState = state.leaderboard;
+        //}
+        //else if (SaveSystemController.loadedValues && !SaveSystemController.checkSaveValid())
+        //{
+        //    Application.Quit();
+        //}
     }
 
     public void closeWarning()
     {
         Warning.SetActive(false);
+    }
+
+    public void resetsave()
+    {
+        SaveSystemController.Reset();
+        SceneToLoadPersistant.sceneToLoadInto = 0;
+        SceneManager.LoadScene(1);
     }
 
     public void quit()
@@ -195,19 +196,6 @@ public class mainMenu : MonoBehaviour
     {
         switch (moving)
         {
-            case state.credits:
-                {
-                    if (toonscreen)
-                    {
-                        cList.transform.position = Vector3.Lerp(Listtop + canvaspos, Listmid + canvaspos, completion);
-                    }
-                    else
-                    {
-                        cList.transform.position = Vector3.Lerp(Listmid + canvaspos, Listbot + canvaspos, completion);
-                    }
-
-                    break;
-                }
             case state.menu:
                 {
                     if (toonscreen)
@@ -216,6 +204,7 @@ public class mainMenu : MonoBehaviour
                     }
                     else
                     {
+                        Debug.Log("menbudown");
                         MList.transform.position = Vector3.Lerp(Listmid + canvaspos, Listbot + canvaspos, completion);
                     }
                     break;
@@ -256,18 +245,6 @@ public class mainMenu : MonoBehaviour
     {
         switch (buttons)
         {
-            case state.credits:
-                {
-                    if (enable)
-                    {
-                        cList.transform.GetChild(0).GetComponent<Button>().interactable = true;
-                    }
-                    else
-                    {
-                        cList.transform.GetChild(0).GetComponent<Button>().interactable = false;
-                    }
-                    break;
-                }
             case state.menu:
                 {
                     if (enable)

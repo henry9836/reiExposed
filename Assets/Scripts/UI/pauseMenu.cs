@@ -31,6 +31,13 @@ public class pauseMenu : MonoBehaviour
 
     public Settings sett;
 
+    //Audio
+    public AudioClip PausedSound;
+    public AudioClip ResumeSound;
+    public AudioClip MenuSift;
+    public AudioClip MenuSelect;
+    private AudioSource audio;
+
 
     void Start()  
     {
@@ -41,6 +48,8 @@ public class pauseMenu : MonoBehaviour
         smoketop = new Vector3(0.0f, this.gameObject.GetComponent<RectTransform>().rect.height, 0.0f);
         canvaspos = new Vector3(this.gameObject.GetComponent<RectTransform>().anchoredPosition.x, this.gameObject.GetComponent<RectTransform>().anchoredPosition.y, 0.0f);
         camMove = GameObject.Find("camParent");
+
+        audio = GetComponent<AudioSource>();
 
         GameObject.FindGameObjectWithTag("Player").transform.GetChild(0).GetComponent<cameraControler>().mouseSensitivity = AdjusterInfo.calcSlider(SaveSystemController.getFloatValue("mouseSensitivity"));
         sett.tocencor = SaveSystemController.getBoolValue("toCensor");
@@ -87,12 +96,12 @@ public class pauseMenu : MonoBehaviour
 
         if (paused == true)
         {
-
-
+            audio.PlayOneShot(PausedSound);
             for (int i = 0; i < pauseitems.Count; i++)
             {
                 pauseitems[i].SetActive(true);
             }
+
             Cursor.visible = true;
 
             Cursor.lockState = CursorLockMode.None;
@@ -101,15 +110,23 @@ public class pauseMenu : MonoBehaviour
 
             smokeblow = smokin();
             StartCoroutine(smokeblow);
+
+
         }
         else
         {
-
+            audio.PlayOneShot(ResumeSound);
 
             for (int i = 0; i < pauseitems.Count; i++)
             {
                 pauseitems[i].SetActive(false);
             }
+
+            for (int i = 0; i < settingsItem.Count; i++)
+            {
+                settingsItem[i].SetActive(false);
+            }
+
             Cursor.visible = false;
 
             Cursor.lockState = CursorLockMode.Locked;
@@ -126,23 +143,32 @@ public class pauseMenu : MonoBehaviour
     public void loadLVL1()
     {
         Cursor.visible = false;
-
         Cursor.lockState = CursorLockMode.Locked;
         Time.timeScale = 1.0f;
         paused = !paused;
-        SceneToLoadPersistant.sceneToLoadInto = SceneManager.GetActiveScene().buildIndex;
-
-        SceneManager.LoadScene(1);
-
+        StartCoroutine(leaveScene(SceneManager.GetActiveScene().buildIndex));
     }
 
     public void menu()
     {
         Cursor.visible = true;
-
         Time.timeScale = 1.0f;
         paused = !paused;
-        SceneToLoadPersistant.sceneToLoadInto = 2;
+
+        StartCoroutine(leaveScene(2));
+    }
+
+    IEnumerator leaveScene(int scene)
+    {
+        SaveSystemController.saveDataToDisk();
+        //Wait on io
+        while (SaveSystemController.ioBusy)
+        {
+            Debug.Log("Waiting On Save System IO");
+            yield return null;
+        }
+
+        SceneToLoadPersistant.sceneToLoadInto = scene;
         SceneManager.LoadScene(1);
 
     }
@@ -151,16 +177,15 @@ public class pauseMenu : MonoBehaviour
     {
         if (settinged)
         {
-            //settingsapply.GetComponent<Settings>().apply();
             settinged = false;
             SaveSystemController.saveDataToDisk();
-            for (int i = 0; i < pauseitems.Count; i++)
-            {
-                pauseitems[i].SetActive(true);
-            }
             for (int i = 0; i < settingsItem.Count; i++)
             {
                 settingsItem[i].SetActive(false);
+            }
+            for (int i = 0; i < pauseitems.Count; i++)
+            {
+                pauseitems[i].SetActive(true);
             }
         }
         else

@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
     public float staminaRegenSpeed = 1.0f;
     public float staminaToAttack = 5.0f;
     public float staminaToHeavyAttack = 15.0f;
-    [HideInInspector]
+    //[HideInInspector]
     public bool staminaBlock = false;
 
     [Header("Combat")]
@@ -85,6 +85,7 @@ public class PlayerController : MonoBehaviour
         if (health <= 0.0f)
         {
             gameObject.GetComponent<Animator>().SetTrigger("Death");
+            gameObject.GetComponent<Animator>().SetBool("DeathOverride", true);
             dead = true;
             audio.PlayOneShot(deathSound);
             StartCoroutine(death());
@@ -245,6 +246,8 @@ public class PlayerController : MonoBehaviour
 
     public IEnumerator death()
     {
+
+
         deathUI[0].SetActive(true);
 
         for (float i = 0.0f; i < 1.0f; i += Time.deltaTime * 0.4f)
@@ -255,14 +258,15 @@ public class PlayerController : MonoBehaviour
         }
         deathUI[0].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 1.0f);
 
-        yield return new WaitForSeconds(0.5f);
+        int half = Mathf.RoundToInt(SaveSystemController.getFloatValue("MythTraces") * 0.5f);
+        SaveSystemController.updateValue("MythTraces", half);
+        SaveSystemController.saveDataToDisk();
 
-        deathUI[1].SetActive(true);
+        deathUI[5].GetComponent<Text>().text = "You panicked and dropped " + half.ToString() + "¥.\n\nYou blacked out!";
+        deathUI[5].SetActive(true);
 
-        yield return new WaitForSeconds(0.3f);
-        deathUI[1].SetActive(false);
+
         yield return new WaitForSeconds(1.0f);
-
 
         deathUI[2].SetActive(true);
         deathUI[3].SetActive(true);

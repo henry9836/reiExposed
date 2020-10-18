@@ -54,7 +54,7 @@ public class AIObject : MonoBehaviour
 
     public GameObject revealpersentobject;
 
-
+    private int lastUsedAttack = -1;
 
     public virtual void sleepOverride(bool sleep)
     {
@@ -66,11 +66,10 @@ public class AIObject : MonoBehaviour
     {
         float distance = Vector3.Distance(tracker.lastSeenPos, transform.position);
         validAttacks.Clear();
-        int fallbackAttack = 0;
+        int fallbackAttack = -1;
         float closestAttack = Mathf.Infinity;
 
         //SELECT FROM RANGE AND MODE
-
         for (int i = 0; i < attacks.Count; i++)
         {
             //Attack can be used in our behaviour mode
@@ -80,34 +79,58 @@ public class AIObject : MonoBehaviour
                 //We are within range for an attack
                 if (attacks[i].rangeForAttack.y >= distance)
                 {
-                    //If we have enough stamina for the attack
-                    if (attacks[i].statminaNeeded <= stamina)
-                    {
-                        validAttacks.Add(i);
+                    //If we are not too close for the attack
+                    if (attacks[i].rangeForAttack.x <= distance) {
+                        //If we have enough stamina for the attack
+                        if (attacks[i].statminaNeeded <= stamina)
+                        {
+                            //If we didn't use this attack before
+                            if (i != lastUsedAttack)
+                            {
+                                validAttacks.Add(i);
+                                continue;
+                            }
+                        }
                     }
                 }
+
+                //FALLBACK IF WE COULDN'T ATTACK, FINDS THE BEST POSSIBLE ATTACK ACCORDING TO OUR DISTANCE
+
                 //record attack if it closer than the last closest attack
-                else if (distance - attacks[i].rangeForAttack.y < closestAttack)
+                if (Mathf.Abs(attacks[i].rangeForAttack.y - distance) < closestAttack)
                 {   
                     //If we have enough stamina for the attack
                     if (attacks[i].statminaNeeded <= stamina)
                     {
-                        closestAttack = distance - attacks[i].rangeForAttack.y;
-                        fallbackAttack = i;
+                        if (i != lastUsedAttack)
+                        {
+                            closestAttack = Mathf.Abs(attacks[i].rangeForAttack.y - distance);
+                            fallbackAttack = i;
+                        }
                     }
                 }
             }
         }
 
+        //Debug.Log($"last: {lastUsedAttack} Vcount:{validAttacks.Count} F:{fallbackAttack}");
+
+        //unbind last used attack in case of no attack picked
+        lastUsedAttack = -1;
+
         //If validAttack is populated
         if (validAttacks.Count > 0)
         {
-            bindAttack(validAttacks[Random.Range(0, validAttacks.Count)]);
+            int attack = Random.Range(0, validAttacks.Count);
+            lastUsedAttack = attack;
+            bindAttack(validAttacks[attack]);
+            //Debug.Log($"Valid Used: {attack}");
         }
         //Use fallback attack
-        else
+        else if (fallbackAttack != -1)
         {
+            lastUsedAttack = fallbackAttack;
             bindAttack(fallbackAttack);
+            //Debug.Log($"fallbackAttack Used: {fallbackAttack}");
         }
     }
 

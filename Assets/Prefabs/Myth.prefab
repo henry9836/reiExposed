@@ -782,11 +782,11 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 10
+  m_Speed: 4
+  m_Acceleration: 5
   avoidancePriority: 50
-  m_AngularSpeed: 360
-  m_StoppingDistance: 0.1
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0.2
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -807,8 +807,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   overrideMode: 0
-  moveSpeed: 3.5
-  rotSpeed: 120
+  moveSpeed: 6.1
+  rotSpeed: 250
   fastMoveMulti: 1.5
   fastRotMulti: 1.5
   wanderRange: 10
@@ -963,14 +963,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackName: ComboWhack
-  damage: 5
+  damage: 10
   statminaNeeded: 10
   damageOnlyOnce: 1
   bodyPartsUsedInAttack: 6
   mustFacePlayer: 1
   overrideTrackingVisionCone: 0
   facePlayerThreshold: 0.75
-  rangeForAttack: {x: 1, y: 2}
+  rangeForAttack: {x: 0, y: 2}
   triggerName: ComboWhack
   effect: 1
   allowedModeOne: 0
@@ -996,14 +996,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackName: Whack
-  damage: 5
+  damage: 10
   statminaNeeded: 10
   damageOnlyOnce: 1
   bodyPartsUsedInAttack: 6
   mustFacePlayer: 1
   overrideTrackingVisionCone: 0
   facePlayerThreshold: 0.75
-  rangeForAttack: {x: 1, y: 2}
+  rangeForAttack: {x: 0, y: 2}
   triggerName: Whack
   effect: 1
   allowedModeOne: 1
@@ -1069,11 +1069,11 @@ MonoBehaviour:
   mustFacePlayer: 1
   overrideTrackingVisionCone: 0
   facePlayerThreshold: 0.75
-  rangeForAttack: {x: 0, y: 10}
+  rangeForAttack: {x: 0, y: 3}
   triggerName: Block
   effect: 0
   allowedModeOne: 1
-  allowedModeTwo: 1
+  allowedModeTwo: 0
   allowedModeThree: 0
   allowedModeFour: 0
   allowedModeFive: 0
@@ -1156,6 +1156,9 @@ MonoBehaviour:
   blockVFX: {fileID: 2293523615995652735, guid: 49638e36e34c46145a69270c1a5d9f28,
     type: 3}
   hitVFX: {fileID: 4137615514422819782, guid: c8cf1f2a716526b4185f31897e4c9e06, type: 3}
+  hurtSounds:
+  - {fileID: 8300000, guid: adec7287250c0684c962c1bd60e7cb94, type: 3}
+  - {fileID: 8300000, guid: 8994820884821964986e2350d00d1e9a, type: 3}
   blockSounds:
   - {fileID: 8300000, guid: f49ac7728bb99ac42ababe2c1f17f678, type: 3}
   - {fileID: 8300000, guid: fb3146689e6d87f4ebdbcf9b26b6fe32, type: 3}
@@ -2977,8 +2980,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.1380663, y: 0.05561018, z: 0.056929335}
-  m_Center: {x: -0.49458015, y: 0.0028858185, z: 0.00000008661301}
+  m_Size: {x: 2.4750915, y: 0.7714541, z: 0.26967254}
+  m_Center: {x: -0.663093, y: -0.0048624277, z: 0.010197237}
 --- !u!114 &5655925661486067257
 MonoBehaviour:
   m_ObjectHideFlags: 0
