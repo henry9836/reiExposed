@@ -35,6 +35,12 @@ public class AIBody : MonoBehaviour
     public List<Collider> custom3 = new List<Collider>();
     public List<Collider> custom4 = new List<Collider>();
 
+    //Updates all body parts
+    public void fullBodyOverride(bool mode)
+    {
+        updateHitBox(BodyParts.ALL, mode);
+    }
+
     //Arms or disarms mutilple body parts based on what is requested
     public void updateHitBox(BodyParts parts, bool mode)
     {
