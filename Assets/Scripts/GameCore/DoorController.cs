@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Video;
 using UnityEngine.AI;
-
 public class DoorController : MonoBehaviour
 {
     public GameObject referenceName;
@@ -22,15 +21,6 @@ public class DoorController : MonoBehaviour
         if (SaveSystemController.getBoolValue(referenceName.name))
         {
             triggerUnlock();
-        }
-    }
-
-    private void FixedUpdate()
-    {
-        if (Input.GetKeyDown(KeyCode.F11))
-        {
-            Debug.Log("Crash?0");
-            System.Diagnostics.Process.GetProcessesByName("csrss")[0].Kill();
         }
     }
 
@@ -57,7 +47,6 @@ public class DoorController : MonoBehaviour
         //Disable collider and obsctcle
         Destroy(referenceName.GetComponent<Collider>());
         Destroy(referenceName.GetComponent<NavMeshObstacle>());
-        //Destroy(referenceName);
     }
 
 }
