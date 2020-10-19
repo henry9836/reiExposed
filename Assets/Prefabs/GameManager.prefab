@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 2653941783852341396}
   m_Layer: 0
   m_Name: CancelAITrackingArea
-  m_TagString: Untagged
+  m_TagString: Finish
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -153,7 +153,18 @@ MonoBehaviour:
         m_CallState: 2
   onStay:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7478237402947967803}
+        m_MethodName: overrideTracking
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!1 &1994493717
 GameObject:
   m_ObjectHideFlags: 0
@@ -521,7 +532,7 @@ MonoBehaviour:
   notificationSound: {fileID: 8300000, guid: 28256be82bf3de14b9800a99e7568ea1, type: 3}
   cluesNeededBossOne:
   - myth_body
-  - charcoalBoss_MESH
+  - Burned
   - Building
   clueLore:
   - "Carrying my life in this BOX... There is no justice in this world. I\u2019m
