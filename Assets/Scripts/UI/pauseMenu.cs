@@ -142,6 +142,7 @@ public class pauseMenu : MonoBehaviour
 
     public void loadLVL1()
     {
+        audio.PlayOneShot(MenuSelect);
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         Time.timeScale = 1.0f;
@@ -151,6 +152,7 @@ public class pauseMenu : MonoBehaviour
 
     public void menu()
     {
+        audio.PlayOneShot(MenuSelect);
         Cursor.visible = true;
         Time.timeScale = 1.0f;
         paused = !paused;
@@ -177,6 +179,7 @@ public class pauseMenu : MonoBehaviour
     {
         if (settinged)
         {
+            audio.PlayOneShot(ResumeSound);
             settinged = false;
             SaveSystemController.saveDataToDisk();
             for (int i = 0; i < settingsItem.Count; i++)
@@ -190,6 +193,7 @@ public class pauseMenu : MonoBehaviour
         }
         else
         {
+            audio.PlayOneShot(MenuSelect);
             settinged = true;
 
             for (int i = 0; i < pauseitems.Count; i++)
