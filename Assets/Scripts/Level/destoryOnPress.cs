@@ -9,8 +9,12 @@ public class destoryOnPress : MonoBehaviour
     public bool destoryThisObject = true;
     public bool useSaveSystem = true;
 
+    public AudioClip UnlockSound;
+    private AudioSource audio;
+
     private void Start()
     {
+        audio = GetComponent<AudioSource>();
         if (useSaveSystem)
         {
             if (SaveSystemController.getBoolValue(name))
@@ -27,9 +31,11 @@ public class destoryOnPress : MonoBehaviour
             SaveSystemController.updateValue(name, true);
             SaveSystemController.saveDataToDisk();
         }
+        audio.PlayOneShot(UnlockSound);
         Destroy(objectToDestroy);
         if (destoryThisObject)
         {
+            
             Destroy(this.gameObject);
         }
     }
