@@ -54,6 +54,7 @@ public class ThePhone : MonoBehaviour
     public GameObject camflash;
     public bool camMode = false;
     private bool scanbossmode = false;
+    private bool photoValid = false;
     public GameObject drawtestref;
 
     //public GameObject uitest;
@@ -83,6 +84,7 @@ public class ThePhone : MonoBehaviour
     public AudioClip OrderDrone;
     public AudioClip PhoneOn;
     public AudioClip PhoneOff;
+    public AudioClip UsingPhotogrammetry;
     private AudioSource audio;
 
     //Animator
@@ -327,6 +329,15 @@ public class ThePhone : MonoBehaviour
                         {
                             camgrid.transform.GetChild(1).GetChild(1).transform.Rotate(Vector3.back * 100.0f * Time.deltaTime);
                             drawtestref.GetComponent<drawTest>().toScanBoss();
+                            if (!audio.isPlaying)
+                            {
+                                audio.PlayOneShot(UsingPhotogrammetry);
+                            }
+                        }
+
+                        if (Input.GetMouseButtonUp(0))
+                        {
+                            audio.Stop();
                         }
                     }
 
@@ -922,7 +933,7 @@ public class ThePhone : MonoBehaviour
                         {
                             clueglow.transform.GetChild(0).GetComponent<Text>().text = "Clue Visible";
                         }
-
+                        photoValid = true;
                         //Debug.Log("not already teakmn");
                         clueglow.GetComponent<flash>().fadeout = false;
                         clueglow.GetComponent<flash>().fadein = true;
@@ -931,7 +942,7 @@ public class ThePhone : MonoBehaviour
                     else
                     {
                         clueglow.transform.GetChild(0).GetComponent<Text>().text = "Object Partially Visible";
-
+                        photoValid = false;
                         clueglow.GetComponent<flash>().fadeout = true;
                         clueglow.GetComponent<flash>().fadein = false;
                     }
@@ -940,7 +951,7 @@ public class ThePhone : MonoBehaviour
             else
             {
                 clueglow.transform.GetChild(0).GetComponent<Text>().text = "Clue Not Visible";
-
+                photoValid = false;
                 clueglow.GetComponent<flash>().fadeout = true;
                 clueglow.GetComponent<flash>().fadein = false;
             }
@@ -948,33 +959,35 @@ public class ThePhone : MonoBehaviour
 
         if (takingphoto == true)
         {
-            if (cluename != "bad")
+            if (photoValid)
             {
-                if (!isQRCode)
+                if (cluename != "bad")
                 {
-                    SaveSystemController.updateValue(cluename + "[CLUE]", "yes", true);
-                    clueCtrl.cluesCollected.Add(cluename);
-                    SaveSystemController.saveDataToDisk();
-                    clue[element].GetComponent<TraceController>().Trigger();
-                }
-                else
-                {
-                    //Update Save Controller
-                    if (!cluename.Contains("Myth"))
+                    if (!isQRCode)
                     {
-                        SaveSystemController.updateValue("QRCodeFound", true);
-                        SaveSystemController.updateValue("[QR]" + cluename, true);
+                        SaveSystemController.updateValue(cluename + "[CLUE]", "yes", true);
+                        clueCtrl.cluesCollected.Add(cluename);
                         SaveSystemController.saveDataToDisk();
+                        clue[element].GetComponent<TraceController>().Trigger();
                     }
-                    //Trigger stuff :)
-                    clue[element].GetComponent<QRCodeController>().triggerTweet();
-                    Debug.Log("Done.");
+                    else
+                    {
+                        //Update Save Controller
+                        if (!cluename.Contains("Myth"))
+                        {
+                            SaveSystemController.updateValue("QRCodeFound", true);
+                            SaveSystemController.updateValue("[QR]" + cluename, true);
+                            SaveSystemController.saveDataToDisk();
+                        }
+                        //Trigger stuff :)
+                        clue[element].GetComponent<QRCodeController>().triggerTweet();
+                        Debug.Log("Done.");
+                    }
+
+                    //good photo add to save and stuff
+
                 }
-
-                //good photo add to save and stuff
-
             }
-            //any photo 
         }
     }
 
