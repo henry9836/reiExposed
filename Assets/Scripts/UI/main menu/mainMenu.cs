@@ -28,6 +28,12 @@ public class mainMenu : MonoBehaviour
     bool packageWaiting = false;
     public Volume post;
 
+    //Audio
+    public AudioClip MenuSelect;
+    public AudioClip MenuBack;
+    public AudioClip PressPlay;
+    private AudioSource audio;
+
 
     public enum state
     { 
@@ -40,6 +46,7 @@ public class mainMenu : MonoBehaviour
 
     void Start()
     {
+        audio = GetComponent<AudioSource>();
 
         Debug.Log("My canvas height is: " + this.gameObject.GetComponent<RectTransform>().rect.height.ToString());
 
@@ -59,8 +66,16 @@ public class mainMenu : MonoBehaviour
 
     public void play()
     {
+        StartCoroutine(playy());
+    }
+
+    public IEnumerator playy()
+    {
+        
         if (SaveSystemController.loadedValues && SaveSystemController.checkSaveValid())
         {
+            audio.PlayOneShot(PressPlay);
+            yield return new WaitForSeconds(1.0f);
             SceneToLoadPersistant.sceneToLoadInto = 3;
             SceneManager.LoadScene(1);
             Cursor.visible = false;
@@ -73,6 +88,7 @@ public class mainMenu : MonoBehaviour
 
     public void openBrightness()
     {
+        audio.PlayOneShot(MenuSelect);
         SceneToLoadPersistant.sceneToLoadInto = 0;
         SceneManager.LoadScene(1);
         managerofPlay.playintro = false;
@@ -81,12 +97,14 @@ public class mainMenu : MonoBehaviour
 
     public void openCredits()
     {
+        audio.PlayOneShot(MenuSelect);
         SceneToLoadPersistant.sceneToLoadInto = 4;
         SceneManager.LoadScene(1);
     }
 
     public void tomenu()
     {
+        audio.PlayOneShot(MenuBack);
         buttonenable(state.menu, true);
         buttonenable(state.settings, false);
         buttonenable(state.leaderboard, false);
@@ -98,6 +116,7 @@ public class mainMenu : MonoBehaviour
     }
     public void tosettings()
     {
+        audio.PlayOneShot(MenuSelect);
         buttonenable(state.menu, false);
         buttonenable(state.settings, true);
         buttonenable(state.leaderboard, false);
@@ -110,6 +129,7 @@ public class mainMenu : MonoBehaviour
 
     public void toleaderboard()
     {
+        audio.PlayOneShot(MenuSelect);
         buttonenable(state.menu, false);
         buttonenable(state.settings, false);
         buttonenable(state.leaderboard, true);
@@ -140,6 +160,7 @@ public class mainMenu : MonoBehaviour
 
     public void resetsave()
     {
+        audio.PlayOneShot(MenuSelect);
         SaveSystemController.Reset();
         SceneToLoadPersistant.sceneToLoadInto = 0;
         SceneManager.LoadScene(1);
@@ -147,6 +168,7 @@ public class mainMenu : MonoBehaviour
 
     public void quit()
     {
+        audio.PlayOneShot(MenuSelect);
         if (packageWaiting)
         {
             Warning.SetActive(true);

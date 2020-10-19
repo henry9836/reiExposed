@@ -57,9 +57,9 @@ public class cinematicMenu : MonoBehaviour
         {
             newpos += new Vector3(0, 0, height);
         }
-        Cam.GetComponent<Transform>().localPosition = newpos + rotateabout.transform.position; 
+        Cam.GetComponent<Transform>().localPosition = newpos + rotateabout.transform.localPosition; 
 
-        Cam.transform.LookAt(new Vector3(target.transform.localPosition.x + targetoffset.x, target.transform.localPosition.y + targetoffset.y, target.transform.localPosition.z + targetoffset.z), Vector3.up);
+        Cam.transform.LookAt(new Vector3(target.transform.position.x + targetoffset.x, target.transform.position.y + targetoffset.y, target.transform.position.z + targetoffset.z), Vector3.up);
         Cam.transform.Rotate(0.0f, center, 0.0f);
     }
 }
