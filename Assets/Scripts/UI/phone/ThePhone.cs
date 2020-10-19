@@ -84,6 +84,7 @@ public class ThePhone : MonoBehaviour
     public AudioClip OrderDrone;
     public AudioClip PhoneOn;
     public AudioClip PhoneOff;
+    public AudioClip UsingPhotogrammetry;
     private AudioSource audio;
 
     //Animator
@@ -328,6 +329,15 @@ public class ThePhone : MonoBehaviour
                         {
                             camgrid.transform.GetChild(1).GetChild(1).transform.Rotate(Vector3.back * 100.0f * Time.deltaTime);
                             drawtestref.GetComponent<drawTest>().toScanBoss();
+                            if (!audio.isPlaying)
+                            {
+                                audio.PlayOneShot(UsingPhotogrammetry);
+                            }
+                        }
+
+                        if (Input.GetMouseButtonUp(0))
+                        {
+                            audio.Stop();
                         }
                     }
 

@@ -52,6 +52,10 @@ public class PlayerController : MonoBehaviour
     private Animator animator;
 
 
+    public GameObject bossDeathCam;
+    public GameObject mythDeathCam;
+    public GameObject fogThing;
+
     private void Start()
     {
         staminaAmount = staminaMaxAmount;
@@ -258,15 +262,33 @@ public class PlayerController : MonoBehaviour
         }
         deathUI[0].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 1.0f);
 
+        if (boss.GetComponent<Animator>().GetBool("Sleeping"))
+        {
+            bossDeathCam.SetActive(true);
+        }
+        else
+        {
+            mythDeathCam.SetActive(true);
+        }
+
         int half = Mathf.RoundToInt(SaveSystemController.getFloatValue("MythTraces") * 0.5f);
         SaveSystemController.updateValue("MythTraces", half);
         SaveSystemController.saveDataToDisk();
 
         deathUI[5].GetComponent<Text>().text = "You panicked and dropped " + half.ToString() + "¥.\n\nYou blacked out!";
         deathUI[5].SetActive(true);
+        fogThing.GetComponent<FogFollow>().followThePlayer = false;
 
 
-        yield return new WaitForSeconds(1.0f);
+        for (float i = 1.0f; i > 0.0f; i -= Time.deltaTime)
+        {
+            deathUI[0].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, Mathf.Lerp(0.0f, 1.0f, i));
+
+            yield return null;
+        }
+        deathUI[0].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 0.0f);
+        deathUI[0].SetActive(false);
+
 
         deathUI[2].SetActive(true);
         deathUI[3].SetActive(true);
