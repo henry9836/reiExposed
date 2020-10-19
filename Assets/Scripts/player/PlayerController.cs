@@ -55,6 +55,8 @@ public class PlayerController : MonoBehaviour
     public GameObject bossDeathCam;
     public GameObject mythDeathCam;
     public GameObject fogThing;
+    public GameObject bosshp;
+
 
     private void Start()
     {
@@ -253,9 +255,10 @@ public class PlayerController : MonoBehaviour
 
         GameObject.Find("GameManager").GetComponent<GameManager>().stopPlayer(true);
         staminaUI.transform.parent.parent.gameObject.SetActive(false);
-        GameObject.Find("Ctrl_PhoneAndLog").gameObject.SetActive(false); 
-        GameObject.Find("HPboss").gameObject.SetActive(false);
+        GameObject.Find("Ctrl_PhoneAndLog").gameObject.SetActive(false);
+        bosshp.gameObject.SetActive(false);
         deathUI[0].SetActive(true);
+
 
         for (float i = 0.0f; i < 1.0f; i += Time.deltaTime * 0.4f)
         {
