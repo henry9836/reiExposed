@@ -251,7 +251,10 @@ public class PlayerController : MonoBehaviour
     public IEnumerator death()
     {
 
-
+        GameObject.Find("GameManager").GetComponent<GameManager>().stopPlayer(true);
+        staminaUI.transform.parent.parent.gameObject.SetActive(false);
+        GameObject.Find("Ctrl_PhoneAndLog").gameObject.SetActive(false); 
+        GameObject.Find("HPboss").gameObject.SetActive(false);
         deathUI[0].SetActive(true);
 
         for (float i = 0.0f; i < 1.0f; i += Time.deltaTime * 0.4f)
@@ -275,7 +278,7 @@ public class PlayerController : MonoBehaviour
         SaveSystemController.updateValue("MythTraces", half);
         SaveSystemController.saveDataToDisk();
 
-        deathUI[5].GetComponent<Text>().text = "You panicked and dropped " + half.ToString() + "¥.\n\nYou blacked out!";
+        deathUI[5].GetComponent<Text>().text = "You panicked and dropped " + half.ToString() + "¥.\nYou blacked out!";
         deathUI[5].SetActive(true);
         fogThing.GetComponent<FogFollow>().followThePlayer = false;
 
