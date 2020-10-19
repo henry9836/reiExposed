@@ -977,7 +977,7 @@ public class ThePhone : MonoBehaviour
                     //If it is a door
                     else if (isDoor)
                     {
-                        Debug.Log("DOOROROROR TRIGGEr");
+                        clue[element].GetComponent<DoorController>().triggerUnlock();
                     }
                     //is a qr code
                     else
