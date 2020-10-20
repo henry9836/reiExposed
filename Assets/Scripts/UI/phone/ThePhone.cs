@@ -495,6 +495,8 @@ public class ThePhone : MonoBehaviour
                                 playerAnimator.SetTrigger("UseItem");
                                 canvas.GetComponent<Items>().removeitemequipped(itemselected, true);
                                 ThePhoneUI.transform.GetChild(5).gameObject.GetComponent<eqitems>().itemchange();
+                                phoneItemDesc(itemselected);
+
                             }
                         }
                     }
