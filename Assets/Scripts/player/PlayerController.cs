@@ -297,6 +297,9 @@ public class PlayerController : MonoBehaviour
         deathUI[5].SetActive(true);
         fogThing.GetComponent<FogFollow>().followThePlayer = false;
 
+        deathUI[2].SetActive(true);
+        deathUI[3].SetActive(true);
+
 
         for (float i = 1.0f; i > 0.0f; i -= Time.deltaTime)
         {
@@ -308,8 +311,7 @@ public class PlayerController : MonoBehaviour
         deathUI[0].SetActive(false);
 
 
-        deathUI[2].SetActive(true);
-        deathUI[3].SetActive(true);
+
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
