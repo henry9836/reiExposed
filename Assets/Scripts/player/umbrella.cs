@@ -174,7 +174,6 @@ public class umbrella : MonoBehaviour
                     blocking();
 
                     firemode();
-                    
                 }
                 else
                 {
@@ -256,7 +255,7 @@ public class umbrella : MonoBehaviour
 
         if (canfire == true)
         {
-            if ((Mathf.Abs(this.GetComponent<movementController>().moveDir.z) + Mathf.Abs(this.GetComponent<movementController>().moveDir.x)) > 1.0f)
+            if ((Mathf.Abs(this.GetComponent<movementController>().moveDirCam.z) + Mathf.Abs(this.GetComponent<movementController>().moveDirCam.x)) > 0.0f)
             {
                 bulletSpread = bulletSpreadRunning;
             }
@@ -266,6 +265,7 @@ public class umbrella : MonoBehaviour
             }
 
 
+
             crosshair.transform.GetChild(0).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
             crosshair.transform.GetChild(1).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
             crosshair.transform.GetChild(2).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
@@ -273,6 +273,7 @@ public class umbrella : MonoBehaviour
         }
         else
         {
+
             crosshair.transform.GetChild(0).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
             crosshair.transform.GetChild(1).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
             crosshair.transform.GetChild(2).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
