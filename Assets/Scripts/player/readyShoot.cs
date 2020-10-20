@@ -14,43 +14,41 @@ public class readyShoot : StateMachineBehaviour
         {
             umbrella = GameObject.FindGameObjectWithTag("Player").GetComponent<umbrella>();
         }
-        umbrella.canfire = false;
-        umbrella.ISBLockjing = false;
-    }
 
-    // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
-    override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.95f && !once)
-        {
-            umbrella.canfire = true;
-            umbrella.ISBLockjing = true;
-            once = true;
-        }
-        else if (!once)
-        {
-            umbrella.canfire = false;
-            umbrella.ISBLockjing = false;
-        }
+        umbrella.canfire = true;
+        umbrella.ISBLockjing = true;
+
+
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        once = false;
-        umbrella.canfire = false;
-        umbrella.ISBLockjing = false;
+        if (animator.GetBool("Blocking") == false && animator.GetBool("Sprinting") == true && animator.GetBool("Running") == true)
+        {
+            once = false;
+            umbrella.canfire = false;
+            umbrella.ISBLockjing = false;
+            Debug.Log("sprint no shoot");
+
+        }
+        else if (animator.GetBool("Blocking") == false && animator.GetBool("Sprinting") == false && animator.GetBool("Running") == true)
+        {
+            once = false;
+            umbrella.canfire = false;
+            umbrella.ISBLockjing = false;
+            Debug.Log("run no shoot");
+
+        }
+        else if (animator.GetBool("Blocking") == false && animator.GetBool("Running") == false)
+        {
+            once = false;
+            umbrella.canfire = false;
+            umbrella.ISBLockjing = false;
+            Debug.Log("default no shoot");
+
+        }
+
+
     }
-
-    // OnStateMove is called right after Animator.OnAnimatorMove()
-    //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    // Implement code that processes and affects root motion
-    //}
-
-    // OnStateIK is called right after Animator.OnAnimatorIK()
-    //override public void OnStateIK(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    // Implement code that sets up animation IK (inverse kinematics)
-    //}
 }
