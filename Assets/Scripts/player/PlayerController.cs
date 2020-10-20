@@ -114,6 +114,12 @@ public class PlayerController : MonoBehaviour
 
 #endif
 
+        if (health <= 0.0f)
+        {
+            gameObject.GetComponent<Animator>().SetTrigger("Death");
+            gameObject.GetComponent<Animator>().SetBool("DeathOverride", true);
+        }
+
         uiupdate();
 
         if (!staminaBlock) {
@@ -245,14 +251,7 @@ public class PlayerController : MonoBehaviour
                     }
                 }
 
-                if (health <= 0.0f)
-                {
-                    gameObject.GetComponent<Animator>().SetTrigger("Death");
-                    dead = true;
-                    audio.PlayOneShot(deathSound);
-                    StartCoroutine(death());
-
-                }
+                CheckDeath();
             }
         }
         else
@@ -264,7 +263,7 @@ public class PlayerController : MonoBehaviour
     public IEnumerator death()
     {
 
-        GameObject.Find("GameManager").GetComponent<GameManager>().stopPlayer(true);
+        GameObject.Find("GameManager").GetComponent<GameManager>().stopPlayer(true, false);
         staminaUI.transform.parent.parent.gameObject.SetActive(false);
         GameObject.Find("Ctrl_PhoneAndLog").gameObject.SetActive(false);
         bosshp.gameObject.SetActive(false);
@@ -297,6 +296,9 @@ public class PlayerController : MonoBehaviour
         deathUI[5].SetActive(true);
         fogThing.GetComponent<FogFollow>().followThePlayer = false;
 
+        deathUI[2].SetActive(true);
+        deathUI[3].SetActive(true);
+
 
         for (float i = 1.0f; i > 0.0f; i -= Time.deltaTime)
         {
@@ -308,8 +310,7 @@ public class PlayerController : MonoBehaviour
         deathUI[0].SetActive(false);
 
 
-        deathUI[2].SetActive(true);
-        deathUI[3].SetActive(true);
+
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
