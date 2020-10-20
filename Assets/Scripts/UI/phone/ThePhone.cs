@@ -54,6 +54,7 @@ public class ThePhone : MonoBehaviour
     public GameObject camflash;
     public bool camMode = false;
     private bool scanbossmode = false;
+    private bool photoValid = false;
     public GameObject drawtestref;
 
     //public GameObject uitest;
@@ -83,6 +84,7 @@ public class ThePhone : MonoBehaviour
     public AudioClip OrderDrone;
     public AudioClip PhoneOn;
     public AudioClip PhoneOff;
+    public AudioClip UsingPhotogrammetry;
     private AudioSource audio;
 
     //Animator
@@ -327,6 +329,15 @@ public class ThePhone : MonoBehaviour
                         {
                             camgrid.transform.GetChild(1).GetChild(1).transform.Rotate(Vector3.back * 100.0f * Time.deltaTime);
                             drawtestref.GetComponent<drawTest>().toScanBoss();
+                            if (!audio.isPlaying)
+                            {
+                                audio.PlayOneShot(UsingPhotogrammetry);
+                            }
+                        }
+
+                        if (Input.GetMouseButtonUp(0))
+                        {
+                            audio.Stop();
                         }
                     }
 
@@ -760,10 +771,12 @@ public class ThePhone : MonoBehaviour
         int element = 0;
         string cluename = "bad";
         bool isQRCode = false;
+        bool isDoor = false;
         bool cluePicTaken = false;
 
         GameObject[] clues = GameObject.FindGameObjectsWithTag(checkTag);
         GameObject[] qr = GameObject.FindGameObjectsWithTag("QRCode");
+        GameObject[] doors = GameObject.FindGameObjectsWithTag("DoorFrame");
 
         List<GameObject> clue = new List<GameObject>() { };
         List<List<Vector2>> cluepos = new List<List<Vector2>>() { };
@@ -781,7 +794,13 @@ public class ThePhone : MonoBehaviour
             clue.Add(qr[i]);
         }
 
-        
+        for (int i = 0; i < doors.Length; i++)
+        {
+            cluepos.Add(new List<Vector2>());
+            clue.Add(doors[i]);
+        }
+
+
 
         //find all clues
         for (int i = 0; i < clue.Count; i++)
@@ -829,6 +848,7 @@ public class ThePhone : MonoBehaviour
                 cluename = clue[i].name;
                 element = i;
                 isQRCode = clue[i].tag == "QRCode";
+                isDoor = clue[i].tag == "DoorFrame";
 
                 if (SaveSystemController.getValue(cluename + "[CLUE]") == "yes") //already taken
                 {
@@ -918,11 +938,15 @@ public class ThePhone : MonoBehaviour
                         {
                             clueglow.transform.GetChild(0).GetComponent<Text>().text = "QRCode Visible";
                         }
+                        else if (isDoor)
+                        {
+                            clueglow.transform.GetChild(0).GetComponent<Text>().text = "Door Visible";
+                        }
                         else
                         {
-                            clueglow.transform.GetChild(0).GetComponent<Text>().text = "Clue Visible";
+                            clueglow.transform.GetChild(0).GetComponent<Text>().text = "Trace Visible";
                         }
-
+                        photoValid = true;
                         //Debug.Log("not already teakmn");
                         clueglow.GetComponent<flash>().fadeout = false;
                         clueglow.GetComponent<flash>().fadein = true;
@@ -931,7 +955,7 @@ public class ThePhone : MonoBehaviour
                     else
                     {
                         clueglow.transform.GetChild(0).GetComponent<Text>().text = "Object Partially Visible";
-
+                        photoValid = false;
                         clueglow.GetComponent<flash>().fadeout = true;
                         clueglow.GetComponent<flash>().fadein = false;
                     }
@@ -939,8 +963,8 @@ public class ThePhone : MonoBehaviour
             }
             else
             {
-                clueglow.transform.GetChild(0).GetComponent<Text>().text = "Clue Not Visible";
-
+                clueglow.transform.GetChild(0).GetComponent<Text>().text = "Object Not Visible";
+                photoValid = false;
                 clueglow.GetComponent<flash>().fadeout = true;
                 clueglow.GetComponent<flash>().fadein = false;
             }
@@ -948,33 +972,42 @@ public class ThePhone : MonoBehaviour
 
         if (takingphoto == true)
         {
-            if (cluename != "bad")
+            if (photoValid)
             {
-                if (!isQRCode)
+                if (cluename != "bad")
                 {
-                    SaveSystemController.updateValue(cluename + "[CLUE]", "yes", true);
-                    clueCtrl.cluesCollected.Add(cluename);
-                    SaveSystemController.saveDataToDisk();
-                    clue[element].GetComponent<TraceController>().Trigger();
-                }
-                else
-                {
-                    //Update Save Controller
-                    if (!cluename.Contains("Myth"))
+                    //Is not a qr code and not a door
+                    if (!isQRCode && !isDoor)
                     {
-                        SaveSystemController.updateValue("QRCodeFound", true);
-                        SaveSystemController.updateValue("[QR]" + cluename, true);
+                        SaveSystemController.updateValue(cluename + "[CLUE]", "yes", true);
+                        clueCtrl.cluesCollected.Add(cluename);
                         SaveSystemController.saveDataToDisk();
+                        clue[element].GetComponent<TraceController>().Trigger();
                     }
-                    //Trigger stuff :)
-                    clue[element].GetComponent<QRCodeController>().triggerTweet();
-                    Debug.Log("Done.");
+                    //If it is a door
+                    else if (isDoor)
+                    {
+                        clue[element].GetComponent<DoorController>().triggerUnlock();
+                    }
+                    //is a qr code
+                    else
+                    {
+                        //Update Save Controller if not a myth drop
+                        if (!cluename.Contains("Myth"))
+                        {
+                            SaveSystemController.updateValue("QRCodeFound", true);
+                            SaveSystemController.updateValue("[QR]" + cluename, true);
+                            SaveSystemController.saveDataToDisk();
+                        }
+                        //Trigger stuff :)
+                        clue[element].GetComponent<QRCodeController>().triggerTweet();
+                        Debug.Log("Done.");
+                    }
+
+                    //good photo add to save and stuff
+
                 }
-
-                //good photo add to save and stuff
-
             }
-            //any photo 
         }
     }
 

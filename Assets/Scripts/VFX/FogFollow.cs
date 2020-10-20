@@ -67,6 +67,11 @@ public class FogFollow : MonoBehaviour
             fogSettings.baseHeight.value = playerTransform.position.y - baseDiff;
             fogSettings.maximumHeight.value = playerTransform.position.y - heightDiff;
         }
+        else
+        {
+            fogSettings.baseHeight.value = 0.0f - baseDiff;
+            fogSettings.maximumHeight.value = 0.0f - heightDiff;
+        }
     }
 
 }
