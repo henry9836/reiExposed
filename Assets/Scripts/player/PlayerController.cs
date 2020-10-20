@@ -280,6 +280,7 @@ public class PlayerController : MonoBehaviour
         int half = Mathf.RoundToInt(SaveSystemController.getFloatValue("MythTraces") * 0.5f);
         SaveSystemController.updateValue("MythTraces", half);
         SaveSystemController.saveDataToDisk();
+        deathUI[6].SetActive(true);
 
         deathUI[5].GetComponent<Text>().text = "You panicked and dropped " + half.ToString() + "¥.\nYou blacked out!";
         deathUI[5].SetActive(true);
