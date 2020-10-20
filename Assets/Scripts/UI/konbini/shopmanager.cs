@@ -7,6 +7,8 @@ public class shopmanager : MonoBehaviour
 {
     public List<string> names = new List<string>() { };
     public List<string> description = new List<string>() { };
+    public List<string> shortDescription = new List<string>() { };
+
     public List<int> costs = new List<int>() { };
 
     public Text nameDisp;

@@ -2123,7 +2123,6 @@ GameObject:
   - component: {fileID: 2081805776}
   - component: {fileID: 4041328941732909559}
   - component: {fileID: 1325763837}
-  - component: {fileID: 557751168}
   m_Layer: 14
   m_Name: PLAYER_rei
   m_TagString: Player
@@ -2241,6 +2240,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: ba93fa61972d11d408000606b7486e59, type: 3}
   - {fileID: 8300000, guid: 3ae209cf146ad3649a6f7a3e056652e5, type: 3}
   moveDir: {x: 0, y: 0, z: 0}
+  moveDirCam: {x: 0, y: 0, z: 0}
   isOnGround: 0
 --- !u!114 &3144247446528475113
 MonoBehaviour:
@@ -2278,6 +2278,11 @@ MonoBehaviour:
   - {fileID: 8300000, guid: adec7287250c0684c962c1bd60e7cb94, type: 3}
   - {fileID: 8300000, guid: 8994820884821964986e2350d00d1e9a, type: 3}
   deathSound: {fileID: 8300000, guid: adec7287250c0684c962c1bd60e7cb94, type: 3}
+  iFrame: 0
+  bossDeathCam: {fileID: 0}
+  mythDeathCam: {fileID: 0}
+  fogThing: {fileID: 0}
+  bosshp: {fileID: 0}
 --- !u!136 &2569531379931713282
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2516,20 +2521,6 @@ MonoBehaviour:
   THECAM: {fileID: 736449174}
   pitch: 0
   yaw: 0
---- !u!114 &557751168
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1943698811393534155}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f91d5eafbed9f448ad41e16a6da6644, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  reimat: {fileID: 2100000, guid: ac0725678a8c6b64999eb5c17f80d67e, type: 2}
-  gunMat: {fileID: 2100000, guid: b6f7ad1afad7c7e48af75b0c281805de, type: 2}
 --- !u!1 &1987277296046911583
 GameObject:
   m_ObjectHideFlags: 0
@@ -3555,7 +3546,7 @@ MonoBehaviour:
   maxFOV: 75
   obstacleLayers:
     serializedVersion: 2
-    m_Bits: 15159
+    m_Bits: 4209459
   aimFOV: 55
   aimDistance: 3
   umbrella: {fileID: 4885559644254803688}
@@ -3563,7 +3554,7 @@ MonoBehaviour:
   camtargetlock: 0
   targetSphere: {fileID: 0}
   maxlockdistance: 15
-  maxlockdistanceBoss: 150
+  maxlockdistanceBoss: 60
 --- !u!1 &3339494445147069540
 GameObject:
   m_ObjectHideFlags: 0
@@ -8626,12 +8617,6 @@ ParticleSystem:
     type: 3}
   m_PrefabInstance: {fileID: 6116690489060753188}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &6069962585565272592 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 62504316971148596, guid: 0ba3f99ddff096649a3c7a626c7b61e5,
-    type: 3}
-  m_PrefabInstance: {fileID: 6116690489060753188}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &82483093822331616 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6181138228649174468, guid: 0ba3f99ddff096649a3c7a626c7b61e5,
@@ -8644,6 +8629,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 098742220511fa0448d9b246ce08b675, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &6069962585565272592 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 62504316971148596, guid: 0ba3f99ddff096649a3c7a626c7b61e5,
+    type: 3}
+  m_PrefabInstance: {fileID: 6116690489060753188}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6581429477747719494
 PrefabInstance:
   m_ObjectHideFlags: 0
