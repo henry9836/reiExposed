@@ -106,7 +106,7 @@ public class ThePhone : MonoBehaviour
         myths = GameObject.FindGameObjectWithTag("GameManager").GetComponent<MythWorkerUnion>();
         drone = GameObject.Find("Save&Dronemanage").GetComponent<plugindemo>();
         clueCtrl = GameObject.FindGameObjectWithTag("GameManager").GetComponent<ClueController>();
-        konbini.transform.GetChild(4).gameObject.GetComponent<wallpapEqu>().init();
+        konbini.transform.GetChild(4).GetChild(0).GetChild(0).gameObject.GetComponent<wallpapEqu>().init();
     }
     void Update()
     {
