@@ -26,6 +26,7 @@ public class umbrella : MonoBehaviour
     public AudioSource audio;
     public GameObject shotUI;
     public GameObject rocketPrefab;
+    public Transform rocketSpawnLoc;
     public MultipleVFXHandler aimVFX;
     public ParticleSystem shootVFX;
     public bool phoneLock = false;
@@ -346,16 +347,22 @@ public class umbrella : MonoBehaviour
     //The umbrella is acutally an RPG
     void shootRPG()
     {
+        Transform brella = this.transform.GetChild(1).GetChild(6);
+
         //Spawn rocket
-        GameObject rocketRef = Instantiate(rocketPrefab, transform.position, Quaternion.identity);
+        GameObject rocketRef = Instantiate(rocketPrefab, brella.transform.position, Quaternion.identity);
 
         //Get direction and point rocket
         RaycastHit hit;
         if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, Mathf.Infinity, ball))
         {
-            hit.point = new Vector3(hit.point.x, movement.charcterModel.transform.position.y, hit.point.z); //look forwards
+            hit.point = new Vector3(hit.point.x, hit.point.y, hit.point.z); //look forwards
             rocketRef.transform.LookAt(hit.point);
         }
+
+        //Move out of the umbrella
+        rocketRef.transform.position += rocketRef.transform.forward * 1.5f;
+
     }
 
 
