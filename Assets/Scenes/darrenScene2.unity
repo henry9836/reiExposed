@@ -39,7 +39,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 6.162495, g: 12.541635, b: 28.614828, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2538,6 +2538,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 627668144, guid: 8eb2ef8db0635f8428732d90c288735e, type: 3}
+      propertyPath: followThePlayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 627668144, guid: 8eb2ef8db0635f8428732d90c288735e, type: 3}
+      propertyPath: startHeight
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 756421457673378901, guid: 8eb2ef8db0635f8428732d90c288735e,
         type: 3}
       propertyPath: m_Name
@@ -8463,7 +8471,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1964981338
 Transform:
   m_ObjectHideFlags: 0
