@@ -42,6 +42,9 @@ public class PlayerController : MonoBehaviour
     public List<AudioClip> hurtSounds = new List<AudioClip>();
     public AudioClip deathSound;
 
+    [HideInInspector]
+    public bool iFrame = false;
+
     private GameObject staminaUI;
     private GameObject HPui;
     private GameObject boss;
@@ -50,6 +53,12 @@ public class PlayerController : MonoBehaviour
     private umbrella umbrella;
     private bool UIon = false;
     private Animator animator;
+
+
+    public GameObject bossDeathCam;
+    public GameObject mythDeathCam;
+    public GameObject fogThing;
+    public GameObject bosshp;
 
 
     private void Start()
@@ -105,6 +114,12 @@ public class PlayerController : MonoBehaviour
 
 #endif
 
+        if (health <= 0.0f)
+        {
+            gameObject.GetComponent<Animator>().SetTrigger("Death");
+            gameObject.GetComponent<Animator>().SetBool("DeathOverride", true);
+        }
+
         uiupdate();
 
         if (!staminaBlock) {
@@ -144,111 +159,116 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (dead == false)
+        //If we are in an iframe
+        if (!iFrame)
         {
-            GameObject otherObject = other.gameObject;
-            //Damage From Enemy and we are not blocking
-            if (otherObject.CompareTag("EnemyAttackSurface") && !umbrella.ISBLockjing)
+            if (!dead)
             {
-                Debug.Log("I was hit and taking damage");
+                GameObject otherObject = other.gameObject;
+                //Damage From Enemy and we are not blocking
+                if (otherObject.CompareTag("EnemyAttackSurface") && !umbrella.ISBLockjing)
+                {
+                    Debug.Log("I was hit and taking damage");
 
-                AIAttackContainer.EFFECTTYPES effect = AIAttackContainer.EFFECTTYPES.NONE;
+                    AIAttackContainer.EFFECTTYPES effect = AIAttackContainer.EFFECTTYPES.NONE;
 
-                //Apply Damage
-                if (otherObject.transform.root.GetComponent<AIObject>() != null)
-                {
-                    //Stun based on type
-                    effect = otherObject.transform.root.GetComponent<AIObject>().QueryDamageEffect();
-                    health -= otherObject.transform.root.GetComponent<AIObject>().QueryDamage();
-                }
-                else if (otherObject.GetComponent<GenericHitboxController>() != null)
-                {
-                    Collider col = GetComponent<Collider>();
-                    Debug.DrawLine(other.ClosestPointOnBounds(col.transform.position), col.transform.position, Color.magenta, 10.0f, false);
-                    float dmg = otherObject.GetComponent<GenericHitboxController>().Damage();
-                    //Stun based on type
-                    effect = otherObject.GetComponent<GenericHitboxController>().effect;
-                    health -= dmg;
-                    Debug.Log($"Took Damage {dmg}");
-                }
-                else
-                {
-                    Debug.LogWarning($"Unknown Component Damage {otherObject.name}");
-                }
-                audio.PlayOneShot(hurtSounds[Random.Range(0, hurtSounds.Count)]);
+                    //Apply Damage
+                    if (otherObject.transform.root.GetComponent<AIObject>() != null)
+                    {
+                        //Stun based on type
+                        effect = otherObject.transform.root.GetComponent<AIObject>().QueryDamageEffect();
+                        health -= otherObject.transform.root.GetComponent<AIObject>().QueryDamage();
+                    }
+                    else if (otherObject.GetComponent<GenericHitboxController>() != null)
+                    {
+                        Collider col = GetComponent<Collider>();
+                        Debug.DrawLine(other.ClosestPointOnBounds(col.transform.position), col.transform.position, Color.magenta, 10.0f, false);
+                        float dmg = otherObject.GetComponent<GenericHitboxController>().Damage();
+                        //Stun based on type
+                        effect = otherObject.GetComponent<GenericHitboxController>().effect;
+                        health -= dmg;
+                        Debug.Log($"Took Damage {dmg}");
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"Unknown Component Damage {otherObject.name}");
+                    }
+                    audio.PlayOneShot(hurtSounds[Random.Range(0, hurtSounds.Count)]);
 
-                //Stun Animation
-                switch (effect)
-                {
-                    case AIAttackContainer.EFFECTTYPES.STUN:
-                        {
-                            animator.SetTrigger("Stun");
+                    //Stun Animation
+                    switch (effect)
+                    {
+                        case AIAttackContainer.EFFECTTYPES.STUN:
+                            {
+                                animator.SetTrigger("Stun");
+                                break;
+                            }
+                        case AIAttackContainer.EFFECTTYPES.KNOCKBACK:
+                            {
+                                animator.SetTrigger("KnockBack");
+                                break;
+                            }
+                        case AIAttackContainer.EFFECTTYPES.KNOCKDOWN:
+                            {
+                                animator.SetTrigger("KnockDown");
+                                break;
+                            }
+                        default:
                             break;
-                        }
-                    case AIAttackContainer.EFFECTTYPES.KNOCKBACK:
-                        {
-                            animator.SetTrigger("KnockBack");
-                            break;
-                        }
-                    case AIAttackContainer.EFFECTTYPES.KNOCKDOWN:
-                        {
-                            animator.SetTrigger("KnockDown");
-                            break;
-                        }
-                    default:
-                        break;
-                }
+                    }
 
-                //Boss VFX Hit
-                if (otherObject.transform.root.tag == "Boss")
+                    //Boss VFX Hit
+                    if (otherObject.transform.root.tag == "Boss")
+                    {
+                        //Spawn VFX
+                        Instantiate(bossHitVFX, GetComponent<Collider>().ClosestPointOnBounds(otherObject.transform.position), Quaternion.identity);
+                    }
+                    else
+                    {
+                        //Spawn VFX
+                        Instantiate(hitVFX, GetComponent<Collider>().ClosestPointOnBounds(otherObject.transform.position), Quaternion.identity);
+                    }
+                }
+                //If we are blocking
+                else if (other.gameObject.CompareTag("EnemyAttackSurface") && umbrella.ISBLockjing)
                 {
-                    //Spawn VFX
-                    Instantiate(bossHitVFX, GetComponent<Collider>().ClosestPointOnBounds(otherObject.transform.position), Quaternion.identity);
+                    Debug.Log("I was hit and but blocked");
+                    umbrella.cooldown = true;
+
+                    //Disable hitboxes
+                    boss.GetComponent<AIObject>().body.updateHitBox(AIBody.BodyParts.ALL, false);
+                    Instantiate(blockVFX, other.transform.position, Quaternion.identity);
                 }
-                else
+
+
+
+                if (health <= 40.0f)
                 {
-                    //Spawn VFX
-                    Instantiate(hitVFX, GetComponent<Collider>().ClosestPointOnBounds(otherObject.transform.position), Quaternion.identity);
+                    if (UIon == false)
+                    {
+                        UIon = true;
+                        StartCoroutine(UIflash(true));
+                    }
                 }
-            }
-            //If we are blocking
-            else if (other.gameObject.CompareTag("EnemyAttackSurface") && umbrella.ISBLockjing)
-            {
-                Debug.Log("I was hit and but blocked");
-                umbrella.cooldown = true;
 
-                //Disable hitboxes
-                boss.GetComponent<AIObject>().body.updateHitBox(AIBody.BodyParts.ALL, false);
-                Instantiate(blockVFX, other.transform.position, Quaternion.identity);
+                CheckDeath();
             }
-
-            
-
-            if (health <= 40.0f)
-            {
-                if (UIon == false)
-                {
-                    UIon = true;
-                    StartCoroutine(UIflash(true));
-                }
-            }
-
-            if (health <= 0.0f)
-            {
-                gameObject.GetComponent<Animator>().SetTrigger("Death");
-                dead = true;
-                audio.PlayOneShot(deathSound);
-                StartCoroutine(death());
-                
-            }
+        }
+        else
+        {
+            Debug.Log("Hit I Frame");
         }
     }
 
     public IEnumerator death()
     {
 
-
+        GameObject.Find("GameManager").GetComponent<GameManager>().stopPlayer(true, false);
+        staminaUI.transform.parent.parent.gameObject.SetActive(false);
+        GameObject.Find("Ctrl_PhoneAndLog").gameObject.SetActive(false);
+        bosshp.gameObject.SetActive(false);
         deathUI[0].SetActive(true);
+
 
         for (float i = 0.0f; i < 1.0f; i += Time.deltaTime * 0.4f)
         {
@@ -258,18 +278,39 @@ public class PlayerController : MonoBehaviour
         }
         deathUI[0].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 1.0f);
 
+        if (boss.GetComponent<Animator>().GetBool("Sleeping"))
+        {
+            bossDeathCam.SetActive(true);
+        }
+        else
+        {
+            mythDeathCam.SetActive(true);
+        }
+
         int half = Mathf.RoundToInt(SaveSystemController.getFloatValue("MythTraces") * 0.5f);
         SaveSystemController.updateValue("MythTraces", half);
         SaveSystemController.saveDataToDisk();
+        deathUI[6].SetActive(true);
 
-        deathUI[5].GetComponent<Text>().text = "You panicked and dropped " + half.ToString() + "¥.\n\nYou blacked out!";
+        deathUI[5].GetComponent<Text>().text = "You panicked and dropped " + half.ToString() + "¥.\nYou blacked out!";
         deathUI[5].SetActive(true);
-
-
-        yield return new WaitForSeconds(1.0f);
+        fogThing.GetComponent<FogFollow>().followThePlayer = false;
 
         deathUI[2].SetActive(true);
         deathUI[3].SetActive(true);
+
+
+        for (float i = 1.0f; i > 0.0f; i -= Time.deltaTime)
+        {
+            deathUI[0].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, Mathf.Lerp(0.0f, 1.0f, i));
+
+            yield return null;
+        }
+        deathUI[0].GetComponent<Image>().color = new Color(0.0f, 0.0f, 0.0f, 0.0f);
+        deathUI[0].SetActive(false);
+
+
+
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;

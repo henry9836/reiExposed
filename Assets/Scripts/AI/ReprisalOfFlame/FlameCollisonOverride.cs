@@ -18,6 +18,11 @@ public class FlameCollisonOverride : AICollisionHandler
         umbrella = flameObject.player.GetComponent<umbrella>();
     }
 
+    public void overrideDamage(float dmg)
+    {
+        flameObject.overrideDamage(dmg);
+    }
+
     //Recieves damage from the player
     public override void OnTriggerEnter(Collider other)
     {

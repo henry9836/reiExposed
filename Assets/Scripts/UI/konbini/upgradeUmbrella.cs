@@ -21,16 +21,16 @@ public class upgradeUmbrella : MonoBehaviour
     public GameObject umbrellaHolder;
 
 
-    private List<int> prices = new List<int>() { 0, 0, 0, 0, 0, 75, 600 };
+    private List<int> prices = new List<int>() { 0, 0, 0, 0, 0, 75, 10000 };
     private List<string> upgradeDescriptions = new List<string>() 
     {
         "Increases the total damage output from the shotgun.", //shotgun damage
-        "Increases the maximum range and damage at range.", //shotgun range
+        "Increases the range of the shotgun.", //shotgun range
         "Tighter crosshair while standing still.", //ADS spread
         "Tighter crosshair while running.", //running spread
         "Melee attacks deals more damage.", //meelee damage
         "A cheap, trusty, old fassioned shotgun shell.", //normal bullets
-        "A new, flashy, explosive shotgun shell.", //secondary bullets
+        "HAHA,RPG go boom.", //secondary bullets
     };
 
     public enum upgrading
@@ -188,7 +188,7 @@ public class upgradeUmbrella : MonoBehaviour
             umbrellaHolder.transform.GetChild(6).GetChild(0).GetComponent<Button>().interactable = true;
         }
 
-        if (yen < prices[6] || umbrella.ammoTwo > 99) //ammoTwoPrice
+        if (yen < prices[6] || umbrella.ammoTwo > 3) //ammoTwoPrice
         {
             umbrellaHolder.transform.GetChild(7).GetChild(0).GetComponent<Button>().interactable = false;
         }
@@ -209,7 +209,7 @@ public class upgradeUmbrella : MonoBehaviour
             }
             else if (i == 7)
             {
-                textinsert += " " + umbrella.ammoTwo.ToString() + "/100";
+                textinsert += " " + umbrella.ammoTwo.ToString() + "/4";
 
             }
 
@@ -301,7 +301,7 @@ public class upgradeUmbrella : MonoBehaviour
 
                     //cost
 
-                    prices[0] = 1000 * (level + 1);
+                    prices[0] = 500 * (level + 1);
 
                     break;
                 }
@@ -315,35 +315,40 @@ public class upgradeUmbrella : MonoBehaviour
 
                     //cost
 
-                    prices[1] = 1000 * (level + 1);
+                    prices[1] = 200 * (level + 1);
 
                     break;
                 }
             case upgrading.SPREADADS:
                 {
-                    //value
-                    float value;  //base SPREADADSat level 0  good 0.08f
-                    float tmp = (level + 6);
-                    value = 1.0f / tmp;
+                    //base SPREADADSat level 0  good 0.08f
+                    float value = (-level * 0.016666f) + 0.19f;
+                    if (value < 0.0f)
+                    {
+                        value = 0.0f;
+                    }
                     umbrella.bulletSpreadADS = value;
 
                     //cost
 
-                    prices[2] = 1000 * (level + 1);
+                    prices[2] = 100 * (level + 1);
 
                     break;
                 }
             case upgrading.SPREADRUN:
                 {
-                    //value
-                    float value;  //base SPREADRUNat level 0 good 0.165f
-                    float tmp = (level + 3);
-                    value = 1.0f / tmp;
+                    //base SPREADRUNat level 0 good 0.165f
+                    float value = (-level * 0.016666f) + 0.35f;
+
+                    if (value < 0.0f)
+                    {
+                        value = 0.0f;
+                    }
                     umbrella.bulletSpreadRunning = value;
 
                     //cost
 
-                    prices[3] = 1000 * (level + 1);
+                    prices[3] = 100 * (level + 1);
 
                     break;
                 }

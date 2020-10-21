@@ -25,6 +25,7 @@ public class ThePhone : MonoBehaviour
     public Sprite emptyPhotoSpot;
     public Image keyNotification;
     public Image overallNotification;
+    public GameObject itemDescription;
 
     //henry
     public MythWorkerUnion myths;
@@ -105,7 +106,7 @@ public class ThePhone : MonoBehaviour
         myths = GameObject.FindGameObjectWithTag("GameManager").GetComponent<MythWorkerUnion>();
         drone = GameObject.Find("Save&Dronemanage").GetComponent<plugindemo>();
         clueCtrl = GameObject.FindGameObjectWithTag("GameManager").GetComponent<ClueController>();
-        konbini.transform.GetChild(4).gameObject.GetComponent<wallpapEqu>().init();
+        konbini.transform.GetChild(4).GetChild(0).GetChild(0).gameObject.GetComponent<wallpapEqu>().init();
     }
     void Update()
     {
@@ -465,6 +466,7 @@ public class ThePhone : MonoBehaviour
 
                     if (prev != itemselected)
                     {
+                        phoneItemDesc(itemselected);
                         slotno oldgm = ThePhoneUI.transform.GetChild(5).GetChild(prev + 1).GetComponent<slotno>();
                         slotno newgm = ThePhoneUI.transform.GetChild(5).GetChild(itemselected + 1).GetComponent<slotno>();
 
@@ -493,6 +495,8 @@ public class ThePhone : MonoBehaviour
                                 playerAnimator.SetTrigger("UseItem");
                                 canvas.GetComponent<Items>().removeitemequipped(itemselected, true);
                                 ThePhoneUI.transform.GetChild(5).gameObject.GetComponent<eqitems>().itemchange();
+                                phoneItemDesc(itemselected);
+
                             }
                         }
                     }
@@ -668,6 +672,9 @@ public class ThePhone : MonoBehaviour
         ThePhoneUI.transform.GetChild(5).gameObject.SetActive(true);
         ThePhoneUI.transform.GetChild(5).gameObject.GetComponent<eqitems>().itemchange();
         ThePhoneUI.transform.GetChild(0).GetComponent<Image>().sprite = BGinventory;
+        phoneItemDesc(itemselected);
+
+
 
 
     }
@@ -771,10 +778,12 @@ public class ThePhone : MonoBehaviour
         int element = 0;
         string cluename = "bad";
         bool isQRCode = false;
+        bool isDoor = false;
         bool cluePicTaken = false;
 
         GameObject[] clues = GameObject.FindGameObjectsWithTag(checkTag);
         GameObject[] qr = GameObject.FindGameObjectsWithTag("QRCode");
+        GameObject[] doors = GameObject.FindGameObjectsWithTag("DoorFrame");
 
         List<GameObject> clue = new List<GameObject>() { };
         List<List<Vector2>> cluepos = new List<List<Vector2>>() { };
@@ -792,7 +801,13 @@ public class ThePhone : MonoBehaviour
             clue.Add(qr[i]);
         }
 
-        
+        for (int i = 0; i < doors.Length; i++)
+        {
+            cluepos.Add(new List<Vector2>());
+            clue.Add(doors[i]);
+        }
+
+
 
         //find all clues
         for (int i = 0; i < clue.Count; i++)
@@ -840,6 +855,7 @@ public class ThePhone : MonoBehaviour
                 cluename = clue[i].name;
                 element = i;
                 isQRCode = clue[i].tag == "QRCode";
+                isDoor = clue[i].tag == "DoorFrame";
 
                 if (SaveSystemController.getValue(cluename + "[CLUE]") == "yes") //already taken
                 {
@@ -929,9 +945,13 @@ public class ThePhone : MonoBehaviour
                         {
                             clueglow.transform.GetChild(0).GetComponent<Text>().text = "QRCode Visible";
                         }
+                        else if (isDoor)
+                        {
+                            clueglow.transform.GetChild(0).GetComponent<Text>().text = "Door Visible";
+                        }
                         else
                         {
-                            clueglow.transform.GetChild(0).GetComponent<Text>().text = "Clue Visible";
+                            clueglow.transform.GetChild(0).GetComponent<Text>().text = "Trace Visible";
                         }
                         photoValid = true;
                         //Debug.Log("not already teakmn");
@@ -950,7 +970,7 @@ public class ThePhone : MonoBehaviour
             }
             else
             {
-                clueglow.transform.GetChild(0).GetComponent<Text>().text = "Clue Not Visible";
+                clueglow.transform.GetChild(0).GetComponent<Text>().text = "Object Not Visible";
                 photoValid = false;
                 clueglow.GetComponent<flash>().fadeout = true;
                 clueglow.GetComponent<flash>().fadein = false;
@@ -963,16 +983,23 @@ public class ThePhone : MonoBehaviour
             {
                 if (cluename != "bad")
                 {
-                    if (!isQRCode)
+                    //Is not a qr code and not a door
+                    if (!isQRCode && !isDoor)
                     {
                         SaveSystemController.updateValue(cluename + "[CLUE]", "yes", true);
                         clueCtrl.cluesCollected.Add(cluename);
                         SaveSystemController.saveDataToDisk();
                         clue[element].GetComponent<TraceController>().Trigger();
                     }
+                    //If it is a door
+                    else if (isDoor)
+                    {
+                        clue[element].GetComponent<DoorController>().triggerUnlock();
+                    }
+                    //is a qr code
                     else
                     {
-                        //Update Save Controller
+                        //Update Save Controller if not a myth drop
                         if (!cluename.Contains("Myth"))
                         {
                             SaveSystemController.updateValue("QRCodeFound", true);
@@ -1099,5 +1126,28 @@ public class ThePhone : MonoBehaviour
     public void enterbossroom(bool enter)
     {
         inbossroom = enter;
+    }
+
+    public void phoneItemDesc(int selected)
+    {
+        if (this.transform.GetComponent<Items>().equipped.Count <= selected)
+        {
+            itemDescription.transform.GetChild(1).gameObject.GetComponent<Image>().sprite = null;
+            itemDescription.transform.GetChild(2).gameObject.GetComponent<Text>().text = "No Item Selected";
+            itemDescription.transform.GetChild(3).gameObject.GetComponent<Text>().text = "";
+        }
+        else
+        {
+            int equ = (int)this.transform.GetComponent<Items>().equipped[selected].itemtype;
+            itemDescription.transform.GetChild(1).gameObject.GetComponent<Image>().sprite = this.transform.GetComponent<Items>().images[equ];
+            itemDescription.transform.GetChild(2).gameObject.GetComponent<Text>().text = this.transform.GetChild(7).GetChild(1).GetComponent<shopmanager>().names[equ];
+            itemDescription.transform.GetChild(3).gameObject.GetComponent<Text>().text = this.transform.GetChild(7).GetChild(1).GetComponent<shopmanager>().shortDescription[equ];
+
+        }
+            
+
+
+
+
     }
 }

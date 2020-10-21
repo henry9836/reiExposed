@@ -8,7 +8,6 @@ public class wallpapEqu : MonoBehaviour
     public GameObject phoneBGref;
     public List<Sprite> BGsprites;
     public GameObject selector;
-    public List<Vector2> selectorpos;
     public int equipped;
 
     public void init()
@@ -20,7 +19,8 @@ public class wallpapEqu : MonoBehaviour
             equipped = 0;
         }
 
-        selector.GetComponent<RectTransform>().localPosition = selectorpos[equipped];
+        selector.transform.parent = this.transform.GetChild(equipped).transform;
+        selector.transform.localPosition = Vector3.zero;
         phoneBGref.GetComponent<Image>().sprite = BGsprites[equipped];
 
 
@@ -32,6 +32,8 @@ public class wallpapEqu : MonoBehaviour
         equipped = toequ;
         SaveSystemController.updateValue("equippedWallpaper", toequ);
         phoneBGref.GetComponent<Image>().sprite = BGsprites[toequ];
-        selector.GetComponent<RectTransform>().localPosition = selectorpos[toequ];
+        selector.transform.parent = this.transform.GetChild(equipped).transform;
+        selector.transform.localPosition = Vector3.zero;
+
     }
 }

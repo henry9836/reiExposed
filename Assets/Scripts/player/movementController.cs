@@ -60,7 +60,8 @@ public class movementController : MonoBehaviour
     private CapsuleCollider playerHitBox;
     [HideInInspector]
     public Vector3 moveDir = Vector3.zero;
-    private Vector3 moveDirCam = Vector3.zero; 
+    [HideInInspector]
+    public Vector3 moveDirCam = Vector3.zero; 
     private Vector3 initalPosition;
     private Vector3 beforeRollPosition;
     private Vector3 targetRollPosition;
@@ -144,8 +145,8 @@ public class movementController : MonoBehaviour
 
         //Get Cam Dir Input
         moveDirCam = Vector3.zero;
-        moveDirCam += camParent.transform.forward * Input.GetAxis("Vertical");
-        moveDirCam += camParent.transform.right * Input.GetAxis("Horizontal");
+        moveDirCam += camParent.transform.forward * Input.GetAxisRaw("Vertical");
+        moveDirCam += camParent.transform.right * Input.GetAxisRaw("Horizontal");
         moveDirCam = moveDirCam.normalized;
 
         //Rotate towards movement in relation to cam direction
@@ -428,7 +429,7 @@ public class movementController : MonoBehaviour
             theDir += Vector3.right * Input.GetAxis("Horizontal");
             theDir = theDir.normalized;
 
-            Debug.Log(theDir);
+            //Debug.Log(theDir);
 
             animator.SetBool("SRight", false);
             animator.SetBool("SLeft", false);
@@ -485,7 +486,7 @@ public class movementController : MonoBehaviour
 
 
         //Get states that would block stamina regen
-        staminaBlockState = (rolling || sprinting || attackMovementBlock || sprintLock || animator.GetBool("Attack"));
+        staminaBlockState = (rolling || sprinting || attackMovementBlock || sprintLock || animator.GetBool("Attack") || animator.GetBool("Blocking"));
 
         //Reset stamina blocker if the player is not using it
         if (!Input.GetButton("Sprint") && !Input.GetButton("Roll") && !staminaBlockState)
