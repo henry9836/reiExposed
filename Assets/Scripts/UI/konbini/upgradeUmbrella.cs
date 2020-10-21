@@ -321,10 +321,12 @@ public class upgradeUmbrella : MonoBehaviour
                 }
             case upgrading.SPREADADS:
                 {
-                    //value
-                    float value;  //base SPREADADSat level 0  good 0.08f
-                    float tmp = (level + 6);
-                    value = 1.0f / tmp;
+                    //base SPREADADSat level 0  good 0.08f
+                    float value = (-level * 0.016666f) + 0.19f;
+                    if (value < 0.0f)
+                    {
+                        value = 0.0f;
+                    }
                     umbrella.bulletSpreadADS = value;
 
                     //cost
@@ -335,10 +337,13 @@ public class upgradeUmbrella : MonoBehaviour
                 }
             case upgrading.SPREADRUN:
                 {
-                    //value
-                    float value;  //base SPREADRUNat level 0 good 0.165f
-                    float tmp = (level + 3);
-                    value = 1.0f / tmp;
+                    //base SPREADRUNat level 0 good 0.165f
+                    float value = (-level * 0.016666f) + 0.35f;
+
+                    if (value < 0.0f)
+                    {
+                        value = 0.0f;
+                    }
                     umbrella.bulletSpreadRunning = value;
 
                     //cost
