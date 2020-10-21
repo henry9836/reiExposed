@@ -45,6 +45,25 @@ public class MythCollisionHandler : AICollisionHandler
         fullyBlocking = false;
     }
 
+    public void overrideDamage(float dmg)
+    {
+        //Recieve damage and get stunned
+        //Deal Damage
+        aiObject.health -= dmg;
+
+        //We now know the player's postion so inform tracker
+        tracker.lastSeenPos = playerTransform.position;
+
+        //Visible feedback
+        Instantiate(hitVFX, transform.position, Quaternion.identity);
+        audioSrc.PlayOneShot(hurtSounds[Random.Range(0, hurtSounds.Count)]);
+        animator.SetTrigger("Stun");
+
+        GameObject tmp = GameObject.Instantiate(this.gameObject.GetComponent<AIObject>().damagedText, transform.position, Quaternion.identity);
+        tmp.transform.SetParent(this.transform, true);
+        tmp.transform.GetChild(0).GetComponent<Text>().text = "-" + dmg.ToString("F0");
+    }
+
     public override void OnTriggerEnter(Collider other)
     {
         if (other.tag == "PlayerAttackSurface")

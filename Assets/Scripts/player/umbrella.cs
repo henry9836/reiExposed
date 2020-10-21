@@ -25,6 +25,8 @@ public class umbrella : MonoBehaviour
     public GameObject boss;
     public AudioSource audio;
     public GameObject shotUI;
+    public GameObject rocketPrefab;
+    public Transform rocketSpawnLoc;
     public MultipleVFXHandler aimVFX;
     public ParticleSystem shootVFX;
     public bool phoneLock = false;
@@ -327,6 +329,7 @@ public class umbrella : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0) && canfire == true) // shoot
         {
+            //Bullet
             if (ammocycle == 0 && ammo > 0)
             {
                 animator.SetTrigger("Shoot");
@@ -335,13 +338,14 @@ public class umbrella : MonoBehaviour
 
                 bang();
             }
+            //RPG
             else if (ammocycle == 1 && ammoTwo > 0)
             {
                 animator.SetTrigger("Shoot");
                 ammoTwo--;
                 SaveSystemController.updateValue("ammoTwo", ammoTwo);
 
-                bang();
+                shootRPG();
             }
             else
             {
@@ -354,6 +358,39 @@ public class umbrella : MonoBehaviour
         
 
     }
+
+    //The umbrella is acutally an RPG
+    void shootRPG()
+    {
+        Transform brella = this.transform.GetChild(1).GetChild(6);
+
+
+
+        //Spawn rocket
+        GameObject rocketRef = Instantiate(rocketPrefab, brella.transform.position, Quaternion.identity);
+
+        //Get direction and point rocket
+        RaycastHit hit;
+        if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, Mathf.Infinity, ball))
+        {
+            hit.point = new Vector3(hit.point.x, hit.point.y, hit.point.z); //look forwards
+            rocketRef.transform.LookAt(hit.point);
+        }
+
+        //Move out of the umbrella
+        rocketRef.transform.position += rocketRef.transform.forward * 1.5f;
+
+        Vector3 passTargetPos = new Vector3(0.0f, 0.1f, -0.3f);
+        float passOverallSpeed = 3.0f;
+        Vector3 passTargetRot = new Vector3(-3.0f, 2.0f, 0.0f);
+        shakeOperation.lerpModes funcin = shakeOperation.lerpModes.OUTEXPO;
+        shakeOperation.lerpModes funcout = shakeOperation.lerpModes.INSINE;
+        float speedIn = 5000.0f;
+        float speedOut = 1.0f;
+        cam.GetComponent<cameraShake>().addOperation(passTargetPos, passTargetRot, passOverallSpeed, funcin, funcout, speedIn, speedOut);
+
+    }
+
 
     //shoot
     void bang()

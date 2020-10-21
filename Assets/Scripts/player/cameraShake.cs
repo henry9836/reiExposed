@@ -87,7 +87,7 @@ public class cameraShake : MonoBehaviour
                     if (Test)
                     {
                         Test = false;
-                        StartCoroutine(explode());
+                        StartCoroutine(explode(2.0f));
 
                     }
 
@@ -376,12 +376,14 @@ public class cameraShake : MonoBehaviour
     }
 
 
-    public IEnumerator explode()
+    public IEnumerator explode(float range)
     {
+
+        Debug.Log("explodecall");
         float tmp = Random.Range(2.0f, 18.0f);
-        passTargetPos = new Vector3(0.0f, 0.0f, 0.0f);
+        passTargetPos = Vector3.zero;
         passOverallSpeed = 3.0f;
-        passTargetRot = new Vector3(-0.75f, 0.5f, 0.0f);
+        passTargetRot = new Vector3(-0.75f * range, 0.5f * range, 0.0f);
         funcin = shakeOperation.lerpModes.LINEAR;
         funcout = shakeOperation.lerpModes.INSINE;
         speedIn = 20.0f - tmp;
@@ -389,8 +391,9 @@ public class cameraShake : MonoBehaviour
         addOperation(passTargetPos, passTargetRot, passOverallSpeed, funcin, funcout, speedIn, speedOut);
 
         yield return new WaitForSeconds(0.2f);
-        passTargetRot = new Vector3(Random.Range(1.0f, -1.0f), Random.Range(1.0f, -1.0f), Random.Range(1.0f, -1.0f));
-        passTargetPos = new Vector3(Random.Range(0.03f, -0.03f), Random.Range(0.03f, -0.03f), Random.Range(0.03f, -0.03f));
+
+        passTargetRot = new Vector3(Random.Range(1.0f, -1.0f) * range, Random.Range(1.0f, -1.0f) * range, Random.Range(1.0f, -1.0f) * range);
+        passTargetPos = new Vector3(Random.Range(0.03f, -0.03f) * range, Random.Range(0.03f, -0.03f) * range, Random.Range(0.03f, -0.03f) * range);
 
         funcin = shakeOperation.lerpModes.LINEAR;
         funcout = shakeOperation.lerpModes.LINEAR;
