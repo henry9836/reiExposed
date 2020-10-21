@@ -13,6 +13,7 @@ public class rpgController : MonoBehaviour
     public float damageRadius = 5.0f;
 
     public GameObject smokeVFX;
+    public GameObject explodeVFX;
 
     float angle = 0.0f;
 
@@ -47,35 +48,44 @@ public class rpgController : MonoBehaviour
             smokeVFX.transform.parent = null;
             smokeVFX.GetComponent<DestoryObject>().Trigger();
 
-            RaycastHit[] hits = Physics.SphereCastAll(transform.position, damageRadius, transform.forward);
+            Collider[] hits = Physics.OverlapSphere(transform.position, damageRadius);
             for (int i = 0; i < hits.Length; i++)
             {
                 //Damage Myths
-                if (hits[i].collider.tag == "Myth")
+                if (hits[i].tag == "Myth")
                 {
-                    if (hits[i].collider.gameObject.GetComponent<MythCollisionHandler>() != null) {
+                    if (hits[i].gameObject.GetComponent<MythCollisionHandler>() != null) {
                         //Prevent dupe dmg
-                        bool seen = false;
-                        for (int j = 0; j < objsHit.Count; j++)
-                        {
-                            if (objsHit[j] == hits[i].collider.name)
-                            {
-                                seen = true;
-                                break;
-                            }
-                        }
-                        if (seen)
-                        {
-                            continue;
-                        }
+                        //bool seen = false;
+                        //for (int j = 0; j < objsHit.Count; j++)
+                        //{
+                        //    if (objsHit[j] == hits[i].name)
+                        //    {
+                        //        seen = true;
+                        //        break;
+                        //    }
+                        //}
+                        //if (seen)
+                        //{
+                        //    continue;
+                        //}
+                        //objsHit.Add(hits[i].name);
 
-                        Debug.Log($"RPG HIT: {hits[i].collider.name}");
-                        objsHit.Add(hits[i].collider.name);
+                        //Debug.Log($"RPG HIT: {hits[i].name}");
                         //Apply damage based on distance from the explosion
-                        hits[i].collider.gameObject.GetComponent<MythCollisionHandler>().overrideDamage(damage * (Vector3.Distance(hits[i].collider.transform.position, transform.position) / damageRadius));
+                        hits[i].gameObject.GetComponent<MythCollisionHandler>().overrideDamage(damage * ((damageRadius - Vector3.Distance(hits[i].transform.position, transform.position)) / damageRadius));
                     }
                 }
+                else if (hits[i].tag == "Boss")
+                {
+                    hits[i].gameObject.GetComponent<FlameCollisonOverride>().overrideDamage(damage * ((damageRadius - Vector3.Distance(hits[i].transform.position, transform.position)) / damageRadius));
+                }
             }
+
+            //Explode VFX
+            explodeVFX.transform.parent = null;
+            explodeVFX.GetComponent<groupPartcle>().Play();
+            explodeVFX.AddComponent<DestoryObject>().Trigger();
 
             //Kill RPG
             Destroy(gameObject);
