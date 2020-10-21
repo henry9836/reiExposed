@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
     //true stops the player doing anything
     public void stopPlayer(bool tostop)
     {
-        stopPlayer(tostop, true);
+        stopPlayer(tostop, tostop);
     }
     public void stopPlayer(bool tostop, bool stopAnim)
     {
