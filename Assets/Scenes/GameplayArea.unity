@@ -4555,12 +4555,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!1 &943533892 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7843285373761213075, guid: ada5bee6243ddf04e96e40a6209bf7fd,
-    type: 3}
-  m_PrefabInstance: {fileID: 7827297848574941723}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &943690831
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7901,6 +7895,14 @@ PrefabInstance:
       propertyPath: crosshair
       value: 
       objectReference: {fileID: 1183374901}
+    - target: {fileID: 2081805776, guid: 665d9e6b8575af745bb88a0116e1de10, type: 3}
+      propertyPath: blockingStamina
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2081805776, guid: 665d9e6b8575af745bb88a0116e1de10, type: 3}
+      propertyPath: canfire
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1943698811393534155, guid: 665d9e6b8575af745bb88a0116e1de10,
         type: 3}
       propertyPath: m_Name
@@ -11062,45 +11064,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1226035481}
     - target: {fileID: 796250559, guid: ada5bee6243ddf04e96e40a6209bf7fd, type: 3}
-      propertyPath: particleGroups.Array.data[1]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 796250559, guid: ada5bee6243ddf04e96e40a6209bf7fd, type: 3}
       propertyPath: particleGroups.Array.data[2]
       value: 
       objectReference: {fileID: 2101705684}
-    - target: {fileID: 796250559, guid: ada5bee6243ddf04e96e40a6209bf7fd, type: 3}
-      propertyPath: particleGroups.Array.data[3]
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 796250559, guid: ada5bee6243ddf04e96e40a6209bf7fd, type: 3}
       propertyPath: particleGroups.Array.data[4]
       value: 
       objectReference: {fileID: 982059203}
     - target: {fileID: 796250559, guid: ada5bee6243ddf04e96e40a6209bf7fd, type: 3}
-      propertyPath: particleGroups.Array.data[5]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 796250559, guid: ada5bee6243ddf04e96e40a6209bf7fd, type: 3}
-      propertyPath: particleGroups.Array.data[6]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 796250559, guid: ada5bee6243ddf04e96e40a6209bf7fd, type: 3}
-      propertyPath: particleGroups.Array.data[7]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 796250559, guid: ada5bee6243ddf04e96e40a6209bf7fd, type: 3}
-      propertyPath: particleGroups.Array.data[8]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 796250559, guid: ada5bee6243ddf04e96e40a6209bf7fd, type: 3}
-      propertyPath: particleGroups.Array.data[9]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 796250559, guid: ada5bee6243ddf04e96e40a6209bf7fd, type: 3}
       propertyPath: camshake
       value: 
       objectReference: {fileID: 223673040}
+    - target: {fileID: 1074327799, guid: ada5bee6243ddf04e96e40a6209bf7fd, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -21.301025
+      objectReference: {fileID: 0}
     - target: {fileID: 1768846193, guid: ada5bee6243ddf04e96e40a6209bf7fd, type: 3}
       propertyPath: rei
       value: 
@@ -11121,28 +11099,11 @@ PrefabInstance:
       propertyPath: m_Material
       value: 
       objectReference: {fileID: 2100000, guid: 8793f6ae46b6eed41971989496bdca0d, type: 2}
-    - target: {fileID: 5050785605770101894, guid: ada5bee6243ddf04e96e40a6209bf7fd,
-        type: 3}
-      propertyPath: BGsprites.Array.data[0]
-      value: 
-      objectReference: {fileID: 21300000, guid: d6702aaa0f6807a44b46f921912b71b5,
-        type: 3}
     - target: {fileID: 5159980064344870707, guid: ada5bee6243ddf04e96e40a6209bf7fd,
         type: 3}
       propertyPath: konobinicam
       value: 
       objectReference: {fileID: 1213204470}
-    - target: {fileID: 5159980064344870707, guid: ada5bee6243ddf04e96e40a6209bf7fd,
-        type: 3}
-      propertyPath: extraPage
-      value: 
-      objectReference: {fileID: 943533892}
-    - target: {fileID: 5572560447509902902, guid: ada5bee6243ddf04e96e40a6209bf7fd,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: d6702aaa0f6807a44b46f921912b71b5,
-        type: 3}
     - target: {fileID: 9041403550462819447, guid: ada5bee6243ddf04e96e40a6209bf7fd,
         type: 3}
       propertyPath: m_LocalPosition.x
