@@ -486,7 +486,7 @@ public class movementController : MonoBehaviour
 
 
         //Get states that would block stamina regen
-        staminaBlockState = (rolling || sprinting || attackMovementBlock || sprintLock || animator.GetBool("Attack"));
+        staminaBlockState = (rolling || sprinting || attackMovementBlock || sprintLock || animator.GetBool("Attack") || animator.GetBool("Blocking"));
 
         //Reset stamina blocker if the player is not using it
         if (!Input.GetButton("Sprint") && !Input.GetButton("Roll") && !staminaBlockState)
