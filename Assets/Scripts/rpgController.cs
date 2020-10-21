@@ -14,6 +14,7 @@ public class rpgController : MonoBehaviour
 
     public GameObject smokeVFX;
     public GameObject explodeVFX;
+    public AudioClip explodeSFX;
 
     float angle = 0.0f;
 
@@ -81,6 +82,10 @@ public class rpgController : MonoBehaviour
                     hits[i].gameObject.GetComponent<FlameCollisonOverride>().overrideDamage(damage * ((damageRadius - Vector3.Distance(hits[i].transform.position, transform.position)) / damageRadius));
                 }
             }
+
+
+            //Explode SFX
+            explodeVFX.GetComponent<AudioSource>().PlayOneShot(explodeSFX);
 
             //Explode VFX
             explodeVFX.transform.parent = null;
