@@ -25,6 +25,7 @@ public class umbrella : MonoBehaviour
     public GameObject boss;
     public AudioSource audio;
     public GameObject shotUI;
+    public GameObject rocketPrefab;
     public MultipleVFXHandler aimVFX;
     public ParticleSystem shootVFX;
     public bool phoneLock = false;
@@ -312,6 +313,7 @@ public class umbrella : MonoBehaviour
 
         if (Input.GetAxis("Fire1") > 0.5f && canfire == true) // shoot
         {
+            //Bullet
             if (ammocycle == 0 && ammo > 0)
             {
                 animator.SetTrigger("Shoot");
@@ -320,13 +322,14 @@ public class umbrella : MonoBehaviour
 
                 bang();
             }
+            //RPG
             else if (ammocycle == 1 && ammoTwo > 0)
             {
                 animator.SetTrigger("Shoot");
                 ammoTwo--;
                 SaveSystemController.updateValue("ammoTwo", ammoTwo);
 
-                bang();
+                shootRPG();
             }
             else
             { 
@@ -339,6 +342,22 @@ public class umbrella : MonoBehaviour
         
 
     }
+
+    //The umbrella is acutally an RPG
+    void shootRPG()
+    {
+        //Spawn rocket
+        GameObject rocketRef = Instantiate(rocketPrefab, transform.position, Quaternion.identity);
+
+        //Get direction and point rocket
+        RaycastHit hit;
+        if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, Mathf.Infinity, ball))
+        {
+            hit.point = new Vector3(hit.point.x, movement.charcterModel.transform.position.y, hit.point.z); //look forwards
+            rocketRef.transform.LookAt(hit.point);
+        }
+    }
+
 
     //shoot
     void bang()
