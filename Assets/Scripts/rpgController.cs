@@ -55,7 +55,8 @@ public class rpgController : MonoBehaviour
                 //Damage Myths
                 if (hits[i].tag == "Myth")
                 {
-                    if (hits[i].gameObject.GetComponent<MythCollisionHandler>() != null) {
+                    if (hits[i].gameObject.GetComponent<MythCollisionHandler>() != null)
+                    {
                         //Prevent dupe dmg
                         //bool seen = false;
                         //for (int j = 0; j < objsHit.Count; j++)
@@ -80,6 +81,10 @@ public class rpgController : MonoBehaviour
                 else if (hits[i].tag == "Boss")
                 {
                     hits[i].gameObject.GetComponent<FlameCollisonOverride>().overrideDamage(damage * ((damageRadius - Vector3.Distance(hits[i].transform.position, transform.position)) / damageRadius));
+                }
+                else if (hits[i].tag == "player")
+                {
+                    StartCoroutine(Camera.main.gameObject.GetComponent<cameraShake>().explode(((damageRadius - Vector3.Distance(hits[i].transform.position, transform.position)) / damageRadius) * 4.0f));
                 }
             }
 

@@ -364,6 +364,8 @@ public class umbrella : MonoBehaviour
     {
         Transform brella = this.transform.GetChild(1).GetChild(6);
 
+
+
         //Spawn rocket
         GameObject rocketRef = Instantiate(rocketPrefab, brella.transform.position, Quaternion.identity);
 
@@ -377,6 +379,15 @@ public class umbrella : MonoBehaviour
 
         //Move out of the umbrella
         rocketRef.transform.position += rocketRef.transform.forward * 1.5f;
+
+        Vector3 passTargetPos = new Vector3(0.0f, 0.1f, -0.3f);
+        float passOverallSpeed = 3.0f;
+        Vector3 passTargetRot = new Vector3(-3.0f, 2.0f, 0.0f);
+        shakeOperation.lerpModes funcin = shakeOperation.lerpModes.OUTEXPO;
+        shakeOperation.lerpModes funcout = shakeOperation.lerpModes.INSINE;
+        float speedIn = 5000.0f;
+        float speedOut = 1.0f;
+        cam.GetComponent<cameraShake>().addOperation(passTargetPos, passTargetRot, passOverallSpeed, funcin, funcout, speedIn, speedOut);
 
     }
 
