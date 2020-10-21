@@ -32,13 +32,15 @@ public class FlameAOEController : MonoBehaviour
 
         if (other.tag == "Player")
         {
-            //Deal damage based on distance
-            float dmgMulitiplier = (rangeForDMG - Vector3.Distance(transform.position, other.transform.position)) / rangeForDMG;
+            if (!other.GetComponent<PlayerController>().iFrame)
+            {
+                //Deal damage based on distance
+                float dmgMulitiplier = (rangeForDMG - Vector3.Distance(transform.position, other.transform.position)) / rangeForDMG;
 
-            //Deal Damage
-            other.GetComponent<PlayerController>().health -= damage * dmgMulitiplier;
-            other.GetComponent<Animator>().SetTrigger("KnockDown");
-
+                //Deal Damage
+                other.GetComponent<PlayerController>().EffectHeatlh((damage * dmgMulitiplier) * -1.0f);
+                other.GetComponent<Animator>().SetTrigger("KnockDown");
+            }
             //Disable10
             col.enabled = false;
         }

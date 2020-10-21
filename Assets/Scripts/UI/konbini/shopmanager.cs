@@ -7,6 +7,8 @@ public class shopmanager : MonoBehaviour
 {
     public List<string> names = new List<string>() { };
     public List<string> description = new List<string>() { };
+    public List<string> shortDescription = new List<string>() { };
+
     public List<int> costs = new List<int>() { };
 
     public Text nameDisp;
@@ -19,13 +21,14 @@ public class shopmanager : MonoBehaviour
     public Items canvasitems;
 
     //Audio
-    //public AudioClip CannotBuy;
-    //private AudioSource audioSrc;
+    public AudioClip Purchase;
+    public AudioClip CannotBuy;
+    private AudioSource audioSrc;
 
     void Start()
     {
         selectitem(8);
-        //audioSrc = GetComponent<AudioSource>();
+        audioSrc = GetComponent<AudioSource>();
     }
 
 
@@ -55,11 +58,12 @@ public class shopmanager : MonoBehaviour
 
         if (costs[selected] > SaveSystemController.getIntValue("MythTraces"))
         {
-            //audioSrc.PlayOneShot(CannotBuy);
+            audioSrc.PlayOneShot(CannotBuy);
             cost.transform.GetChild(0).GetComponent<Button>().interactable = false;
         }
         else
         {
+            audioSrc.PlayOneShot(Purchase);
             cost.transform.GetChild(0).GetComponent<Button>().interactable = true;
         }
     }
