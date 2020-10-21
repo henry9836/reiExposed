@@ -379,7 +379,7 @@ public class cameraShake : MonoBehaviour
     public IEnumerator explode(float range)
     {
 
-        Debug.Log("call");
+        Debug.Log("explodecall");
         float tmp = Random.Range(2.0f, 18.0f);
         passTargetPos = Vector3.zero;
         passOverallSpeed = 3.0f;

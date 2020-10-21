@@ -53,6 +53,8 @@ public class rpgController : MonoBehaviour
             for (int i = 0; i < hits.Length; i++)
             {
                 //Damage Myths
+                Debug.Log(hits[i].tag);
+
                 if (hits[i].tag == "Myth")
                 {
                     if (hits[i].gameObject.GetComponent<MythCollisionHandler>() != null)
@@ -82,10 +84,15 @@ public class rpgController : MonoBehaviour
                 {
                     hits[i].gameObject.GetComponent<FlameCollisonOverride>().overrideDamage(damage * ((damageRadius - Vector3.Distance(hits[i].transform.position, transform.position)) / damageRadius));
                 }
-                else if (hits[i].tag == "player")
-                {
-                    StartCoroutine(Camera.main.gameObject.GetComponent<cameraShake>().explode(((damageRadius - Vector3.Distance(hits[i].transform.position, transform.position)) / damageRadius) * 4.0f));
-                }
+
+            }
+
+            GameObject rie = GameObject.Find("PLAYER_rei");
+            float dist = Vector3.Distance(rie.transform.position, transform.position);
+
+            if (dist < damageRadius * 3.0f)
+            { 
+                StartCoroutine(Camera.main.gameObject.GetComponent<cameraShake>().explode((((damageRadius * 3.0f) - dist) / (damageRadius * 3.0f)) * 40.0f));
             }
 
 
