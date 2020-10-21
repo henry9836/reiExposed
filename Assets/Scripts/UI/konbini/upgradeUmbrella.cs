@@ -21,11 +21,11 @@ public class upgradeUmbrella : MonoBehaviour
     public GameObject umbrellaHolder;
 
 
-    private List<int> prices = new List<int>() { 0, 0, 0, 0, 0, 75, 600 };
+    private List<int> prices = new List<int>() { 0, 0, 0, 0, 0, 75, 10000 };
     private List<string> upgradeDescriptions = new List<string>() 
     {
         "Increases the total damage output from the shotgun.", //shotgun damage
-        "Increases the maximum range and damage at range.", //shotgun range
+        "Increases the range of the shotgun.", //shotgun range
         "Tighter crosshair while standing still.", //ADS spread
         "Tighter crosshair while running.", //running spread
         "Melee attacks deals more damage.", //meelee damage
@@ -188,7 +188,7 @@ public class upgradeUmbrella : MonoBehaviour
             umbrellaHolder.transform.GetChild(6).GetChild(0).GetComponent<Button>().interactable = true;
         }
 
-        if (yen < prices[6] || umbrella.ammoTwo > 99) //ammoTwoPrice
+        if (yen < prices[6] || umbrella.ammoTwo > 3) //ammoTwoPrice
         {
             umbrellaHolder.transform.GetChild(7).GetChild(0).GetComponent<Button>().interactable = false;
         }
@@ -209,7 +209,7 @@ public class upgradeUmbrella : MonoBehaviour
             }
             else if (i == 7)
             {
-                textinsert += " " + umbrella.ammoTwo.ToString() + "/100";
+                textinsert += " " + umbrella.ammoTwo.ToString() + "/4";
 
             }
 
@@ -301,7 +301,7 @@ public class upgradeUmbrella : MonoBehaviour
 
                     //cost
 
-                    prices[0] = 1000 * (level + 1);
+                    prices[0] = 500 * (level + 1);
 
                     break;
                 }
@@ -315,7 +315,7 @@ public class upgradeUmbrella : MonoBehaviour
 
                     //cost
 
-                    prices[1] = 1000 * (level + 1);
+                    prices[1] = 200 * (level + 1);
 
                     break;
                 }
@@ -329,7 +329,7 @@ public class upgradeUmbrella : MonoBehaviour
 
                     //cost
 
-                    prices[2] = 1000 * (level + 1);
+                    prices[2] = 100 * (level + 1);
 
                     break;
                 }
@@ -343,7 +343,7 @@ public class upgradeUmbrella : MonoBehaviour
 
                     //cost
 
-                    prices[3] = 1000 * (level + 1);
+                    prices[3] = 100 * (level + 1);
 
                     break;
                 }

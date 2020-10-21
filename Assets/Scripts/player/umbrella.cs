@@ -176,7 +176,6 @@ public class umbrella : MonoBehaviour
                     playercontrol.ChangeStamina(-blockingStamina * Time.deltaTime);
                     blocking();
 
-                    firemode();
                 }
                 else
                 {
@@ -256,16 +255,38 @@ public class umbrella : MonoBehaviour
             animator.SetBool("Blocking", true);
         }
 
+
+
+        firemode();
+
+
+    }
+
+    //aiming down sight
+    void firemode()
+    {
+        latetest = true;
+
+
         if (canfire == true)
         {
-            if ((Mathf.Abs(this.GetComponent<movementController>().moveDirCam.z) + Mathf.Abs(this.GetComponent<movementController>().moveDirCam.x)) > 0.0f)
+            if (ammocycle == 0)
             {
-                bulletSpread = bulletSpreadRunning;
+                if ((Mathf.Abs(this.GetComponent<movementController>().moveDirCam.z) + Mathf.Abs(this.GetComponent<movementController>().moveDirCam.x)) > 0.0f)
+                {
+                    bulletSpread = bulletSpreadRunning;
+                }
+                else
+                {
+                    bulletSpread = bulletSpreadADS;
+                }
             }
-            else
+            else if (ammocycle == 1)
             {
-                bulletSpread = bulletSpreadADS;
+                bulletSpread = 0.0f;
+
             }
+
 
 
 
@@ -282,13 +303,6 @@ public class umbrella : MonoBehaviour
             crosshair.transform.GetChild(2).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
             crosshair.transform.GetChild(3).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
         }
-
-    }
-
-    //aiming down sight
-    void firemode()
-    {
-        latetest = true;
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
@@ -308,7 +322,7 @@ public class umbrella : MonoBehaviour
         }
         else if (ammocycle == 1)
         {
-            shotUI.transform.GetChild(0).GetComponent<Text>().text = ammoTwo.ToString() + "/100\nExplosive shells - Q to swap";
+            shotUI.transform.GetChild(0).GetComponent<Text>().text = ammoTwo.ToString() + "/4\nRPG - Q to swap";
 
         }
 
