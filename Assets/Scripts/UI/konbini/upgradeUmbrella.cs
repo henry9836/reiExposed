@@ -30,7 +30,7 @@ public class upgradeUmbrella : MonoBehaviour
         "Tighter crosshair while running.", //running spread
         "Melee attacks deals more damage.", //meelee damage
         "A cheap, trusty, old fassioned shotgun shell.", //normal bullets
-        "A new, flashy, explosive shotgun shell.", //secondary bullets
+        "HAHA,RPG go boom.", //secondary bullets
     };
 
     public enum upgrading

@@ -25,6 +25,7 @@ public class ThePhone : MonoBehaviour
     public Sprite emptyPhotoSpot;
     public Image keyNotification;
     public Image overallNotification;
+    public GameObject itemDescription;
 
     //henry
     public MythWorkerUnion myths;
@@ -105,7 +106,7 @@ public class ThePhone : MonoBehaviour
         myths = GameObject.FindGameObjectWithTag("GameManager").GetComponent<MythWorkerUnion>();
         drone = GameObject.Find("Save&Dronemanage").GetComponent<plugindemo>();
         clueCtrl = GameObject.FindGameObjectWithTag("GameManager").GetComponent<ClueController>();
-        konbini.transform.GetChild(4).gameObject.GetComponent<wallpapEqu>().init();
+        konbini.transform.GetChild(4).GetChild(0).GetChild(0).gameObject.GetComponent<wallpapEqu>().init();
     }
     void Update()
     {
@@ -465,6 +466,7 @@ public class ThePhone : MonoBehaviour
 
                     if (prev != itemselected)
                     {
+                        phoneItemDesc(itemselected);
                         slotno oldgm = ThePhoneUI.transform.GetChild(5).GetChild(prev + 1).GetComponent<slotno>();
                         slotno newgm = ThePhoneUI.transform.GetChild(5).GetChild(itemselected + 1).GetComponent<slotno>();
 
@@ -493,6 +495,8 @@ public class ThePhone : MonoBehaviour
                                 playerAnimator.SetTrigger("UseItem");
                                 canvas.GetComponent<Items>().removeitemequipped(itemselected, true);
                                 ThePhoneUI.transform.GetChild(5).gameObject.GetComponent<eqitems>().itemchange();
+                                phoneItemDesc(itemselected);
+
                             }
                         }
                     }
@@ -668,6 +672,9 @@ public class ThePhone : MonoBehaviour
         ThePhoneUI.transform.GetChild(5).gameObject.SetActive(true);
         ThePhoneUI.transform.GetChild(5).gameObject.GetComponent<eqitems>().itemchange();
         ThePhoneUI.transform.GetChild(0).GetComponent<Image>().sprite = BGinventory;
+        phoneItemDesc(itemselected);
+
+
 
 
     }
@@ -1119,5 +1126,28 @@ public class ThePhone : MonoBehaviour
     public void enterbossroom(bool enter)
     {
         inbossroom = enter;
+    }
+
+    public void phoneItemDesc(int selected)
+    {
+        if (this.transform.GetComponent<Items>().equipped.Count <= selected)
+        {
+            itemDescription.transform.GetChild(1).gameObject.GetComponent<Image>().sprite = null;
+            itemDescription.transform.GetChild(2).gameObject.GetComponent<Text>().text = "No Item Selected";
+            itemDescription.transform.GetChild(3).gameObject.GetComponent<Text>().text = "";
+        }
+        else
+        {
+            int equ = (int)this.transform.GetComponent<Items>().equipped[selected].itemtype;
+            itemDescription.transform.GetChild(1).gameObject.GetComponent<Image>().sprite = this.transform.GetComponent<Items>().images[equ];
+            itemDescription.transform.GetChild(2).gameObject.GetComponent<Text>().text = this.transform.GetChild(7).GetChild(1).GetComponent<shopmanager>().names[equ];
+            itemDescription.transform.GetChild(3).gameObject.GetComponent<Text>().text = this.transform.GetChild(7).GetChild(1).GetComponent<shopmanager>().shortDescription[equ];
+
+        }
+            
+
+
+
+
     }
 }

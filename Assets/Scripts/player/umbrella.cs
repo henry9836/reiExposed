@@ -30,6 +30,7 @@ public class umbrella : MonoBehaviour
     public bool phoneLock = false;
     [HideInInspector]
     public List<GameObject> targetsTouched = new List<GameObject>();
+    public AudioClip noammoClip;
 
     //shotty
     [Header("Shotty")]
@@ -174,7 +175,6 @@ public class umbrella : MonoBehaviour
                     blocking();
 
                     firemode();
-                    
                 }
                 else
                 {
@@ -256,7 +256,7 @@ public class umbrella : MonoBehaviour
 
         if (canfire == true)
         {
-            if ((Mathf.Abs(this.GetComponent<movementController>().moveDir.z) + Mathf.Abs(this.GetComponent<movementController>().moveDir.x)) > 1.0f)
+            if ((Mathf.Abs(this.GetComponent<movementController>().moveDirCam.z) + Mathf.Abs(this.GetComponent<movementController>().moveDirCam.x)) > 0.0f)
             {
                 bulletSpread = bulletSpreadRunning;
             }
@@ -266,6 +266,7 @@ public class umbrella : MonoBehaviour
             }
 
 
+
             crosshair.transform.GetChild(0).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
             crosshair.transform.GetChild(1).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
             crosshair.transform.GetChild(2).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
@@ -273,6 +274,7 @@ public class umbrella : MonoBehaviour
         }
         else
         {
+
             crosshair.transform.GetChild(0).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
             crosshair.transform.GetChild(1).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
             crosshair.transform.GetChild(2).GetComponent<Image>().color = new Color(1.0f, 1.0f, 1.0f, 0.0f);
@@ -309,7 +311,7 @@ public class umbrella : MonoBehaviour
         }
 
 
-        if (Input.GetAxis("Fire1") > 0.5f && canfire == true) // shoot
+        if (Input.GetMouseButtonDown(0) && canfire == true) // shoot
         {
             if (ammocycle == 0 && ammo > 0)
             {
@@ -328,8 +330,8 @@ public class umbrella : MonoBehaviour
                 bang();
             }
             else
-            { 
-                //empty click
+            {
+                StartCoroutine(empty());
             }
 
         }
@@ -481,5 +483,14 @@ public class umbrella : MonoBehaviour
                 Debug.DrawLine(hit.point, cam.transform.position);
             }
         }
+    }
+
+    public IEnumerator empty()
+    {
+        audio.PlayOneShot(noammoClip);
+        shotUI.transform.GetChild(0).GetComponent<Text>().color = Color.red;
+        yield return new WaitForSeconds(0.2f);
+        shotUI.transform.GetChild(0).GetComponent<Text>().color = Color.white;
+        yield return null;
     }
 }

@@ -52,7 +52,7 @@ public class cameraShake : MonoBehaviour
     public enum Modes
     { 
         NONE,
-        EARTHQUAKE,
+        EXPLODE,
         SAKE,
         SHOTGUN,
         WALKING,
@@ -82,12 +82,15 @@ public class cameraShake : MonoBehaviour
                     }
                     break;
                 }
-            case Modes.EARTHQUAKE:
+            case Modes.EXPLODE:
                 {
-                    passTargetRot = new Vector3(Random.Range(0.5f, -0.5f), Random.Range(0.5f, -0.5f), Random.Range(0.5f, -0.5f));
-                    passOverallSpeed = Random.Range(1.5f, 3.0f);
-                    passTargetPos = new Vector3(Random.Range(0.1f, -0.1f), Random.Range(0.1f, -0.1f), Random.Range(0.1f, -0.1f));
-                    addOperation(passTargetPos, passTargetRot, passOverallSpeed);
+                    if (Test)
+                    {
+                        Test = false;
+                        StartCoroutine(explode());
+
+                    }
+
                     break;
                 }           
             case Modes.SAKE:
@@ -370,5 +373,33 @@ public class cameraShake : MonoBehaviour
         tmp.funcCurrent = tmp.funcin;
 
         OP.Add(tmp);
+    }
+
+
+    public IEnumerator explode()
+    {
+        passTargetPos = new Vector3(0.0f, 0.1f, -0.3f);
+        passOverallSpeed = 1.0f;
+        passTargetRot = new Vector3(-1.5f, 1.0f, 0.0f);
+        funcin = shakeOperation.lerpModes.INEXPO;
+        funcout = shakeOperation.lerpModes.INSINE;
+        speedIn = 3.0f;
+        speedOut = 1.0f;
+        addOperation(passTargetPos, passTargetRot, passOverallSpeed, funcin, funcout, speedIn, speedOut);
+
+        yield return new WaitForSeconds(0.2f);
+        passTargetRot = new Vector3(Random.Range(3.0f, -3.0f), Random.Range(3.0f, -3.0f), Random.Range(3.0f, -3.0f));
+        passTargetPos = new Vector3(Random.Range(0.05f, -0.05f), Random.Range(0.05f, -0.05f), Random.Range(0.05f, -0.05f));
+        passOverallSpeed = 1.0f;
+
+        funcin = shakeOperation.lerpModes.LINEAR;
+        funcout = shakeOperation.lerpModes.LINEAR;
+        speedIn = Random.Range(10.0f, 20.0f);
+        speedOut = 3.0f;
+
+        addOperation(passTargetPos, passTargetRot, passOverallSpeed, funcin, funcout, speedIn, speedOut);
+
+        
+        yield return null;
     }
 }
