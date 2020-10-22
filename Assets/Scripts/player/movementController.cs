@@ -171,28 +171,6 @@ public class movementController : MonoBehaviour
 
                 Debug.Log($"Input Change! {moveDirCam}:{currentInputDir}:{lastInputDir}");
             }
-
-            //OLDER CODE
-            ////Get cam rotation
-            //Vector3 camRot = camParent.transform.rotation.eulerAngles;
-
-            ////Rotate character model to match cam
-            //charcterModel.transform.rotation = camParent.transform.rotation;
-
-            ////Offset rotation to movement direction
-            ////Get Input Offset target
-            //offset = new Vector3(camParent.transform.position.x + (moveDirCam.x * 10.0f), charcterModel.transform.position.y, camParent.transform.position.z + (moveDirCam.z * 10.0f));
-
-            ////Get Last Input Offset target
-            //lastOffset = new Vector3(camParent.transform.position.x + (lastInputDir.x * 10.0f), charcterModel.transform.position.y, camParent.transform.position.z + (lastInputDir.z * 10.0f));
-
-            ////Offset rotation
-            //targetRot = Quaternion.LookRotation((offset - charcterModel.transform.position).normalized);
-            //Vector3 targetDir = (offset - charcterModel.transform.position).normalized;
-
-            ////Rotation
-            //charcterModel.transform.LookAt(offset, Vector3.up);
-
         }
 
         //Smoothly rotate towards the new direction
