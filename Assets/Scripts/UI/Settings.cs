@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Settings : MonoBehaviour
@@ -31,9 +32,12 @@ public class Settings : MonoBehaviour
         audioslider.GetComponent<Slider>().value = vol;
 
         bool tmp = SaveSystemController.getBoolValue("toShowTimer");
-        Debug.Log(tmp);
-        toShowTimer = tmp;
-        toShowTimertoggle.GetComponent<Toggle>().isOn = tmp;
+        if (SceneManager.GetActiveScene().name != "mainMenu")
+        {
+            toShowTimer = tmp;
+            toShowTimertoggle.GetComponent<Toggle>().isOn = tmp;
+        }
+
     }
 
     public void toggleCencorship(Toggle change)
