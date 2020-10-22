@@ -22,57 +22,73 @@ public class slotno : MonoBehaviour
     private Vector4 colormin = new Vector4(0.5f, 0.5f, 0.5f, 1.0f);
     private Vector4 colormax = new Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 
+    public bool touchMat = true;
+
     private void Start()
     {
-        this.gameObject.GetComponent<Image>().material = new Material(this.gameObject.GetComponent<Image>().material);
-        this.gameObject.GetComponent<Image>().material.SetColor("_Color", colormin);
-        this.gameObject.GetComponent<Image>().material.SetFloat("_Power", shaderammountmin);
+        if (touchMat)
+        {
+            this.gameObject.GetComponent<Image>().material = new Material(this.gameObject.GetComponent<Image>().material);
+            this.gameObject.GetComponent<Image>().material.SetColor("_Color", colormin);
+            this.gameObject.GetComponent<Image>().material.SetFloat("_Power", shaderammountmin);
+        }
+
     }
 
 
     public IEnumerator togrow()
     {
-        for (; sizeoutta1 < 1.0f; sizeoutta1 += Time.deltaTime * speedgrow)
+        if (touchMat)
         {
-            if (growing != true)
+            for (; sizeoutta1 < 1.0f; sizeoutta1 += Time.deltaTime * speedgrow)
             {
-                yield break;
-            }
-            this.gameObject.GetComponent<Image>().material.SetColor("_Color", Vector4.Lerp(colormin, colormax, sizeoutta1));
+                if (growing != true)
+                {
+                    yield break;
+                }
+                this.gameObject.GetComponent<Image>().material.SetColor("_Color", Vector4.Lerp(colormin, colormax, sizeoutta1));
 
-            this.gameObject.GetComponent<Image>().material.SetFloat("_Power" , Mathf.Lerp(shaderammountmin, shaderammountmax, sizeoutta1));
-            this.gameObject.transform.localScale = Vector3.Lerp(new Vector3(smol, smol, smol), new Vector3(large, large, large), sizeoutta1);
+                this.gameObject.GetComponent<Image>().material.SetFloat("_Power", Mathf.Lerp(shaderammountmin, shaderammountmax, sizeoutta1));
+                this.gameObject.transform.localScale = Vector3.Lerp(new Vector3(smol, smol, smol), new Vector3(large, large, large), sizeoutta1);
+                yield return null;
+            }
+            sizeoutta1 = 1.0f;
+            this.gameObject.GetComponent<Image>().material.SetFloat("_Power", shaderammountmax);
+            this.gameObject.GetComponent<Image>().material.SetColor("_Color", colormax);
+            this.gameObject.transform.localScale = new Vector3(large, large, large);
+            growing = false;
             yield return null;
         }
-        sizeoutta1 = 1.0f;
-        this.gameObject.GetComponent<Image>().material.SetFloat("_Power", shaderammountmax);
-        this.gameObject.GetComponent<Image>().material.SetColor("_Color", colormax);
-        this.gameObject.transform.localScale = new Vector3(large, large, large);
-        growing = false;
         yield return null;
+
     }
 
     public IEnumerator toungrow()
     {
-        for (; sizeoutta1 > 0.0f; sizeoutta1 -= Time.deltaTime * speedshrink)
+        if (touchMat)
         {
-            if (shriking != true)
+            for (; sizeoutta1 > 0.0f; sizeoutta1 -= Time.deltaTime * speedshrink)
             {
-                yield break;
+                if (shriking != true)
+                {
+                    yield break;
+                }
+                this.gameObject.GetComponent<Image>().material.SetColor("_Color", Vector4.Lerp(colormin, colormax, sizeoutta1));
+
+                this.gameObject.GetComponent<Image>().material.SetFloat("_Power", Mathf.Lerp(shaderammountmin, shaderammountmax, sizeoutta1));
+                this.gameObject.transform.localScale = Vector3.Lerp(new Vector3(smol, smol, smol), new Vector3(large, large, large), sizeoutta1);
+                yield return null;
             }
-            this.gameObject.GetComponent<Image>().material.SetColor("_Color", Vector4.Lerp(colormin, colormax, sizeoutta1));
+            sizeoutta1 = 0.0f;
+            this.gameObject.GetComponent<Image>().material.SetFloat("_Power", shaderammountmin);
 
-            this.gameObject.GetComponent<Image>().material.SetFloat("_Power", Mathf.Lerp(shaderammountmin, shaderammountmax, sizeoutta1));
-            this.gameObject.transform.localScale = Vector3.Lerp(new Vector3(smol, smol, smol), new Vector3(large, large, large), sizeoutta1);
+            this.gameObject.GetComponent<Image>().material.SetColor("_Color", colormin);
+
+            this.gameObject.transform.localScale = new Vector3(smol, smol, smol);
+            shriking = false;
             yield return null;
-        }
-        sizeoutta1 = 0.0f;
-        this.gameObject.GetComponent<Image>().material.SetFloat("_Power", shaderammountmin);
+            }
 
-        this.gameObject.GetComponent<Image>().material.SetColor("_Color", colormin);
-
-        this.gameObject.transform.localScale = new Vector3(smol, smol, smol);
-        shriking = false;
         yield return null;
     }
 }
