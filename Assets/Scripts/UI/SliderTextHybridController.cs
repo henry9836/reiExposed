@@ -85,7 +85,6 @@ public class SliderTextHybridController : MonoBehaviour
                 if (SceneManager.GetActiveScene().name != "mainMenu")
                 {
                     CC.mouseSensitivity = AdjusterInfo.calcSlider(slider.value);
-
                 }
 
                 SaveSystemController.updateValue("mouseSensitivity", slider.value.ToString(), true);
