@@ -233,7 +233,7 @@ public class ClueController : MonoBehaviour
             yield return null;
         }
 
-        Debug.Log($"Comparing has finished :D {bossOneCollected}");
+        //Debug.Log($"Comparing has finished :D {bossOneCollected}");
 
         yield return null;
     }

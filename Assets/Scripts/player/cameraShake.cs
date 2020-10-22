@@ -168,7 +168,6 @@ public class cameraShake : MonoBehaviour
                     {
                         timer = 0.0f;
                         timer = 0.0f;
-                        Debug.Log("cross");
 
                         if (shakenumber == 0)
                         {
@@ -398,8 +397,6 @@ public class cameraShake : MonoBehaviour
 
     public IEnumerator explode(float range)
     {
-
-        Debug.Log("explodecall");
         float tmp = Random.Range(2.0f, 18.0f);
         passTargetPos = Vector3.zero;
         passOverallSpeed = 3.0f;

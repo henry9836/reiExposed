@@ -112,12 +112,12 @@ public class SlamAOEBehaviour : StateMachineBehaviour
                         //Get position behind the player
                         Vector3 behindPlayerPos = player.position + (-playerCharTransform.forward * distanceBehindPlayerToLook);
 
-                        Debug.DrawLine(behindPlayerPos, Vector3.up * 9999.0f, Color.cyan, 10.0f);
+                        //Debug.DrawLine(behindPlayerPos, Vector3.up * 9999.0f, Color.cyan, 10.0f);
 
                         //Choose a random position behind the player
                         Vector3 rngPos = new Vector3(Random.Range(behindPlayerPos.x - sizeOfAreaToSearch, behindPlayerPos.x + sizeOfAreaToSearch), transform.position.y, Random.Range(behindPlayerPos.z - sizeOfAreaToSearch, behindPlayerPos.z + sizeOfAreaToSearch));
 
-                        Debug.DrawLine(rngPos, Vector3.up * 9999.0f, Color.red, 10.0f);
+                        //Debug.DrawLine(rngPos, Vector3.up * 9999.0f, Color.red, 10.0f);
 
                         //Check position for obsctcles and ground
                         //Ground is ground
@@ -125,7 +125,7 @@ public class SlamAOEBehaviour : StateMachineBehaviour
 
                         if (Physics.CheckBox(rngPos, Vector3.one * colSize, Quaternion.identity))
                         {
-                            Debug.Log("I git something");
+                            //Debug.Log("I git something");
                         }
 
                         //If we are hitting the ground
@@ -135,20 +135,20 @@ public class SlamAOEBehaviour : StateMachineBehaviour
                             if (!(Physics.CheckBox(rngPos, Vector3.one * colSize, Quaternion.identity, obsctales)))
                             {
                                 //Found valid position
-                                Debug.Log("Found A Valid Pos and i'm happy boss :)");
-                                Debug.DrawLine(rngPos, Vector3.up * 9999.0f, Color.green, 10.0f);
+                                //Debug.Log("Found A Valid Pos and i'm happy boss :)");
+                                //Debug.DrawLine(rngPos, Vector3.up * 9999.0f, Color.green, 10.0f);
                                 targetPos = rngPos;
                             }
                             else
                             {
-                                Debug.Log("Found A Ground Pos but no go");
-                                Debug.DrawLine(rngPos, Vector3.up * 9999.0f, Color.yellow, 10.0f);
+                                //Debug.Log("Found A Ground Pos but no go");
+                                //Debug.DrawLine(rngPos, Vector3.up * 9999.0f, Color.yellow, 10.0f);
                             }
                         }
                         else
                         {
-                            Debug.Log("Found bad");
-                            Debug.DrawLine(rngPos, Vector3.up * 9999.0f, Color.red, 10.0f);
+                            //Debug.Log("Found bad");
+                            //Debug.DrawLine(rngPos, Vector3.up * 9999.0f, Color.red, 10.0f);
                         }
                     }
 

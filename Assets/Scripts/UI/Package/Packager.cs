@@ -15,6 +15,8 @@ public class Packager : MonoBehaviour
     public Image attachmentOneImage;
     public Image attachmentTwoImage;
     public Image attachmentThreeImage;
+    public GameManager gameManager;
+    public List<GameObject> uiToHide = new List<GameObject>();
 
     public Items.AllItems item1 = Items.AllItems.NONE;
     public Items.AllItems item2 = Items.AllItems.NONE;
@@ -48,6 +50,12 @@ public class Packager : MonoBehaviour
         originalCurrencyColor = currency.color;
         submitButton.interactable = false;
         items = transform.root.GetComponent<Items>();
+        for (int i = 0; i < uiToHide.Count; i++)
+        {
+            uiToHide[i].SetActive(false);
+        }
+
+        gameManager.stopPlayer(true);
     }
 
     //Attach an item
@@ -215,7 +223,7 @@ public class Packager : MonoBehaviour
         //Remove MythTraces
         SaveSystemController.updateValue("MythTraces", SaveSystemController.getIntValue("MythTraces") - int.Parse(currency.text));
 
-        Debug.Log("EXCEPTED HASH:" + SaveSystemController.calcCurrentHash());
+        //Debug.Log("EXCEPTED HASH:" + SaveSystemController.calcCurrentHash());
 
         //Override the time save
         SaveSystemController.saveDataToDisk(true);
@@ -233,11 +241,11 @@ public class Packager : MonoBehaviour
         //Load into main menu
         while (SaveSystemController.ioBusy)
         {
-            Debug.Log("Waiting On Save System IO");
+            //Debug.Log("Waiting On Save System IO");
             yield return null;
         }
 
-        Debug.Log("NEW HASH:" + SaveSystemController.calcCurrentHash());
+        //Debug.Log("NEW HASH:" + SaveSystemController.calcCurrentHash());
         SaveSystemController.checkSaveValid();
 
         //Load into the credits

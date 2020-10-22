@@ -290,25 +290,25 @@ public class Items : MonoBehaviour
                     }
 
                     HealthEffector(amp);
-                    Debug.Log("[DUCK] Health");
+                    //Debug.Log("[DUCK] Health");
                     break;
                 }
             case 2: //Random Damage Applier
                 {
                     StartCoroutine(ApplyTimedEffect(AllItems.DAMAGEBUFF, amp, time));
-                    Debug.Log("[DUCK] Damage");
+                    //Debug.Log("[DUCK] Damage");
                     break;
                 }
             case 3: //Random Stamina Applier
                 {
                     StartCoroutine(ApplyTimedEffect(AllItems.STAMINABUFF, amp, time));
-                    Debug.Log("[DUCK] Stamina");
+                    //Debug.Log("[DUCK] Stamina");
                     break;
                 }
             case 4: //Movement Stamina Applier
                 {
                     StartCoroutine(ApplyTimedEffect(AllItems.MOVEBUFF, amp, time));
-                    Debug.Log("[DUCK] Movement");
+                    //Debug.Log("[DUCK] Movement");
                     break;
                 }
             default:
@@ -384,7 +384,7 @@ public class Items : MonoBehaviour
                         particleGroups[0].Stop();
                     }
 
-                    Debug.Log("[DUCK] Removed Damage");
+                    //Debug.Log("[DUCK] Removed Damage");
                     break;
                 }
             case AllItems.STAMINABUFF:
@@ -422,7 +422,7 @@ public class Items : MonoBehaviour
                     Destroy(tmp);
                     //Unapply
                     player.staminaRegenSpeed -= result;
-                    Debug.Log("[DUCK] Removed Stamina");
+                    //Debug.Log("[DUCK] Removed Stamina");
 
                     //VFX
                     if (percentToChange > 0.0f)
@@ -519,7 +519,7 @@ public class Items : MonoBehaviour
                     }
 
 
-                    Debug.Log("[DUCK] Removed Movement");
+                    //Debug.Log("[DUCK] Removed Movement");
                     break;
                 }
             default:
@@ -671,6 +671,7 @@ public class Items : MonoBehaviour
 
     private void Update()
     {
+#if UNITY_EDITOR
         if (Input.GetKeyDown((KeyCode.O)))
         {
             for (int i = 0; i < biginvin.Count; i++)
@@ -682,5 +683,6 @@ public class Items : MonoBehaviour
                 Debug.Log("i:" + i + " equipped.biginvinpos:" + equipped[i].biginvinpos + " equipped.equpinvinpos;" + equipped[i].equippedpos + " equipped.itemtype:" + equipped[i].itemtype);
             }
         }
+#endif
     }
 }

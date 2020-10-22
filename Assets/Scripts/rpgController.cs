@@ -44,7 +44,6 @@ public class rpgController : MonoBehaviour
     {
         if (other.tag != "Finish" && other.tag != "Player" && other.tag != "PlayerAttackSurface" && !other.name.Contains("rocket"))
         {
-            Debug.Log($"KABOOOOOM! {other.tag}|{other.name}");
             //Deparent smoke vfx
             smokeVFX.transform.parent = null;
             smokeVFX.GetComponent<DestoryObject>().Trigger();
@@ -53,7 +52,6 @@ public class rpgController : MonoBehaviour
             for (int i = 0; i < hits.Length; i++)
             {
                 //Damage Myths
-                Debug.Log(hits[i].tag);
 
                 if (hits[i].tag == "Myth")
                 {
@@ -75,7 +73,6 @@ public class rpgController : MonoBehaviour
                         }
                         objsHit.Add(hits[i].name);
 
-                        //Debug.Log($"RPG HIT: {hits[i].name}");
                         //Apply damage based on distance from the explosion
                         hits[i].gameObject.GetComponent<MythCollisionHandler>().overrideDamage(damage * ((damageRadius - Vector3.Distance(hits[i].transform.position, transform.position)) / damageRadius));
                     }
