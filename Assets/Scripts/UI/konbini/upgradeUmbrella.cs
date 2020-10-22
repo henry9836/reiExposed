@@ -294,8 +294,8 @@ public class upgradeUmbrella : MonoBehaviour
                 {
                     //value
 
-                    float value = 50.0f; // base DMG at level 0 
-                    value += level * 10.0f;
+                    float value = 90.0f; // base DMG at level 0 
+                    value += level * 15.0f;
                     umbrella.MaxDamage = value;
 
 
