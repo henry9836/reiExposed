@@ -13,8 +13,10 @@ public class Settings : MonoBehaviour
     public GameObject audioslider;
 
     public GameObject cencortoggle;
+    public GameObject toShowTimertoggle;
 
     public bool tocencor = false;
+    public bool toShowTimer = false;
 
 
 
@@ -27,11 +29,22 @@ public class Settings : MonoBehaviour
         float vol = SaveSystemController.getFloatValue("volume");
         audiotext.GetComponent<InputField>().text = vol.ToString();
         audioslider.GetComponent<Slider>().value = vol;
+
+        bool tmp = SaveSystemController.getBoolValue("toShowTimer");
+        Debug.Log(tmp);
+        toShowTimer = tmp;
+        toShowTimertoggle.GetComponent<Toggle>().isOn = tmp;
     }
 
     public void toggleCencorship(Toggle change)
     {
         tocencor = change.isOn;
         SaveSystemController.updateValue("toCensor", tocencor);
+    }
+
+    public void toggleTimer(Toggle change)
+    {
+        toShowTimer = change.isOn;
+        SaveSystemController.updateValue("toShowTimer", toShowTimer);
     }
 }

@@ -38,6 +38,7 @@ public class pauseMenu : MonoBehaviour
     public AudioClip MenuSelect;
     private AudioSource audio;
 
+    public GameObject speedrunTimer;
 
     void Start()  
     {
@@ -53,10 +54,15 @@ public class pauseMenu : MonoBehaviour
 
         GameObject.FindGameObjectWithTag("Player").transform.GetChild(0).GetComponent<cameraControler>().mouseSensitivity = AdjusterInfo.calcSlider(SaveSystemController.getFloatValue("mouseSensitivity"));
         sett.tocencor = SaveSystemController.getBoolValue("toCensor");
+        speedrunTimer.GetComponent<timerScript>().activeated = SaveSystemController.getBoolValue("toShowTimer");
+
+
+
+
         AudioListener.volume = AdjusterInfo.calcSlider(SaveSystemController.getFloatValue("volume")) / 10.0f;
     }
 
-    //Restricts pausing of the game
+    //Restricts pausing of the gamewd
     bool canPause()
     {
         for (int i = 0; i < doNotPauseIfPresent.Count; i++)
@@ -102,6 +108,9 @@ public class pauseMenu : MonoBehaviour
                 pauseitems[i].SetActive(true);
             }
 
+
+            speedrunTimer.GetComponent<timerScript>().activeated = false;
+            
             Cursor.visible = true;
 
             Cursor.lockState = CursorLockMode.None;
@@ -125,6 +134,15 @@ public class pauseMenu : MonoBehaviour
             for (int i = 0; i < settingsItem.Count; i++)
             {
                 settingsItem[i].SetActive(false);
+            }
+
+            if (sett.toShowTimer == true)
+            {
+                speedrunTimer.GetComponent<timerScript>().activeated = true;
+            }
+            else
+            {
+                speedrunTimer.GetComponent<timerScript>().activeated = false;
             }
 
             Cursor.visible = false;
@@ -190,6 +208,7 @@ public class pauseMenu : MonoBehaviour
             {
                 pauseitems[i].SetActive(true);
             }
+
         }
         else
         {
