@@ -63,7 +63,7 @@ public class personalScore : MonoBehaviour
         {
             this.transform.GetChild(0).gameObject.GetComponent<Text>().text = lead.position;
             this.transform.GetChild(1).gameObject.GetComponent<Text>().text = lead.name;
-            this.transform.GetChild(2).gameObject.GetComponent<Text>().text = lead.time;
+            this.transform.GetChild(2).gameObject.GetComponent<Text>().text = NetworkUtility.convertToTime( float.Parse(lead.time)).ToString();
         }
     }
 
