@@ -57,7 +57,7 @@ public static class ReverseAnimationContext
             }
             AnimationUtility.SetAnimationEvents(clip, events);
         }
-        Debug.Log("Animation reversed!");
+        //Debug.Log("Animation reversed!");
     }
 
     [MenuItem("Assets/Create Reversed Clip", true)]

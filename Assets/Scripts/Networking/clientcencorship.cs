@@ -44,7 +44,7 @@ public class clientcencorship : MonoBehaviour
 
     public string getMessageAndRemove(int i)
     {
-        Debug.Log($"Message List Size: {messages.Count}");
+        //Debug.Log($"Message List Size: {messages.Count}");
         string msg = messages[i];
         messages.RemoveAt(i);
         return msg;

@@ -8,6 +8,6 @@ public class EnemyThing : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log("Weapon Damage: " + weapon.damage, this);
+        //Debug.Log("Weapon Damage: " + weapon.damage, this);
     }
 }

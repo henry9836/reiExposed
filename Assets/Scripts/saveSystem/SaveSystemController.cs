@@ -179,7 +179,7 @@ public static class SaveSystemController
     {
         while (!readyForProcessing && !ioBusy) { Debug.LogError("Waiting on save system to be ready for processing, have you loaded data from disk?"); }
 
-        Debug.Log("I know of " + saveInfomation.Count.ToString() + " values!");
+        //Debug.Log("I know of " + saveInfomation.Count.ToString() + " values!");
 
         ulong hash = calcCurrentHash();
         ulong fileHash = ulong.Parse(getValue(HASHID));
@@ -189,7 +189,7 @@ public static class SaveSystemController
             Debug.LogWarning("Hash not found/loaded!");
             return false;
         }
-        Debug.Log($"HASH CALC: {hash} | HASH FILE: {fileHash}");
+        //Debug.Log($"HASH CALC: {hash} | HASH FILE: {fileHash}");
         return (hash == fileHash);
     }
 
@@ -352,6 +352,7 @@ public static class SaveSystemController
 
         //Restore Gamma
         updateValue("Gamma", gammaValue);
+        updateValue("Package_Time", "0.0", true);
 
         //Create Hash
         saveDataToDisk(true);
@@ -463,6 +464,8 @@ public static class SaveSystemController
     //Saves current state of saveInfomation to save file
     public static void saveDataToDisk(string filePath, bool overrideTime)
     {
+        Debug.Log(getValue("Package_Time"));
+
         if (!overrideTime)
         {
             //Update our time
@@ -544,7 +547,7 @@ public static class SaveSystemController
             {
                 if (overrideToString)
                 {
-                    Debug.Log($"CREATED A OVERRIDE OBJECT: {saveInfomation[i].id}");
+                    //Debug.Log($"CREATED A OVERRIDE OBJECT: {saveInfomation[i].id}");
                     saveInfomation[i].type = entry.TYPES.STRING;
                 }
                 saveInfomation[i].updateValue(_newValue);

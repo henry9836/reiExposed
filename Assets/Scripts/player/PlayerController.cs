@@ -169,7 +169,7 @@ public class PlayerController : MonoBehaviour
                 //Damage From Enemy and we are not blocking
                 if (otherObject.CompareTag("EnemyAttackSurface") && !umbrella.ISBLockjing)
                 {
-                    Debug.Log("I was hit and taking damage");
+                    //Debug.Log("I was hit and taking damage");
 
                     AIAttackContainer.EFFECTTYPES effect = AIAttackContainer.EFFECTTYPES.NONE;
 
@@ -185,13 +185,13 @@ public class PlayerController : MonoBehaviour
                     else if (otherObject.GetComponent<GenericHitboxController>() != null)
                     {
                         Collider col = GetComponent<Collider>();
-                        Debug.DrawLine(other.ClosestPointOnBounds(col.transform.position), col.transform.position, Color.magenta, 10.0f, false);
+                        //Debug.DrawLine(other.ClosestPointOnBounds(col.transform.position), col.transform.position, Color.magenta, 10.0f, false);
                         float dmg = otherObject.GetComponent<GenericHitboxController>().Damage();
                         //Stun based on type
                         effect = otherObject.GetComponent<GenericHitboxController>().effect;
                         health -= dmg;
                         iGotHitShake(dmg);
-                        Debug.Log($"Took Damage {dmg}");
+                        //Debug.Log($"Took Damage {dmg}");
                     }
                     else
                     {
@@ -236,7 +236,7 @@ public class PlayerController : MonoBehaviour
                 //If we are blocking
                 else if (other.gameObject.CompareTag("EnemyAttackSurface") && umbrella.ISBLockjing)
                 {
-                    Debug.Log("I was hit and but blocked");
+                    //Debug.Log("I was hit and but blocked");
                     umbrella.cooldown = true;
 
                     //Disable hitboxes
@@ -260,7 +260,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            Debug.Log("Hit I Frame");
+            //Debug.Log("Hit I Frame");
         }
     }
 

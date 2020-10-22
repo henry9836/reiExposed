@@ -168,8 +168,6 @@ public class movementController : MonoBehaviour
 
                 //Update new input direction
                 currentInputDir = moveDirCam;
-
-                Debug.Log($"Input Change! {moveDirCam}:{currentInputDir}:{lastInputDir}");
             }
         }
 
@@ -273,7 +271,7 @@ public class movementController : MonoBehaviour
                 //If there is input
                 if (moveDirCam != Vector3.zero)
                 {
-                    Debug.Log("Roll ADJUST");
+                    //Debug.Log("Roll ADJUST");
                     //Get cam rotation
                     Vector3 camRot = camParent.transform.rotation.eulerAngles;
 

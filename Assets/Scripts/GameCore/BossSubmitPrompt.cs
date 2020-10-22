@@ -34,7 +34,7 @@ public class BossSubmitPrompt : MonoBehaviour
                 //If is visible on screen
                 if (modelRenderer.isVisible)
                 {
-                    Debug.Log("Taken photo of boss");
+                    //Debug.Log("Taken photo of boss");
                     //Turn submit UI on and turn out component off
                     submitUI.SetActive(true);
                     Cursor.lockState = CursorLockMode.Confined;

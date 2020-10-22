@@ -29,7 +29,7 @@ public class readyShoot : StateMachineBehaviour
             once = false;
             umbrella.canfire = false;
             umbrella.ISBLockjing = false;
-            Debug.Log("sprint no shoot");
+            //Debug.Log("sprint no shoot");
 
         }
         else if (animator.GetBool("Blocking") == false && animator.GetBool("Sprinting") == false && animator.GetBool("Running") == true)
@@ -37,7 +37,7 @@ public class readyShoot : StateMachineBehaviour
             once = false;
             umbrella.canfire = false;
             umbrella.ISBLockjing = false;
-            Debug.Log("run no shoot");
+            //Debug.Log("run no shoot");
 
         }
         else if (animator.GetBool("Blocking") == false && animator.GetBool("Running") == false)
@@ -45,7 +45,7 @@ public class readyShoot : StateMachineBehaviour
             once = false;
             umbrella.canfire = false;
             umbrella.ISBLockjing = false;
-            Debug.Log("default no shoot");
+            //Debug.Log("default no shoot");
 
         }
 
