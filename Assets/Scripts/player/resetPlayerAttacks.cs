@@ -12,6 +12,7 @@ public class resetPlayerAttacks : StateMachineBehaviour
         animator.SetBool("Stunned", false);
         animator.SetBool("UsingItem", false);
         animator.SetBool("Blocking", false);
+        animator.SetBool("Strafing", false);
         animator.SetBool("Rolling", false);
     }
 
