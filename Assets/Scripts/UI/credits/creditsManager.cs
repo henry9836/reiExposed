@@ -117,7 +117,7 @@ public class creditsManager : MonoBehaviour
             string ty = decoding[i].Substring(0, 1);
             textlist.Add(decoding[i].Substring(2, decoding[i].Length - 2));
 
-            Debug.Log(ty + "  " + textlist[i]);
+            //Debug.Log(ty + "  " + textlist[i]);
 
             switch (ty)
             {
@@ -216,7 +216,7 @@ public class creditsManager : MonoBehaviour
             yield return null;
         }
 
-        Debug.Log("done");
+        //Debug.Log("done");
 
         yield return new WaitForSeconds(5.0f);
         StartCoroutine(returntomenu());

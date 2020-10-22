@@ -12,7 +12,7 @@ public class MythModeSwitcher : AIModeSwitcher
 
     public override bool switchMode(int newMode)
     {
-        Debug.Log($"Switching to mode {newMode}");
+        //Debug.Log($"Switching to mode {newMode}");
 
         //Change speed depending on mode
         if (newMode == (int)MYTHMODES.PASSIVE)

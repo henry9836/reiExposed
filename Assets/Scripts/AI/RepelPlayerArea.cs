@@ -24,7 +24,7 @@ public class RepelPlayerArea : MonoBehaviour
         if (other.tag == "Player")
         {
             outDir = (other.gameObject.transform.position - transform.position).normalized;
-            Debug.Log("In Push Zone");
+            //Debug.Log("In Push Zone");
         }
     }
 
@@ -34,7 +34,7 @@ public class RepelPlayerArea : MonoBehaviour
             moveCtrl.forceMovement(outDir * pushForce);
 
             pushForce += pushIncrease * Time.deltaTime;
-            Debug.Log("Push");
+            //Debug.Log("Push");
         }
     }
 
@@ -43,7 +43,7 @@ public class RepelPlayerArea : MonoBehaviour
         if (other.tag == "Player")
         {
             pushForce = initalpushForce;
-            Debug.Log("Out Push Zone");
+            //Debug.Log("Out Push Zone");
         }
     }
 

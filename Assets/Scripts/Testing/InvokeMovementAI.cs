@@ -11,7 +11,7 @@ public class InvokeMovementAI : MonoBehaviour
         if (Input.GetKey(KeyCode.F1))
         {
             movement.setOverride(AIMovement.OVERRIDE.FULL_OVERRIDE);
-            Debug.Log("Stopped");
+            //Debug.Log("Stopped");
         }
     }
 }

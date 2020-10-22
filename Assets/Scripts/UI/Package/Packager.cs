@@ -223,7 +223,7 @@ public class Packager : MonoBehaviour
         //Remove MythTraces
         SaveSystemController.updateValue("MythTraces", SaveSystemController.getIntValue("MythTraces") - int.Parse(currency.text));
 
-        Debug.Log("EXCEPTED HASH:" + SaveSystemController.calcCurrentHash());
+        //Debug.Log("EXCEPTED HASH:" + SaveSystemController.calcCurrentHash());
 
         //Override the time save
         SaveSystemController.saveDataToDisk(true);
@@ -241,11 +241,11 @@ public class Packager : MonoBehaviour
         //Load into main menu
         while (SaveSystemController.ioBusy)
         {
-            Debug.Log("Waiting On Save System IO");
+            //Debug.Log("Waiting On Save System IO");
             yield return null;
         }
 
-        Debug.Log("NEW HASH:" + SaveSystemController.calcCurrentHash());
+        //Debug.Log("NEW HASH:" + SaveSystemController.calcCurrentHash());
         SaveSystemController.checkSaveValid();
 
         //Load into the credits

@@ -101,13 +101,13 @@ public class enemydrop : MonoBehaviour
 
         if (tocencor.tocencor == true)
         {
-            Debug.Log("censord");
-            Debug.Log(packagetosend.enemieDrops[0].tmessage);
+            //Debug.Log("censord");
+            //Debug.Log(packagetosend.enemieDrops[0].tmessage);
             StartCoroutine(clientCencorship.watchYourProfanity(packagetosend.enemieDrops[0].tmessage));
         }
         else
         {
-            Debug.Log("notcensord");
+            //Debug.Log("notcensord");
             clientCencorship.dontWatchYourProfanity(packagetosend.enemieDrops[0].tmessage);
         }
     }
@@ -202,7 +202,7 @@ public class enemydrop : MonoBehaviour
         
 
         //Spawn a qr code with the correct info :)
-        Debug.Log("Spawn a qr code with the correct info :)");
+        //Debug.Log("Spawn a qr code with the correct info :)");
         
         //Drop Message
         GameObject qrCode = GameObject.Instantiate(dropmessage, mythsTransform.position, Quaternion.Euler(0.0f, Random.Range(-360.0f, 360.0f), 0.0f));
