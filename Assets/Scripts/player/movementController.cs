@@ -85,6 +85,14 @@ public class movementController : MonoBehaviour
     private bool disallowPlayerFromStamina = false;
     private bool staminaBlockState = false;
 
+    private Vector3 lastInputDir = Vector3.zero;
+    private Vector3 currentInputDir = Vector3.zero;
+    private Vector3 lastOffset = Vector3.zero;
+    private Vector3 offset = Vector3.zero;
+    private float rotTimer = 0.0f;
+    private float rotTime = 0.1f;
+
+
     private void Start()
     {
         initalPosition = transform.position;
@@ -99,8 +107,15 @@ public class movementController : MonoBehaviour
         cam = GameObject.FindGameObjectWithTag("MainCamera");
     }
 
-    private void FixedUpdate()
+    public void forceMovement(Vector3 dir)
     {
+        ch.Move(dir * Time.deltaTime);
+    }
+
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+        //checks if we are on the ground
         isOnGround = ch.isGrounded;
 
         //Fell out of map, reset pos
@@ -108,16 +123,7 @@ public class movementController : MonoBehaviour
         {
             transform.position = initalPosition;
         }
-    }
 
-    public void forceMovement(Vector3 dir)
-    {
-        ch.Move(dir * Time.deltaTime);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
         //Reset movedir
         moveDir = new Vector3(moveDir.x * 0.0f, moveDir.y * 1.0f, moveDir.z * 0.0f);
 
@@ -152,26 +158,42 @@ public class movementController : MonoBehaviour
         //Rotate towards movement in relation to cam direction
         if (moveDirCam != Vector3.zero && !rolling && !strafemode && (!attackMovementBlock || canTurnDuringAttack) && !animator.GetBool("Stunned") && !animator.GetBool("Blocking"))
         {
+            //If this is a new direction
+            //if (moveDirCam != currentInputDir && (rotTimer > rotTime))
+            if (moveDirCam != currentInputDir)
+            {
+                //Update last input direction
+                lastInputDir = currentInputDir;
+                rotTimer = 0.0f;
 
-            //Get cam rotation
-            Vector3 camRot = camParent.transform.rotation.eulerAngles;
+                //Update new input direction
+                currentInputDir = moveDirCam;
 
-            //Rotate character model to match cam
-            charcterModel.transform.rotation = camParent.transform.rotation;
+                Debug.Log($"Input Change! {moveDirCam}:{currentInputDir}:{lastInputDir}");
+            }
+        }
 
+        //Smoothly rotate towards the new direction
+        if (rotTimer <= rotTime)
+        {
             //Offset rotation to movement direction
-            //Offset target
-            Vector3 offset = new Vector3(camParent.transform.position.x + (moveDirCam.x * 10.0f), charcterModel.transform.position.y, camParent.transform.position.z + (moveDirCam.z * 10.0f));
+            //Get Input Offset target
+            offset = new Vector3(camParent.transform.position.x + (currentInputDir.x * 10.0f), charcterModel.transform.position.y, camParent.transform.position.z + (currentInputDir.z * 10.0f));
 
+            //Get Last Input Offset target
+            lastOffset = new Vector3(camParent.transform.position.x + (lastInputDir.x * 10.0f), charcterModel.transform.position.y, camParent.transform.position.z + (lastInputDir.z * 10.0f));
+
+            offset = Vector3.Lerp(lastOffset, offset, (rotTimer / rotTime));
 
             //Offset rotation
             targetRot = Quaternion.LookRotation((offset - charcterModel.transform.position).normalized);
-            Vector3 targetDir = (offset - charcterModel.transform.position).normalized;
 
             //Rotation
             charcterModel.transform.LookAt(offset, Vector3.up);
-
         }
+
+        //Increment the rotation timer
+        rotTimer += Time.deltaTime;
 
         if (!animator.GetBool("UsingItem") && !animator.GetBool("Stunned"))
         {
@@ -486,7 +508,7 @@ public class movementController : MonoBehaviour
 
 
         //Get states that would block stamina regen
-        staminaBlockState = (rolling || sprinting || attackMovementBlock || sprintLock || animator.GetBool("Attack"));
+        staminaBlockState = (rolling || sprinting || attackMovementBlock || sprintLock || animator.GetBool("Attack") || animator.GetBool("Blocking"));
 
         //Reset stamina blocker if the player is not using it
         if (!Input.GetButton("Sprint") && !Input.GetButton("Roll") && !staminaBlockState)

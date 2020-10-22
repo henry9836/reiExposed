@@ -2259,8 +2259,8 @@ MonoBehaviour:
   staminaAmount: 100
   staminaMaxAmount: 200
   staminaRegenSpeed: 35
-  staminaToAttack: 10
-  staminaToHeavyAttack: 5
+  staminaToAttack: 20
+  staminaToHeavyAttack: 50
   staminaBlock: 0
   umbreallaDmg: 20
   umbreallaHeavyDmg: 80
@@ -2441,7 +2441,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canfire: 0
-  blockingStamina: 50
+  blockingStamina: 10
   timeTillHeavyAttack: 0.25
   cooldown: 0
   cooldowntime: 1
@@ -2463,10 +2463,14 @@ MonoBehaviour:
   boss: {fileID: 0}
   audio: {fileID: 1103017930}
   shotUI: {fileID: 0}
+  rocketPrefab: {fileID: 8352258481527950702, guid: 867c654c31f5a8c4c81df6a2f16d7495,
+    type: 3}
+  rocketSpawnLoc: {fileID: 3085141669936521762}
   aimVFX: {fileID: 82483093822331616}
   shootVFX: {fileID: 6069962586449967493}
   phoneLock: 0
   targetsTouched: []
+  noammoClip: {fileID: 8300000, guid: f1e601149ba8118439a57ddbc461475b, type: 3}
   bulletSpread: 0.1
   bulletSpreadRunning: 0.165
   bulletSpreadADS: 0.08

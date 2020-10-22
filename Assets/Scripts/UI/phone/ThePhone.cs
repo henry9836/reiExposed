@@ -82,10 +82,12 @@ public class ThePhone : MonoBehaviour
     public AudioClip MenuBack;
     public AudioClip CameraOut;
     public AudioClip CameraMode;
+    public AudioClip TakePhoto;
     public AudioClip OrderDrone;
     public AudioClip PhoneOn;
     public AudioClip PhoneOff;
     public AudioClip UsingPhotogrammetry;
+    public AudioClip DoorUnlockSound;
     private AudioSource audio;
 
     //Animator
@@ -288,6 +290,7 @@ public class ThePhone : MonoBehaviour
                             //take photo
                             if (Input.GetMouseButtonDown(0))
                             {
+                                audio.PlayOneShot(TakePhoto);
                                 checkPhotoValid(true, "Clue");
                             }
                             else if (Input.GetKeyDown(KeyCode.Tab) || Input.GetButtonDown("Pause")) // close phone
@@ -994,6 +997,7 @@ public class ThePhone : MonoBehaviour
                     //If it is a door
                     else if (isDoor)
                     {
+                        audio.PlayOneShot(DoorUnlockSound);
                         clue[element].GetComponent<DoorController>().triggerUnlock();
                     }
                     //is a qr code
