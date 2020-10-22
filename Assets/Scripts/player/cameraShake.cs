@@ -58,6 +58,8 @@ public class cameraShake : MonoBehaviour
         WALKING,
         SPRINTING,
         WHACK,
+        OOF,
+        BIGOOF,
     }
 
     public Modes active;
@@ -88,7 +90,6 @@ public class cameraShake : MonoBehaviour
                     {
                         Test = false;
                         StartCoroutine(explode(2.0f));
-
                     }
 
                     break;
@@ -242,6 +243,25 @@ public class cameraShake : MonoBehaviour
                         addOperation(passTargetPos, passTargetRot, passOverallSpeed, funcin, funcout, speedIn, speedOut);
 
 
+                    }
+                    break;
+                }
+            case Modes.OOF:
+                {
+                    if (Test == true)
+                    {
+                        float damage = 5.0f / 3.0f;
+
+                        Test = false;
+                        passTargetRot = new Vector3(Random.Range(1.0f, -1.0f) * damage, Random.Range(1.0f, -1.0f) * damage, Random.Range(1.0f, -1.0f) * damage);
+                        passTargetPos = new Vector3(Random.Range(0.03f, -0.03f) * damage, Random.Range(0.03f, -0.03f) * damage, Random.Range(0.03f, -0.03f) * damage);
+                        passOverallSpeed = 3.0f;
+                        funcin = shakeOperation.lerpModes.LINEAR;
+                        funcout = shakeOperation.lerpModes.LINEAR;
+                        speedIn = Random.Range(10.0f, 18.0f);
+                        speedOut = 3.0f;
+
+                        addOperation(passTargetPos, passTargetRot, passOverallSpeed, funcin, funcout, speedIn, speedOut);
                     }
                     break;
                 }
