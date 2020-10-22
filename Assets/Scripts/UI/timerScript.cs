@@ -7,6 +7,7 @@ public class timerScript : MonoBehaviour
 {
     private float timeSpeed;
     public bool activeated;
+
     void Start()
     {
         timeSpeed = SaveSystemController.getCurrentTime();

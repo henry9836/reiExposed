@@ -15,6 +15,8 @@ public class Packager : MonoBehaviour
     public Image attachmentOneImage;
     public Image attachmentTwoImage;
     public Image attachmentThreeImage;
+    public GameManager gameManager;
+    public List<GameObject> uiToHide = new List<GameObject>();
 
     public Items.AllItems item1 = Items.AllItems.NONE;
     public Items.AllItems item2 = Items.AllItems.NONE;
@@ -48,6 +50,12 @@ public class Packager : MonoBehaviour
         originalCurrencyColor = currency.color;
         submitButton.interactable = false;
         items = transform.root.GetComponent<Items>();
+        for (int i = 0; i < uiToHide.Count; i++)
+        {
+            uiToHide[i].SetActive(false);
+        }
+
+        gameManager.stopPlayer(true);
     }
 
     //Attach an item
