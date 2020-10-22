@@ -87,6 +87,7 @@ public class ThePhone : MonoBehaviour
     public AudioClip PhoneOn;
     public AudioClip PhoneOff;
     public AudioClip UsingPhotogrammetry;
+    public AudioClip DoorUnlockSound;
     private AudioSource audio;
 
     //Animator
@@ -996,6 +997,7 @@ public class ThePhone : MonoBehaviour
                     //If it is a door
                     else if (isDoor)
                     {
+                        audio.PlayOneShot(DoorUnlockSound);
                         clue[element].GetComponent<DoorController>().triggerUnlock();
                     }
                     //is a qr code
