@@ -60,20 +60,20 @@ public class rpgController : MonoBehaviour
                     if (hits[i].gameObject.GetComponent<MythCollisionHandler>() != null)
                     {
                         //Prevent dupe dmg
-                        //bool seen = false;
-                        //for (int j = 0; j < objsHit.Count; j++)
-                        //{
-                        //    if (objsHit[j] == hits[i].name)
-                        //    {
-                        //        seen = true;
-                        //        break;
-                        //    }
-                        //}
-                        //if (seen)
-                        //{
-                        //    continue;
-                        //}
-                        //objsHit.Add(hits[i].name);
+                        bool seen = false;
+                        for (int j = 0; j < objsHit.Count; j++)
+                        {
+                            if (objsHit[j] == hits[i].name)
+                            {
+                                seen = true;
+                                break;
+                            }
+                        }
+                        if (seen)
+                        {
+                            continue;
+                        }
+                        objsHit.Add(hits[i].name);
 
                         //Debug.Log($"RPG HIT: {hits[i].name}");
                         //Apply damage based on distance from the explosion
@@ -82,6 +82,20 @@ public class rpgController : MonoBehaviour
                 }
                 else if (hits[i].tag == "Boss")
                 {
+                    bool seen = false;
+                    for (int j = 0; j < objsHit.Count; j++)
+                    {
+                        if (objsHit[j] == hits[i].name)
+                        {
+                            seen = true;
+                            break;
+                        }
+                    }
+                    if (seen)
+                    {
+                        continue;
+                    }
+                    objsHit.Add(hits[i].name);
                     hits[i].gameObject.GetComponent<FlameCollisonOverride>().overrideDamage(damage * ((damageRadius - Vector3.Distance(hits[i].transform.position, transform.position)) / damageRadius));
                 }
 
