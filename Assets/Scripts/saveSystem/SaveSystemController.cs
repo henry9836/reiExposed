@@ -352,6 +352,7 @@ public static class SaveSystemController
 
         //Restore Gamma
         updateValue("Gamma", gammaValue);
+        updateValue("Package_Time", "0.0", true);
 
         //Create Hash
         saveDataToDisk(true);
@@ -463,6 +464,8 @@ public static class SaveSystemController
     //Saves current state of saveInfomation to save file
     public static void saveDataToDisk(string filePath, bool overrideTime)
     {
+        Debug.Log(getValue("Package_Time"));
+
         if (!overrideTime)
         {
             //Update our time

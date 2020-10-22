@@ -45,6 +45,7 @@ public class Packager : MonoBehaviour
     {
         //Get level time
         levelTime = SaveSystemController.getCurrentTime();
+        Debug.Log(levelTime);
         Cursor.visible = true;
         originalMessageColor = message.color;
         originalCurrencyColor = currency.color;
@@ -219,6 +220,8 @@ public class Packager : MonoBehaviour
         SaveSystemController.updateValue("Package_Name", nameField.text, true);
         SaveSystemController.updateValue("Package_Time", levelTime);
         SaveSystemController.updateValue("Package_MAGIC", (SaveSystemController.calcCurrentHash(SaveSystemController.getValue("Package_Name") + SaveSystemController.getValue("Package_Time") + SaveSystemController.getValue("Package_Curr") + SaveSystemController.getValue("Package_Message") + SaveSystemController.getValue("Package_Item1") + SaveSystemController.getValue("Package_Item2") + SaveSystemController.getValue("Package_Item3")).ToString()), true);
+
+        Debug.Log($"TIME: {SaveSystemController.getValue("Package_Time")}:{levelTime}");
 
         //Remove MythTraces
         SaveSystemController.updateValue("MythTraces", SaveSystemController.getIntValue("MythTraces") - int.Parse(currency.text));
