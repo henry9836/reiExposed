@@ -4822,6 +4822,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5544605816568961915}
   - component: {fileID: 57051134753130451}
+  - component: {fileID: -9142151100372418690}
   m_Layer: 0
   m_Name: b1FlameExplode
   m_TagString: Untagged
@@ -4867,6 +4868,20 @@ MonoBehaviour:
   - {fileID: 6251068407654245022}
   - {fileID: 6251068407044744966}
   - {fileID: 5424737356318975790}
+--- !u!114 &-9142151100372418690
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5544605816568961914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74ca52cc043e5fd45896bf8d73e8c8ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manualTrigger: 0
+  timeTillDeath: 3
 --- !u!1 &5544605816838501891
 GameObject:
   m_ObjectHideFlags: 0
@@ -5892,7 +5907,7 @@ ParticleSystem:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
-      cycleCount: 0
+      cycleCount: 1
       repeatInterval: 1
       probability: 1
   SizeModule:
@@ -9768,7 +9783,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 2.97933e-40, z: 0, w: -4.53125}
+  m_BoundingSphereOverride: {x: NaN, y: 0, z: 0, w: 6e-45}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -10907,7 +10922,7 @@ ParticleSystem:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
-      cycleCount: 0
+      cycleCount: 1
       repeatInterval: 1
       probability: 1
   SizeModule:
@@ -15719,7 +15734,7 @@ ParticleSystem:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
-      cycleCount: 0
+      cycleCount: 1
       repeatInterval: 1
       probability: 1
   SizeModule:
@@ -20531,7 +20546,7 @@ ParticleSystem:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
-      cycleCount: 0
+      cycleCount: 1
       repeatInterval: 1
       probability: 1
   SizeModule:
