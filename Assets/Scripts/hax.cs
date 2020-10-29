@@ -9,6 +9,9 @@ public class hax : MonoBehaviour
     public List<Image> uiToHide = new List<Image>();
     public List<Text> textToHide = new List<Text>();
 
+    public List<Color> textColor = new List<Color>();
+    public List<Color> uiColor = new List<Color>();
+
     PlayerController pc;
     AIObject boss;
     bool uiHide = false;
@@ -17,6 +20,16 @@ public class hax : MonoBehaviour
     {
         pc = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         boss = GameObject.FindGameObjectWithTag("Boss").GetComponent<AIObject>();
+
+        for (int i = 0; i < uiToHide.Count; i++)
+        {
+            uiColor.Add(uiToHide[i].color);
+        }
+        for (int i = 0; i < textToHide.Count; i++)
+        {
+            textColor.Add(textToHide[i].color);
+        }
+
     }
 
     private void LateUpdate()
@@ -58,11 +71,11 @@ public class hax : MonoBehaviour
             {
                 for (int i = 0; i < uiToHide.Count; i++)
                 {
-                    uiToHide[i].color = new Color(uiToHide[i].color.r, uiToHide[i].color.g, uiToHide[i].color.b, uiToHide[i].color.a);
+                    uiToHide[i].color = uiColor[i];
                 }
                 for (int i = 0; i < textToHide.Count; i++)
                 {
-                    textToHide[i].color = new Color(textToHide[i].color.r, textToHide[i].color.g, textToHide[i].color.b, textToHide[i].color.a);
+                    textToHide[i].color = textColor[i];
                 }
             }
         }
