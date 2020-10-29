@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class rpgController : MonoBehaviour
 {
+    public Camera rpgCam;
+
     public float rotSpeed = 500.0f;
     public float movementSpeed = 5.0f;
     public float accelerateSpeed = 1.0f;
@@ -15,14 +17,24 @@ public class rpgController : MonoBehaviour
     public GameObject smokeVFX;
     public GameObject explodeVFX;
     public AudioClip explodeSFX;
+    public Camera cam;
 
     float angle = 0.0f;
 
     List<string> objsHit = new List<string>();
 
+    private void Start()
+    {
+        //Disable camera
+        cam = Camera.main;
+        cam.enabled = false;
+        rpgCam.enabled = true;
+    }
+
     // Update is called once per frame
     void Update()
     {
+
         //Move
         transform.position += transform.forward * Time.deltaTime * movementSpeed;
 
@@ -44,6 +56,10 @@ public class rpgController : MonoBehaviour
     {
         if (other.tag != "Finish" && other.tag != "Player" && other.tag != "PlayerAttackSurface" && !other.name.Contains("rocket"))
         {
+            //Disable camera
+            cam.enabled = true;
+            rpgCam.enabled = false;
+
             //Deparent smoke vfx
             smokeVFX.transform.parent = null;
             smokeVFX.GetComponent<DestoryObject>().Trigger();
@@ -52,7 +68,6 @@ public class rpgController : MonoBehaviour
             for (int i = 0; i < hits.Length; i++)
             {
                 //Damage Myths
-
                 if (hits[i].tag == "Myth")
                 {
                     if (hits[i].gameObject.GetComponent<MythCollisionHandler>() != null)
