@@ -22,9 +22,6 @@ public class wallpapEqu : MonoBehaviour
         selector.transform.parent = this.transform.GetChild(equipped).transform;
         selector.transform.localPosition = Vector3.zero;
         phoneBGref.GetComponent<Image>().sprite = BGsprites[equipped];
-
-
-        Debug.Log("yaya init");
     }
 
     public void equip(int toequ)

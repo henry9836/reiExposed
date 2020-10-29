@@ -19,9 +19,10 @@ public class rpgCin : MonoBehaviour
     float timeToMove = 3.75f;
     float timer = 0.0f;
 
-    public void Toggle(Camera main)
+    public void Toggle(Camera cam)
     {
-        mainCam = main;
+        mainCam = cam;
+        Debug.Log(mainCam.name);
         rpgCam = this.GetComponent<Camera>();
         oldRot = transform.localRotation.eulerAngles;
         moveDir = -transform.forward;

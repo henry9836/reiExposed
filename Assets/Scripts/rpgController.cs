@@ -28,7 +28,7 @@ public class rpgController : MonoBehaviour
     private void Start()
     {
         //Disable camera
-        cam = Camera.main;
+        cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
         cam.enabled = false;
         rpgCam.enabled = true;
         boss = GameObject.FindGameObjectWithTag("Boss").transform;
@@ -66,6 +66,9 @@ public class rpgController : MonoBehaviour
     {
         if (other.tag != "Finish" && other.tag != "Player" && other.tag != "PlayerAttackSurface" && !other.name.Contains("rocket"))
         {
+
+            rpgCam.transform.parent = null;
+            rpgCam.GetComponent<rpgCin>().Toggle(cam);
 
             //Deparent smoke vfx
             smokeVFX.transform.parent = null;
