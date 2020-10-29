@@ -14,6 +14,8 @@ public class rpgController : MonoBehaviour
     public float damage = 400.0f;
     public float damageRadius = 5.0f;
 
+    public Transform boss;
+
     public GameObject smokeVFX;
     public GameObject explodeVFX;
     public AudioClip explodeSFX;
@@ -29,11 +31,19 @@ public class rpgController : MonoBehaviour
         cam = Camera.main;
         cam.enabled = false;
         rpgCam.enabled = true;
+        boss = GameObject.FindGameObjectWithTag("Boss").transform;
     }
 
     // Update is called once per frame
     void Update()
     {
+
+        //Deattach cam when close to boss
+        if (Vector3.Distance(transform.position, boss.position) < 10.0f) {
+
+            rpgCam.transform.parent = null;
+            rpgCam.GetComponent<rpgCin>().Toggle(cam);
+        }
 
         //Move
         transform.position += transform.forward * Time.deltaTime * movementSpeed;
@@ -56,9 +66,6 @@ public class rpgController : MonoBehaviour
     {
         if (other.tag != "Finish" && other.tag != "Player" && other.tag != "PlayerAttackSurface" && !other.name.Contains("rocket"))
         {
-            //Disable camera
-            cam.enabled = true;
-            rpgCam.enabled = false;
 
             //Deparent smoke vfx
             smokeVFX.transform.parent = null;
@@ -117,8 +124,11 @@ public class rpgController : MonoBehaviour
             float dist = Vector3.Distance(rie.transform.position, transform.position);
 
             if (dist < damageRadius * 3.0f)
-            { 
-                StartCoroutine(Camera.main.gameObject.GetComponent<cameraShake>().explode((((damageRadius * 3.0f) - dist) / (damageRadius * 3.0f)) * 40.0f));
+            {
+                if (Camera.main != null)
+                {
+                    StartCoroutine(Camera.main.gameObject.GetComponent<cameraShake>().explode((((damageRadius * 3.0f) - dist) / (damageRadius * 3.0f)) * 40.0f));
+                }
             }
 
 
