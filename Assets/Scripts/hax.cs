@@ -36,6 +36,21 @@ public class hax : MonoBehaviour
             boss.health -= 250.0f;
         }
 
+        if (Input.GetKeyDown(KeyCode.F3))
+        {
+            SaveSystemController.updateValue("ammoTwo", 4);
+        }
+
+        if (Input.GetKeyDown(KeyCode.F4))
+        {
+            SaveSystemController.updateValue("MythTraces", 5432);
+        }
+
+        if (Input.GetKeyDown(KeyCode.F11))
+        {
+            SaveSystemController.saveDataToDisk();
+        }
+
         //Keep hax active
         if (pc.maxHealth > 100)
         {
