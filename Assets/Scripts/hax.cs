@@ -80,6 +80,31 @@ public class hax : MonoBehaviour
             }
         }
 
+        if (Input.GetKeyDown(KeyCode.F6))
+        {
+            GameObject[] doors = GameObject.FindGameObjectsWithTag("DoorFrame");
+            for (int i = 0; i < doors.Length; i++)
+            {
+                doors[i].GetComponent<DoorController>().triggerUnlock();
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.F7))
+        {
+            GameObject[] traces = GameObject.FindGameObjectsWithTag("Clue");
+            for (int i = 0; i < traces.Length; i++)
+            {
+                traces[i].GetComponent<TraceController>().Trigger();
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.F8))
+        {
+            pc.gameObject.GetComponent<CharacterController>().enabled = false;
+            pc.gameObject.transform.position = new Vector3(-1.338f, 41.17f, 25.2f);
+            pc.gameObject.GetComponent<CharacterController>().enabled = true;
+        }
+
         if (uiHide)
         {
             for (int i = 0; i < uiToHide.Count; i++)

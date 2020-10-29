@@ -14,8 +14,10 @@ public class timescaleMod : MonoBehaviour
 
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            Time.timeScale -= 0.1f;
-            Time.fixedDeltaTime = 0.02f * Time.timeScale;
+            if ((Time.timeScale - 0.1f) > 0.0f) {
+                Time.timeScale -= 0.1f;
+                Time.fixedDeltaTime = 0.02f * Time.timeScale;
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.DownArrow))

@@ -37,12 +37,14 @@ public class rpgController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        //Deattach cam when close to boss
-        if (Vector3.Distance(transform.position, boss.position) < 10.0f) {
-
-            rpgCam.transform.parent = null;
-            rpgCam.GetComponent<rpgCin>().Toggle(cam);
+        if (rpgCam != null)
+        {
+            //Deattach cam when close to boss
+            if (Vector3.Distance(transform.position, boss.position) < 10.0f)
+            {
+                rpgCam.transform.parent = null;
+                rpgCam.GetComponent<rpgCin>().Toggle(cam);
+            }
         }
 
         //Move
@@ -66,10 +68,11 @@ public class rpgController : MonoBehaviour
     {
         if (other.tag != "Finish" && other.tag != "Player" && other.tag != "PlayerAttackSurface" && !other.name.Contains("rocket"))
         {
-
-            rpgCam.transform.parent = null;
-            rpgCam.GetComponent<rpgCin>().Toggle(cam);
-
+            if (rpgCam != null)
+            {
+                rpgCam.transform.parent = null;
+                rpgCam.GetComponent<rpgCin>().Toggle(cam);
+            }
             //Deparent smoke vfx
             smokeVFX.transform.parent = null;
             smokeVFX.GetComponent<DestoryObject>().Trigger();

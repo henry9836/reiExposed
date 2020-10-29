@@ -21,15 +21,17 @@ public class rpgCin : MonoBehaviour
 
     public void Toggle(Camera cam)
     {
-        mainCam = cam;
-        Debug.Log(mainCam.name);
-        rpgCam = this.GetComponent<Camera>();
-        oldRot = transform.localRotation.eulerAngles;
-        moveDir = -transform.forward;
-        startPos = transform.position;
-        endPos = transform.position + (moveDir * distanceToMove);
+        if (showTime == false) { 
+            mainCam = cam;
+            Debug.Log(mainCam.name);
+            rpgCam = this.GetComponent<Camera>();
+            oldRot = transform.localRotation.eulerAngles;
+            moveDir = -transform.forward;
+            startPos = transform.position;
+            endPos = transform.position + (moveDir * distanceToMove);
 
-        showTime = true;
+            showTime = true;
+        }
     }
 
     public void Update()
@@ -40,7 +42,8 @@ public class rpgCin : MonoBehaviour
             transform.localRotation = Quaternion.Slerp(Quaternion.Euler(oldRot), Quaternion.Euler(oldRot.x, oldRot.y, 0.0f), (timer/ timeToRot));
 
             transform.position = Vector3.Slerp(startPos, endPos, (timer / timeToMove));
-            if (timer > (timeToMove + 3.0f))
+
+            if (timer > (timeToMove + 5.0f))
             {
                 mainCam.enabled = true;
                 rpgCam.enabled = false;
