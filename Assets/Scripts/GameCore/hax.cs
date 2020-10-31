@@ -105,6 +105,11 @@ public class hax : MonoBehaviour
             pc.gameObject.GetComponent<CharacterController>().enabled = true;
         }
 
+        if (Input.GetKeyDown(KeyCode.F9))
+        {
+            GameObject.FindGameObjectWithTag("GameManager").GetComponent<MythWorkerUnion>().order66();
+        }
+
         if (uiHide)
         {
             for (int i = 0; i < uiToHide.Count; i++)

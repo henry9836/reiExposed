@@ -17,6 +17,8 @@ public class TraceController : MonoBehaviour
 
     private void Start()
     {
+        Debug.Log(name);
+
         if (renderers.Count == 0)
         {
             if (GetComponent<MeshFilter>())
