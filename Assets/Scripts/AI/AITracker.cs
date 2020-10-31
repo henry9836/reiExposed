@@ -118,7 +118,6 @@ public class AITracker : MonoBehaviour
         //If we have no override
         if (!trackingOverride) {
 
-
             //Can We See Player
             if (canSeePlayer() || (informOverrideTimer < informOverrideTime))
             {

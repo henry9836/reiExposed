@@ -53,6 +53,17 @@ public class MythMovement : AIMovement
         agent.speed = moveSpeed;
         agent.angularSpeed = rotSpeed;
 
+        //If we have a new position
+        if (lastUpdatedPos != agent.destination)
+        {
+            //Move towards our last updatedPos
+            if (!goToPosition(lastUpdatedPos))
+            {
+                //Something went wrong abort
+                stopMovement();
+            }
+        }
+
         //If not moving
         //animator.SetBool("Idle", (agent.velocity.magnitude < 1.0f));
     }

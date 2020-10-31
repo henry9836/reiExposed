@@ -464,7 +464,6 @@ public static class SaveSystemController
     //Saves current state of saveInfomation to save file
     public static void saveDataToDisk(string filePath, bool overrideTime)
     {
-        Debug.Log(getValue("Package_Time"));
 
         if (!overrideTime)
         {
