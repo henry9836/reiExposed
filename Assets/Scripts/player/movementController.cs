@@ -109,7 +109,16 @@ public class movementController : MonoBehaviour
 
     public void forceMovement(Vector3 dir)
     {
+        //Apply Gravity
+        moveDir = new Vector3(moveDir.x * 0.0f, moveDir.y * 1.0f, moveDir.z * 0.0f);
+        dir += moveDir;
         ch.Move(dir * Time.deltaTime);
+    }
+
+    void forceGravity()
+    {
+        moveDir = new Vector3(moveDir.x * 0.0f, moveDir.y * 1.0f, moveDir.z * 0.0f);
+        ch.Move(moveDir * Time.deltaTime);
     }
 
     // Update is called once per frame
@@ -135,6 +144,12 @@ public class movementController : MonoBehaviour
 
         //Apply Gravity
         moveDir.y -= gravity * Time.deltaTime;
+
+        //Allow gravity to work on specific movesets that would block it
+        if (attackMovementBlock)
+        {
+            forceGravity();
+        }
 
         //Reset bools
         sprinting = false;
