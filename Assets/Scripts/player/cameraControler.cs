@@ -277,7 +277,7 @@ public class cameraControler : MonoBehaviour
 
         if (Physics.Raycast(origin, direction, out hit, zOffset, obstacleLayers))
         {
-            Debug.DrawLine(origin, hit.point, Color.yellow);
+            Debug.Log($"Cam hit {hit.collider.name} on layer {LayerMask.LayerToName(hit.collider.gameObject.layer)}");
 
             if (ADS == true)
             {
