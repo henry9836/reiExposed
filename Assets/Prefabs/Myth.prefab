@@ -702,7 +702,7 @@ GameObject:
   - component: {fileID: 8504266258047563928}
   - component: {fileID: 1159318661893412549}
   - component: {fileID: 1631037459509395006}
-  - component: {fileID: 2309118965541752013}
+  - component: {fileID: 7301363921891352608}
   - component: {fileID: 523616526139692268}
   - component: {fileID: 3637085931321649476}
   - component: {fileID: 5516295935096102756}
@@ -718,7 +718,6 @@ GameObject:
   - component: {fileID: 3265642449226392436}
   - component: {fileID: 1073530266}
   - component: {fileID: 5065461637857560352}
-  - component: {fileID: 6304462207376808971}
   m_Layer: 16
   m_Name: Myth
   m_TagString: Myth
@@ -786,7 +785,7 @@ NavMeshAgent:
   m_Acceleration: 16
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 0.2
+  m_StoppingDistance: 0.4
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -794,7 +793,7 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &2309118965541752013
+--- !u!114 &7301363921891352608
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -803,12 +802,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 986330608656297324}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19c4873612831514a8727ac012f82cbb, type: 3}
+  m_Script: {fileID: 11500000, guid: a588302a45d071d41b16f049d49d3de2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   overrideMode: 0
-  moveSpeed: 6.2
-  rotSpeed: 500
+  moveSpeed: 3.5
+  rotSpeed: 120
   fastMoveMulti: 1.5
   fastRotMulti: 1.5
   wanderRange: 10
@@ -819,6 +818,10 @@ MonoBehaviour:
   initalRotSpeed: 10
   agent: {fileID: 0}
   animator: {fileID: 0}
+  moveSpeeds: {x: 6, y: 6.2}
+  rotSpeeds: {x: 120, y: 600}
+  nearPlayerThreshold: 2
+  timeToFullSpeed: 5
 --- !u!114 &523616526139692268
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1175,7 +1178,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -1260,21 +1263,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &6304462207376808971
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 986330608656297324}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d757b79b764f4924091cda3812ad9466, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  debugMode: 1
-  spawnAbove: 3.5
-  debugUI: {fileID: 627260628027668403, guid: d9cd73732df081141bb0702898d75add, type: 3}
 --- !u!1 &1129430613784877214
 GameObject:
   m_ObjectHideFlags: 0
