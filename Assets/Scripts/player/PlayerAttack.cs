@@ -152,12 +152,12 @@ public class PlayerAttack : StateMachineBehaviour
                 //If we would overshoot
                 if (hit.distance > movementSpeed)
                 {
-                    movementCtrl.forceMovement(characterTrans.forward * movementSpeed);
+                    movementCtrl.forceMovement((characterTrans.forward * movementSpeed) + new Vector3(0.0f, movementCtrl.moveDir.y, 0.0f));
                 }
                 //If we would not overshoot but not too close to target
                 else if (0.5f < hit.distance)
                 {
-                    movementCtrl.forceMovement(characterTrans.forward * (hit.distance - 0.5f));
+                    movementCtrl.forceMovement((characterTrans.forward * (hit.distance - 0.5f)));
                 }
                 else
                 {
@@ -167,7 +167,7 @@ public class PlayerAttack : StateMachineBehaviour
             else
             {
                 //Move forwards
-                movementCtrl.forceMovement(characterTrans.forward * movementSpeed);
+                movementCtrl.forceMovement((characterTrans.forward * movementSpeed));
             }
             movementTimer += Time.deltaTime;
         }

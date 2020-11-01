@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Rendering;
 
 [RequireComponent(typeof(NavMeshAgent))]
 public class AIMovement : MonoBehaviour
@@ -34,6 +35,7 @@ public class AIMovement : MonoBehaviour
     public NavMeshAgent agent;
     [HideInInspector]
     public Animator animator;
+
 
     public virtual Vector3 pickWanderPosition()
     {

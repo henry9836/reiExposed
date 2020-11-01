@@ -37,7 +37,7 @@ public class MythWorkerUnion : MonoBehaviour
 
         return true;
     }
-    
+
     void Start()
     {
         //Find all myths
@@ -52,6 +52,12 @@ public class MythWorkerUnion : MonoBehaviour
         amountOfMythsAlive = mythControllers.Count;
     }
 
+    //Kills all myths
+    public void order66()
+    {
+        StartCoroutine(order66Loop());
+    }
+
     private void FixedUpdate()
     {
         checkTimer += Time.deltaTime;
@@ -62,7 +68,7 @@ public class MythWorkerUnion : MonoBehaviour
 
 
             amountOfMythsAlive = 0;
-            for (int i = 0; i < mythControllers.Count-1; i++)
+            for (int i = 0; i < mythControllers.Count - 1; i++)
             {
                 if (mythControllers[i] != null)
                 {
@@ -98,5 +104,22 @@ public class MythWorkerUnion : MonoBehaviour
         }
     }
 
+    IEnumerator order66Loop()
+    {
+        for (int i = 0; i < mythControllers.Count; i++)
+        {
+            if (mythControllers[i] != null)
+            {
+                if (mythControllers[i].gameObject != null)
+                {
+                    Destroy(mythControllers[i].gameObject);
+                }
+            }
+            yield return new WaitForEndOfFrame();
+        }
+
+        yield return null;
+
+    }
 
 }

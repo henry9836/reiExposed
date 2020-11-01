@@ -239,6 +239,11 @@ public class PlayerController : MonoBehaviour
                     //Debug.Log("I was hit and but blocked");
                     umbrella.cooldown = true;
 
+                    if (other.gameObject.transform.root.tag == "Myth")
+                    {
+                        other.gameObject.transform.root.gameObject.GetComponent<Animator>().SetTrigger("Stun");
+                    }
+
                     //Disable hitboxes
                     boss.GetComponent<AIObject>().body.updateHitBox(AIBody.BodyParts.ALL, false);
                     Instantiate(blockVFX, other.transform.position, Quaternion.identity);
