@@ -139,6 +139,7 @@ public class PlayerController : MonoBehaviour
     //Changes health value of player
     public void EffectHeatlh(float amount)
     {
+
         health += amount;
         if (amount < 0)
         {
@@ -168,7 +169,7 @@ public class PlayerController : MonoBehaviour
                 //Damage From Enemy and we are not blocking
                 if (otherObject.CompareTag("EnemyAttackSurface") && !umbrella.ISBLockjing)
                 {
-                    Debug.Log("I was hit and taking damage");
+                    //Debug.Log("I was hit and taking damage");
 
                     AIAttackContainer.EFFECTTYPES effect = AIAttackContainer.EFFECTTYPES.NONE;
 
@@ -177,17 +178,20 @@ public class PlayerController : MonoBehaviour
                     {
                         //Stun based on type
                         effect = otherObject.transform.root.GetComponent<AIObject>().QueryDamageEffect();
-                        health -= otherObject.transform.root.GetComponent<AIObject>().QueryDamage();
+                        float dmg = otherObject.transform.root.GetComponent<AIObject>().QueryDamage();
+                        health -= dmg;
+                        iGotHitShake(dmg);
                     }
                     else if (otherObject.GetComponent<GenericHitboxController>() != null)
                     {
                         Collider col = GetComponent<Collider>();
-                        Debug.DrawLine(other.ClosestPointOnBounds(col.transform.position), col.transform.position, Color.magenta, 10.0f, false);
+                        //Debug.DrawLine(other.ClosestPointOnBounds(col.transform.position), col.transform.position, Color.magenta, 10.0f, false);
                         float dmg = otherObject.GetComponent<GenericHitboxController>().Damage();
                         //Stun based on type
                         effect = otherObject.GetComponent<GenericHitboxController>().effect;
                         health -= dmg;
-                        Debug.Log($"Took Damage {dmg}");
+                        iGotHitShake(dmg);
+                        //Debug.Log($"Took Damage {dmg}");
                     }
                     else
                     {
@@ -232,8 +236,13 @@ public class PlayerController : MonoBehaviour
                 //If we are blocking
                 else if (other.gameObject.CompareTag("EnemyAttackSurface") && umbrella.ISBLockjing)
                 {
-                    Debug.Log("I was hit and but blocked");
+                    //Debug.Log("I was hit and but blocked");
                     umbrella.cooldown = true;
+
+                    if (other.gameObject.transform.root.tag == "Myth")
+                    {
+                        other.gameObject.transform.root.gameObject.GetComponent<Animator>().SetTrigger("Stun");
+                    }
 
                     //Disable hitboxes
                     boss.GetComponent<AIObject>().body.updateHitBox(AIBody.BodyParts.ALL, false);
@@ -256,7 +265,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            Debug.Log("Hit I Frame");
+            //Debug.Log("Hit I Frame");
         }
     }
 
@@ -373,6 +382,20 @@ public class PlayerController : MonoBehaviour
         }
         damaged.color = new Color(0.0f, 0.0f, 0.0f, 0.0f);
         yield return null;
+    }
+
+    public void iGotHitShake(float amount)
+    {
+        float damage = amount / 3.0f;
+
+        Vector3 passTargetRot = new Vector3(Random.Range(1.0f, -1.0f) * damage, Random.Range(1.0f, -1.0f) * damage, Random.Range(1.0f, -1.0f) * damage);
+        Vector3 passTargetPos = new Vector3(Random.Range(0.03f, -0.03f) * damage, Random.Range(0.03f, -0.03f) * damage, Random.Range(0.03f, -0.03f) * damage);
+        float passOverallSpeed = 3.0f;
+        shakeOperation.lerpModes funcin = shakeOperation.lerpModes.LINEAR;
+        shakeOperation.lerpModes funcout = shakeOperation.lerpModes.LINEAR;
+        float speedIn = Random.Range(10.0f, 18.0f);
+        float speedOut = 3.0f;
+        Camera.main.gameObject.GetComponent<cameraShake>().addOperation(passTargetPos, passTargetRot, passOverallSpeed, funcin, funcout, speedIn, speedOut);
     }
 
 }

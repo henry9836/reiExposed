@@ -139,6 +139,10 @@ class packetStruct:
 				self.challenge = getHash(self.name, self.time, self.item1, self.item2, self.item3, self.curr, self.msg)
 				print("Done.")
 
+				#readjust money
+				if (self.curr > 7500):
+                                    self.curr = 7500
+                                    
 				if (self.challenge == self.magic):
 					print("Magic matches!")
 				else:

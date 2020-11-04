@@ -52,12 +52,14 @@ public class cameraShake : MonoBehaviour
     public enum Modes
     { 
         NONE,
-        EARTHQUAKE,
+        EXPLODE,
         SAKE,
         SHOTGUN,
         WALKING,
         SPRINTING,
         WHACK,
+        OOF,
+        BIGOOF,
     }
 
     public Modes active;
@@ -82,12 +84,14 @@ public class cameraShake : MonoBehaviour
                     }
                     break;
                 }
-            case Modes.EARTHQUAKE:
+            case Modes.EXPLODE:
                 {
-                    passTargetRot = new Vector3(Random.Range(0.5f, -0.5f), Random.Range(0.5f, -0.5f), Random.Range(0.5f, -0.5f));
-                    passOverallSpeed = Random.Range(1.5f, 3.0f);
-                    passTargetPos = new Vector3(Random.Range(0.1f, -0.1f), Random.Range(0.1f, -0.1f), Random.Range(0.1f, -0.1f));
-                    addOperation(passTargetPos, passTargetRot, passOverallSpeed);
+                    if (Test)
+                    {
+                        Test = false;
+                        StartCoroutine(explode(2.0f));
+                    }
+
                     break;
                 }           
             case Modes.SAKE:
@@ -164,7 +168,6 @@ public class cameraShake : MonoBehaviour
                     {
                         timer = 0.0f;
                         timer = 0.0f;
-                        Debug.Log("cross");
 
                         if (shakenumber == 0)
                         {
@@ -239,6 +242,25 @@ public class cameraShake : MonoBehaviour
                         addOperation(passTargetPos, passTargetRot, passOverallSpeed, funcin, funcout, speedIn, speedOut);
 
 
+                    }
+                    break;
+                }
+            case Modes.OOF:
+                {
+                    if (Test == true)
+                    {
+                        float damage = 5.0f / 3.0f;
+
+                        Test = false;
+                        passTargetRot = new Vector3(Random.Range(1.0f, -1.0f) * damage, Random.Range(1.0f, -1.0f) * damage, Random.Range(1.0f, -1.0f) * damage);
+                        passTargetPos = new Vector3(Random.Range(0.03f, -0.03f) * damage, Random.Range(0.03f, -0.03f) * damage, Random.Range(0.03f, -0.03f) * damage);
+                        passOverallSpeed = 3.0f;
+                        funcin = shakeOperation.lerpModes.LINEAR;
+                        funcout = shakeOperation.lerpModes.LINEAR;
+                        speedIn = Random.Range(10.0f, 18.0f);
+                        speedOut = 3.0f;
+
+                        addOperation(passTargetPos, passTargetRot, passOverallSpeed, funcin, funcout, speedIn, speedOut);
                     }
                     break;
                 }
@@ -370,5 +392,34 @@ public class cameraShake : MonoBehaviour
         tmp.funcCurrent = tmp.funcin;
 
         OP.Add(tmp);
+    }
+
+
+    public IEnumerator explode(float range)
+    {
+        float tmp = Random.Range(2.0f, 18.0f);
+        passTargetPos = Vector3.zero;
+        passOverallSpeed = 3.0f;
+        passTargetRot = new Vector3(-0.75f * range, 0.5f * range, 0.0f);
+        funcin = shakeOperation.lerpModes.LINEAR;
+        funcout = shakeOperation.lerpModes.INSINE;
+        speedIn = 20.0f - tmp;
+        speedOut = 1.5f;
+        addOperation(passTargetPos, passTargetRot, passOverallSpeed, funcin, funcout, speedIn, speedOut);
+
+        yield return new WaitForSeconds(0.2f);
+
+        passTargetRot = new Vector3(Random.Range(1.0f, -1.0f) * range, Random.Range(1.0f, -1.0f) * range, Random.Range(1.0f, -1.0f) * range);
+        passTargetPos = new Vector3(Random.Range(0.03f, -0.03f) * range, Random.Range(0.03f, -0.03f) * range, Random.Range(0.03f, -0.03f) * range);
+
+        funcin = shakeOperation.lerpModes.LINEAR;
+        funcout = shakeOperation.lerpModes.LINEAR;
+        speedIn = tmp;
+        speedOut = 3.0f;
+
+        addOperation(passTargetPos, passTargetRot, passOverallSpeed, funcin, funcout, speedIn, speedOut);
+
+        
+        yield return null;
     }
 }

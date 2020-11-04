@@ -28,6 +28,36 @@ public class FlameAI : AIObject
         return -1;
     }
 
+    public void overrideDamage(float dmg)
+    {
+
+        revealAmount = 0.0f;
+
+        revealAmount = revealpersentobject.GetComponent<drawTest>().blackpersent;
+
+        revealAmount = startHealth * revealAmount;
+
+        float diff = (health - revealAmount);
+
+        if (dmg < diff)
+        {
+            health -= dmg;
+            GameObject tmp = GameObject.Instantiate(damagedText, transform.position, Quaternion.identity);
+            tmp.transform.SetParent(this.transform, true);
+            tmp.transform.GetChild(0).GetComponent<Text>().text = "-" + dmg.ToString("F0");
+
+        }
+        else
+        {
+            GameObject tmp = GameObject.Instantiate(damagedText, transform.position, Quaternion.identity);
+            tmp.transform.SetParent(this.transform, true);
+            tmp.transform.GetChild(0).GetComponent<Text>().text = "-" + diff.ToString("F0");
+
+            health = revealAmount;
+
+        }
+    }
+
     //Used by collison handler
     public void CollisonLogic(Collider other)
     {

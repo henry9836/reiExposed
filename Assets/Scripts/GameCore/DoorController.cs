@@ -15,6 +15,7 @@ public class DoorController : MonoBehaviour
     public GameObject unlockVid;
     public GameObject unlockParticle;
     public GameObject unlockedFrame;
+
     //Check if we exist in the save
     private void Start()
     {

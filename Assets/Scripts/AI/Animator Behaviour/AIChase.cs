@@ -28,9 +28,8 @@ public class AIChase : StateMachineBehaviour
             ai = animator.gameObject.GetComponent<AIObject>();
             movement = ai.movement;
             tracker = ai.tracker;
+            player = ai.player.transform;
         }
-
-        player = ai.player.transform;
 
         //Reset Triggers
         for (int i = 0; i < ai.attacks.Count; i++)
@@ -104,7 +103,6 @@ public class AIChase : StateMachineBehaviour
                     if ((attack.mustFacePlayer && tracker.isFacingPlayer() && !attack.overrideTrackingVisionCone) || !attack.mustFacePlayer || (attack.mustFacePlayer && tracker.isFacingPlayer(attack.facePlayerThreshold) && attack.overrideTrackingVisionCone))
                     {
                         //ATTACK
-
                         movement.setOverride(AIMovement.OVERRIDE.MOVE_OVERRIDE);
 
                         if (!attacked)
@@ -122,11 +120,17 @@ public class AIChase : StateMachineBehaviour
                         movement.goToPosition(tracker.lastSeenPos);
                     }
                 }
+                else
+                {
+                    //SIT FOR A BIT
+                    movement.setOverride(AIMovement.OVERRIDE.MOVE_OVERRIDE);
+                }
             }
         }
-        //If we cannot see the player go to the last spot we saw them (done in the movement script)
+        //If we cannot see the player go to the last spot we saw them (done in the movement script, although we can double check)
         else
         {
+            movement.goToPosition(tracker.lastSeenPos);
             movement.setOverride(AIMovement.OVERRIDE.NO_OVERRIDE);
         }
     }

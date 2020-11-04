@@ -33,6 +33,8 @@ public class cameraControler : MonoBehaviour
     private float ADStimer = 0.0f;
     private float zOffsetColl;
     private float oldfov;
+    private float mouseX;
+    private float mouseY;
     private bool FOVonce = true;
     public GameObject umbrella;
 
@@ -258,43 +260,12 @@ public class cameraControler : MonoBehaviour
     }
     private void CameraRotation()
     {
-        float mouseX = Mathf.Clamp(Input.GetAxisRaw(mouseXInputName) * mouseSensitivity * 100.0f * Time.unscaledDeltaTime, -50f, 50f);
-        float mouseY = Mathf.Clamp(Input.GetAxisRaw(mouseYInputName) * mouseSensitivity * 100.0f * Time.unscaledDeltaTime, -50f, 50f);
+        mouseX = Input.GetAxisRaw(mouseXInputName) * mouseSensitivity * 100.0f * Time.deltaTime;
+        mouseY += (Input.GetAxisRaw(mouseYInputName) * -1.0f) * mouseSensitivity * 100.0f * Time.deltaTime;
 
-        // Clamp and smooth vertical rotation
-        xAxisRot += mouseY;
-
-        if (xAxisRot > maxPitchUp)
-        {
-            xAxisRot = maxPitchUp;
-            mouseY = 0f;
-            ClampXaxisRotationToValue(360f - maxPitchUp);
-        }
-        else if (xAxisRot < -maxPitchDown)
-        {
-            xAxisRot = -maxPitchDown;
-            mouseY = 0f;
-            ClampXaxisRotationToValue(maxPitchDown);
-        }
-
-        camPivot.transform.Rotate(Vector3.left * mouseY);
         transform.Rotate(Vector3.up * mouseX);
-
-        // Camera roataion axis failsafe
-        Quaternion q1 = transform.rotation;
-        q1.eulerAngles = new Vector3(0, q1.eulerAngles.y, 0);
-        transform.rotation = q1;
-
-        Quaternion q2 = camPivot.transform.localRotation;
-        q2.eulerAngles = new Vector3(q2.eulerAngles.x, 0, 0);
-        camPivot.transform.localRotation = q2;
-    }
-
-    private void ClampXaxisRotationToValue(float value)
-    {
-        Vector3 eulerRotation = camPivot.transform.eulerAngles;
-        eulerRotation.x = Mathf.Lerp(eulerRotation.x, value, Time.unscaledDeltaTime * lerpSpeed);
-        camPivot.transform.eulerAngles = eulerRotation;
+        mouseY = Mathf.Clamp(mouseY, -maxPitchDown, maxPitchDown);
+        camPivot.transform.localRotation = Quaternion.Euler(mouseY, 0, 0);
     }
 
     private void ObstacleCheck(bool ADS)
@@ -306,7 +277,7 @@ public class cameraControler : MonoBehaviour
 
         if (Physics.Raycast(origin, direction, out hit, zOffset, obstacleLayers))
         {
-            Debug.DrawLine(origin, hit.point, Color.yellow);
+            Debug.Log($"Cam hit {hit.collider.name} on layer {LayerMask.LayerToName(hit.collider.gameObject.layer)}");
 
             if (ADS == true)
             {
