@@ -334,7 +334,7 @@ public static class SaveSystemController
 
         //Add some money into player save
         writer.WriteLine(IDFLAG + "MythTraces");
-        writer.WriteLine(VALFLAG + "500");
+        writer.WriteLine(VALFLAG + "10000");
         if (nameOfuser != "")
         {
             writer.WriteLine(IDFLAG + "Package_Name");
@@ -350,9 +350,19 @@ public static class SaveSystemController
         readyForProcessing = false;
         loadDataFromDisk();
 
-        //Restore Gamma
+        //Restore Settings
         updateValue("Gamma", gammaValue);
         updateValue("Package_Time", "0.0", true);
+        updateValue("Building[CLUE]", "yes", true);
+
+        updateValue("3[ITEM]0", "0$0", true);
+        updateValue("3[ITEM]1", "1$1", true);
+        updateValue("8[ITEM]2", "2$2", true);
+        updateValue("8[ITEM]3", "3$3", true);
+        updateValue("4[ITEM]4", "4$4", true);
+        updateValue("4[ITEM]5", "5$5", true);
+        updateValue("9[ITEM]6", "6$6", true);
+        updateValue("5[ITEM]7", "7$7", true);
 
         //Create Hash
         saveDataToDisk(true);
