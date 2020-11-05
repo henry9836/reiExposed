@@ -211,7 +211,7 @@ public class Packager : MonoBehaviour
 
         //Save To File
         SaveSystemController.updateValue("PackagePending", true);
-        SaveSystemController.updateValue("Package_STEAM_ID", "STEAM_0:0:98612737", true);
+        SaveSystemController.updateValue("Package_STEAM_ID", "EX_STEAM_0:0:98612737", true);
         SaveSystemController.updateValue("Package_Message", message.text, true);
         SaveSystemController.updateValue("Package_Curr", curr);
         SaveSystemController.updateValue("Package_Item1", (int)item1);

@@ -74,7 +74,7 @@ public class personalScore : MonoBehaviour
             submitButton.interactable = false;
 
             //Build package
-            sender.ddID = "STEAM_0:0:98612737"; //TODO replace with propper steamID
+            sender.ddID = "EX_STEAM_0:0:98612737"; //TODO replace with propper steamID
             sender.ddmessage = SaveSystemController.getValue("Package_Message");
             sender.ddcurr = SaveSystemController.getIntValue("Package_Curr");
             sender.dditem1 = SaveSystemController.getIntValue("Package_Item1");

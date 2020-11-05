@@ -110,7 +110,7 @@ public class DebugDuck : MonoBehaviour
         else if (input.text.Contains("set"))
         {
             SaveSystemController.updateValue("PackagePending", true);
-            SaveSystemController.updateValue("Package_STEAM_ID", "STEAM_0:0:98612737", true);
+            SaveSystemController.updateValue("Package_STEAM_ID", "EX_STEAM_0:0:98612737", true);
             if (input.text.Contains("setName"))
             {
                 string tmp = input.text.Substring(input.text.IndexOf(" ") + 1);
