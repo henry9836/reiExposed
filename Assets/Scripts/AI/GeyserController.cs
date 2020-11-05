@@ -7,6 +7,7 @@ public class GeyserController : MonoBehaviour
     public GameObject Explode;
     public GameObject Prepare;
     public float timeTillExplode = 1.0f;
+    public float timeTillStopExplode = 0.5f;
     public Collider hitBox;
     public AudioClip explode;
     public AudioClip passive;
@@ -35,6 +36,9 @@ public class GeyserController : MonoBehaviour
         Explode.SetActive(true);
         Prepare.SetActive(false);
         hitBox.enabled = true;
+
+        yield return new WaitForSeconds(timeTillStopExplode);
+        hitBox.enabled = false;
 
         //Wait till end of audio clip
         while (audio.isPlaying)
