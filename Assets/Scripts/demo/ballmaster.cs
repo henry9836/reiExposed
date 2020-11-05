@@ -15,8 +15,11 @@ public class ballmaster : MonoBehaviour
     [HideInInspector]
     public bool stop = false;
 
+    private Vector3 initPos;
+
     void Start()
     {
+        initPos = transform.position;
         int count = this.transform.childCount;
         for (int i = 0; i < count; i++)
         {
@@ -31,10 +34,14 @@ public class ballmaster : MonoBehaviour
         StartCoroutine(running());
     }
 
+    private void LateUpdate()
+    {
+        transform.position = initPos;
+    }
+
     public IEnumerator running()
     {
-
-        GameObject tmp = GameObject.Instantiate(ball);
+        GameObject tmp = GameObject.Instantiate(ball, this.transform.position, Quaternion.identity);
         tmp.transform.parent = this.transform;
 
         while (Vector3.Distance(transform.position, tmp.transform.position) < spawnDistance)
