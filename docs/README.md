@@ -1,4 +1,5 @@
 # @reiExposed
+![gif](https://github.com/henry9836/reiExposed/blob/master/docs/gif.gif)
 ##### Built by Darren Yu, Lucille Liu, Henry Oliver, Vaughan Webb and Xin Yin Lee
 _Urban legends subsist on mystery - they live so long as they are obscure. To be documented is their sole, absolute poison._
 
