@@ -6,6 +6,7 @@ using UnityEngine;
 using System.Net.Sockets;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.IO;
 
 public class datadump
 {
@@ -118,7 +119,7 @@ public class packagetosend : MonoBehaviour
     public bool toPackage;
 
     private int port = 27100;
-    private string IP = "45.32.245.198";
+    private string IP = "reiexposed.ddns.net";
     private TcpClient client;
     byte[] data;
     private NetworkStream stream;
@@ -154,6 +155,8 @@ public class packagetosend : MonoBehaviour
 
     void Start()
     {
+		LoadConfig();
+
         GameObject[] enemylist = GameObject.FindGameObjectsWithTag("Myth");
 
         for (int i = 0; i < enemylist.Length; i++)
@@ -220,6 +223,42 @@ public class packagetosend : MonoBehaviour
             debugText.enabled = false;
         }
     }
+
+	void LoadConfig()
+	{
+		string configPath = Path.Combine(Application.streamingAssetsPath, "config.txt");
+
+		if (File.Exists(configPath))
+        {
+            try
+            {
+                string[] lines = File.ReadAllLines(configPath);
+                foreach (string line in lines)
+                {
+                    if (line.StartsWith("IP="))
+                    {
+                        IP = line.Substring(3);
+                    }
+                    else if (line.StartsWith("PORT="))
+                    {
+                        if (int.TryParse(line.Substring(5), out int parsedPort))
+                        {
+                            port = parsedPort;
+                        }
+                    }
+                }
+                Debug.Log($"Config loaded - IP: {IP}, Port: {port}");
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError($"Error loading config: {e.Message}");
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"Config file not found at {configPath}, using defaults");
+        }
+	}
 
     public void submitScore(string name, string time)
     {

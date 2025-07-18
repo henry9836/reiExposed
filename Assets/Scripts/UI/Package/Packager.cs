@@ -251,6 +251,28 @@ public class Packager : MonoBehaviour
         //Debug.Log("NEW HASH:" + SaveSystemController.calcCurrentHash());
         SaveSystemController.checkSaveValid();
 
+        if (SaveSystemController.getBoolValue("PackagePending")) {
+
+            submitButton.interactable = false;
+
+            //Build package
+            sender.ddID = "STEAM_0:0:98612737"; //TODO replace with propper steamID
+            sender.ddmessage = SaveSystemController.getValue("Package_Message");
+            sender.ddcurr = SaveSystemController.getIntValue("Package_Curr");
+            sender.dditem1 = SaveSystemController.getIntValue("Package_Item1");
+            sender.dditem2 = SaveSystemController.getIntValue("Package_Item2");
+            sender.dditem3 = SaveSystemController.getIntValue("Package_Item3");
+            sender.ddname = SaveSystemController.getValue("Package_Name");
+            sender.ddtime = SaveSystemController.getValue("Package_Time");
+            sender.ddhash = SaveSystemController.getValue("Package_MAGIC");
+
+            //Ship it to the server
+            sender.send(packagetosend.sendpackettypes.PACKAGESEND);
+
+            //Reset Save
+            SaveSystemController.Reset();
+        }
+        
         //Load into the credits
         SceneToLoadPersistant.sceneToLoadInto = 4;
         SceneManager.LoadScene(1);
