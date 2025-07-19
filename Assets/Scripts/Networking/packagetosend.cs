@@ -226,7 +226,7 @@ public class packagetosend : MonoBehaviour
 
 	void LoadConfig()
 	{
-		string configPath = Path.Combine(Application.streamingAssetsPath, "config.txt");
+		string configPath = Path.Combine(Directory.GetCurrentDirectory(), "config.txt");
 
 		if (File.Exists(configPath))
         {
